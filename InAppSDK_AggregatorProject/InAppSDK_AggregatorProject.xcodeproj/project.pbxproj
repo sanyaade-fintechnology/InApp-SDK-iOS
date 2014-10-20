@@ -1,0 +1,224 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		9F4F808719F53CA50008CBBE /* ExampleApp */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9F4F808A19F53CA50008CBBE /* Build configuration list for PBXAggregateTarget "ExampleApp" */;
+			buildPhases = (
+			);
+			dependencies = (
+				9F4F80B719F58F910008CBBE /* PBXTargetDependency */,
+				9F4F80A919F58C760008CBBE /* PBXTargetDependency */,
+			);
+			name = ExampleApp;
+			productName = ExampleApp;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		9F4F809C19F58C5C0008CBBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F4F809619F58C5C0008CBBE /* PaylevenInAppSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FA5CAA919F5189C00FCB314;
+			remoteInfo = PaylevenInAppSDK;
+		};
+		9F4F809E19F58C5C0008CBBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F4F809619F58C5C0008CBBE /* PaylevenInAppSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FA5CAB419F5189C00FCB314;
+			remoteInfo = PaylevenInAppSDKTests;
+		};
+		9F4F80A419F58C640008CBBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F4F80A019F58C640008CBBE /* PaylevenInAppSDKExample.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FA5CB8619F5270700FCB314;
+			remoteInfo = PaylevenInAppSDKExample;
+		};
+		9F4F80A819F58C760008CBBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F4F80A019F58C640008CBBE /* PaylevenInAppSDKExample.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9FA5CB8519F5270700FCB314;
+			remoteInfo = PaylevenInAppSDKExample;
+		};
+		9F4F80B619F58F910008CBBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F4F809619F58C5C0008CBBE /* PaylevenInAppSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9F4F806F19F5348A0008CBBE;
+			remoteInfo = Framework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9F4F809619F58C5C0008CBBE /* PaylevenInAppSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PaylevenInAppSDK.xcodeproj; path = ../PaylevenInAppSDK/PaylevenInAppSDK.xcodeproj; sourceTree = "<group>"; };
+		9F4F80A019F58C640008CBBE /* PaylevenInAppSDKExample.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PaylevenInAppSDKExample.xcodeproj; path = ../PaylevenInAppSDKExample/PaylevenInAppSDKExample.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		9F4F808019F53C650008CBBE = {
+			isa = PBXGroup;
+			children = (
+				9F4F809619F58C5C0008CBBE /* PaylevenInAppSDK.xcodeproj */,
+				9F4F80A019F58C640008CBBE /* PaylevenInAppSDKExample.xcodeproj */,
+			);
+			sourceTree = "<group>";
+		};
+		9F4F809719F58C5C0008CBBE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9F4F809D19F58C5C0008CBBE /* libPaylevenInAppSDK.a */,
+				9F4F809F19F58C5C0008CBBE /* PaylevenInAppSDKTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9F4F80A119F58C640008CBBE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9F4F80A519F58C640008CBBE /* PaylevenInAppSDKExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		9F4F808119F53C650008CBBE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				TargetAttributes = {
+					9F4F808719F53CA50008CBBE = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 9F4F808419F53C650008CBBE /* Build configuration list for PBXProject "InAppSDK_AggregatorProject" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9F4F808019F53C650008CBBE;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9F4F809719F58C5C0008CBBE /* Products */;
+					ProjectRef = 9F4F809619F58C5C0008CBBE /* PaylevenInAppSDK.xcodeproj */;
+				},
+				{
+					ProductGroup = 9F4F80A119F58C640008CBBE /* Products */;
+					ProjectRef = 9F4F80A019F58C640008CBBE /* PaylevenInAppSDKExample.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				9F4F808719F53CA50008CBBE /* ExampleApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9F4F809D19F58C5C0008CBBE /* libPaylevenInAppSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPaylevenInAppSDK.a;
+			remoteRef = 9F4F809C19F58C5C0008CBBE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9F4F809F19F58C5C0008CBBE /* PaylevenInAppSDKTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PaylevenInAppSDKTests.xctest;
+			remoteRef = 9F4F809E19F58C5C0008CBBE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9F4F80A519F58C640008CBBE /* PaylevenInAppSDKExample.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = PaylevenInAppSDKExample.app;
+			remoteRef = 9F4F80A419F58C640008CBBE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXTargetDependency section */
+		9F4F80A919F58C760008CBBE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PaylevenInAppSDKExample;
+			targetProxy = 9F4F80A819F58C760008CBBE /* PBXContainerItemProxy */;
+		};
+		9F4F80B719F58F910008CBBE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Framework;
+			targetProxy = 9F4F80B619F58F910008CBBE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		9F4F808519F53C650008CBBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos8.0;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+			};
+			name = Debug;
+		};
+		9F4F808619F53C650008CBBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = iphoneos8.0;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+			};
+			name = Release;
+		};
+		9F4F808819F53CA50008CBBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9F4F808919F53CA50008CBBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9F4F808419F53C650008CBBE /* Build configuration list for PBXProject "InAppSDK_AggregatorProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F4F808519F53C650008CBBE /* Debug */,
+				9F4F808619F53C650008CBBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9F4F808A19F53CA50008CBBE /* Build configuration list for PBXAggregateTarget "ExampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F4F808819F53CA50008CBBE /* Debug */,
+				9F4F808919F53CA50008CBBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9F4F808119F53C650008CBBE /* Project object */;
+}

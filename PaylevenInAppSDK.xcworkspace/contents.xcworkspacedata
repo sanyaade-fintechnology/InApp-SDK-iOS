@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:PaylevenInAppSDK/../InAppSDK_AggregatorProject/InAppSDK_AggregatorProject.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:PaylevenInAppSDK/PaylevenInAppSDK.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:PaylevenInAppSDKExample/PaylevenInAppSDKExample.xcodeproj">
+   </FileRef>
+</Workspace>
