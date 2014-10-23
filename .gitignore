@@ -1,4 +1,3 @@
-# Xcode
 .DS_Store
 */build/*
 *.pbxuser
@@ -16,5 +15,5 @@ DerivedData
 .idea/
 *.hmap
 *.xccheckout
-
-# SVN dirs
+UserInterfaceState.xcuserstate
+Breakpoints_v2.xcbkptlist

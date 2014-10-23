@@ -8,4 +8,6 @@
 
 #import "PLVInAppSDKConstants.h"
 
-NSString * const kGeneralServiceLocationURL            = @"http://localhost/generalService/api/serviceURL";
+NSString * const kGeneralServiceLocationURL             = @"http://localhost/generalService/api/serviceURL";
+
+NSString * const kInAppSDKErrorDomain                   = @"com.payleven.payment.PaylevenInAppSDK.Error";

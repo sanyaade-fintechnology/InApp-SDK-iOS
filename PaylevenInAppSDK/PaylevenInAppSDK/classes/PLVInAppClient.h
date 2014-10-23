@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NSString PLVInAppUserToken;
+
+typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSError* error);
+
+
 @interface PLVInAppClient : NSObject
 
 
@@ -28,4 +33,19 @@
  */
 - (void) registerWithAPIKey:(NSString*)apiKey;
 
+
+/**
+ *  get The Usertoken
+ *
+ *  @param emailAddress    email Address to get the userToken for
+ *  @param completionBlock completionBlock
+ */
+
+- (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+
+
+
 @end
+
+

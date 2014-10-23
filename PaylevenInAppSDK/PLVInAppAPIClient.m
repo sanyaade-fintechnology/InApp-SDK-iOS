@@ -1,0 +1,446 @@
+//
+//  PLVInAppAPIClient.m
+//  PaylevenSDK
+//
+//  Created by Alexei Kuznetsov on 01.10.14.
+//  changed to PLVInAppAPIClient by ploenne 22.10.14
+//  Copyright (c) 2014 payleven Holding GmbH. All rights reserved.
+//
+
+#import "PLVInAppAPIClient.h"
+
+#import "PLVServerCertificate.h"
+#import "PLVServerTrustValidator.h"
+#import "PLVInAppSDKConstants.h"
+
+#define useLocalEndpoint 1
+
+
+#define apiParameterKeyEmail @"email"
+#define apiParameterKeyAPIKey @"apiKey"
+#define apiParameterKeyBundleID @"bundleID"
+#define apiParameterKeyAPIVersion @"apiVersion"
+
+typedef enum : NSUInteger {
+    apiClientStateJustStartet = 0,
+    apiClientStateTryToInitialise,
+    apiClientStateReady,
+    apiClientStateRegisterError,
+} PLVInAppAPIClientState;
+
+#if useLocalEndpoint
+/** Staging endpoint. */
+static NSString * const PLVInAppAPIClientRegisterEndPoint = @"/generalService/api/initAPIService";
+static NSString * const PLVInAppAPIClientUserTokenEndPoint = @"/staging/api/userToken";
+static NSString * const PLVInAppAPIClientRegisterHost = @"http://ploenneBookPro.local";
+
+#else
+
+static NSString * const PLVInAppAPIClientRegisterEndPoint = @"https://apiproxy-staging.payleven.de/api/";
+
+#endif
+
+static NSString * const PLVInAppSDKVersion = @"1.0";
+
+@interface PLVInAppAPIClient () <NSURLSessionTaskDelegate>
+
+
+@property (nonatomic) PLVInAppAPIClientState apiClientState;
+
+/** The Base Service URL */
+@property (nonatomic, strong) NSString *serviceBaseURL;
+
+/** The Base Service URL */
+@property (nonatomic, strong) NSCondition *waitForRegisterFinishedCondition;
+
+/** The Base Service URL */
+@property (nonatomic, strong) NSString *tryToRegisterToAPIKey;
+
+/** The Base Service URL */
+@property (nonatomic, strong) NSString *registeredAPIKey;
+
+/** The URL session. */
+@property (nonatomic, readonly, strong) NSDictionary *settingDict;
+
+/** The URL session. */
+@property (nonatomic, readonly, strong) NSURLSession *session;
+
+/** Server certificate. */
+@property (nonatomic, readonly, strong) PLVServerCertificate *serverCertificate;
+
+/** Server trust validator. */
+@property (nonatomic, readonly, strong) PLVServerTrustValidator *serverTrustValidator;
+
+/** Stops the receiver invalidating all sessions. */
+- (void)stop;
+
+/** Creates HTTP POST request with the specified path, parameters, and authentication token. */
+- (NSMutableURLRequest *)requestWithPath:(NSString *)path
+                              parameters:(NSDictionary *)parameters
+                     authenticationToken:(NSString *)authenticationToken;
+
+/** Creates a task with the specified URL request and resumes it. The completion handler is called on the main queue. */
+- (void)resumeTaskWithURLRequest:(NSURLRequest *)request
+               completionHandler:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+/** Returns escaped query string for the specified parameters dictionary. */
+- (NSString *)queryStringFromDictionary:(NSDictionary *)dictionary;
+
+/** Returns URL-encoded string for the specified string. */
+- (NSString *)URLEncodedStringFromString:(NSString *)string;
+
+@end
+
+
+@implementation PLVInAppAPIClient
+
+- (instancetype)initWithQueue:(NSOperationQueue *)queue {
+    self = [super init];
+    if (self != nil) {
+        _queue = queue;
+        assert(_queue != nil);
+        
+        _apiClientState = apiClientStateJustStartet;
+        
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        configuration.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicyNever;
+        configuration.HTTPCookieStorage = nil;
+        configuration.HTTPShouldSetCookies = NO;
+        configuration.URLCredentialStorage = nil;
+        configuration.URLCache = nil;
+        configuration.timeoutIntervalForRequest = 10.0;
+        configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
+        _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:_queue];
+        
+        _serverCertificate = [[PLVServerCertificate alloc] init];
+        _serverTrustValidator = [[PLVServerTrustValidator alloc] init];
+        
+        _waitForRegisterFinishedCondition = [[NSCondition alloc] init];
+        
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    [self stop];
+}
+
+
+#pragma mark -
+
+- (void)registerWithAPIKey:(NSString *)apiKey
+               andBundleID:(NSString *)bundleID
+         completionHandler:(void (^)(NSDictionary *response, NSError *error))completionHandler{
+    
+    
+    if (self.apiClientState != apiClientStateJustStartet) {
+        return;
+    }
+    
+    [self.waitForRegisterFinishedCondition lock];
+    
+    _apiClientState = apiClientStateTryToInitialise;
+    
+    self.tryToRegisterToAPIKey = apiKey;
+    
+    assert(completionHandler != nil);
+    
+    if (completionHandler == nil) {
+        return;
+    }
+    
+    NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:apiKey,apiParameterKeyAPIKey,bundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion, nil];
+    NSURL *URL = [NSURL URLWithString:PLVInAppAPIClientRegisterHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppAPIClientRegisterEndPoint];
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData; //[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+//    request.HTTPBody = [[self queryStringFromDictionary:parameters] dataUsingEncoding:NSUTF8StringEncoding];
+//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        completionHandler(response, error);
+    }];
+}
+
+- (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    if (![self handleRegisterConcurrencyWithCompletion:completionHandler]) {
+        return;
+    }
+    
+    NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,self.registeredAPIKey,apiParameterKeyAPIKey, nil];
+    NSURL *URL = [NSURL URLWithString:PLVInAppAPIClientRegisterHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppAPIClientUserTokenEndPoint];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData;
+
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        SDLog(@"Response from UserToken: %@",response);
+        completionHandler(response, error);
+    }];
+    
+}
+
+- (BOOL) handleRegisterConcurrencyWithCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler  {
+    
+    assert(completionHandler != nil);
+    
+    if (self.apiClientState == apiClientStateJustStartet) {
+        
+        NSError* error = [[NSError alloc] initWithDomain:kInAppSDKErrorDomain code:9000 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unregisterd! Register with APIKey First", nil]];
+        
+        completionHandler(Nil, error);
+        
+        return FALSE;
+    }
+    
+    while (self.apiClientState == apiClientStateTryToInitialise) {
+        [self.waitForRegisterFinishedCondition wait];
+    }
+    
+    if (self.apiClientState == apiClientStateRegisterError ) {
+        
+        NSError* error = [[NSError alloc] initWithDomain:kInAppSDKErrorDomain code:9001 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Error on registering",NSLocalizedDescriptionKey, nil]];
+        
+        completionHandler(Nil, error);
+        
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
+
+#pragma mark -
+
+- (void)stop {
+    [self.session invalidateAndCancel];
+}
+
+- (NSMutableURLRequest *)requestWithPath:(NSString *)path
+                              parameters:(NSDictionary *)parameters
+                     authenticationToken:(NSString *)authenticationToken {
+    
+    assert(path.length > 0);
+    if (path.length == 0) {
+        return nil;
+    }
+    
+    NSURL *URL = [NSURL URLWithString:self.serviceBaseURL];
+    URL = [URL URLByAppendingPathComponent:path];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody = [[self queryStringFromDictionary:parameters] dataUsingEncoding:NSUTF8StringEncoding];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    if (authenticationToken.length > 0) {
+        [request setValue:[NSString stringWithFormat:@"Payleven %@", authenticationToken]
+       forHTTPHeaderField:@"Authorization"];
+    }
+    
+    return request;
+}
+
+- (void)resumeTaskWithURLRequest:(NSURLRequest *)request
+               completionHandler:(void (^)(NSDictionary *response, NSError *error))completionHandler {
+    
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+    
+        if (error != nil) {
+            
+            // Connection Error case
+            
+            SDLog(@"Error sending API request: %@", error);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                completionHandler(Nil, error);
+            });
+            
+            if (self.apiClientState == apiClientStateTryToInitialise) {
+                
+                self.apiClientState = apiClientStateRegisterError;
+                
+                [self.waitForRegisterFinishedCondition signal];
+            }
+            
+            return;
+
+        }
+        
+        NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
+        
+        //TODO CHeck for valid NSHTTPURLResponse
+        
+        SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
+        
+        NSDictionary *responseDict = nil;
+        
+        NSError *JSONError;
+        
+        responseDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
+        
+        if (JSONError != noErr) {
+            SDLog(@"Error creating dictionary from JSON data: %@", JSONError);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                completionHandler(Nil, JSONError);
+            });
+            
+            return;
+        }
+        
+
+        if (self.apiClientState == apiClientStateTryToInitialise) {
+            
+            // generalService Call try get get ServiceURL, Settings, logURL and so on
+            
+            if ([responseDict objectForKey:@"status"] != Nil) {
+                
+                if ([[responseDict objectForKey:@"status"] isEqualToString:@"OK"]) {
+                    
+                    if ([responseDict objectForKey:@"serviceURL"] != Nil) {
+                        
+                        self.serviceBaseURL = [responseDict objectForKey:@"serviceURL"];
+                        
+                        self.apiClientState = apiClientStateReady;
+                        
+                        self.registeredAPIKey = self.tryToRegisterToAPIKey;
+                        
+                        SDLog(@"inAppSDK successfull registered");
+                        
+                        if ([responseDict objectForKey:@"settings"] != Nil) {
+                            
+                            _settingDict = [responseDict objectForKey:@"settings"];
+                            
+                            SDLog(@"inAppSDK received Settings");
+                        }
+                        
+                    }
+                    
+                } else if ([[responseDict objectForKey:@"status"] isEqualToString:@"NOK"]) {
+                    
+                    SDLog(@"inAppSDK registration failed ");
+                }
+                
+            }
+            
+            if (self.apiClientState != apiClientStateReady) {
+                self.apiClientState = apiClientStateRegisterError;
+            }
+            
+            [self.waitForRegisterFinishedCondition signal];
+            
+        } else {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                completionHandler(responseDict, error);
+            });
+            
+        }
+    }];
+    
+    [task resume];
+}
+
+- (NSString *)queryStringFromDictionary:(NSDictionary *)dictionary {
+    if (dictionary.count == 0) {
+        return nil;
+    }
+    NSMutableArray *pairs = [NSMutableArray arrayWithCapacity:dictionary.count];
+    [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([key isKindOfClass:[NSString class]] && [obj isKindOfClass:[NSString class]]) {
+            [pairs addObject:[NSString stringWithFormat:@"%@=%@",
+                              [self URLEncodedStringFromString:key], [self URLEncodedStringFromString:obj]]];
+        }
+    }];
+    
+    return [pairs componentsJoinedByString:@"&"];
+}
+
+- (NSString *)URLEncodedStringFromString:(NSString *)string {
+    CFStringRef result = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                 (__bridge CFStringRef)string,
+                                                                 NULL,
+                                                                 CFSTR(":/?#[]@!$&'()*+,;="),
+                                                                 kCFStringEncodingUTF8);
+    
+    return (__bridge_transfer NSString *)result;
+}
+
+
+#pragma mark - NSURLSessionDelegate
+
+- (void)URLSession:(NSURLSession *)session
+        didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+        completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler {
+    
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        BOOL isValid = [self.serverTrustValidator validateServerTrust:challenge.protectionSpace.serverTrust
+                                         withPublicKeyFromCertificate:self.serverCertificate.data];
+        if (isValid) {
+            NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+            completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+        } else {
+            completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+        }
+    } else {
+        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, NULL);
+    }
+}
+
+
+#pragma mark - NSURLSessionTaskDelegate
+
+- (void)URLSession:(NSURLSession *)session
+        task:(NSURLSessionTask *)task
+        didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+        completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler {
+    
+    NSURLSessionAuthChallengeDisposition disposition = NSURLSessionAuthChallengePerformDefaultHandling;
+    NSURLCredential *credential = nil;
+    
+    if (challenge.previousFailureCount == 0) {
+        NSURLProtectionSpace *protectionSpace = challenge.protectionSpace;
+        if ([protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodHTTPBasic] &&
+            [protectionSpace.host isEqualToString:PLVInAppAPIClientRegisterHost]) {
+            disposition = NSURLSessionAuthChallengeUseCredential;
+//            credential = [NSURLCredential credentialWithUser:PLVAPIClientStagingLoginUsername
+//                                                    password:PLVAPIClientStagingLoginPassword
+//                                                 persistence:NSURLCredentialPersistenceNone];
+        }
+    }
+    
+    completionHandler(disposition, credential);
+}
+
+@end
+
+
+NSString * const PLVAPIClientErrorDomain = @"PLVAPIClientErrorDomain";
