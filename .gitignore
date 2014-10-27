@@ -17,3 +17,4 @@ DerivedData
 *.xccheckout
 UserInterfaceState.xcuserstate
 Breakpoints_v2.xcbkptlist
+PaylevenInAppSDKExample/PaylevenInAppSDK.framework

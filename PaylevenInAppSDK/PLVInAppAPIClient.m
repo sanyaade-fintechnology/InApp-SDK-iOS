@@ -12,6 +12,7 @@
 #import "PLVServerCertificate.h"
 #import "PLVServerTrustValidator.h"
 #import "PLVInAppSDKConstants.h"
+#import <CommonCrypto/CommonCrypto.h>
 
 #define useLocalEndpoint 1
 
@@ -20,6 +21,7 @@
 #define apiParameterKeyAPIKey @"apiKey"
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"apiVersion"
+#define apiParameterKeyEnvironment @"environment"
 
 typedef enum : NSUInteger {
     apiClientStateJustStartet = 0,
@@ -41,6 +43,7 @@ static NSString * const PLVInAppAPIClientRegisterEndPoint = @"https://apiproxy-s
 #endif
 
 static NSString * const PLVInAppSDKVersion = @"1.0";
+NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 @interface PLVInAppAPIClient () <NSURLSessionTaskDelegate>
 
@@ -150,7 +153,17 @@ static NSString * const PLVInAppSDKVersion = @"1.0";
         return;
     }
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:apiKey,apiParameterKeyAPIKey,bundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion, nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:bundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion, nil];
+    
+    if ([self.tryToRegisterToAPIKey hasPrefix:@"test"]) {
+        // add Environment Key for easyUp register handling on backendSite
+        [parameters setObject:@"test" forKey:apiParameterKeyEnvironment];
+    }
+    
+    //add HMAC
+    
+    [self addHmacForParameterDict:parameters];
+    
     NSURL *URL = [NSURL URLWithString:PLVInAppAPIClientRegisterHost];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppAPIClientRegisterEndPoint];
@@ -440,7 +453,96 @@ static NSString * const PLVInAppSDKVersion = @"1.0";
     completionHandler(disposition, credential);
 }
 
+
+
+-(void)addHmacForParameterDict:(NSMutableDictionary*)parameters {
+    
+    //1. create timestamp string
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+    [formatter setTimeZone:timeZone];
+    formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss";
+    NSString *timestamp = [formatter stringFromDate:[NSDate date]];
+    
+    //2. add timestamp to params
+    [parameters setObject:timestamp forKey:@"hmacTime"];
+    
+    //3. sort params alphabetically & generate query string
+    NSString* query = [self generateHmacQueryString:parameters];
+    
+    //4. generate hash
+    const char *cKey;
+    
+    if (self.tryToRegisterToAPIKey != Nil) {
+        cKey = [self.tryToRegisterToAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
+    } else {
+        cKey = [self.registeredAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
+    }
+    const char *cData = [query cStringUsingEncoding:NSUTF8StringEncoding];
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    NSString *hash = [[HMAC base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    HMAC = nil;
+    
+    //5. add hash to params
+    [parameters setObject:hash forKey:@"hmac"];
+    
+}
+
+-(NSString *)generateHmacQueryString:(NSDictionary *)params
+{
+    /*
+     Convert an NSDictionary to a query string
+     */
+    
+    NSMutableArray* pairs = [NSMutableArray array];
+    
+    //sort params alphabetically
+    NSArray *paramKeys = [params allKeys];
+    BOOL reverseSort = NO;
+    NSArray *sortedParamKeys = [paramKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
+    
+    //generate query string by taking subarrays and dictionarys into account
+    for (NSString* key in sortedParamKeys)
+    {
+        id value = [params objectForKey:key];
+        if ([value isKindOfClass:[NSDictionary class]])
+        {
+            for (NSString *subKey in value)
+            {
+                [pairs addObject:[NSString stringWithFormat:@"%@[%@]=%@", key, subKey, [value objectForKey:subKey]]];
+            }
+        }
+        else if ([value isKindOfClass:[NSArray class]])
+        {
+            NSUInteger i = 0;
+            for (NSString *subValue in value)
+            {
+                [pairs addObject:[NSString stringWithFormat:@"%@[%lu]=%@", key, (unsigned long)i, subValue]];
+                i++;
+            }
+        }
+        else
+        {
+            [pairs addObject:[NSString stringWithFormat:@"%@=%@", key, [params objectForKey:key]]];
+        }
+    }
+    return [pairs componentsJoinedByString:@"&"];
+}
+
+
+
 @end
 
+
+NSInteger alphabeticKeySort(id string1, id string2, void *reverse)
+{
+    if (*(BOOL *)reverse == YES)
+    {
+        return [string2 localizedCaseInsensitiveCompare:string1];
+    }
+    return [string1 localizedCaseInsensitiveCompare:string2];
+}
 
 NSString * const PLVAPIClientErrorDomain = @"PLVAPIClientErrorDomain";

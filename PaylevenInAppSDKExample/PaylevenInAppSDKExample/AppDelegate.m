@@ -21,11 +21,17 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+
     [[PLVInAppClient sharedInstance] registerWithAPIKey:@"nAj6Rensh2Ew3Oc4Ic2gig1F"];
+    
     
     [[PLVInAppClient sharedInstance] userTokenForEmail:@"test@test.de" withCompletion:^(NSDictionary* response, NSError* error) {
        
     }];
+    
+    
+    
+    
     
     return YES;
 }

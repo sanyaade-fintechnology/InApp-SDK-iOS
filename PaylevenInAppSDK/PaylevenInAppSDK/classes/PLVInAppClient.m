@@ -61,7 +61,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
 }
 
-
 - (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     [self.inAppAPIClient userTokenForEmail:emailAddress withCompletion:completionHandler];
