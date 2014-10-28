@@ -25,14 +25,11 @@
     [[PLVInAppClient sharedInstance] registerWithAPIKey:@"nAj6Rensh2Ew3Oc4Ic2gig1F"];
     
     
-    [[PLVInAppClient sharedInstance] userTokenForEmail:@"test@test.de" withCompletion:^(NSDictionary* response, NSError* error) {
+    [[PLVInAppClient sharedInstance] getUserToken:@"test@test.de" withCompletion:^(NSDictionary* response, NSError* error) {
        
     }];
     
-    
-    
-    
-    
+
     return YES;
 }
 

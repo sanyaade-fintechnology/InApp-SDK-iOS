@@ -28,12 +28,15 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 - (instancetype)initWithQueue:(NSOperationQueue *)queue;
 
 /** Performs login with the specified username and password. */
-- (void)registerWithAPIKey:(NSString *)apiKey
-               andBundleID:(NSString *)bundleID
-         completionHandler:(void (^)(NSDictionary *response, NSError *error))completionHandler;
+- (void)registerWithAPIKey:(NSString *)apiKey andBundleID:(NSString *)bundleID;
 
 
-- (void)userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+
+- (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+- (void) listPaymentInstruments:(NSArray*)piArray toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 @end

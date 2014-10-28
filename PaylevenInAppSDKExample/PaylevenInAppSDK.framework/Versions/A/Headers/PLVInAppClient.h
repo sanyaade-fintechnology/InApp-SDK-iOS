@@ -31,17 +31,22 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *
  *  @param apiKey your API Key
  */
-- (void) registerWithAPIKey:(NSString*)apiKey;
+- (void) registerWithAPIKey:(NSString*)apiKey ;
 
 
 /**
- *  get The Usertoken
+ *  getUsertoken
  *
  *  @param emailAddress    email Address to get the userToken for
  *  @param completionBlock completionBlock
  */
 
-- (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+
+- (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+- (void) listPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 

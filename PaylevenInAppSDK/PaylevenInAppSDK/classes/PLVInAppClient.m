@@ -52,18 +52,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     assert(apiKey);
     
-    [self.inAppAPIClient registerWithAPIKey:apiKey andBundleID:self.bundleID completionHandler:^(NSDictionary* response,NSError *error) {
-        
-        NSLog(@"Response %@",response);
-        NSLog(@"Error %@",error);
-        
-    }];
+    [self.inAppAPIClient registerWithAPIKey:apiKey andBundleID:self.bundleID];
     
 }
 
-- (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     [self.inAppAPIClient userTokenForEmail:emailAddress withCompletion:completionHandler];
+    
+}
+
+- (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    
+}
+
+- (void) listPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    
     
 }
 

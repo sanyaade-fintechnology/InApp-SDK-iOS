@@ -18,23 +18,22 @@
 
 
 #define apiParameterKeyEmail @"email"
-#define apiParameterKeyAPIKey @"apiKey"
 #define apiParameterKeyBundleID @"bundleID"
-#define apiParameterKeyAPIVersion @"apiVersion"
-#define apiParameterKeyEnvironment @"environment"
+#define apiParameterKeyAPIVersion @"version"
+#define apiParameterKeyPayInstruments @"payInstruments"
 
 typedef enum : NSUInteger {
     apiClientStateJustStartet = 0,
-    apiClientStateTryToInitialise,
-    apiClientStateReady,
+    apiClientStateUnregistered,
+    apiClientStateRegistered,
     apiClientStateRegisterError,
 } PLVInAppAPIClientState;
 
 #if useLocalEndpoint
 /** Staging endpoint. */
-static NSString * const PLVInAppAPIClientRegisterEndPoint = @"/generalService/api/initAPIService";
-static NSString * const PLVInAppAPIClientUserTokenEndPoint = @"/staging/api/userToken";
-static NSString * const PLVInAppAPIClientRegisterHost = @"http://ploenneBookPro.local";
+
+static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
+static NSString * const PLVInAppClientAPIHost = @"http://localhost";
 
 #else
 
@@ -60,7 +59,11 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 @property (nonatomic, strong) NSString *tryToRegisterToAPIKey;
 
 /** The Base Service URL */
-@property (nonatomic, strong) NSString *registeredAPIKey;
+@property (nonatomic, strong) NSString *registerAPIKey;
+
+
+/** The Base Service URL */
+@property (nonatomic, strong) NSString *registerBundleID;
 
 /** The URL session. */
 @property (nonatomic, readonly, strong) NSDictionary *settingDict;
@@ -98,6 +101,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 @implementation PLVInAppAPIClient
 
 - (instancetype)initWithQueue:(NSOperationQueue *)queue {
+    
     self = [super init];
     if (self != nil) {
         _queue = queue;
@@ -132,71 +136,34 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 #pragma mark -
 
-- (void)registerWithAPIKey:(NSString *)apiKey
-               andBundleID:(NSString *)bundleID
-         completionHandler:(void (^)(NSDictionary *response, NSError *error))completionHandler{
+- (void)registerWithAPIKey:(NSString *)apiKey andBundleID:(NSString *)bundleID {
     
+    self.registerAPIKey = apiKey;
     
     if (self.apiClientState != apiClientStateJustStartet) {
         return;
     }
-    
-    [self.waitForRegisterFinishedCondition lock];
-    
-    _apiClientState = apiClientStateTryToInitialise;
-    
-    self.tryToRegisterToAPIKey = apiKey;
-    
-    assert(completionHandler != nil);
-    
-    if (completionHandler == nil) {
-        return;
-    }
-    
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:bundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion, nil];
-    
-    if ([self.tryToRegisterToAPIKey hasPrefix:@"test"]) {
-        // add Environment Key for easyUp register handling on backendSite
-        [parameters setObject:@"test" forKey:apiParameterKeyEnvironment];
-    }
-    
-    //add HMAC
-    
-    [self addHmacForParameterDict:parameters];
-    
-    NSURL *URL = [NSURL URLWithString:PLVInAppAPIClientRegisterHost];
-    
-    URL = [URL URLByAppendingPathComponent:PLVInAppAPIClientRegisterEndPoint];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"POST";
-    NSError *JSONError;
+    _apiClientState = apiClientStateUnregistered;
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&JSONError];
+    self.registerAPIKey = apiKey;
     
-    request.HTTPBody = jsonData; //[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-//    request.HTTPBody = [[self queryStringFromDictionary:parameters] dataUsingEncoding:NSUTF8StringEncoding];
-//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
-    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
-        completionHandler(response, error);
-    }];
+    self.registerBundleID = bundleID;
+
+    return;
 }
 
 - (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    if (![self handleRegisterConcurrencyWithCompletion:completionHandler]) {
-        return;
-    }
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,self.registerBundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion,nil];
     
-    NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,self.registeredAPIKey,apiParameterKeyAPIKey, nil];
-    NSURL *URL = [NSURL URLWithString:PLVInAppAPIClientRegisterHost];
+    //add HMAC
+
+    [self addHmacForParameterDict:parameters];
     
-    URL = [URL URLByAppendingPathComponent:PLVInAppAPIClientUserTokenEndPoint];
+    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIUserTokenEndPoint];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = @"POST";
@@ -218,33 +185,15 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-- (BOOL) handleRegisterConcurrencyWithCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler  {
+
+- (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    assert(completionHandler != nil);
     
-    if (self.apiClientState == apiClientStateJustStartet) {
-        
-        NSError* error = [[NSError alloc] initWithDomain:kInAppSDKErrorDomain code:9000 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unregisterd! Register with APIKey First", nil]];
-        
-        completionHandler(Nil, error);
-        
-        return FALSE;
-    }
+}
+
+- (void) listPaymentInstruments:(NSArray*)piArray toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    while (self.apiClientState == apiClientStateTryToInitialise) {
-        [self.waitForRegisterFinishedCondition wait];
-    }
     
-    if (self.apiClientState == apiClientStateRegisterError ) {
-        
-        NSError* error = [[NSError alloc] initWithDomain:kInAppSDKErrorDomain code:9001 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Error on registering",NSLocalizedDescriptionKey, nil]];
-        
-        completionHandler(Nil, error);
-        
-        return FALSE;
-    }
-    
-    return TRUE;
 }
 
 
@@ -294,11 +243,9 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                 completionHandler(Nil, error);
             });
             
-            if (self.apiClientState == apiClientStateTryToInitialise) {
+            if (self.apiClientState == apiClientStateUnregistered) {
                 
                 self.apiClientState = apiClientStateRegisterError;
-                
-                [self.waitForRegisterFinishedCondition signal];
             }
             
             return;
@@ -329,54 +276,15 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         }
         
 
-        if (self.apiClientState == apiClientStateTryToInitialise) {
-            
-            // generalService Call try get get ServiceURL, Settings, logURL and so on
-            
-            if ([responseDict objectForKey:@"status"] != Nil) {
-                
-                if ([[responseDict objectForKey:@"status"] isEqualToString:@"OK"]) {
-                    
-                    if ([responseDict objectForKey:@"serviceURL"] != Nil) {
-                        
-                        self.serviceBaseURL = [responseDict objectForKey:@"serviceURL"];
-                        
-                        self.apiClientState = apiClientStateReady;
-                        
-                        self.registeredAPIKey = self.tryToRegisterToAPIKey;
-                        
-                        SDLog(@"inAppSDK successfull registered");
-                        
-                        if ([responseDict objectForKey:@"settings"] != Nil) {
-                            
-                            _settingDict = [responseDict objectForKey:@"settings"];
-                            
-                            SDLog(@"inAppSDK received Settings");
-                        }
-                        
-                    }
-                    
-                } else if ([[responseDict objectForKey:@"status"] isEqualToString:@"NOK"]) {
-                    
-                    SDLog(@"inAppSDK registration failed ");
-                }
-                
-            }
-            
-            if (self.apiClientState != apiClientStateReady) {
-                self.apiClientState = apiClientStateRegisterError;
-            }
-            
-            [self.waitForRegisterFinishedCondition signal];
-            
-        } else {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                completionHandler(responseDict, error);
-            });
+        if (self.apiClientState == apiClientStateUnregistered) {
             
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+                
+            completionHandler(responseDict, error);
+        });
+            
+
     }];
     
     [task resume];
@@ -439,16 +347,16 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSURLSessionAuthChallengeDisposition disposition = NSURLSessionAuthChallengePerformDefaultHandling;
     NSURLCredential *credential = nil;
     
-    if (challenge.previousFailureCount == 0) {
-        NSURLProtectionSpace *protectionSpace = challenge.protectionSpace;
-        if ([protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodHTTPBasic] &&
-            [protectionSpace.host isEqualToString:PLVInAppAPIClientRegisterHost]) {
-            disposition = NSURLSessionAuthChallengeUseCredential;
-//            credential = [NSURLCredential credentialWithUser:PLVAPIClientStagingLoginUsername
-//                                                    password:PLVAPIClientStagingLoginPassword
-//                                                 persistence:NSURLCredentialPersistenceNone];
-        }
-    }
+//    if (challenge.previousFailureCount == 0) {
+//        NSURLProtectionSpace *protectionSpace = challenge.protectionSpace;
+//        if ([protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodHTTPBasic] &&
+//            [protectionSpace.host isEqualToString:PLVInAppAPIClientRegisterHost]) {
+//            disposition = NSURLSessionAuthChallengeUseCredential;
+////            credential = [NSURLCredential credentialWithUser:PLVAPIClientStagingLoginUsername
+////                                                    password:PLVAPIClientStagingLoginPassword
+////                                                 persistence:NSURLCredentialPersistenceNone];
+//        }
+//    }
     
     completionHandler(disposition, credential);
 }
@@ -471,13 +379,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSString* query = [self generateHmacQueryString:parameters];
     
     //4. generate hash
-    const char *cKey;
-    
-    if (self.tryToRegisterToAPIKey != Nil) {
-        cKey = [self.tryToRegisterToAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
-    } else {
-        cKey = [self.registeredAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
-    }
+    const char *cKey = [self.registerAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
+
     const char *cData = [query cStringUsingEncoding:NSUTF8StringEncoding];
     unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
     CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
