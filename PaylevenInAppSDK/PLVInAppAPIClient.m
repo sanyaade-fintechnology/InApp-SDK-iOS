@@ -14,8 +14,8 @@
 #import "PLVInAppSDKConstants.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#define useLocalEndpoint 1
-
+#define useLocalEndpoint 0
+#define usemacMiniEndpoint 1
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyBundleID @"bundleID"
@@ -30,14 +30,24 @@ typedef enum : NSUInteger {
 } PLVInAppAPIClientState;
 
 #if useLocalEndpoint
-/** Staging endpoint. */
+/** locahost endpoint. */
 
 static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
 static NSString * const PLVInAppClientAPIHost = @"http://localhost";
 
+#elif usemacMiniEndpoint
+
+/** macMini in office endpoint. */
+
+static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
+static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888";
+
 #else
 
-static NSString * const PLVInAppAPIClientRegisterEndPoint = @"https://apiproxy-staging.payleven.de/api/";
+/** macMini in office endpoint. */
+
+static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
+static NSString * const PLVInAppClientAPIHost = @"https://apiproxy-staging.payleven.de";
 
 #endif
 
