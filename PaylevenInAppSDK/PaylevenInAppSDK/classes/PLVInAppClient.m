@@ -10,6 +10,7 @@
 #import "SingletonHelper.h"
 #import "PLVInAppClient.h"
 #import "PLVInAppAPIClient.h"
+#import "PLVInAppSDKConstants.h"
 
 @interface PLVInAppClient ()
 
@@ -37,7 +38,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
         
         _bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey];
         
-        NSLog(@"PLVInAppClient created 123456 BundleID: %@",_bundleID);
+        SDLog(@"PLVInAppClient created 123456 BundleID: %@",_bundleID);
         
         _queue = [[NSOperationQueue alloc] init];
         _queue.maxConcurrentOperationCount = 1;
@@ -67,10 +68,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
 }
 
-- (void) listPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     
     
 }
+
+- (void) updatePaymentInstrumentsOrder:(NSOrderedSet*)piOrder toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    
+    
+}
+
 
 @end

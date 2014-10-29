@@ -14,10 +14,12 @@
 #import "PLVInAppSDKConstants.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
+#define useLocalEndpoint 1
+#define usemacMiniEndpoint 0
 
 #define apiParameterKeyEmail @"email"
+#define apiParameterKeyUserToken @"userToken"
+#define apiParameterKeyAddPIs @"paymentInstruments"
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"version"
 #define apiParameterKeyPayInstruments @"payInstruments"
@@ -29,27 +31,31 @@ typedef enum : NSUInteger {
     apiClientStateRegisterError,
 } PLVInAppAPIClientState;
 
+
+static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
+static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/staging/api/addPaymentInstruments";
+static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/staging/api/listPaymentInstruments";
+
+
 #if useLocalEndpoint
 /** locahost endpoint. */
 
-static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
 static NSString * const PLVInAppClientAPIHost = @"http://localhost";
 
 #elif usemacMiniEndpoint
 
 /** macMini in office endpoint. */
 
-static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
 static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888";
 
 #else
 
 /** macMini in office endpoint. */
 
-static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
 static NSString * const PLVInAppClientAPIHost = @"https://apiproxy-staging.payleven.de";
 
 #endif
+
 
 static NSString * const PLVInAppSDKVersion = @"1.0";
 NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
@@ -195,14 +201,98 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-
 - (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piArray,apiParameterKeyAddPIs,nil];
+    
+    //add HMAC
+    
+    [self addHmacForParameterDict:parameters];
+    
+    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIAddPiEndPoint];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData;
+    
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        SDLog(@"Response from UserToken: %@",response);
+        completionHandler(response, error);
+    }];
     
 }
 
-- (void) listPaymentInstruments:(NSArray*)piArray toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    //add HMAC
+    
+    [self addHmacForParameterDict:parameters];
+    
+    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIListPiTokenEndPoint];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData;
+    
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        SDLog(@"Response from UserToken: %@",response);
+        completionHandler(response, error);
+    }];
+}
+
+- (void) updatePaymentInstrumentsOrder:(NSOrderedSet*)piOrder toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    //add HMAC
+    
+    [self addHmacForParameterDict:parameters];
+    
+    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIListPiTokenEndPoint];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData;
+    
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        SDLog(@"Response from UserToken: %@",response);
+        completionHandler(response, error);
+    }];
     
 }
 

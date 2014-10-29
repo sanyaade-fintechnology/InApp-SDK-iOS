@@ -43,13 +43,39 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
-
+/**
+ *  addPaymentInstruments:
+ *
+ *  add a array of payment instruments to a userToken
+ *
+ *  @param piArray           array with payment instruments
+ *  @param userToken         userToken
+ *  @param completionHandler completion block
+ */
 - (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
-- (void) listPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+/**
+ *  listPaymentInstrumentsForUserToken:
+ *
+ *  list the existing payment instruments for a userToken
+ *
+ *  @param userToken         userToken
+ *  @param completionHandler completion block
+ */
+- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
-
+/**
+ *  updatePaymentInstrumentsOrder:
+ *
+ *  add a array of payment instruments to a userToken
+ *
+ *  @param piOrder           ordered set with payment instruments token hashes
+ *  @param userToken         userToken
+ *  @param completionHandler completion block
+ */
+- (void) updatePaymentInstrumentsOrder:(NSOrderedSet*)piOrder toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 @end
 
