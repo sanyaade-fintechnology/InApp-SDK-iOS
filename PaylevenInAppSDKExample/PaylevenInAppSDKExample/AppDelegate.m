@@ -22,10 +22,25 @@
     // Override point for customization after application launch.
     
 
-    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"nAj6Rensh2Ew3Oc4Ic2gig1F"];
+//    NSString* apiKey = @"462123efc681534108cf2b34b4f8fb";
+//    NSString* apiKey = @"nAj6Rensh2Ew3Oc4Ic2gig1F";
+    NSString* apiKey = @"4840bbc6429dacd56bfa98390ddf43";
     
     
+    [[PLVInAppClient sharedInstance] registerWithAPIKey:apiKey];
+
     [[PLVInAppClient sharedInstance] getUserToken:@"test@test.de" withCompletion:^(NSDictionary* response, NSError* error) {
+        
+        if ([response objectForKey:@"userToken"]) {
+            NSString* userToken = [response objectForKey:@"userToken"];
+            
+            [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
+                
+                NSLog(@"response %@",response);
+                
+            }];
+            
+        }
        
     }];
     

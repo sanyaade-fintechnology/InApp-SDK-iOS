@@ -70,8 +70,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 
 - (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    
-    
+    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withCompletion:completionHandler];
 }
 
 - (void) updatePaymentInstrumentsOrder:(NSOrderedSet*)piOrder toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {

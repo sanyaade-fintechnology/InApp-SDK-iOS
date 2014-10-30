@@ -32,21 +32,21 @@ typedef enum : NSUInteger {
 } PLVInAppAPIClientState;
 
 
-static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/staging/api/userToken";
-static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/staging/api/addPaymentInstruments";
-static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/staging/api/listPaymentInstruments";
+static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/userToken";
+static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstruments";
+static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
 
 
 #if useLocalEndpoint
 /** locahost endpoint. */
 
-static NSString * const PLVInAppClientAPIHost = @"http://localhost";
+static NSString * const PLVInAppClientAPIHost = @"http://localhost/staging/api";
 
 #elif usemacMiniEndpoint
 
 /** macMini in office endpoint. */
 
-static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888";
+static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/staging/api";
 
 #else
 
@@ -259,7 +259,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"Response from UserToken: %@",response);
+        SDLog(@"Response from listPaymentInstrumentsForUserToken: %@",response);
         completionHandler(response, error);
     }];
 }
