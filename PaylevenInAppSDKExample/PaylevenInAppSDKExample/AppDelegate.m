@@ -29,6 +29,12 @@
        
     }];
     
+    PLVPayInstrumentCC* ccCard = [[PLVPayInstrumentCC alloc] init];
+    
+    ccCard.pan = @"1234567899";
+    
+    
+    
 
     return YES;
 }
