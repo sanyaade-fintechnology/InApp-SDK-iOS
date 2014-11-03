@@ -61,9 +61,9 @@
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
-- (NSString*) piDescription {
+- (NSDictionary*) piDictDescription {
     
-    return @"";
+    return @{};
     
 }
 
@@ -80,6 +80,8 @@
     
     if ([self respondsToSelector:@selector(key)]) {
         [self performSelector:@selector(key) withObject:value];
+    } else {
+        SDLog(@"PIType: %@  try to insert unknow value: %@ for key: %@",[PLVPaymentInstrument piTypeForPLVPIType:self.type],value,key);
     }
 }
 
@@ -108,7 +110,7 @@
 
 @implementation PLVPayInstrumentCC (Serialization)
 
-- (NSString*) piDescription {
+- (NSDictionary*) piDictDescription {
     
     NSMutableDictionary* content = [NSMutableDictionary new];
     
@@ -128,18 +130,15 @@
         [content setObject:self.ccv forKey:ccCCVKey];
     }
     
-    return [super getJSONDescription:content];
+    return content;
 }
 
 
 - (void) initValuesWithDict:(NSDictionary*)dict {
     
-    
     for (NSString* key in dict.allKeys) {
-        
         [self setValue:[dict objectForKey:key] forKey:key];
     }
-
 }
 
 @end
@@ -147,7 +146,7 @@
 
 @implementation PLVPayInstrumentDD (Serialization)
 
-- (NSString*) piDescription {
+- (NSDictionary*) piDictDescription {
     
     NSMutableDictionary* content = [NSMutableDictionary new];
     
@@ -167,7 +166,7 @@
         [content setObject:self.routingNumber forKey:ddRoutingNumberKey];
     }
     
-    return [super getJSONDescription:content];
+    return content;
 }
 
 @end
@@ -176,7 +175,7 @@
 @implementation PLVPayInstrumentSEPA (Serialization)
 
 
-- (NSString*) piDescription {
+- (NSDictionary*) piDictDescription {
     
     NSMutableDictionary* content = [NSMutableDictionary new];
     
@@ -196,16 +195,15 @@
         [content setObject:self.bic forKey:sepaBICNumberKey];
     }
     
-    return [super getJSONDescription:content];
+    return content;
 }
 
 
 @end
 
-
 @implementation PLVPayInstrumentPAYPAL (Serialization)
 
-- (NSString*) piDescription {
+- (NSDictionary*) piDictDescription {
     
     NSMutableDictionary* content = [NSMutableDictionary new];
     
@@ -217,7 +215,7 @@
         [content setObject:self.emailAddress forKey:paypalEmailAdressKey];
     }
     
-    return [super getJSONDescription:content];
+    return content;
 }
 
 @end

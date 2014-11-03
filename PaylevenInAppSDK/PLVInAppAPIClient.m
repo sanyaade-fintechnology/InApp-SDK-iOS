@@ -213,7 +213,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         
         for(PLVPaymentInstrument* baseType in piArray) {
             
-            NSString* desc = [baseType piDescription];
+            NSDictionary* desc = [baseType piDictDescription];
             
             if (desc != Nil) {
                 [piDescs addObject:desc];

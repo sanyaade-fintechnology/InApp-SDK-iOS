@@ -13,32 +13,30 @@
 + (NSString*) piTypeForPLVPIType:(PLVPIType)type;
 + (instancetype) serializeWithDict:(NSDictionary*)dict;
 
-
-- (NSString*) getJSONDescription:(NSMutableDictionary*)content;
-- (NSString*) piDescription;
+- (NSDictionary*) piDictDescription;
 
 @end
 
 @interface PLVPayInstrumentCC (Serialization)
 
-- (NSString*) piDescription;
+
 
 @end
 
 @interface PLVPayInstrumentDD (Serialization)
 
-- (NSString*) piDescription;
+
 
 @end
 
 @interface PLVPayInstrumentSEPA (Serialization)
 
-- (NSString*) piDescription;
+
 
 @end
 
 @interface PLVPayInstrumentPAYPAL (Serialization)
 
-- (NSString*) piDescription;
+
 
 @end

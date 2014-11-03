@@ -35,19 +35,23 @@
             
             PLVPayInstrumentCC* ccCard = [[PLVPayInstrumentCC alloc] init];
             
-            ccCard.pan = @"1234567899";
-            ccCard.ccv = @"123";
+            
+            ccCard.pan = [NSString stringWithFormat:@"%@%i%i",@"CCard",arc4random(),arc4random()];
             ccCard.expiryMonth = @"10";
             ccCard.expiryYear = @"16";
             
-//            [[PLVInAppClient sharedInstance] addPaymentInstruments:@[ccCard] forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) { }];
+            [[PLVInAppClient sharedInstance] addPaymentInstruments:@[ccCard] forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
             
+                [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
+                    
+                    
+                    
+                }];
             
-            [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
-                
-                
-                
             }];
+            
+            
+
             
         }
        
