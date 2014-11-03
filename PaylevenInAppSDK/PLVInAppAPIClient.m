@@ -12,6 +12,7 @@
 #import "PLVServerCertificate.h"
 #import "PLVServerTrustValidator.h"
 #import "PLVInAppSDKConstants.h"
+#import "PLVInAppClientTypes+Serialization.h"
 #import <CommonCrypto/CommonCrypto.h>
 
 #define useLocalEndpoint 1
@@ -33,7 +34,7 @@ typedef enum : NSUInteger {
 
 
 static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/userToken";
-static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstruments";
+static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentsInstruments";
 static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
 
 
@@ -201,9 +202,28 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-- (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) addPaymentInstruments:(NSArray*)piArray forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piArray,apiParameterKeyAddPIs,nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    
+    if(piArray != Nil && piArray.count > 0) {
+        
+        NSMutableArray* piDescs = [NSMutableArray new];
+        
+        for(PLVPaymentInstrument* baseType in piArray) {
+            
+            NSString* desc = [baseType piDescription];
+            
+            if (desc != Nil) {
+                [piDescs addObject:desc];
+            }
+
+        }
+        
+        [parameters setObject:piDescs forKey:apiParameterKeyAddPIs];
+        
+    }
     
     //add HMAC
     
@@ -227,7 +247,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"Response from UserToken: %@",response);
+        SDLog(@"addPaymentInstruments: %@",response);
         completionHandler(response, error);
     }];
     
@@ -260,7 +280,31 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         SDLog(@"Response from listPaymentInstrumentsForUserToken: %@",response);
-        completionHandler(response, error);
+        
+        NSMutableDictionary* updatedResponseDict = [NSMutableDictionary dictionaryWithDictionary:response];
+        
+        if ([response objectForKey:apiParameterKeyAddPIs]) {
+            
+            NSArray* piArray = [response objectForKey:apiParameterKeyAddPIs];
+            
+            NSMutableArray* serializedPI = [NSMutableArray new];
+            // serialize PI
+            
+            for (NSDictionary* piDict in piArray) {
+                
+                PLVPaymentInstrument* pi = [PLVPaymentInstrument serializeWithDict:piDict];
+                
+                if (pi != Nil) {
+                    [serializedPI addObject:pi];
+                }
+                
+            }
+            
+            // replace JSON Array with object Array
+            [updatedResponseDict setObject:serializedPI forKey:apiParameterKeyAddPIs];
+        }
+    
+        completionHandler((NSDictionary*)updatedResponseDict, error);
     }];
 }
 
@@ -290,7 +334,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"Response from UserToken: %@",response);
+        SDLog(@"updatePaymentInstrumentsOrder: %@",response);
         completionHandler(response, error);
     }];
     
@@ -331,7 +375,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
-    
         if (error != nil) {
             
             // Connection Error case

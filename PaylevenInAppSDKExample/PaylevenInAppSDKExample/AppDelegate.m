@@ -26,7 +26,6 @@
 //    NSString* apiKey = @"nAj6Rensh2Ew3Oc4Ic2gig1F";
     NSString* apiKey = @"4840bbc6429dacd56bfa98390ddf43";
     
-    
     [[PLVInAppClient sharedInstance] registerWithAPIKey:apiKey];
 
     [[PLVInAppClient sharedInstance] getUserToken:@"test@test.de" withCompletion:^(NSDictionary* response, NSError* error) {
@@ -34,9 +33,19 @@
         if ([response objectForKey:@"userToken"]) {
             NSString* userToken = [response objectForKey:@"userToken"];
             
+            PLVPayInstrumentCC* ccCard = [[PLVPayInstrumentCC alloc] init];
+            
+            ccCard.pan = @"1234567899";
+            ccCard.ccv = @"123";
+            ccCard.expiryMonth = @"10";
+            ccCard.expiryYear = @"16";
+            
+//            [[PLVInAppClient sharedInstance] addPaymentInstruments:@[ccCard] forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) { }];
+            
+            
             [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
                 
-                NSLog(@"response %@",response);
+                
                 
             }];
             
@@ -44,9 +53,8 @@
        
     }];
     
-    PLVPayInstrumentCC* ccCard = [[PLVPayInstrumentCC alloc] init];
+
     
-    ccCard.pan = @"1234567899";
     
     
     

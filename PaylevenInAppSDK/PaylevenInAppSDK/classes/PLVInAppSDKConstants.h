@@ -17,7 +17,26 @@
 #define SDLog(...) do { } while (0)
 #endif
 
-extern NSString * const kGeneralServiceLocationURL;
 
+#define piTypeKey               @"type"
+
+#define ccExpiryMonthKey        @"expiryMonth"
+#define ccExpiryYearKey         @"expiryYear"
+#define ccPanKey                @"pan"
+#define ccCCVKey                @"ccv"
+#define ccBrandKey              @"cardBrand"
+
+#define ddExpiryMonthKey        @"expiryMonth"
+#define ddExpiryYearKey         @"expiryYear"
+#define ddRoutingNumberKey      @"routingNo"
+#define ddAccountNumberKey      @"accountNo"
+
+#define sepaExpiryMonthKey      @"expiryMonth"
+#define sepaExpiryYearKey       @"expiryYear"
+#define sepaIBANNumberKey       @"iban"
+#define sepaBICNumberKey        @"bic"
+
+#define paypalAuthTokenKey      @"authToken"
+#define paypalEmailAdressKey    @"email"
 
 extern NSString * const kInAppSDKErrorDomain;

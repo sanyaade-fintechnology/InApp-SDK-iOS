@@ -6,19 +6,18 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
-
 @import Foundation;
 
 #import "PLVInAppClientTypes.h"
+#import "PLVInAppSDKConstants.h"
 
-@interface PLVPITypeBase()
+@interface PLVPaymentInstrument()
 
 @property (readwrite) PLVPIType type;
-@property (readwrite) NSString* description;
 
 @end
 
-@implementation PLVPITypeBase
+@implementation PLVPaymentInstrument
 
 
 - (instancetype)init
@@ -39,7 +38,7 @@
 {
     self = [super init];
     if (self) {
-        super.type = PLVPITypeCC;
+        self.type = PLVPITypeCC;
     }
     return self;
 }
@@ -53,7 +52,7 @@
 {
     self = [super init];
     if (self) {
-        super.type = PLVPITypeDD;
+        self.type = PLVPITypeDD;
     }
     return self;
 }
@@ -67,7 +66,7 @@
 {
     self = [super init];
     if (self) {
-        super.type = PLVPITypeSEPA;
+        self.type = PLVPITypeSEPA;
     }
     return self;
 }
@@ -81,11 +80,13 @@
 {
     self = [super init];
     if (self) {
-        super.type = PLVPITypePAYPAL;
+        self.type = PLVPITypePAYPAL;
     }
     return self;
 }
 
 @end
+
+
 
 

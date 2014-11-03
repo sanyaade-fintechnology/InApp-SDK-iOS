@@ -52,7 +52,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param userToken         userToken
  *  @param completionHandler completion block
  */
-- (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) addPaymentInstruments:(NSArray*)piArray forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 /**

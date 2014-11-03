@@ -63,9 +63,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
 }
 
-- (void) addPaymentInstruments:(NSArray*)piArray toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) addPaymentInstruments:(NSArray*)piArray forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    
+    [self.inAppAPIClient addPaymentInstruments:piArray forUserToken:userToken withCompletion:completionHandler];
 }
 
 - (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {

@@ -26,15 +26,14 @@ typedef enum : NSUInteger {
 } PLVPICCType;
 
 
-@interface PLVPITypeBase : NSObject
+@interface PLVPaymentInstrument : NSObject
 
 @property (strong, readonly) NSString* identifier;
 @property (readonly) PLVPIType type;
-@property (readonly) NSString* description;
 
 @end
 
-@interface PLVPayInstrumentCC : PLVPITypeBase
+@interface PLVPayInstrumentCC : PLVPaymentInstrument
 
 @property (strong) NSString* pan;
 @property (readonly,nonatomic) PLVPICCType cardBrand;
@@ -44,24 +43,24 @@ typedef enum : NSUInteger {
 
 @end
 
-@interface PLVPayInstrumentDD : PLVPITypeBase
+@interface PLVPayInstrumentDD : PLVPaymentInstrument
 
-@property (strong) NSString* accountNo;
-@property (strong) NSString* routingNo;
+@property (strong) NSString* accountNumber;
+@property (strong) NSString* routingNumber;
 @property (strong) NSString* expiryMonth;
 @property (strong) NSString* expiryYear;
 @end
 
-@interface PLVPayInstrumentSEPA : PLVPITypeBase
+@interface PLVPayInstrumentSEPA : PLVPaymentInstrument
 
-@property (strong) NSString* IBAN;
-@property (strong) NSString* BIC;
+@property (strong) NSString* iban;
+@property (strong) NSString* bic;
 @property (strong) NSString* expiryMonth;
 @property (strong) NSString* expiryYear;
 
 @end
 
-@interface PLVPayInstrumentPAYPAL : PLVPITypeBase
+@interface PLVPayInstrumentPAYPAL : PLVPaymentInstrument
 
 @property (strong) NSString* emailAddress;
 @property (strong) NSString* oAuthToken;
