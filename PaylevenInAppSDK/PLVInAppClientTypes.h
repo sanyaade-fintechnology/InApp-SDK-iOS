@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
-typedef enum : NSUInteger {
-    PLVPITypeUnknon = 0,
-    PLVPITypeCC,
-    PLVPITypeDD,
-    PLVPITypeSEPA,
-    PLVPITypePAYPAL
-} PLVPIType;
 
+#define     PLVPITypeUnknown    @"PLVPITypeUnknown"
+#define     PLVPITypeCC         @"CC"
+#define     PLVPITypeDD         @"DD"
+#define     PLVPITypeSEPA       @"SEPA"
+#define     PLVPITypePAYPAL     @"PAYPAL"
+
+typedef NSString PLVPIType;
 
 typedef enum : NSUInteger {
     PLVPICCTypeUnknown = 0,
@@ -28,8 +28,8 @@ typedef enum : NSUInteger {
 
 @interface PLVPaymentInstrument : NSObject
 
-@property (strong, readonly) NSString* identifier;
-@property (readonly) PLVPIType type;
+@property (strong) NSString* identifier;
+@property (strong) NSString* type;
 
 @end
 

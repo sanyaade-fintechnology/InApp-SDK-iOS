@@ -23,7 +23,7 @@
 #define apiParameterKeyAddPIs @"paymentInstruments"
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"version"
-#define apiParameterKeyPayInstruments @"payInstruments"
+
 
 typedef enum : NSUInteger {
     apiClientStateJustStartet = 0,
@@ -34,8 +34,10 @@ typedef enum : NSUInteger {
 
 
 static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/userToken";
-static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentsInstruments";
+static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstruments";
 static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
+static NSString * const PLVInAppClientAPISetPiTokenListOrderEndPoint = @"/setPaymentInstrumentsOrder";
+static NSString * const PLVInAppClientAPIDisablePiTokenEndPoint = @"/disablePaymentInstruments";
 
 
 #if useLocalEndpoint
@@ -51,7 +53,7 @@ static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/stag
 
 #else
 
-/** macMini in office endpoint. */
+/** staging endpoint */
 
 static NSString * const PLVInAppClientAPIHost = @"https://apiproxy-staging.payleven.de";
 
@@ -206,7 +208,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
     
-    
     if(piArray != Nil && piArray.count > 0) {
         
         NSMutableArray* piDescs = [NSMutableArray new];
@@ -218,11 +219,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             if (desc != Nil) {
                 [piDescs addObject:desc];
             }
-
         }
-        
         [parameters setObject:piDescs forKey:apiParameterKeyAddPIs];
-        
     }
     
     //add HMAC
@@ -339,6 +337,57 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     }];
     
 }
+
+- (void) disablePaymentInstruments:(NSArray*)piArray forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    if(piArray != Nil && piArray.count > 0) {
+        
+        NSMutableArray* piDescs = [NSMutableArray new];
+        
+        for(PLVPaymentInstrument* baseType in piArray) {
+            
+            NSString* piID = baseType.identifier;
+            
+            if (piID != Nil) {
+                [piDescs addObject:piID];
+            }
+        }
+        [parameters setObject:piDescs forKey:apiParameterKeyAddPIs];
+    }
+    
+    //add HMAC
+    
+    [self addHmacForParameterDict:parameters];
+    
+    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIDisablePiTokenEndPoint];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData;
+    
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        SDLog(@"updatePaymentInstrumentsOrder: %@",response);
+        completionHandler(response, error);
+    }];
+    
+    
+    
+    
+}
+
 
 
 #pragma mark -

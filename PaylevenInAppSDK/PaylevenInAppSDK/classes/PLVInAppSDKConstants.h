@@ -17,7 +17,7 @@
 #define SDLog(...) do { } while (0)
 #endif
 
-
+#define piIdentifierTypeKey       @"identifier"
 #define piTypeKey               @"type"
 
 #define ccExpiryMonthKey        @"expiryMonth"

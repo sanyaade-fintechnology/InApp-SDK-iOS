@@ -13,18 +13,19 @@
 
 @interface PLVPaymentInstrument()
 
-@property (readwrite) PLVPIType type;
+@property (readwrite) NSString* sortIndex;
 
 @end
 
 @implementation PLVPaymentInstrument
 
+@synthesize type = _type;
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        _type = PLVPITypeUnknon;
+        _type = PLVPICCTypeUnknown;
     }
     return self;
 }

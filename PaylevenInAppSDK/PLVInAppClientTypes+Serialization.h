@@ -10,10 +10,9 @@
 
 @interface PLVPaymentInstrument (Serialization)
 
-+ (NSString*) piTypeForPLVPIType:(PLVPIType)type;
 + (instancetype) serializeWithDict:(NSDictionary*)dict;
 
-- (NSDictionary*) piDictDescription;
+- (NSMutableDictionary*) piDictDescription;
 
 @end
 

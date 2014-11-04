@@ -22,16 +22,16 @@
         
         PLVPaymentInstrument* newPI;
         
-        if ([piType isEqualToString:[PLVPaymentInstrument piTypeForPLVPIType:PLVPITypeCC]]) {
+        if ([piType isEqualToString:PLVPITypeCC]) {
             newPI = [[PLVPayInstrumentCC alloc] init];
         }
-        if ([piType isEqualToString:[PLVPaymentInstrument piTypeForPLVPIType:PLVPITypeDD]]) {
+        if ([piType isEqualToString:PLVPITypeDD]) {
             newPI = [[PLVPayInstrumentDD alloc] init];
         }
-        if ([piType isEqualToString:[PLVPaymentInstrument piTypeForPLVPIType:PLVPITypeSEPA]]) {
+        if ([piType isEqualToString:PLVPITypeSEPA]) {
             newPI = [[PLVPayInstrumentSEPA alloc] init];
         }
-        if ([piType isEqualToString:[PLVPaymentInstrument piTypeForPLVPIType:PLVPITypePAYPAL]]) {
+        if ([piType isEqualToString:PLVPITypePAYPAL]) {
             newPI = [[PLVPayInstrumentPAYPAL alloc] init];
         }
         
@@ -47,7 +47,7 @@
 
 - (NSString*) getJSONDescription:(NSMutableDictionary*)content {
     
-    [content setObject:[PLVPaymentInstrument piTypeForPLVPIType:self.type] forKey:piTypeKey];
+    [content setObject:self.type forKey:piTypeKey];
     
     if (content == Nil || content.count == 0) {
         return @"{}";
@@ -61,9 +61,17 @@
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
-- (NSDictionary*) piDictDescription {
+- (NSMutableDictionary*) piDictDescription {
     
-    return @{};
+    NSMutableDictionary* content = [NSMutableDictionary new];
+    
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
+    [content setObject:self.type forKey:piTypeKey];
+
+    return content;
     
 }
 
@@ -71,38 +79,13 @@
     
     for (NSString* key in contentDict.allKeys) {
         
-        [self setValue:[contentDict objectForKey:key] forKey:key];
+        id objectForKey = [contentDict objectForKey:key];
+        
+        if (objectForKey != Nil) {
+            [self setValue:objectForKey forKey:key];
+        }
     }
     
-}
-
-- (void) setValue:(id)value forKey:(NSString *)key {
-    
-    if ([self respondsToSelector:@selector(key)]) {
-        [self performSelector:@selector(key) withObject:value];
-    } else {
-        SDLog(@"PIType: %@  try to insert unknow value: %@ for key: %@",[PLVPaymentInstrument piTypeForPLVPIType:self.type],value,key);
-    }
-}
-
-+ (NSString*) piTypeForPLVPIType:(PLVPIType)type {
-    
-    switch (type) {
-        case PLVPITypeCC:
-            return @"CC";
-            break;
-        case PLVPITypeDD:
-            return @"DD";
-            break;
-        case PLVPITypeSEPA:
-            return @"SEPA";
-            break;
-        case PLVPITypePAYPAL:
-            return @"PAYPAL";
-            break;
-        default:
-            return @"UNKOWN";
-    }
 }
 
 @end
@@ -112,7 +95,7 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [NSMutableDictionary new];
+    NSMutableDictionary* content = [super piDictDescription];
     
     if (self.pan != Nil) {
         [content setObject:self.pan forKey:ccPanKey];
@@ -133,14 +116,6 @@
     return content;
 }
 
-
-- (void) initValuesWithDict:(NSDictionary*)dict {
-    
-    for (NSString* key in dict.allKeys) {
-        [self setValue:[dict objectForKey:key] forKey:key];
-    }
-}
-
 @end
 
 
@@ -148,7 +123,7 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [NSMutableDictionary new];
+    NSMutableDictionary* content = [super piDictDescription];
     
     if (self.expiryMonth != Nil) {
         [content setObject:self.expiryMonth forKey:ddExpiryMonthKey];
@@ -177,7 +152,7 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [NSMutableDictionary new];
+    NSMutableDictionary* content = [super piDictDescription];
     
     if (self.expiryMonth != Nil) {
         [content setObject:self.expiryMonth forKey:sepaExpiryMonthKey];
@@ -205,7 +180,7 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [NSMutableDictionary new];
+    NSMutableDictionary* content = [super piDictDescription];
     
     if (self.oAuthToken != Nil) {
         [content setObject:self.oAuthToken forKey:paypalAuthTokenKey];
