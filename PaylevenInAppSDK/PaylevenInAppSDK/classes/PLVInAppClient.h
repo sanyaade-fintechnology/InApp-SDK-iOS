@@ -75,7 +75,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param userToken         userToken
  *  @param completionHandler completion block
  */
-- (void) updatePaymentInstrumentsOrder:(NSOrderedSet*)piOrder toUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrder forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 @end
 

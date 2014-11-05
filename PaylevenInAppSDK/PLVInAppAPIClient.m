@@ -198,8 +198,10 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"Response from UserToken: %@",response);
-        completionHandler(response, error);
+        if (completionHandler != Nil) {
+            SDLog(@"Response from UserToken: %@",response);
+            completionHandler(response, error);
+        }
     }];
     
 }
@@ -245,8 +247,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"addPaymentInstruments: %@",response);
-        completionHandler(response, error);
+        if (completionHandler != Nil) {
+            
+            SDLog(@"addPaymentInstruments: %@",response);
+            completionHandler(response, error);
+            
+        }
     }];
     
 }
@@ -277,38 +283,69 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"Response from listPaymentInstrumentsForUserToken: %@",response);
-        
-        NSMutableDictionary* updatedResponseDict = [NSMutableDictionary dictionaryWithDictionary:response];
-        
-        if ([response objectForKey:apiParameterKeyAddPIs]) {
+        if (completionHandler != Nil) {
             
-            NSArray* piArray = [response objectForKey:apiParameterKeyAddPIs];
+            SDLog(@"Response from listPaymentInstrumentsForUserToken: %@",response);
             
-            NSMutableArray* serializedPI = [NSMutableArray new];
-            // serialize PI
+            NSMutableDictionary* updatedResponseDict = [NSMutableDictionary dictionaryWithDictionary:response];
             
-            for (NSDictionary* piDict in piArray) {
+            if ([response objectForKey:apiParameterKeyAddPIs]) {
                 
-                PLVPaymentInstrument* pi = [PLVPaymentInstrument serializeWithDict:piDict];
+                NSArray* piArray = [response objectForKey:apiParameterKeyAddPIs];
                 
-                if (pi != Nil) {
-                    [serializedPI addObject:pi];
+                NSMutableArray* serializedPI = [NSMutableArray new];
+                // serialize PI
+                
+                for (NSDictionary* piDict in piArray) {
+                    
+                    PLVPaymentInstrument* pi = [PLVPaymentInstrument serializeWithDict:piDict];
+                    
+                    if (pi != Nil) {
+                        [serializedPI addObject:pi];
+                    }
+                    
                 }
                 
+                // replace JSON Array with object Array
+                [updatedResponseDict setObject:serializedPI forKey:apiParameterKeyAddPIs];
             }
+        
+            completionHandler((NSDictionary*)updatedResponseDict, error);
             
-            // replace JSON Array with object Array
-            [updatedResponseDict setObject:serializedPI forKey:apiParameterKeyAddPIs];
         }
-    
-        completionHandler((NSDictionary*)updatedResponseDict, error);
     }];
 }
 
-- (void) updatePaymentInstrumentsOrder:(NSOrderedSet*)piOrder toUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderSet forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    if(piOrderSet != Nil && piOrderSet.count > 0) {
+        
+        NSMutableArray* orderedPIArray = [NSMutableArray new];
+        
+        [piOrderSet enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+            
+            PLVPaymentInstrument* baseType = (PLVPaymentInstrument*) obj;
+            
+            if ([baseType isKindOfClass:[PLVPaymentInstrument class]]) {
+                
+                NSMutableDictionary* newOrderedItem = [NSMutableDictionary new];
+                
+                NSString* piID = [NSString stringWithString:baseType.identifier];
+                
+                if (piID != Nil) {
+                
+                    [newOrderedItem setObject:piID forKey:@"identifier"];
+                    [newOrderedItem setObject:[NSString stringWithFormat:@"%lu",(unsigned long)idx] forKey:@"sortIndex"];
+                    [orderedPIArray addObject:newOrderedItem];
+                }
+            }
+
+        }];
+        
+        [parameters setObject:orderedPIArray forKey:apiParameterKeyAddPIs];
+    }
     
     //add HMAC
     
@@ -316,7 +353,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
     
-    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIListPiTokenEndPoint];
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPISetPiTokenListOrderEndPoint];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = @"POST";
@@ -332,8 +369,10 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"updatePaymentInstrumentsOrder: %@",response);
-        completionHandler(response, error);
+        if (completionHandler != Nil) {
+            SDLog(@"updatePaymentInstrumentsOrder: %@",response);
+            completionHandler(response, error);
+        }
     }];
     
 }
@@ -379,13 +418,11 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        SDLog(@"updatePaymentInstrumentsOrder: %@",response);
-        completionHandler(response, error);
+        if (completionHandler != Nil) {
+            SDLog(@"updatePaymentInstrumentsOrder: %@",response);
+            completionHandler(response, error);
+        }
     }];
-    
-    
-    
-    
 }
 
 
