@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootViewController : UIViewController <UIPageViewControllerDelegate>
+@interface RootViewController : UIViewController <UIActionSheetDelegate>
 
-@property (strong, nonatomic) UIPageViewController *pageViewController;
+@property (weak, nonatomic) IBOutlet UILabel *bundleIDLabel;
+@property (weak, nonatomic) IBOutlet UITextField *apiKeyTextField;
+@property (weak, nonatomic) IBOutlet UIButton *registerAPIKeyButton;
 
 @end
 

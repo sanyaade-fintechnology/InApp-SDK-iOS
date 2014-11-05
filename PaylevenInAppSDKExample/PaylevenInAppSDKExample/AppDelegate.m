@@ -26,58 +26,58 @@
 //    NSString* apiKey = @"nAj6Rensh2Ew3Oc4Ic2gig1F";
     NSString* apiKey = @"4840bbc6429dacd56bfa98390ddf43";
     
-    [[PLVInAppClient sharedInstance] registerWithAPIKey:apiKey];
+    
 
-    [[PLVInAppClient sharedInstance] getUserToken:@"test@test.de" withCompletion:^(NSDictionary* response, NSError* error) {
-        
-        if ([response objectForKey:@"userToken"]) {
-            NSString* userToken = [response objectForKey:@"userToken"];
-            
-            PLVPayInstrumentCC* ccCard = [[PLVPayInstrumentCC alloc] init];
-        
-            ccCard.pan = [NSString stringWithFormat:@"%@%i%i",@"CCard",arc4random(),arc4random()];
-            ccCard.expiryMonth = @"10";
-            ccCard.expiryYear = @"16";
-            
-            [[PLVInAppClient sharedInstance] addPaymentInstruments:@[ccCard] forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
-                
-            
-                [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
-                    
-                    if ([response objectForKey:@"paymentInstruments"]) {
-
-                        NSMutableArray* pi = [NSMutableArray arrayWithArray:[response objectForKey:@"paymentInstruments"]];
-                        
-                        NSUInteger count = [pi count];
-                        
-                        if (count > 1) {
-                        
-                            for (NSUInteger i = 0; i < count; ++i) {
-                                NSInteger remainingCount = count - i;
-                                NSInteger exchangeIndex = i + arc4random_uniform((u_int32_t )remainingCount);
-                                [pi exchangeObjectAtIndex:i withObjectAtIndex:exchangeIndex];
-                            }
-
-                            NSOrderedSet* orderPISet = [[NSOrderedSet alloc] initWithArray:pi];
-                            
-                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                
-                                [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:orderPISet forUserToken:userToken withCompletion:Nil];
-                                
-                                
-                            });
-                            
-                        }
-
-                    }
-
-                }];
-            
-            }];
-
-        }
-       
-    }];
+//    [[PLVInAppClient sharedInstance] getUserToken:@"test@test.de" withCompletion:^(NSDictionary* response, NSError* error) {
+//        
+//        if ([response objectForKey:@"userToken"]) {
+//            NSString* userToken = [response objectForKey:@"userToken"];
+//            
+//            PLVPayInstrumentCC* ccCard = [[PLVPayInstrumentCC alloc] init];
+//        
+//            ccCard.pan = [NSString stringWithFormat:@"%@%i%i",@"CCard",arc4random(),arc4random()];
+//            ccCard.expiryMonth = @"10";
+//            ccCard.expiryYear = @"16";
+//            
+//            [[PLVInAppClient sharedInstance] addPaymentInstruments:@[ccCard] forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
+//                
+//            
+//                [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
+//                    
+//                    if ([response objectForKey:@"paymentInstruments"]) {
+//
+//                        NSMutableArray* pi = [NSMutableArray arrayWithArray:[response objectForKey:@"paymentInstruments"]];
+//                        
+//                        NSUInteger count = [pi count];
+//                        
+//                        if (count > 1) {
+//                        
+//                            for (NSUInteger i = 0; i < count; ++i) {
+//                                NSInteger remainingCount = count - i;
+//                                NSInteger exchangeIndex = i + arc4random_uniform((u_int32_t )remainingCount);
+//                                [pi exchangeObjectAtIndex:i withObjectAtIndex:exchangeIndex];
+//                            }
+//
+//                            NSOrderedSet* orderPISet = [[NSOrderedSet alloc] initWithArray:pi];
+//                            
+//                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                                
+//                                [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:orderPISet forUserToken:userToken withCompletion:Nil];
+//                                
+//                                
+//                            });
+//                            
+//                        }
+//
+//                    }
+//
+//                }];
+//            
+//            }];
+//
+//        }
+//       
+//    }];
     
 
     
