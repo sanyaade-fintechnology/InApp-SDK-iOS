@@ -186,12 +186,15 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="rbL-3L-OBN"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="ih1-q6-12J"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <outlet property="delegate" destination="J1S-1x-cPw" id="hzz-oN-CSV"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yxm-zU-693" userLabel="SelectEmailButton">
                                 <rect key="frame" x="82" y="71" width="461" height="30"/>
@@ -211,6 +214,9 @@
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="editEmailField:" destination="J1S-1x-cPw" eventType="touchUpInside" id="fWd-oc-p3b"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3yk-qI-rfG">
                                 <rect key="frame" x="16" y="117" width="568" height="40"/>
@@ -237,11 +243,18 @@
                                     <action selector="getUserTokenAction:" destination="J1S-1x-cPw" eventType="touchUpInside" id="ia8-cW-vOA"/>
                                 </connections>
                             </button>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLo-rV-VHd" userLabel="subPlan">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2MG-j1-Lu6" userLabel="line">
+                                <rect key="frame" x="16" y="164" width="568" height="2"/>
+                                <color key="backgroundColor" red="0.36830480929999998" green="0.67824598199999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="esC-Wh-54v"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLo-rV-VHd" userLabel="subPlan">
                                 <rect key="frame" x="0.0" y="167" width="600" height="433"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="userToken:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H19-p3-CmP" userLabel="UserToken">
-                                        <rect key="frame" x="16" y="10" width="568" height="37"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="userToken:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H19-p3-CmP" userLabel="UserToken">
+                                        <rect key="frame" x="81" y="10" width="503" height="37"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="Rbd-5b-EyI"/>
                                             <constraint firstAttribute="height" constant="21" id="Ssw-X9-yn8"/>
@@ -262,12 +275,96 @@
                                             </mask>
                                         </variation>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="userToken:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3NQ-d0-idL" userLabel="UserToken">
+                                        <rect key="frame" x="16" y="10" width="66" height="37"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="58" id="0al-va-GU0"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="9OO-vb-GVo"/>
+                                            <constraint firstAttribute="width" constant="66" id="GEe-7n-BhL"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="GPV-2d-GZs"/>
+                                            <constraint firstAttribute="height" constant="21" id="O1V-u3-K63"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="YAP-vH-li4"/>
+                                            <constraint firstAttribute="height" constant="37" id="tRg-M6-Mf1"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="48" id="vdN-EX-KRb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="0al-va-GU0"/>
+                                                <exclude reference="9OO-vb-GVo"/>
+                                                <exclude reference="O1V-u3-K63"/>
+                                                <exclude reference="YAP-vH-li4"/>
+                                                <exclude reference="vdN-EX-KRb"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4c-CG-s8h">
+                                        <rect key="frame" x="16" y="64" width="568" height="40"/>
+                                        <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="TEu-xs-75g"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ZxJ-u3-ejQ"/>
+                                            <constraint firstAttribute="height" constant="40" id="fo1-J6-KV7"/>
+                                            <constraint firstAttribute="width" constant="568" id="z42-il-EaD"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="listPaymentInstruments">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="1" green="0.049062073230000003" blue="0.072643339629999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="TEu-xs-75g"/>
+                                                <exclude reference="ZxJ-u3-ejQ"/>
+                                                <exclude reference="z42-il-EaD"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="listPIs:" destination="J1S-1x-cPw" eventType="touchUpInside" id="ekp-oL-rcK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzL-97-pre">
+                                        <rect key="frame" x="16" y="120" width="568" height="40"/>
+                                        <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="DGB-Sh-nqU"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="N5r-Il-ZUa"/>
+                                            <constraint firstAttribute="width" constant="568" id="UFG-rn-3vl"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="YJK-eh-q9d"/>
+                                            <constraint firstAttribute="height" constant="40" id="muP-a7-bKa"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="addPaymentInstruments">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="1" green="0.049062073230000003" blue="0.072643339629999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="UFG-rn-3vl"/>
+                                            </mask>
+                                        </variation>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="gzL-97-pre" secondAttribute="trailing" constant="16" id="2N3-ve-VZM"/>
                                     <constraint firstItem="H19-p3-CmP" firstAttribute="top" secondItem="MLo-rV-VHd" secondAttribute="top" constant="10" id="2zH-cR-859"/>
+                                    <constraint firstItem="3NQ-d0-idL" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="16" id="DiL-06-Alq"/>
+                                    <constraint firstItem="L4c-CG-s8h" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="16" id="FHo-TI-8W7"/>
+                                    <constraint firstItem="L4c-CG-s8h" firstAttribute="top" secondItem="H19-p3-CmP" secondAttribute="bottom" constant="17" id="J8j-9O-eaN"/>
+                                    <constraint firstItem="gzL-97-pre" firstAttribute="top" secondItem="L4c-CG-s8h" secondAttribute="bottom" constant="16" id="XS2-Ql-V9g"/>
                                     <constraint firstAttribute="trailing" secondItem="H19-p3-CmP" secondAttribute="trailing" constant="16" id="ags-LT-en7"/>
-                                    <constraint firstItem="H19-p3-CmP" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="16" id="jUc-nT-BsB"/>
+                                    <constraint firstAttribute="trailing" secondItem="L4c-CG-s8h" secondAttribute="trailing" constant="16" id="bqm-iS-elH"/>
+                                    <constraint firstItem="gzL-97-pre" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="16" id="dIw-bb-IK2"/>
+                                    <constraint firstItem="H19-p3-CmP" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="81" id="jUc-nT-BsB"/>
+                                    <constraint firstItem="3NQ-d0-idL" firstAttribute="top" secondItem="MLo-rV-VHd" secondAttribute="top" constant="10" id="vcM-TZ-KRu"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ue8-B5-mGe" userLabel="activityLayer">
@@ -291,22 +388,26 @@
                         <color key="backgroundColor" red="1" green="0.99563515189999996" blue="0.9825405478" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="vTn-33-N8Z" firstAttribute="width" secondItem="yxm-zU-693" secondAttribute="width" constant="9" id="2P9-2K-CCw"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="2MG-j1-Lu6" secondAttribute="bottom" constant="150" id="2ZM-7c-MbV"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ue8-B5-mGe" secondAttribute="trailing" constant="-16" id="2zA-1u-jqv"/>
                             <constraint firstItem="MLo-rV-VHd" firstAttribute="leading" secondItem="Tu2-tP-X8S" secondAttribute="leadingMargin" constant="-16" id="4mz-Dy-uvU"/>
                             <constraint firstItem="3yk-qI-rfG" firstAttribute="top" secondItem="vTn-33-N8Z" secondAttribute="bottom" constant="16" id="Bqa-2V-un5"/>
                             <constraint firstItem="MLo-rV-VHd" firstAttribute="top" secondItem="3yk-qI-rfG" secondAttribute="bottom" constant="8" id="C3y-Jl-GMi"/>
                             <constraint firstItem="vTn-33-N8Z" firstAttribute="leading" secondItem="Ljj-lB-OER" secondAttribute="trailing" constant="-1" id="CxT-xQ-21L"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="2MG-j1-Lu6" secondAttribute="trailing" id="DQu-nl-uAy"/>
                             <constraint firstItem="vTn-33-N8Z" firstAttribute="height" secondItem="yxm-zU-693" secondAttribute="height" id="EHu-G1-a2M"/>
                             <constraint firstItem="Ue8-B5-mGe" firstAttribute="top" secondItem="Tu2-tP-X8S" secondAttribute="topMargin" id="GOX-c1-X0W"/>
                             <constraint firstItem="3yk-qI-rfG" firstAttribute="leading" secondItem="Tu2-tP-X8S" secondAttribute="leadingMargin" id="HrB-3h-ORE"/>
                             <constraint firstItem="Ufj-7c-exz" firstAttribute="top" secondItem="MLo-rV-VHd" secondAttribute="bottom" id="Iv8-nf-3ZV"/>
                             <constraint firstItem="aoU-b5-aYv" firstAttribute="leading" secondItem="Tu2-tP-X8S" secondAttribute="leadingMargin" constant="-16" id="KAk-DG-T8o"/>
                             <constraint firstItem="3yk-qI-rfG" firstAttribute="trailing" secondItem="Tu2-tP-X8S" secondAttribute="trailingMargin" id="M4N-1M-GJc"/>
+                            <constraint firstItem="2MG-j1-Lu6" firstAttribute="leading" secondItem="Tu2-tP-X8S" secondAttribute="leadingMargin" id="PYZ-iF-nS6"/>
                             <constraint firstItem="vTn-33-N8Z" firstAttribute="top" secondItem="yxm-zU-693" secondAttribute="top" id="Qcy-pA-z4O"/>
                             <constraint firstItem="vTn-33-N8Z" firstAttribute="top" secondItem="aoU-b5-aYv" secondAttribute="bottom" constant="27" id="RRk-YK-Vg8"/>
                             <constraint firstItem="Ufj-7c-exz" firstAttribute="top" secondItem="Ue8-B5-mGe" secondAttribute="bottom" id="Vtr-cb-zRT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dDt-DI-Wv0" secondAttribute="trailing" constant="1" id="bYa-UL-xbo"/>
                             <constraint firstItem="vTn-33-N8Z" firstAttribute="leading" secondItem="yxm-zU-693" secondAttribute="leading" constant="-9" id="cah-7f-bc2"/>
+                            <constraint firstItem="MLo-rV-VHd" firstAttribute="top" secondItem="2MG-j1-Lu6" secondAttribute="bottom" constant="1" id="ete-oT-FrJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MLo-rV-VHd" secondAttribute="trailing" constant="-16" id="h9a-EB-kxe"/>
                             <constraint firstItem="MLo-rV-VHd" firstAttribute="top" secondItem="3yk-qI-rfG" secondAttribute="bottom" constant="10" id="jAW-jN-fCF"/>
                             <constraint firstItem="Ue8-B5-mGe" firstAttribute="leading" secondItem="Tu2-tP-X8S" secondAttribute="leadingMargin" constant="-16" id="mII-vu-h3y"/>
@@ -318,14 +419,17 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="2ZM-7c-MbV"/>
                                 <exclude reference="C3y-Jl-GMi"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="activityPlane" destination="Ue8-B5-mGe" id="GCJ-Wf-7sK"/>
+                        <outlet property="addPIButton" destination="gzL-97-pre" id="byF-GT-frM"/>
                         <outlet property="emailTextField" destination="vTn-33-N8Z" id="z7p-Oq-WGG"/>
                         <outlet property="getUserTokenButton" destination="3yk-qI-rfG" id="VQr-b6-lIn"/>
+                        <outlet property="listPIButton" destination="L4c-CG-s8h" id="hVD-Vo-Xme"/>
                         <outlet property="subPlane" destination="MLo-rV-VHd" id="2eh-Ns-cfk"/>
                         <outlet property="userTokenLabel" destination="H19-p3-CmP" id="1Tb-e1-74O"/>
                     </connections>

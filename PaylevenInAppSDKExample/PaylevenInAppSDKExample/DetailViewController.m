@@ -16,6 +16,8 @@
 @property (weak) IBOutlet UILabel* apiKeyLabel;
 @property (weak) IBOutlet UITextField* emailTextField;
 @property (weak) IBOutlet UIButton* getUserTokenButton;
+@property (weak) IBOutlet UIButton* listPIButton;
+@property (weak) IBOutlet UIButton* addPIButton;
 @property (weak) IBOutlet UILabel* userTokenLabel;
 @property (weak) IBOutlet UIView* activityPlane;
 @property (weak) IBOutlet UIView* subPlane;
@@ -29,11 +31,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.getUserTokenButton.layer.cornerRadius = 10.f;
-    self.getUserTokenButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    self.getUserTokenButton.layer.borderWidth = 1.f;
+    
+    [self updateButtonDesign:self.getUserTokenButton];
+    [self updateButtonDesign:self.addPIButton];
+    [self updateButtonDesign:self.listPIButton];
+
+}
+
+- (void) updateButtonDesign:(UIButton*)button {
+    
+    button.layer.cornerRadius = 10.f;
+    button.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    button.layer.borderWidth = 1.f;
     
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -41,8 +53,6 @@
 }
 
 - (IBAction)unregisterAPI:(id)sender {
-    
-    
     
     [self.navigationController popToRootViewControllerAnimated:YES];
 
@@ -83,8 +93,18 @@
 
 - (IBAction)editEmailField:(id)sender {
     
+    [self.emailTextField becomeFirstResponder];
     
+    self.subPlane.hidden = TRUE;
+    self.userTokenLabel.text = @"";
+
+}
+
+-(BOOL) textFieldShouldReturn: (UITextField *) textField
+{
+    [textField resignFirstResponder];
     
+    return YES;
 }
 
 - (IBAction)getUserTokenAction:(id)sender {
@@ -93,10 +113,12 @@
     
     [[PLVInAppClient sharedInstance] getUserToken:self.emailTextField.text withCompletion:^(NSDictionary* result, NSError* error){
         
-        
         self.activityPlane.hidden = TRUE;
         
         if (error != Nil) {
+            
+            
+            
             
             NSString* errorMessage = error.localizedDescription;
             
@@ -104,10 +126,7 @@
                 errorMessage = [error.userInfo objectForKey:NSLocalizedDescriptionKey];
             }
             
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:self cancelButtonTitle:@"arghhh" otherButtonTitles:nil];
-            
-            [alertView show];
-            
+            [self displayAlertViewWithMessage:errorMessage];
             
             self.subPlane.hidden = TRUE;
             
@@ -123,7 +142,7 @@
                         
                         self.subPlane.hidden = FALSE;
                         
-                        self.userTokenLabel.text = [NSString stringWithFormat:@"UserToken: %@",[result objectForKey:@"userToken"]];
+                        self.userTokenLabel.text = [result objectForKey:@"userToken"];
                         
                     }
                 }
@@ -133,8 +152,42 @@
         
         
     }];
+}
+
+- (IBAction)listPIs:(id)sender {
     
+    self.activityPlane.hidden = FALSE;
     
+    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withCompletion:^(NSDictionary* result, NSError* error){
+        
+        self.activityPlane.hidden = TRUE;
+        
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            
+            if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+                
+                if ([result objectForKey:@"paymentInstruments"]) {
+                    
+                    NSArray* piListArray = [result objectForKey:@"paymentInstruments"];
+
+                    [self displayAlertViewWithMessage:[NSString stringWithFormat:@"%u PaymentInstruments found",piListArray.count]];
+                } else {
+                    [self displayAlertViewWithMessage:@"No PaymentInstruments found"];
+                }
+            } else {
+                
+                [self displayAlertViewWithMessage:error.localizedDescription];
+            }
+        }
+    }];
+    
+}
+
+- (void) displayAlertViewWithMessage:(NSString*)message {
+
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:self cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+    
+    [alertView show];
     
 }
 
