@@ -375,7 +375,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         if (completionHandler != Nil) {
-            SDLog(@"updatePaymentInstrumentsOrder: %@",response);
+            SDLog(@"setPaymentInstrumentsOrder: %@",response);
             completionHandler(response, error);
         }
     }];

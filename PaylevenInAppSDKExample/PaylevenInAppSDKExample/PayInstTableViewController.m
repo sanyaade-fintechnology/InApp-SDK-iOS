@@ -30,9 +30,13 @@
 @property (weak) IBOutlet UITableView* tableView;
 @property (weak) IBOutlet UIView* activityPlane;
 @property (weak) IBOutlet UIButton* editTableButton;
-@property (strong) NSArray* payInstruments;
+@property (strong) NSMutableArray* payInstruments;
 @property (strong) NSString* userToken;
 @property (strong) NSIndexPath* indexPathToDelete;
+@property (strong) NSIndexPath* indexPathFromOrder;
+@property (strong) NSIndexPath* indexPathToOrder;
+@property (nonatomic) BOOL automaticReOrder;
+
 
 @end
 
@@ -65,7 +69,7 @@
 - (void) setPIArray:(NSArray*)piArray forUserToken:(NSString*)userToken {
     
     self.userToken = userToken;
-    self.payInstruments = piArray;
+    self.payInstruments = [NSMutableArray arrayWithArray:piArray];
 }
 
 
@@ -155,19 +159,22 @@
     return TRUE;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return TRUE;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        
         self.indexPathToDelete = [indexPath copy];
-        
-        PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:indexPath.row];
-        
+
         [self deletePaymentInstrument];
 
     }
 }
+
 
 - (IBAction)enterEditMode:(id)sender {
     
@@ -185,17 +192,66 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+    
+    
+    if (self.automaticReOrder) {
+        self.automaticReOrder = FALSE;
+        return;
+    }
+    
+    self.indexPathFromOrder = [fromIndexPath copy];
+    self.indexPathToOrder = [toIndexPath copy];
+    
+    PLVPaymentInstrument *piReOrderItem = [self.payInstruments objectAtIndex:fromIndexPath.row];
+    
+    NSMutableArray* tempOrder = [NSMutableArray arrayWithArray:self.payInstruments];
+    
+    [tempOrder  removeObject:piReOrderItem];
+
+    [tempOrder  insertObject:piReOrderItem atIndex:toIndexPath.row];
+    
+    self.activityPlane.hidden = FALSE;
+    
+    NSOrderedSet* ordedSet = [[NSOrderedSet alloc] initWithArray:tempOrder];
+    
+    [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet forUserToken:self.userToken withCompletion:^(NSDictionary* result, NSError* error){
+        
+        if (error != Nil ) {
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
+            
+            [alertView show];
+            
+        } else if ([result isKindOfClass:[NSDictionary class]]) {
+            
+            if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+                
+                self.payInstruments = tempOrder;
+            } else {
+                
+                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"ReOrder" message:[NSString stringWithFormat:@"Error: %@", [result objectForKey:@"description"]] delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
+                
+                [alertView show];
+
+                [self.tableView beginUpdates];
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToOrder]
+                                 withRowAnimation:UITableViewRowAnimationLeft];
+                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathFromOrder] withRowAnimation:UITableViewRowAnimationLeft];
+                // update your dataSource as well.
+                [self.tableView endUpdates];
+                
+            }
+        }
+        
+        self.activityPlane.hidden = TRUE;
+        
+    }];
+
+}
+
 - (void) deletePaymentInstrument {
     
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable" message:@"Really Disable PaymentInstrument??" delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:@"Disable",nil];
-    
-    [alertView show];
-    
-}
-
-- (void) displayAlertViewWithTitle:(NSString*)title andMessage:(NSString*)message {
-    
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:@"Disable",nil];
     
     [alertView show];
     
