@@ -171,7 +171,7 @@
                     
                     PayInstTableViewController* listVC = [[PayInstTableViewController alloc] initWithNibName:@"PayInstTableViewController" bundle:Nil];
                     
-                    [listVC setPIArray:piListArray];
+                    [listVC setPIArray:piListArray forUserToken:self.userTokenLabel.text];
                     
                     [self.navigationController pushViewController:listVC animated:YES];
                     
@@ -194,5 +194,6 @@
     [alertView show];
     
 }
+
 
 @end

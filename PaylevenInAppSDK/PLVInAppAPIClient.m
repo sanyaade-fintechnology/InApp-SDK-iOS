@@ -398,6 +398,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                 [piDescs addObject:piID];
             }
         }
+        
         [parameters setObject:piDescs forKey:apiParameterKeyAddPIs];
     }
     
@@ -424,7 +425,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         if (completionHandler != Nil) {
-            SDLog(@"updatePaymentInstrumentsOrder: %@",response);
+            SDLog(@"disablePaymentInstruments: %@",response);
             completionHandler(response, error);
         }
     }];

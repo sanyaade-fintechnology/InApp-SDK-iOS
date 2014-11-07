@@ -92,7 +92,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     if (![self checkUserToken:userToken withPIAsOrderedSet:piOrderedSet andCompletion:completionHandler]) { return; }
     
     [self.inAppAPIClient setPaymentInstrumentsOrder:piOrderedSet forUserToken:userToken withCompletion:completionHandler];
+}
+
+- (void) disablePaymentInstruments:(NSArray*)piArray forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
+    // run validation check
+    if (![self checkUserToken:userToken withPIAsArray:piArray andCompletion:completionHandler]) { return; }
+    
+    [self.inAppAPIClient disablePaymentInstruments:piArray forUserToken:userToken withCompletion:completionHandler];
 }
 
 

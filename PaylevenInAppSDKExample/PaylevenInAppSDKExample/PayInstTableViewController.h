@@ -10,6 +10,6 @@
 
 @interface PayInstTableViewController : UIViewController
 
-- (void) setPIArray:(NSArray*)piArray;
+- (void) setPIArray:(NSArray*)piArray forUserToken:(NSString*)userToken;
 
 @end
