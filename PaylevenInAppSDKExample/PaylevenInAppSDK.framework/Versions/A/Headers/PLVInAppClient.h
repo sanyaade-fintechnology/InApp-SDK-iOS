@@ -25,7 +25,6 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 + (instancetype) sharedInstance;
 
 
-
 /**
  *  registerWithAPIKey:
  *
@@ -71,7 +70,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *
  *  add a array of payment instruments to a userToken
  *
- *  @param piOrder           ordered set with payment instruments token hashes
+ *  @param piOrder           NSOrderedSet with PaymentInstruments token hashes
  *  @param userToken         userToken
  *  @param completionHandler completion block
  */

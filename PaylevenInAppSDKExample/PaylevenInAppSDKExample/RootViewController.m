@@ -11,10 +11,7 @@
 
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
-
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-
-
 
 @implementation RootViewController
 
@@ -41,7 +38,6 @@
                                                     otherButtonTitles:@"nAj6Rensh2Ew3Oc4Ic2gig1F", @"4840bbc6429dacd56bfa98390ddf43", @"462123efc681534108cf2b34b4f8fb", nil];
     
     [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
-    
     
 }
 

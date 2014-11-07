@@ -200,6 +200,11 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         
         if (completionHandler != Nil) {
             SDLog(@"Response from UserToken: %@",response);
+            
+            if (error == Nil) {
+                error = [self parseResultForStatusAndError:response];
+            }
+            
             completionHandler(response, error);
         }
     }];
@@ -664,6 +669,26 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 }
 
 
+- (NSError*) parseResultForStatusAndError:(NSDictionary*)dict {
+    
+    if ([dict isKindOfClass:[NSDictionary class]]) {
+        
+        if ([dict objectForKey:plvInAppSDKResponseStatusKey]) {
+            
+            if ([[dict objectForKey:plvInAppSDKResponseStatusKey] isEqualToString:plvInAppSDKStatusOK]) {
+                return Nil;
+            } else if ([[dict objectForKey:plvInAppSDKResponseStatusKey] isEqualToString:plvInAppSDKStatusKO]) {
+                
+                if ([dict objectForKey:plvInAppSDKResponseDescriptionKey] && [dict objectForKey:plvInAppSDKResponseCodeKey]) {
+                    return [NSError errorWithDomain:PLVAPIBackEndErrorDomain code:[[dict objectForKey:plvInAppSDKResponseCodeKey] intValue] userInfo:[NSDictionary dictionaryWithObject:[dict objectForKey:plvInAppSDKResponseDescriptionKey] forKey:NSLocalizedDescriptionKey]];
+                }
+            }
+        }
+    }
+
+    return [NSError errorWithDomain:PLVAPIBackEndErrorDomain code:ERROR_INVALID_BACKEND_RESPONSE_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_INVALID_BACKEND_RESPONSE_MESSAGE forKey:NSLocalizedDescriptionKey]];
+}
+
 
 @end
 
@@ -677,4 +702,4 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse)
     return [string1 localizedCaseInsensitiveCompare:string2];
 }
 
-NSString * const PLVAPIClientErrorDomain = @"PLVAPIClientErrorDomain";
+

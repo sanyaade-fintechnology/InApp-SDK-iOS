@@ -132,7 +132,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             }
         }
         
-        NSError* error = [NSError errorWithDomain:kInAppSDKErrorDomain code:ERROR_MISSING_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
         self.lastError = error;
         
         completionHandler(nil,error);
@@ -177,7 +177,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             }
         }
         
-        NSError* error = [NSError errorWithDomain:kInAppSDKErrorDomain code:ERROR_MISSING_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
         self.lastError = error;
         
         completionHandler(nil,error);
@@ -215,7 +215,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             }
         }
         
-        NSError* error = [NSError errorWithDomain:kInAppSDKErrorDomain code:ERROR_MISSING_USERTOKEN_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_USERTOKEN_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_USERTOKEN_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_USERTOKEN_MESSAGE forKey:NSLocalizedDescriptionKey]];
         self.lastError = error;
         
         completionHandler(nil,error);
@@ -254,7 +254,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             }
         }
         
-        NSError* error = [NSError errorWithDomain:kInAppSDKErrorDomain code:ERROR_MISSING_EMAILADDRESS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_EMAILADDRESS_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_EMAILADDRESS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_EMAILADDRESS_MESSAGE forKey:NSLocalizedDescriptionKey]];
         self.lastError = error;
         
         completionHandler(nil,error);
@@ -281,7 +281,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     if (self.apiKey == Nil) {
         
-        NSError* error = [NSError errorWithDomain:kInAppSDKErrorDomain code:ERROR_MISSING_API_KEY_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_API_KEY_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_API_KEY_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_API_KEY_MESSAGE forKey:NSLocalizedDescriptionKey]];
         self.lastError = error;
         
         if (completionHandler != Nil) {
@@ -293,7 +293,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     if (completionHandler == Nil) {
         
-        NSError* error = [NSError errorWithDomain:kInAppSDKErrorDomain code:ERROR_MISSING_CALLBACK_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_CALLBACK_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_CALLBACK_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_CALLBACK_MESSAGE forKey:NSLocalizedDescriptionKey]];
         self.lastError = error;
         
         return FALSE;
