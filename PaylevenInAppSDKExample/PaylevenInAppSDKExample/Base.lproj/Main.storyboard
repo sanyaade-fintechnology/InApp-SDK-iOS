@@ -78,7 +78,7 @@
                                 </variation>
                                 <connections>
                                     <action selector="setAPIKey:" destination="703-4V-yAM" eventType="touchUpInside" id="QU1-at-jXh"/>
-                                    <segue destination="J1S-1x-cPw" kind="show" identifier="showPIVC" id="9Kw-en-WEF"/>
+                                    <segue destination="J1S-1x-cPw" kind="push" id="sCR-RK-m15"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="APIKey:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nES-Z5-cHV">
@@ -244,13 +244,13 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2MG-j1-Lu6" userLabel="line">
-                                <rect key="frame" x="16" y="164" width="568" height="2"/>
-                                <color key="backgroundColor" red="0.36830480929999998" green="0.67824598199999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="16" y="164" width="568" height="1"/>
+                                <color key="backgroundColor" red="0.89411764709999997" green="0.89411764709999997" blue="0.89411764709999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="2" id="esC-Wh-54v"/>
+                                    <constraint firstAttribute="height" constant="1" id="esC-Wh-54v"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLo-rV-VHd" userLabel="subPlan">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLo-rV-VHd" userLabel="subPlan">
                                 <rect key="frame" x="0.0" y="167" width="600" height="433"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="userToken:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H19-p3-CmP" userLabel="UserToken">
@@ -407,7 +407,7 @@
                             <constraint firstItem="Ufj-7c-exz" firstAttribute="top" secondItem="Ue8-B5-mGe" secondAttribute="bottom" id="Vtr-cb-zRT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="dDt-DI-Wv0" secondAttribute="trailing" constant="1" id="bYa-UL-xbo"/>
                             <constraint firstItem="vTn-33-N8Z" firstAttribute="leading" secondItem="yxm-zU-693" secondAttribute="leading" constant="-9" id="cah-7f-bc2"/>
-                            <constraint firstItem="MLo-rV-VHd" firstAttribute="top" secondItem="2MG-j1-Lu6" secondAttribute="bottom" constant="1" id="ete-oT-FrJ"/>
+                            <constraint firstItem="MLo-rV-VHd" firstAttribute="top" secondItem="2MG-j1-Lu6" secondAttribute="bottom" constant="2" id="ete-oT-FrJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MLo-rV-VHd" secondAttribute="trailing" constant="-16" id="h9a-EB-kxe"/>
                             <constraint firstItem="MLo-rV-VHd" firstAttribute="top" secondItem="3yk-qI-rfG" secondAttribute="bottom" constant="10" id="jAW-jN-fCF"/>
                             <constraint firstItem="Ue8-B5-mGe" firstAttribute="leading" secondItem="Tu2-tP-X8S" secondAttribute="leadingMargin" constant="-16" id="mII-vu-h3y"/>
@@ -424,6 +424,7 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="jsz-YD-4cK"/>
                     <connections>
                         <outlet property="activityPlane" destination="Ue8-B5-mGe" id="GCJ-Wf-7sK"/>
                         <outlet property="addPIButton" destination="gzL-97-pre" id="byF-GT-frM"/>

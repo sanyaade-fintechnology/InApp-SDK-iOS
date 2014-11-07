@@ -8,10 +8,10 @@
 
 #import "RootViewController.h"
 
-
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+
 
 @implementation RootViewController
 
@@ -63,11 +63,8 @@
 
 - (IBAction) setAPIKey:(id)sender {
     
-    
     [[PLVInAppClient sharedInstance] registerWithAPIKey:self.apiKeyTextField.text];
     
-    
-
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "DetailViewController.h"
+#import "PayInstTableViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
@@ -116,10 +117,7 @@
         self.activityPlane.hidden = TRUE;
         
         if (error != Nil) {
-            
-            
-            
-            
+
             NSString* errorMessage = error.localizedDescription;
             
             if (errorMessage == Nil) {
@@ -169,8 +167,15 @@
                 if ([result objectForKey:@"paymentInstruments"]) {
                     
                     NSArray* piListArray = [result objectForKey:@"paymentInstruments"];
-
-                    [self displayAlertViewWithMessage:[NSString stringWithFormat:@"%u PaymentInstruments found",piListArray.count]];
+                    
+                    
+                    PayInstTableViewController* listVC = [[PayInstTableViewController alloc] initWithNibName:@"PayInstTableViewController" bundle:Nil];
+                    
+                    [listVC setPIArray:piListArray];
+                    
+                    [self.navigationController pushViewController:listVC animated:YES];
+                    
+                    
                 } else {
                     [self displayAlertViewWithMessage:@"No PaymentInstruments found"];
                 }
@@ -180,7 +185,6 @@
             }
         }
     }];
-    
 }
 
 - (void) displayAlertViewWithMessage:(NSString*)message {

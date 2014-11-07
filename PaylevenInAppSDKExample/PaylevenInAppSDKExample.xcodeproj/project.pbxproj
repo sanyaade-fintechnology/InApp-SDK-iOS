@@ -15,6 +15,8 @@
 		9FA5CB9B19F5270700FCB314 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9919F5270700FCB314 /* Main.storyboard */; };
 		9FA5CB9D19F5270700FCB314 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9C19F5270700FCB314 /* Images.xcassets */; };
 		9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9E19F5270700FCB314 /* LaunchScreen.xib */; };
+		9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */; };
+		9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,9 @@
 		9FA5CB9A19F5270700FCB314 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9FA5CB9C19F5270700FCB314 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9FA5CB9F19F5270700FCB314 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		9FBE52A31A0CFCF70030E165 /* PayInstTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayInstTableViewController.h; sourceTree = "<group>"; };
+		9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayInstTableViewController.m; sourceTree = "<group>"; };
+		9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayInstTableViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +88,9 @@
 				9FA5CB9C19F5270700FCB314 /* Images.xcassets */,
 				9FA5CB9E19F5270700FCB314 /* LaunchScreen.xib */,
 				9FA5CB8919F5270700FCB314 /* Supporting Files */,
+				9FBE52A31A0CFCF70030E165 /* PayInstTableViewController.h */,
+				9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */,
+				9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */,
 			);
 			path = PaylevenInAppSDKExample;
 			sourceTree = "<group>";
@@ -155,6 +163,7 @@
 			files = (
 				9FA5CB9B19F5270700FCB314 /* Main.storyboard in Resources */,
 				9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */,
+				9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */,
 				9FA5CB9D19F5270700FCB314 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,6 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */,
+				9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */,
 				9FA5CB8C19F5270700FCB314 /* main.m in Sources */,
 				9FA5CB9219F5270700FCB314 /* RootViewController.m in Sources */,
 				9F27A7681A0B860600458181 /* DetailViewController.m in Sources */,
