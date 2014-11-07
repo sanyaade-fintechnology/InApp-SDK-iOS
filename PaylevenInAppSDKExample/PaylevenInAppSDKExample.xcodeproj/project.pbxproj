@@ -17,6 +17,7 @@
 		9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9E19F5270700FCB314 /* LaunchScreen.xib */; };
 		9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */; };
 		9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */; };
+		9FBE52A91A0D058F0030E165 /* PayInstrumentsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A81A0D058F0030E165 /* PayInstrumentsTableCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		9FBE52A31A0CFCF70030E165 /* PayInstTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayInstTableViewController.h; sourceTree = "<group>"; };
 		9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayInstTableViewController.m; sourceTree = "<group>"; };
 		9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayInstTableViewController.xib; sourceTree = "<group>"; };
+		9FBE52A81A0D058F0030E165 /* PayInstrumentsTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayInstrumentsTableCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		9FA5CB8819F5270700FCB314 /* PaylevenInAppSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				9FBE52AA1A0D05C50030E165 /* Pi Table */,
 				9F4F807A19F536CC0008CBBE /* framework */,
 				9FA5CB8D19F5270700FCB314 /* AppDelegate.h */,
 				9FA5CB8E19F5270700FCB314 /* AppDelegate.m */,
@@ -88,9 +91,6 @@
 				9FA5CB9C19F5270700FCB314 /* Images.xcassets */,
 				9FA5CB9E19F5270700FCB314 /* LaunchScreen.xib */,
 				9FA5CB8919F5270700FCB314 /* Supporting Files */,
-				9FBE52A31A0CFCF70030E165 /* PayInstTableViewController.h */,
-				9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */,
-				9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */,
 			);
 			path = PaylevenInAppSDKExample;
 			sourceTree = "<group>";
@@ -102,6 +102,17 @@
 				9FA5CB8B19F5270700FCB314 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9FBE52AA1A0D05C50030E165 /* Pi Table */ = {
+			isa = PBXGroup;
+			children = (
+				9FBE52A81A0D058F0030E165 /* PayInstrumentsTableCell.xib */,
+				9FBE52A31A0CFCF70030E165 /* PayInstTableViewController.h */,
+				9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */,
+				9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */,
+			);
+			name = "Pi Table";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +172,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FBE52A91A0D058F0030E165 /* PayInstrumentsTableCell.xib in Resources */,
 				9FA5CB9B19F5270700FCB314 /* Main.storyboard in Resources */,
 				9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */,
 				9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */,
