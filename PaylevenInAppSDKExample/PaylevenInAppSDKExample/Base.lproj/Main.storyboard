@@ -350,6 +350,9 @@
                                                 <exclude reference="UFG-rn-3vl"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <action selector="addPIActionSheet:" destination="J1S-1x-cPw" eventType="touchUpInside" id="nVj-Zo-1rw"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

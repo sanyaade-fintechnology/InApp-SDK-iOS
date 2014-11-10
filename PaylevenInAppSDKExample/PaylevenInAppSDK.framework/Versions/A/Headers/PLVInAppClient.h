@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class PLVPaymentInstrument;
+
 typedef NSString PLVInAppUserToken;
 
 typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSError* error);
@@ -51,7 +53,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param userToken         userToken
  *  @param completionHandler completion block
  */
-- (void) addPaymentInstruments:(NSArray*)piArray forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 /**
@@ -62,7 +64,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param userToken         userToken
  *  @param completionHandler completion block
  */
-- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 /**
@@ -83,7 +85,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param userToken         userToken
  *  @param completionHandler completionHandler
  */
-- (void) disablePaymentInstruments:(NSArray*)piArray forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 @end
 

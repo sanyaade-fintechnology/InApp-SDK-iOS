@@ -138,19 +138,9 @@
     if([shortType isEqualToString:@"CC"]) {
         PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
         return [NSString stringWithFormat:@"%@/%@",cc.expiryMonth,cc.expiryYear];
-    } else if([shortType isEqualToString:@"DD"]) {
-        PLVPayInstrumentDD* cc = (PLVPayInstrumentDD*)pi;
-        return [NSString stringWithFormat:@"%@/%@",cc.expiryMonth,cc.expiryYear];
-    } else if([shortType isEqualToString:@"SEPA"]) {
-        PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
-        return [NSString stringWithFormat:@"%@/%@",cc.expiryMonth,cc.expiryYear];
-    } else if([shortType isEqualToString:@"PAYPAL"]) {
-
+    } else {
         return @"";
-    }  else {
-        return @"unknown";
     }
-    
 }
 
 
@@ -269,7 +259,7 @@
         
         PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
         
-        [[PLVInAppClient sharedInstance] disablePaymentInstruments:[NSArray arrayWithObject:pi] forUserToken:self.userToken withCompletion:^(NSDictionary* result, NSError* error){
+        [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi forUserToken:self.userToken withCompletion:^(NSDictionary* result, NSError* error){
             
             if (error != Nil ) {
                 UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];

@@ -11,6 +11,19 @@
 #import "PLVInAppClientTypes.h"
 #import "PLVInAppSDKConstants.h"
 
+typedef NSString PLVPIType;
+
+typedef enum : NSUInteger {
+    PLVPICCTypeUnknown = 0,
+    PLVPICCTypeVISA,
+    PLVPICCTypeVISA_ELECTRON,
+    PLVPICCTypeVPAY,
+    PLVPICCTypeAMEX,
+    PLVPICCTypeDINERS,
+    PLVPICCTypeOTHER
+} PLVPICCType;
+
+
 @interface PLVPaymentInstrument()
 
 @property (readwrite) NSString* sortIndex;
@@ -26,6 +39,7 @@
     self = [super init];
     if (self) {
         _type = PLVPICCTypeUnknown;
+        _useType = PLVPIUseTypeDefault;
     }
     return self;
 }

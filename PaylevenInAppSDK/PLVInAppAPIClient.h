@@ -10,6 +10,7 @@
 @import CoreLocation;
 @import Foundation;
 
+#import "PLVInAppClientTypes.h"
 
 typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSError* error);
 
@@ -34,16 +35,16 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 - (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
-- (void) addPaymentInstruments:(NSArray*)piArray forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
-- (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 - (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderSet forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
-- (void) disablePaymentInstruments:(NSArray*)piArray forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 @end
 

@@ -125,14 +125,6 @@
     
     NSMutableDictionary* content = [super piDictDescription];
     
-    if (self.expiryMonth != Nil) {
-        [content setObject:self.expiryMonth forKey:ddExpiryMonthKey];
-    }
-    
-    if (self.expiryYear != Nil) {
-        [content setObject:self.expiryYear forKey:ddExpiryYearKey];
-    }
-    
     if (self.accountNumber != Nil) {
         [content setObject:self.accountNumber forKey:ddAccountNumberKey];
     }
@@ -153,14 +145,6 @@
 - (NSDictionary*) piDictDescription {
     
     NSMutableDictionary* content = [super piDictDescription];
-    
-    if (self.expiryMonth != Nil) {
-        [content setObject:self.expiryMonth forKey:sepaExpiryMonthKey];
-    }
-    
-    if (self.expiryYear != Nil) {
-        [content setObject:self.expiryYear forKey:sepaExpiryYearKey];
-    }
     
     if (self.iban != Nil) {
         [content setObject:self.iban forKey:sepaIBANNumberKey];

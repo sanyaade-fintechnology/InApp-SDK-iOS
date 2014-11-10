@@ -70,20 +70,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
 }
 
-- (void) addPaymentInstruments:(NSArray*)piArray forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
-    if (![self checkUserToken:userToken withPIAsArray:piArray andCompletion:completionHandler]) { return; }
+    if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
     
-    [self.inAppAPIClient addPaymentInstruments:piArray forUserToken:userToken withCompletion:completionHandler];
+    if (![self checkUseType:useType]) { return; }
+    
+    [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:userToken withUseType:useType andCompletion:completionHandler];
 }
 
-- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
     if (![self checkUserToken:userToken andCompletion:completionHandler]) { return; }
     
-    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withCompletion:completionHandler];
+    if (![self checkUseType:useType]) { return; }
+    
+    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseType:useType andCompletion:completionHandler];
 }
 
 - (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderedSet forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -94,15 +98,32 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     [self.inAppAPIClient setPaymentInstrumentsOrder:piOrderedSet forUserToken:userToken withCompletion:completionHandler];
 }
 
-- (void) disablePaymentInstruments:(NSArray*)piArray forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
-    if (![self checkUserToken:userToken withPIAsArray:piArray andCompletion:completionHandler]) { return; }
+    if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
     
-    [self.inAppAPIClient disablePaymentInstruments:piArray forUserToken:userToken withCompletion:completionHandler];
+    [self.inAppAPIClient disablePaymentInstrument:payInstrument forUserToken:userToken withCompletion:completionHandler];
 }
 
 
+
+/**
+ *  checkUseType
+ *
+ *  @param useType the useType Value to check
+ *
+ *  @return TRUE for Valid UseType, FAlse for wrong value
+ */
+
+- (BOOL) checkUseType:(NSString*)useType {
+    
+    if ( useType != Nil && ([useType isEqualToString:PLVPIUseTypeDefault] || [useType isEqualToString:PLVPIUseTypeBoth] || [useType isEqualToString:PLVPIUseTypeBusiness] || [useType isEqualToString:PLVPIUseTypePrivate])) {
+        return TRUE;
+    }
+    
+    return FALSE;
+}
 /**
  *  checkUserToken withPIAsOrderedSet
  *
@@ -160,27 +181,15 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
  *  @return TRUE for passed Checks, FALSE for failed Checks
  */
 
-- (BOOL) checkUserToken:(NSString*)userToken withPIAsArray:(NSArray*)piArray andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (BOOL) checkUserToken:(NSString*)userToken withPI:(PLVPaymentInstrument*)paymentInstrument andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     if([self checkUserToken:userToken andCompletion:completionHandler]) {
         
-        if (piArray != Nil) {
+        if (paymentInstrument != Nil) {
             
-            if ([piArray isKindOfClass:[NSArray class]]) {
+            if ([paymentInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
                 
-                if(piArray.count > 0) {
-                    
-                    BOOL allValid = TRUE;
-                    
-                    for (id item in piArray) {
-                        if (![item isKindOfClass:[PLVPaymentInstrument class]]) {
-                            allValid = FALSE;
-                        }
-                    }
-                    
-                    self.lastError = Nil;
-                    return allValid;
-                }
+                return TRUE;
             }
         }
         

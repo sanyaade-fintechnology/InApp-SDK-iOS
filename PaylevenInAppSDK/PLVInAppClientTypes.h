@@ -13,30 +13,24 @@
 #define     PLVPITypeSEPA       @"SEPA"
 #define     PLVPITypePAYPAL     @"PAYPAL"
 
-typedef NSString PLVPIType;
 
-typedef enum : NSUInteger {
-    PLVPICCTypeUnknown = 0,
-    PLVPICCTypeVISA,
-    PLVPICCTypeVISA_ELECTRON,
-    PLVPICCTypeVPAY,
-    PLVPICCTypeAMEX,
-    PLVPICCTypeDINERS,
-    PLVPICCTypeOTHER
-} PLVPICCType;
-
+#define     PLVPIUseTypeDefault     @"DEFAULT"
+#define     PLVPIUseTypePrivate     @"PRIVATE"
+#define     PLVPIUseTypeBusiness    @"BUSINESS"
+#define     PLVPIUseTypeBoth        @"BOTH"
 
 @interface PLVPaymentInstrument : NSObject
 
 @property (strong) NSString* identifier;
 @property (strong) NSString* type;
+@property (strong) NSString* useType;
 
 @end
 
 @interface PLVPayInstrumentCC : PLVPaymentInstrument
 
 @property (strong) NSString* pan;
-@property (readonly,nonatomic) PLVPICCType cardBrand;
+@property (readonly,nonatomic) NSString* cardBrand;
 @property (strong) NSString* expiryMonth;
 @property (strong) NSString* expiryYear;
 @property (strong) NSString* ccv;
@@ -47,16 +41,12 @@ typedef enum : NSUInteger {
 
 @property (strong) NSString* accountNumber;
 @property (strong) NSString* routingNumber;
-@property (strong) NSString* expiryMonth;
-@property (strong) NSString* expiryYear;
 @end
 
 @interface PLVPayInstrumentSEPA : PLVPaymentInstrument
 
 @property (strong) NSString* iban;
 @property (strong) NSString* bic;
-@property (strong) NSString* expiryMonth;
-@property (strong) NSString* expiryYear;
 
 @end
 

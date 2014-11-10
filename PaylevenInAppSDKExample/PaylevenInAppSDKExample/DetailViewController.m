@@ -10,6 +10,9 @@
 #import "PayInstTableViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
+#define selectEmailAddressActionSheet 333
+#define selectPItoAddActionSheet 666
+
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
 @interface DetailViewController ()
@@ -69,27 +72,51 @@
                                                destructiveButtonTitle:Nil
                                                     otherButtonTitles:@"test@test.de", @"inAppSDK@payleven.de", @"mike@dummy.de", nil];
     
-    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
+    actionSheet.tag = selectEmailAddressActionSheet;
     
+    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
+ 
 }
 
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    switch (buttonIndex) {
-        case 0:
-            self.emailTextField.text = @"test@test.de";
-            break;
-        case 1:
-            self.emailTextField.text = @"inAppSDK@payleven.de";
-            break;
-        case 2:
-            self.emailTextField.text = @"mike@dummy.de";
-            break;
-        default:
-            break;
+    if (actionSheet.tag == selectEmailAddressActionSheet) {
+        
+        switch (buttonIndex) {
+            case 0:
+                self.emailTextField.text = @"test@test.de";
+                break;
+            case 1:
+                self.emailTextField.text = @"inAppSDK@payleven.de";
+                break;
+            case 2:
+                self.emailTextField.text = @"mike@dummy.de";
+                break;
+            default:
+                break;
+        }
+    } else if(actionSheet.tag == selectPItoAddActionSheet && buttonIndex < 4) {
+        
+        NSString* piType;
+        
+        switch (buttonIndex) {
+            case 0:
+                piType = PLVPITypeCC;
+                break;
+            case 1:
+                piType = PLVPITypeDD;
+                break;
+            case 2:
+                piType = PLVPITypeSEPA;
+                break;
+            case 3:
+                piType = PLVPITypePAYPAL;
+                break;
+            default:
+                break;
+        } 
     }
-    
 }
 
 - (IBAction)editEmailField:(id)sender {
@@ -156,7 +183,7 @@
     
     self.activityPlane.hidden = FALSE;
     
-    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withCompletion:^(NSDictionary* result, NSError* error){
+    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:PLVPIUseTypeDefault andCompletion:^(NSDictionary* result, NSError* error){
         
         self.activityPlane.hidden = TRUE;
         
@@ -167,7 +194,6 @@
                 if ([result objectForKey:@"paymentInstruments"]) {
                     
                     NSArray* piListArray = [result objectForKey:@"paymentInstruments"];
-                    
                     
                     PayInstTableViewController* listVC = [[PayInstTableViewController alloc] initWithNibName:@"PayInstTableViewController" bundle:Nil];
                     
@@ -186,6 +212,21 @@
         }
     }];
 }
+
+- (IBAction)addPIActionSheet:(id)sender {
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select type:"
+                                                             delegate:self
+                                                    cancelButtonTitle:(isIPAD ? Nil : @"Cancel")
+                                               destructiveButtonTitle:Nil
+                                                    otherButtonTitles:@"CreditCard", @"DebitCard", @"SEPA", @"PayPal", nil];
+    
+    actionSheet.tag = selectPItoAddActionSheet;
+    
+    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
+    
+}
+
 
 - (void) displayAlertViewWithMessage:(NSString*)message {
 

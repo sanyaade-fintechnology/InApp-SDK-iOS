@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9F27A7681A0B860600458181 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F27A7671A0B860600458181 /* DetailViewController.m */; };
+		9F44485F1A10BB2600B949F5 /* AddPIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F44485D1A10BB2600B949F5 /* AddPIViewController.m */; };
+		9F4448601A10BB2600B949F5 /* AddPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F44485E1A10BB2600B949F5 /* AddPIViewController.xib */; };
 		9F6552B219F5AB0A003D07A5 /* PaylevenInAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */; };
 		9FA5CB8C19F5270700FCB314 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB8B19F5270700FCB314 /* main.m */; };
 		9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB8E19F5270700FCB314 /* AppDelegate.m */; };
@@ -23,6 +25,9 @@
 /* Begin PBXFileReference section */
 		9F27A7661A0B860600458181 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		9F27A7671A0B860600458181 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		9F44485C1A10BB2600B949F5 /* AddPIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPIViewController.h; sourceTree = "<group>"; };
+		9F44485D1A10BB2600B949F5 /* AddPIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPIViewController.m; sourceTree = "<group>"; };
+		9F44485E1A10BB2600B949F5 /* AddPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPIViewController.xib; sourceTree = "<group>"; };
 		9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PaylevenInAppSDK.framework; sourceTree = SOURCE_ROOT; };
 		9FA5CB8619F5270700FCB314 /* PaylevenInAppSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaylevenInAppSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FA5CB8A19F5270700FCB314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -52,6 +57,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F44485B1A10BAFC00B949F5 /* add Pi */ = {
+			isa = PBXGroup;
+			children = (
+				9F44485C1A10BB2600B949F5 /* AddPIViewController.h */,
+				9F44485D1A10BB2600B949F5 /* AddPIViewController.m */,
+				9F44485E1A10BB2600B949F5 /* AddPIViewController.xib */,
+			);
+			name = "add Pi";
+			sourceTree = "<group>";
+		};
 		9F4F807A19F536CC0008CBBE /* framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +94,7 @@
 		9FA5CB8819F5270700FCB314 /* PaylevenInAppSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				9F44485B1A10BAFC00B949F5 /* add Pi */,
 				9FBE52AA1A0D05C50030E165 /* Pi Table */,
 				9F4F807A19F536CC0008CBBE /* framework */,
 				9FA5CB8D19F5270700FCB314 /* AppDelegate.h */,
@@ -173,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9FBE52A91A0D058F0030E165 /* PayInstrumentsTableCell.xib in Resources */,
+				9F4448601A10BB2600B949F5 /* AddPIViewController.xib in Resources */,
 				9FA5CB9B19F5270700FCB314 /* Main.storyboard in Resources */,
 				9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */,
 				9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */,
@@ -190,6 +207,7 @@
 				9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */,
 				9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */,
 				9FA5CB8C19F5270700FCB314 /* main.m in Sources */,
+				9F44485F1A10BB2600B949F5 /* AddPIViewController.m in Sources */,
 				9FA5CB9219F5270700FCB314 /* RootViewController.m in Sources */,
 				9F27A7681A0B860600458181 /* DetailViewController.m in Sources */,
 			);

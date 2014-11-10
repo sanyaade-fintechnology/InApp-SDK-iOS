@@ -23,6 +23,7 @@
 #define apiParameterKeyAddPIs @"paymentInstruments"
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"version"
+#define apiParameterKeyUseType @"useType"
 
 
 typedef enum : NSUInteger {
@@ -34,10 +35,10 @@ typedef enum : NSUInteger {
 
 
 static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/userToken";
-static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstruments";
+static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstrument";
 static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
 static NSString * const PLVInAppClientAPISetPiTokenListOrderEndPoint = @"/setPaymentInstrumentsOrder";
-static NSString * const PLVInAppClientAPIDisablePiTokenEndPoint = @"/disablePaymentInstruments";
+static NSString * const PLVInAppClientAPIDisablePiTokenEndPoint = @"/disablePaymentInstrument";
 
 
 #if useLocalEndpoint
@@ -211,23 +212,17 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-- (void) addPaymentInstruments:(NSArray*)piArray forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseType,nil];
     
-    if(piArray != Nil && piArray.count > 0) {
-        
-        NSMutableArray* piDescs = [NSMutableArray new];
-        
-        for(PLVPaymentInstrument* baseType in piArray) {
-            
-            NSDictionary* desc = [baseType piDictDescription];
+    if(payInstrument != Nil) {
+
+            NSDictionary* desc = [payInstrument piDictDescription];
             
             if (desc != Nil) {
-                [piDescs addObject:desc];
+                    [parameters setObject:desc forKey:apiParameterKeyAddPIs];
             }
-        }
-        [parameters setObject:piDescs forKey:apiParameterKeyAddPIs];
     }
     
     //add HMAC
@@ -262,9 +257,9 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-- (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseType,nil];
     
     //add HMAC
     
@@ -382,24 +377,17 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-- (void) disablePaymentInstruments:(NSArray*)piArray forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
     
-    if(piArray != Nil && piArray.count > 0) {
+    if(payInstrument != Nil ) {
         
-        NSMutableArray* piDescs = [NSMutableArray new];
+        NSString* piID = payInstrument.identifier;
         
-        for(PLVPaymentInstrument* baseType in piArray) {
-            
-            NSString* piID = baseType.identifier;
-            
-            if (piID != Nil) {
-                [piDescs addObject:piID];
-            }
+        if(piID != Nil) {
+            [parameters setObject:piID forKey:apiParameterKeyAddPIs];
         }
-        
-        [parameters setObject:piDescs forKey:apiParameterKeyAddPIs];
     }
     
     //add HMAC
