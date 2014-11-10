@@ -75,9 +75,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     // run validation check
     if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
     
-    if (![self checkUseType:useType]) { return; }
+    NSString* useTypeChecked = [self checkUseType:useType];
     
-    [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:userToken withUseType:useType andCompletion:completionHandler];
+    [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:useTypeChecked withUseType:useType andCompletion:completionHandler];
 }
 
 - (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -85,9 +85,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     // run validation check
     if (![self checkUserToken:userToken andCompletion:completionHandler]) { return; }
     
-    if (![self checkUseType:useType]) { return; }
+    NSString* useTypeChecked = [self checkUseType:useType];
     
-    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseType:useType andCompletion:completionHandler];
+    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseType:useTypeChecked andCompletion:completionHandler];
 }
 
 - (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderedSet forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -106,8 +106,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     [self.inAppAPIClient disablePaymentInstrument:payInstrument forUserToken:userToken withCompletion:completionHandler];
 }
 
-
-
 /**
  *  checkUseType
  *
@@ -116,13 +114,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
  *  @return TRUE for Valid UseType, FAlse for wrong value
  */
 
-- (BOOL) checkUseType:(NSString*)useType {
+- (NSString*) checkUseType:(NSString*)useType {
     
-    if ( useType != Nil && ([useType isEqualToString:PLVPIUseTypeDefault] || [useType isEqualToString:PLVPIUseTypeBoth] || [useType isEqualToString:PLVPIUseTypeBusiness] || [useType isEqualToString:PLVPIUseTypePrivate])) {
-        return TRUE;
+    if ( useType != Nil && ([useType isEqualToString:PLVPIUseCaseBoth] || [useType isEqualToString:PLVPIUseCaseBusiness] || [useType isEqualToString:PLVPIUseCasePrivate])) {
+        return useType;
     }
     
-    return FALSE;
+    return PLVPIUseCaseDefault;
 }
 /**
  *  checkUserToken withPIAsOrderedSet

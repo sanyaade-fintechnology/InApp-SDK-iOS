@@ -14,10 +14,10 @@
 #define     PLVPITypePAYPAL     @"PAYPAL"
 
 
-#define     PLVPIUseTypeDefault     @"DEFAULT"
-#define     PLVPIUseTypePrivate     @"PRIVATE"
-#define     PLVPIUseTypeBusiness    @"BUSINESS"
-#define     PLVPIUseTypeBoth        @"BOTH"
+#define     PLVPIUseCaseDefault     @"DEFAULT"
+#define     PLVPIUseCasePrivate     @"PRIVATE"
+#define     PLVPIUseCaseBusiness    @"BUSINESS"
+#define     PLVPIUseCaseBoth        @"BOTH"
 
 @interface PLVPaymentInstrument : NSObject
 

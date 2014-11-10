@@ -39,7 +39,7 @@ typedef enum : NSUInteger {
     self = [super init];
     if (self) {
         _type = PLVPICCTypeUnknown;
-        _useType = PLVPIUseTypeDefault;
+        _useType = PLVPIUseCaseDefault;
     }
     return self;
 }

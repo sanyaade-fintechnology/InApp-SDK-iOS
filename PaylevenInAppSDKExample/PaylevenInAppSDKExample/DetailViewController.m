@@ -183,7 +183,7 @@
     
     self.activityPlane.hidden = FALSE;
     
-    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:PLVPIUseTypeDefault andCompletion:^(NSDictionary* result, NSError* error){
+    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:PLVPIUseCaseDefault andCompletion:^(NSDictionary* result, NSError* error){
         
         self.activityPlane.hidden = TRUE;
         

@@ -23,7 +23,7 @@
 #define apiParameterKeyAddPIs @"paymentInstruments"
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"version"
-#define apiParameterKeyUseType @"useType"
+#define apiParameterKeyUseCase @"useCase"
 
 
 typedef enum : NSUInteger {
@@ -214,7 +214,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseType,nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseCase,nil];
     
     if(payInstrument != Nil) {
 
@@ -259,7 +259,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseType,nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseCase,nil];
     
     //add HMAC
     
