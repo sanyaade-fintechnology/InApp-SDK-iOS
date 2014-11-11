@@ -48,8 +48,7 @@
     // Do any additional setup after loading the view from its nib.
     
     UINib* cellNib = [UINib nibWithNibName:@"PayInstrumentsTableCell" bundle:Nil];
-    
-    
+
     [self.tableView registerNib:cellNib forCellReuseIdentifier:piLiastTableViewCell];
     
     [self.tableView reloadData];
@@ -88,7 +87,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     
     return self.payInstruments.count;
 }

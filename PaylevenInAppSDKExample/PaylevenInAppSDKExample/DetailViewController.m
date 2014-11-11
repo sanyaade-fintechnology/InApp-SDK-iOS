@@ -8,6 +8,7 @@
 
 #import "DetailViewController.h"
 #import "PayInstTableViewController.h"
+#import "AddPIViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 #define selectEmailAddressActionSheet 333
@@ -115,7 +116,18 @@
                 break;
             default:
                 break;
-        } 
+        }
+        
+        if (piType != Nil) {
+            
+            AddPIViewController* addPiVC = [[AddPIViewController alloc] initWithNibName:@"AddPIViewController" bundle:Nil];
+            
+            addPiVC.piTypeToCreate = piType;
+            addPiVC.userToken = self.userTokenLabel.text;
+            
+            [self.navigationController pushViewController:addPiVC animated:YES];
+            
+        }
     }
 }
 
@@ -183,7 +195,7 @@
     
     self.activityPlane.hidden = FALSE;
     
-    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:PLVPIUseCaseDefault andCompletion:^(NSDictionary* result, NSError* error){
+    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:PLVPIUseCasePrivate andCompletion:^(NSDictionary* result, NSError* error){
         
         self.activityPlane.hidden = TRUE;
         

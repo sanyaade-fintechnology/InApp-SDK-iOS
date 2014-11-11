@@ -15,12 +15,12 @@
 #import "PLVInAppClientTypes+Serialization.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#define useLocalEndpoint 1
-#define usemacMiniEndpoint 0
+#define useLocalEndpoint 0
+#define usemacMiniEndpoint 1
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
-#define apiParameterKeyAddPIs @"paymentInstruments"
+#define apiParameterKeyAddPIs @"paymentInstrument"
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"version"
 #define apiParameterKeyUseCase @"useCase"
@@ -50,7 +50,7 @@ static NSString * const PLVInAppClientAPIHost = @"http://localhost/staging/api";
 
 /** macMini in office endpoint. */
 
-static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.46/staging/api";
 
 #else
 
@@ -212,9 +212,14 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseCase,nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    if (useCase != Nil) {
+        // add use case in case of ... otherwise it default value form BE will be used
+        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
+    }
     
     if(payInstrument != Nil) {
 
@@ -249,7 +254,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         
         if (completionHandler != Nil) {
             
-            SDLog(@"addPaymentInstruments: %@",response);
+            SDLog(@"addPaymentInstruments %@",response);
             completionHandler(response, error);
             
         }
@@ -257,9 +262,14 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
 }
 
-- (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useType,apiParameterKeyUseCase,nil];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    if (useCase != Nil) {
+        // add use case in case of ... otherwise it default value form BE will be used
+        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
+    }
     
     //add HMAC
     
@@ -302,6 +312,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                     
                     if (pi != Nil) {
                         [serializedPI addObject:pi];
+                    } else {
+                        SDLog(@"Can't serialze PI from dict %@",piDict);
                     }
                     
                 }

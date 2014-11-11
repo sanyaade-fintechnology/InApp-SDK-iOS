@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddPIViewController : UIViewController
+@interface AddPIViewController : UIViewController <UIActionSheetDelegate>
+
+@property (strong) NSString* piTypeToCreate;
+@property (strong) NSString* userToken;
 
 @end

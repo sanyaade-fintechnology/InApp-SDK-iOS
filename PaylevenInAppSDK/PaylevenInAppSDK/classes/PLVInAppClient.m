@@ -70,24 +70,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
 }
 
-- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
     if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
     
-    NSString* useTypeChecked = [self checkUseType:useType];
+    NSString* useCaseChecked = [self checkUseCase:useCase];
     
-    [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:useTypeChecked withUseType:useType andCompletion:completionHandler];
+    [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:userToken withUseCase:useCaseChecked andCompletion:completionHandler];
 }
 
-- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withUseType:(NSString*)useType andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withUseType:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
     if (![self checkUserToken:userToken andCompletion:completionHandler]) { return; }
     
-    NSString* useTypeChecked = [self checkUseType:useType];
+    NSString* useCaseChecked = [self checkUseCase:useCase];
     
-    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseType:useTypeChecked andCompletion:completionHandler];
+    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseCase:useCaseChecked andCompletion:completionHandler];
 }
 
 - (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderedSet forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -114,13 +114,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
  *  @return TRUE for Valid UseType, FAlse for wrong value
  */
 
-- (NSString*) checkUseType:(NSString*)useType {
+- (NSString*) checkUseCase:(PLVInAppUseCase*)useCase {
     
-    if ( useType != Nil && ([useType isEqualToString:PLVPIUseCaseBoth] || [useType isEqualToString:PLVPIUseCaseBusiness] || [useType isEqualToString:PLVPIUseCasePrivate])) {
-        return useType;
+    if ( useCase != Nil && ([useCase isEqualToString:PLVPIUseCaseBusiness] || [useCase isEqualToString:PLVPIUseCasePrivate])) {
+        return useCase;
     }
     
-    return PLVPIUseCaseDefault;
+    return Nil;
 }
 /**
  *  checkUserToken withPIAsOrderedSet
