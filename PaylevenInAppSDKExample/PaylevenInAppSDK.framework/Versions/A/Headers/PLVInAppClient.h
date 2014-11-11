@@ -46,7 +46,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 - (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 /**
- *  addPaymentInstruments:
+ *  addPaymentInstrument:
  *
  *  add a array of payment instruments to a userToken
  *

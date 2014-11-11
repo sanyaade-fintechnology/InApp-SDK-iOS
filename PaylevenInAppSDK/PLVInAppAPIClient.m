@@ -20,7 +20,8 @@
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
-#define apiParameterKeyAddPIs @"paymentInstrument"
+#define apiParameterKeyAddPIs @"paymentInstruments"
+#define apiParameterKeyPI @"paymentInstrument"
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"version"
 #define apiParameterKeyUseCase @"useCase"
@@ -226,7 +227,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             NSDictionary* desc = [payInstrument piDictDescription];
             
             if (desc != Nil) {
-                    [parameters setObject:desc forKey:apiParameterKeyAddPIs];
+                    [parameters setObject:desc forKey:apiParameterKeyPI];
             }
     }
     
@@ -308,12 +309,17 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                 
                 for (NSDictionary* piDict in piArray) {
                     
-                    PLVPaymentInstrument* pi = [PLVPaymentInstrument serializeWithDict:piDict];
+                    if ([piDict isKindOfClass:[NSDictionary class]]) {
                     
-                    if (pi != Nil) {
-                        [serializedPI addObject:pi];
+                        PLVPaymentInstrument* pi = [PLVPaymentInstrument serializeWithDict:piDict];
+                        
+                        if (pi != Nil) {
+                            [serializedPI addObject:pi];
+                        } else {
+                            SDLog(@"Can't serialze PI from dict %@",piDict);
+                        }
                     } else {
-                        SDLog(@"Can't serialze PI from dict %@",piDict);
+                        SDLog(@"Can't serialze PI from dict (not even dict at all) %@",piDict);
                     }
                     
                 }
@@ -398,7 +404,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         NSString* piID = payInstrument.identifier;
         
         if(piID != Nil) {
-            [parameters setObject:piID forKey:apiParameterKeyAddPIs];
+            [parameters setObject:piID forKey:apiParameterKeyPI];
         }
     }
     
