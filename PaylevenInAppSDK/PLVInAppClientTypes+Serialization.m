@@ -35,6 +35,8 @@
             newPI = [[PLVPayInstrumentPAYPAL alloc] init];
         }
         
+        SDLog(@"Serialze with Dict:%@",dict);
+        
         [newPI initValuesWithDict:dict];
         
         return newPI;
@@ -77,17 +79,14 @@
 
 - (void) initValuesWithDict:(NSDictionary*)contentDict {
     
-    for (NSString* key in contentDict.allKeys) {
-        
-        id objectForKey = [contentDict objectForKey:key];
-        
-        if (objectForKey != Nil) {
-            [self setValue:objectForKey forKey:key];
-        }
-    }
-    
+    [self setValuesForKeysWithDictionary:contentDict];
 }
 
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+    
+    SDLog(@"Serialze %@: try to set undefinedKey:%@",[[self class] description],key);
+    
+}
 @end
 
 

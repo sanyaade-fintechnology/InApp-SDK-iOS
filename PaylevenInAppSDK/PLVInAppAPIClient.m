@@ -15,8 +15,8 @@
 #import "PLVInAppClientTypes+Serialization.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
+#define useLocalEndpoint 1
+#define usemacMiniEndpoint 0
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
