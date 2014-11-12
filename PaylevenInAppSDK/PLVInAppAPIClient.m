@@ -504,12 +504,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
         }
         
-        NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
-        
-        //TODO CHeck for valid NSHTTPURLResponse
-        
-        SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
-        
         NSDictionary *responseDict = nil;
         
         NSError *JSONError;
@@ -525,6 +519,15 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             });
             
             return;
+        } else {
+            
+            NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
+            
+            //TODO CHeck for valid NSHTTPURLResponse
+            
+            SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
+            
+            SDLog(@"String sent from server %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         }
         
 
