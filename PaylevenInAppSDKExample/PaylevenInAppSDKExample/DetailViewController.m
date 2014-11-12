@@ -195,7 +195,7 @@
     
     self.activityPlane.hidden = FALSE;
     
-    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:PLVPIUseCasePrivate andCompletion:^(NSDictionary* result, NSError* error){
+    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseCase:PLVPIUseCasePrivate andCompletion:^(NSDictionary* result, NSError* error){
         
         self.activityPlane.hidden = TRUE;
         
@@ -235,7 +235,7 @@
     
     actionSheet.tag = selectPItoAddActionSheet;
     
-    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
+    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.subPlane animated:YES];
     
 }
 
