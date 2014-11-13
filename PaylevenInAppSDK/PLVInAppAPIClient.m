@@ -13,6 +13,7 @@
 #import "PLVServerTrustValidator.h"
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppClientTypes+Serialization.h"
+#import "OrderedDictionary.h"
 #import <CommonCrypto/CommonCrypto.h>
 
 #define useLocalEndpoint 1
@@ -171,6 +172,13 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     self.registerBundleID = bundleID;
 
+    NSMutableDictionary* dummyParameter = [NSMutableDictionary dictionaryWithDictionary:@{@"hmacTime":@"2014-11-13T12:49:39",@"authToken":@"paylpal_auth_token",@"userToken":@"37c339b0435f4f22639b713e15a1b9"}];
+    
+    [self addHmacForParameterDict:dummyParameter];
+    
+    NSLog (@"%@",dummyParameter);
+    
+    
     return;
 }
 
@@ -348,7 +356,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             
             if ([baseType isKindOfClass:[PLVPaymentInstrument class]]) {
                 
-                NSMutableDictionary* newOrderedItem = [NSMutableDictionary new];
+                OrderedDictionary* newOrderedItem = [OrderedDictionary new];
                 
                 NSString* piID = [NSString stringWithString:baseType.identifier];
                 
@@ -651,9 +659,14 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     for (NSString* key in sortedParamKeys)
     {
         id value = [params objectForKey:key];
+        
         if ([value isKindOfClass:[NSDictionary class]])
         {
-            for (NSString *subKey in value)
+            NSDictionary* valueDict = (NSDictionary*)value;
+            
+            NSArray* keyArray = [valueDict.allKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
+            
+            for (NSString *subKey in keyArray)
             {
                 [pairs addObject:[NSString stringWithFormat:@"%@[%@]=%@", key, subKey, [value objectForKey:subKey]]];
             }
@@ -661,9 +674,25 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         else if ([value isKindOfClass:[NSArray class]])
         {
             NSUInteger i = 0;
+            
             for (NSString *subValue in value)
             {
-                [pairs addObject:[NSString stringWithFormat:@"%@[%lu]=%@", key, (unsigned long)i, subValue]];
+                if ([subValue isKindOfClass:[NSDictionary class]])
+                {
+                    NSDictionary* subValueDict = (NSDictionary*)subValue;
+                    
+                    NSArray* keyArray = [subValueDict.allKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
+                    
+                    for (NSString *subKey in keyArray)
+                    {
+                        [pairs addObject:[NSString stringWithFormat:@"%@[%lu][%@]=%@", key,i, subKey, [subValueDict objectForKey:subKey]]];
+                    }
+                } else {
+                
+                    [pairs addObject:[NSString stringWithFormat:@"%@[%lu]=%@", key, (unsigned long)i, subValue]];
+                    
+                }
+                
                 i++;
             }
         }

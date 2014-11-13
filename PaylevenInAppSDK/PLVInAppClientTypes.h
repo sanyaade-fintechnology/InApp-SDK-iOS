@@ -31,7 +31,7 @@
 @property (readonly,nonatomic) NSString* cardBrand;
 @property (strong) NSString* expiryMonth;
 @property (strong) NSString* expiryYear;
-@property (strong) NSString* ccv;
+@property (strong) NSString* cvv;
 
 @end
 
@@ -50,7 +50,6 @@
 
 @interface PLVPayInstrumentPAYPAL : PLVPaymentInstrument
 
-@property (strong) NSString* emailAddress;
-@property (strong) NSString* oAuthToken;
+@property (strong) NSString* authToken;
 
 @end

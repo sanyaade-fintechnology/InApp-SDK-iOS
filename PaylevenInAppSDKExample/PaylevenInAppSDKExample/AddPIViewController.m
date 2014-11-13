@@ -10,22 +10,26 @@
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+
+
 #define selectUseCaseActionSheet 456
+#define selectPItoAddActionSheet 666
+
 #define textFieldTagOffSet 1000
 #define textFieldHeight 40.
 #define textFieldPad 10.
 #define textFieldMargin 10.
 
+#define TypeDefault 0
 #define TypeNumberPad 4
 
 
 @interface AddPIViewController ()
 
-@property (weak) IBOutlet UIButton* useCaseButton;
+@property (weak) IBOutlet UIButton* piTypeButton;
 @property (weak) IBOutlet UIButton* sendButton;
 @property (weak) IBOutlet UIScrollView* scrollView;
-@property (weak) IBOutlet UILabel* piTypeLabel;
-@property (strong)  NSString* useCase;
+@property (weak) IBOutlet UILabel* useCaseLabel;
 @property (strong)  NSMutableDictionary* addInfoDict;
 @property (strong)  NSArray* keyArray;
 @property (strong)  NSArray* keyValueLengthArray;
@@ -36,19 +40,30 @@
 
 @implementation AddPIViewController
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _piTypeToCreate = PLVPITypeCC;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
     self.useCase = @"DEFAULT";
     
-    [self updateButtonDesign:self.useCaseButton];
+    [self updateButtonDesign:self.piTypeButton];
     
     [self updateButtonDesign:self.sendButton];
     
     [self createContentKeyArray];
     
     self.addInfoDict = [NSMutableDictionary new];
+    
+    self.useCaseLabel.text = [NSString stringWithFormat:@"add PI to useCase: %@",self.useCase];
 
 }
 
@@ -82,54 +97,59 @@
 }
 */
 
-- (IBAction)showUseCaseActionSheet:(id)sender {
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose UseCsae"
-                                                             delegate:self
-                                                    cancelButtonTitle:(isIPAD ? Nil : @"Cancel")
-                                               destructiveButtonTitle:Nil
-                                                    otherButtonTitles:@"DEFAULT", @"PRIVATE", @"BUSINESS", nil];
-    
-    actionSheet.tag = selectUseCaseActionSheet;
-    
-    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
-    
-}
-
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if (actionSheet.tag == selectUseCaseActionSheet) {
-        
-        switch (buttonIndex) {
-            case 0:
-                self.useCase = @"DEFAULT";
-                
-                [self updateButtonDesign:self.useCaseButton];
-                break;
-            case 1:
-                self.useCase = @"PRIVATE";
-                
-                [self updateButtonDesign:self.useCaseButton];
-                break;
-            case 2:
-                self.useCase = @"BUSINESS";
-                
-                [self updateButtonDesign:self.useCaseButton];
-                break;
-            default:
-                break;
-        }
-    }
-}
 
 - (void) updateButtonDesign:(UIButton*)button {
     
-    button.layer.cornerRadius = 10.f;
+    button.layer.cornerRadius = 5.f;
     button.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     button.layer.borderWidth = 1.f;
     
-    [self.useCaseButton setTitle:self.useCase forState:UIControlStateNormal];
+    [self.piTypeButton setTitle:self.useCase forState:UIControlStateNormal];
+    
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    NSString* currentType = self.piTypeToCreate;
+    
+    switch (buttonIndex) {
+        case 0:
+            self.piTypeToCreate  = PLVPITypeCC;
+            break;
+        case 1:
+            self.piTypeToCreate = PLVPITypeDD;
+            break;
+        case 2:
+            self.piTypeToCreate = PLVPITypeSEPA;
+            break;
+        case 3:
+            self.piTypeToCreate = PLVPITypePAYPAL;
+            break;
+        default:
+            break;
+    }
+    
+    if (![currentType isEqualToString:self.piTypeToCreate]) {
+        
+        [self createContentKeyArray];
+        
+        [self createTextFieldsOnScrollView:self.scrollView];
+        
+    }
+    
+}
+
+- (IBAction)setCreatePIType:(id)sender {
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select type:"
+                                                             delegate:self
+                                                    cancelButtonTitle:(isIPAD ? Nil : @"Cancel")
+                                               destructiveButtonTitle:Nil
+                                                    otherButtonTitles:@"CreditCard", @"DebitCard", @"SEPA", @"PayPal", nil];
+    
+    actionSheet.tag = selectPItoAddActionSheet;
+    
+    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
     
 }
 
@@ -137,6 +157,8 @@
 - (IBAction)sendPI:(id)sender {
     
    PLVPaymentInstrument* pi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    
+    [self closeKeyboard];
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:pi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
@@ -160,9 +182,32 @@
         self.keyboardTypeArray = @[@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
         
         piType = @"CreditCard";
+        
+    } else if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
+        
+        self.keyArray = @[@"accountNumber",@"routingNumber"];
+        self.keyValueLengthArray = @[@11,@10];
+        self.keyboardTypeArray = @[@TypeDefault,@TypeDefault];
+        
+        piType = @"Debit Account";
+    } else if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
+        
+        self.keyArray = @[@"iban",@"bic"];
+        self.keyValueLengthArray = @[@34,@34];
+        self.keyboardTypeArray = @[@TypeDefault,@TypeDefault];
+        
+        piType = @"SEPA Account";
+    } else if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
+        
+        self.keyArray = @[@"authToken"];
+        self.keyValueLengthArray = @[@21];
+        self.keyboardTypeArray = @[@TypeDefault];
+        
+        piType = @"Paypay Account";
     }
     
-    self.piTypeLabel.text = piType;
+    [self.piTypeButton setTitle:piType forState:UIControlStateNormal];
+    
 }
 
 - (PLVPaymentInstrument*) fillPIWithType:(NSString*)pitype andContent:(NSDictionary*)content {
@@ -171,6 +216,10 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
         pi = [[PLVPayInstrumentCC alloc] init];
+    }
+    
+    if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
+        pi = [[PLVPayInstrumentPAYPAL alloc] init];
     }
     
     for (NSString* key in content.allKeys) {
@@ -182,6 +231,13 @@
 }
 
 - (void) createTextFieldsOnScrollView:(UIScrollView*)scrollView {
+    
+    NSArray* subViews = scrollView.subviews;
+    
+    for (UIView* subView in subViews) {
+        [subView removeFromSuperview];
+    }
+    
     
     NSUInteger textFieldIndex = 0;
     
@@ -216,12 +272,12 @@
     
     UIButton* newTextFieldButton = [[UIButton alloc] initWithFrame:CGRectMake(textFieldMargin,textFieldIndex * (textFieldPad + textFieldHeight), self.view.frame.size.width - (2 * textFieldMargin), textFieldHeight * 5)];
     
-//    newTextFieldButton.backgroundColor = [UIColor greenColor];
-    
     [newTextFieldButton addTarget:self action:@selector(closeKeyboard) forControlEvents:UIControlEventTouchDown];
     
     [scrollView addSubview:newTextFieldButton];
     
+    
+    [scrollView setNeedsDisplay];
     
     if (textFieldIndex > 2) {
         self.scrollView.scrollEnabled = TRUE;
@@ -265,6 +321,18 @@
     
     if (replacedString.length > maxLength.intValue) {
         return FALSE;
+    }
+    
+    NSString* key = [self.keyArray objectAtIndex:tfTag];
+    
+    [self.addInfoDict setObject:textField.text forKey:key];
+    
+    if (self.addInfoDict.count == self.keyArray.count) {
+        self.sendButton.enabled = TRUE;
+        self.sendButton.alpha = 1.0;
+    } else {
+        self.sendButton.enabled = FALSE;
+        self.sendButton.alpha = 0.5;
     }
     
     return TRUE;

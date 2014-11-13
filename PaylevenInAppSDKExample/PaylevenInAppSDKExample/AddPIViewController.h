@@ -12,5 +12,6 @@
 
 @property (strong) NSString* piTypeToCreate;
 @property (strong) NSString* userToken;
+@property (strong) NSString* useCase;
 
 @end

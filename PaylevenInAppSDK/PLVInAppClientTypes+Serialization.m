@@ -10,6 +10,7 @@
 
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppClientTypes+Serialization.h"
+#import "OrderedDictionary.h"
 
 
 @implementation PLVPaymentInstrument (Serialization)
@@ -65,7 +66,7 @@
 
 - (NSMutableDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [NSMutableDictionary new];
+    OrderedDictionary* content = [OrderedDictionary new];
     
     if (self.identifier != Nil) {
         [content setObject:self.identifier forKey:piIdentifierTypeKey];
@@ -94,10 +95,10 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [super piDictDescription];
+    OrderedDictionary* content = [OrderedDictionary new];
     
-    if (self.pan != Nil) {
-        [content setObject:self.pan forKey:ccPanKey];
+    if (self.cvv != Nil) {
+        [content setObject:self.cvv forKey:ccCCVKey];
     }
     
     if (self.expiryMonth != Nil) {
@@ -108,8 +109,16 @@
         [content setObject:self.expiryYear forKey:ccExpiryYearKey];
     }
     
-    if (self.ccv != Nil) {
-        [content setObject:self.ccv forKey:ccCCVKey];
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
+    if (self.pan != Nil) {
+        [content setObject:self.pan forKey:ccPanKey];
+    }
+    
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
     }
     
     return content;
@@ -122,14 +131,23 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [super piDictDescription];
+    OrderedDictionary* content = [OrderedDictionary new];
+    
     
     if (self.accountNumber != Nil) {
         [content setObject:self.accountNumber forKey:ddAccountNumberKey];
     }
     
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
     if (self.routingNumber != Nil) {
         [content setObject:self.routingNumber forKey:ddRoutingNumberKey];
+    }
+    
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
     }
     
     return content;
@@ -143,14 +161,22 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [super piDictDescription];
+    OrderedDictionary* content = [OrderedDictionary new];
+    
+    if (self.bic != Nil) {
+        [content setObject:self.bic forKey:sepaBICNumberKey];
+    }
     
     if (self.iban != Nil) {
         [content setObject:self.iban forKey:sepaIBANNumberKey];
     }
     
-    if (self.bic != Nil) {
-        [content setObject:self.bic forKey:sepaBICNumberKey];
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
     }
     
     return content;
@@ -163,14 +189,18 @@
 
 - (NSDictionary*) piDictDescription {
     
-    NSMutableDictionary* content = [super piDictDescription];
+    OrderedDictionary* content = [OrderedDictionary new];
     
-    if (self.oAuthToken != Nil) {
-        [content setObject:self.oAuthToken forKey:paypalAuthTokenKey];
+    if (self.authToken != Nil) {
+        [content setObject:self.authToken forKey:paypalAuthTokenKey];
+    }
+
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
     }
     
-    if (self.emailAddress != Nil) {
-        [content setObject:self.emailAddress forKey:paypalEmailAdressKey];
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
     }
     
     return content;

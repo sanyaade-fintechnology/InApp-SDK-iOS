@@ -7,10 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddPIViewController">
             <connections>
-                <outlet property="piTypeLabel" destination="Bmr-va-bZK" id="81H-Oe-aCT"/>
+                <outlet property="piTypeButton" destination="d4s-by-HxK" id="iEj-En-ajp"/>
                 <outlet property="scrollView" destination="e21-0K-u9s" id="Ipy-xn-lH5"/>
                 <outlet property="sendButton" destination="ZfC-F1-xOJ" id="4fG-I4-kV1"/>
-                <outlet property="useCaseButton" destination="d4s-by-HxK" id="Efx-tX-ZBy"/>
+                <outlet property="useCaseLabel" destination="Lxh-DY-XcR" id="YMl-Lq-4Re"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,16 +26,16 @@
                         <constraint firstAttribute="height" constant="30" id="NLc-lg-Cr2"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="DEFAULT">
+                    <state key="normal" title="CreditCard">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="showUseCaseActionSheet:" destination="-1" eventType="touchUpInside" id="aOy-hb-w19"/>
+                        <action selector="setCreatePIType:" destination="-1" eventType="touchUpInside" id="8nG-X6-6az"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UseCase:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lxh-DY-XcR">
-                    <rect key="frame" x="257" y="22" width="87" height="21"/>
+                    <rect key="frame" x="16" y="22" width="568" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="87" id="bZC-02-1uP"/>
                         <constraint firstAttribute="height" constant="21" id="fPK-y1-LqQ"/>
@@ -47,6 +47,7 @@
                     <nil key="highlightedColor"/>
                     <variation key="default">
                         <mask key="constraints">
+                            <exclude reference="bZC-02-1uP"/>
                             <exclude reference="fPK-y1-LqQ"/>
                             <exclude reference="hWm-vN-yMH"/>
                         </mask>
@@ -92,61 +93,40 @@
                     </connections>
                 </button>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e21-0K-u9s">
-                    <rect key="frame" x="0.0" y="123" width="600" height="422"/>
+                    <rect key="frame" x="0.0" y="89" width="600" height="456"/>
                 </scrollView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PI Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bmr-va-bZK">
-                    <rect key="frame" x="10" y="89" width="580" height="26"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="26" id="ATM-nb-04e"/>
-                        <constraint firstAttribute="width" constant="87" id="KyI-60-4fF"/>
-                        <constraint firstAttribute="width" constant="87" id="NfE-qs-6dP"/>
-                        <constraint firstAttribute="height" constant="21" id="RPO-dy-rVf"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="i7D-U5-h8o"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="KyI-60-4fF"/>
-                            <exclude reference="NfE-qs-6dP"/>
-                            <exclude reference="RPO-dy-rVf"/>
-                            <exclude reference="i7D-U5-h8o"/>
-                        </mask>
-                    </variation>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="d4s-by-HxK" firstAttribute="centerX" secondItem="Lxh-DY-XcR" secondAttribute="centerX" constant="-0.5" id="3PV-bX-XQC"/>
                 <constraint firstItem="d4s-by-HxK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="51" id="4gZ-Lz-rxo"/>
                 <constraint firstAttribute="trailing" secondItem="e21-0K-u9s" secondAttribute="trailing" id="66W-pr-zZ4"/>
-                <constraint firstAttribute="trailing" secondItem="Bmr-va-bZK" secondAttribute="trailing" constant="10" id="Elw-Ii-Znj"/>
+                <constraint firstItem="Lxh-DY-XcR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="D3t-te-9Zm"/>
                 <constraint firstItem="Lxh-DY-XcR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="304" id="IUd-74-QGr"/>
                 <constraint firstItem="Lxh-DY-XcR" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="16" id="Jht-1d-Icx"/>
                 <constraint firstItem="d4s-by-HxK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="PHl-yW-rpa"/>
                 <constraint firstItem="ZfC-F1-xOJ" firstAttribute="top" secondItem="e21-0K-u9s" secondAttribute="bottom" constant="8" id="RAS-Dm-afv"/>
                 <constraint firstItem="n7o-Ew-dId" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SPL-On-JaC"/>
                 <constraint firstAttribute="trailing" secondItem="d4s-by-HxK" secondAttribute="trailing" constant="10" id="TD4-ol-M18"/>
-                <constraint firstItem="Bmr-va-bZK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="dNo-Mn-htd"/>
-                <constraint firstItem="e21-0K-u9s" firstAttribute="top" secondItem="d4s-by-HxK" secondAttribute="bottom" constant="42" id="ggp-Bj-98A"/>
+                <constraint firstItem="e21-0K-u9s" firstAttribute="top" secondItem="d4s-by-HxK" secondAttribute="bottom" constant="8" id="ggp-Bj-98A"/>
                 <constraint firstItem="d4s-by-HxK" firstAttribute="leading" secondItem="Lxh-DY-XcR" secondAttribute="trailing" constant="-288" id="iO5-aW-sBV"/>
+                <constraint firstAttribute="trailing" secondItem="Lxh-DY-XcR" secondAttribute="trailing" constant="16" id="lbY-8s-NB3"/>
                 <constraint firstAttribute="bottom" secondItem="ZfC-F1-xOJ" secondAttribute="bottom" constant="17" id="mGU-Bk-yyZ"/>
                 <constraint firstItem="e21-0K-u9s" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="mHl-Vg-GX2"/>
                 <constraint firstItem="n7o-Ew-dId" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="18" id="n1r-dH-zOb"/>
                 <constraint firstAttribute="trailing" secondItem="ZfC-F1-xOJ" secondAttribute="trailing" constant="10" id="n7L-M6-gcf"/>
-                <constraint firstItem="Bmr-va-bZK" firstAttribute="top" secondItem="d4s-by-HxK" secondAttribute="bottom" constant="8" id="nF0-k4-eJj"/>
                 <constraint firstItem="d4s-by-HxK" firstAttribute="top" secondItem="Lxh-DY-XcR" secondAttribute="bottom" constant="8" id="rUs-KI-owI"/>
                 <constraint firstItem="ZfC-F1-xOJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="w64-M9-YR9"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
+                    <exclude reference="3PV-bX-XQC"/>
                     <exclude reference="iO5-aW-sBV"/>
                     <exclude reference="IUd-74-QGr"/>
                     <exclude reference="Jht-1d-Icx"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="820" y="537"/>
+            <point key="canvasLocation" x="1019" y="570"/>
         </view>
     </objects>
 </document>

@@ -13,19 +13,26 @@
 
 #define selectEmailAddressActionSheet 333
 #define selectPItoAddActionSheet 666
+#define selectUseCaseActionSheet 999
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
 @interface DetailViewController ()
 
-@property (weak) IBOutlet UILabel* apiKeyLabel;
+
 @property (weak) IBOutlet UITextField* emailTextField;
 @property (weak) IBOutlet UIButton* getUserTokenButton;
+
+
 @property (weak) IBOutlet UIButton* listPIButton;
 @property (weak) IBOutlet UIButton* addPIButton;
+@property (weak) IBOutlet UIButton* backButton;
 @property (weak) IBOutlet UILabel* userTokenLabel;
 @property (weak) IBOutlet UIView* activityPlane;
 @property (weak) IBOutlet UIView* subPlane;
+@property (weak) IBOutlet UIButton* useCaseButton;
+
+@property (strong) NSString* useCase;
 
 @end
 
@@ -36,16 +43,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.useCase = @"DEFAULT";
     
-    [self updateButtonDesign:self.getUserTokenButton];
-    [self updateButtonDesign:self.addPIButton];
-    [self updateButtonDesign:self.listPIButton];
-
+    [self updateFrameDesign:self.getUserTokenButton];
+    [self updateFrameDesign:self.backButton];
+    [self updateFrameDesign:self.addPIButton];
+    [self updateFrameDesign:self.listPIButton];
+    [self updateFrameDesign:self.useCaseButton];
+    
+    self.useCaseButton.titleLabel.text = self.useCase;
+    
 }
 
-- (void) updateButtonDesign:(UIButton*)button {
+- (void) updateFrameDesign:(UIView*)button {
     
-    button.layer.cornerRadius = 10.f;
+    button.layer.cornerRadius = 5.f;
     button.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     button.layer.borderWidth = 1.f;
     
@@ -97,37 +109,23 @@
             default:
                 break;
         }
-    } else if(actionSheet.tag == selectPItoAddActionSheet && buttonIndex < 4) {
-        
-        NSString* piType;
+    } else if (actionSheet.tag == selectUseCaseActionSheet) {
         
         switch (buttonIndex) {
             case 0:
-                piType = PLVPITypeCC;
+                self.useCase = @"DEFAULT";
                 break;
             case 1:
-                piType = PLVPITypeDD;
+                self.useCase = @"PRIVATE";
                 break;
             case 2:
-                piType = PLVPITypeSEPA;
-                break;
-            case 3:
-                piType = PLVPITypePAYPAL;
+                self.useCase = @"BUSINESS";
                 break;
             default:
                 break;
         }
         
-        if (piType != Nil) {
-            
-            AddPIViewController* addPiVC = [[AddPIViewController alloc] initWithNibName:@"AddPIViewController" bundle:Nil];
-            
-            addPiVC.piTypeToCreate = piType;
-            addPiVC.userToken = self.userTokenLabel.text;
-            
-            [self.navigationController pushViewController:addPiVC animated:YES];
-            
-        }
+        [self.useCaseButton setTitle:self.useCase forState:UIControlStateNormal];
     }
 }
 
@@ -195,7 +193,7 @@
     
     self.activityPlane.hidden = FALSE;
     
-    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:PLVPIUseCasePrivate andCompletion:^(NSDictionary* result, NSError* error){
+    [[PLVInAppClient sharedInstance] listPaymentInstrumentsForUserToken:self.userTokenLabel.text  withUseType:self.useCase andCompletion:^(NSDictionary* result, NSError* error){
         
         self.activityPlane.hidden = TRUE;
         
@@ -209,7 +207,7 @@
                     
                     PayInstTableViewController* listVC = [[PayInstTableViewController alloc] initWithNibName:@"PayInstTableViewController" bundle:Nil];
                     
-                    [listVC setPIArray:piListArray forUserToken:self.userTokenLabel.text];
+                    [listVC setPIArray:piListArray forUserToken:self.userTokenLabel.text andUseCase:self.useCase];
                     
                     [self.navigationController pushViewController:listVC animated:YES];
                     
@@ -227,16 +225,14 @@
 
 - (IBAction)addPIActionSheet:(id)sender {
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select type:"
-                                                             delegate:self
-                                                    cancelButtonTitle:(isIPAD ? Nil : @"Cancel")
-                                               destructiveButtonTitle:Nil
-                                                    otherButtonTitles:@"CreditCard", @"DebitCard", @"SEPA", @"PayPal", nil];
+    AddPIViewController* addPiVC = [[AddPIViewController alloc] initWithNibName:@"AddPIViewController" bundle:Nil];
     
-    actionSheet.tag = selectPItoAddActionSheet;
+    addPiVC.piTypeToCreate = @"CC";
+    addPiVC.useCase = self.useCase;
+    addPiVC.userToken = self.userTokenLabel.text;
     
-    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
-    
+    [self.navigationController pushViewController:addPiVC animated:YES];
+        
 }
 
 
@@ -245,6 +241,21 @@
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:self cancelButtonTitle:@"Damm" otherButtonTitles:nil];
     
     [alertView show];
+    
+}
+
+
+- (IBAction)showUseCaseActionSheet:(id)sender {
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose UseCase"
+                                                             delegate:self
+                                                    cancelButtonTitle:(isIPAD ? Nil : @"Cancel")
+                                               destructiveButtonTitle:Nil
+                                                    otherButtonTitles:@"DEFAULT", @"PRIVATE", @"BUSINESS", nil];
+    
+    actionSheet.tag = selectUseCaseActionSheet;
+    
+    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
     
 }
 

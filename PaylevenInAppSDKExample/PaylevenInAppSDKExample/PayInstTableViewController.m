@@ -30,8 +30,10 @@
 @property (weak) IBOutlet UITableView* tableView;
 @property (weak) IBOutlet UIView* activityPlane;
 @property (weak) IBOutlet UIButton* editTableButton;
+@property (weak) IBOutlet UILabel* useCaseLabel;
 @property (strong) NSMutableArray* payInstruments;
 @property (strong) NSString* userToken;
+@property (strong) NSString* useCase;
 @property (strong) NSIndexPath* indexPathToDelete;
 @property (strong) NSIndexPath* indexPathFromOrder;
 @property (strong) NSIndexPath* indexPathToOrder;
@@ -52,6 +54,8 @@
     [self.tableView registerNib:cellNib forCellReuseIdentifier:piLiastTableViewCell];
     
     [self.tableView reloadData];
+    
+    self.useCaseLabel.text = [NSString stringWithFormat:@"useCase: %@",self.useCase];
 }
 
 - (IBAction)backButton:(id)sender {
@@ -65,10 +69,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) setPIArray:(NSArray*)piArray forUserToken:(NSString*)userToken {
+- (void) setPIArray:(NSArray*)piArray forUserToken:(NSString*)userToken andUseCase:(NSString*)useCase {
     
     self.userToken = userToken;
     self.payInstruments = [NSMutableArray arrayWithArray:piArray];
+    self.useCase = useCase;
+    self.useCaseLabel.text = self.useCase;
 }
 
 
@@ -121,7 +127,7 @@
         return [NSString stringWithFormat:@"IBAN:%@",cc.iban];
     } else if([shortType isEqualToString:@"PAYPAL"]) {
         PLVPayInstrumentPAYPAL* cc = (PLVPayInstrumentPAYPAL*)pi;
-        return [NSString stringWithFormat:@"PAYPAYL:%@",cc.emailAddress];
+        return [NSString stringWithFormat:@"PAYPAYL:%@",cc.authToken];
     }  else {
         return @"unknown";
     }

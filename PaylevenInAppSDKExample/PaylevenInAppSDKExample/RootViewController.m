@@ -22,7 +22,7 @@
     
     self.bundleIDLabel.text = [NSString stringWithFormat:@"BundleID: %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey]];
     
-    self.registerAPIKeyButton.layer.cornerRadius = 10.f;
+    self.registerAPIKeyButton.layer.cornerRadius = 5.f;
     self.registerAPIKeyButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     self.registerAPIKeyButton.layer.borderWidth = 1.f;
     
