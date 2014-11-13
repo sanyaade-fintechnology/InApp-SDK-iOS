@@ -88,6 +88,16 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  */
 - (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
+/**
+ *  removePaymentInstrument
+ *
+ *  @param payInstrument     PaymentInstruments
+ *  @param userToken         userToken
+ *  @param useCase           useCase to remove from
+ *  @param completionHandler completionHandler
+ */
+- (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
 @end
 
 

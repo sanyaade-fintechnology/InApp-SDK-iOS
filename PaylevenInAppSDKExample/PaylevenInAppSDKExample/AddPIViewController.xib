@@ -34,7 +34,7 @@
                         <action selector="setCreatePIType:" destination="-1" eventType="touchUpInside" id="8nG-X6-6az"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UseCase:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lxh-DY-XcR">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UseCase:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lxh-DY-XcR">
                     <rect key="frame" x="16" y="22" width="568" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="87" id="bZC-02-1uP"/>

@@ -45,15 +45,16 @@
     self = [super init];
     if (self) {
         _piTypeToCreate = PLVPITypeCC;
+        _useCase = @"DEFAULT";
     }
     return self;
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     
-    self.useCase = @"DEFAULT";
+    [super viewDidLoad];
+    
+    // Do any additional setup after loading the view from its nib.
     
     [self updateButtonDesign:self.piTypeButton];
     

@@ -17,8 +17,8 @@
 #import <CommonCrypto/CommonCrypto.h>
 
 #define useLocalEndpoint 0
-#define usemacMiniEndpoint 0
-#define useOtherEndpoint 1
+#define usemacMiniEndpoint 1
+#define useOtherEndpoint 0
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
@@ -42,6 +42,7 @@ static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstrument
 static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
 static NSString * const PLVInAppClientAPISetPiTokenListOrderEndPoint = @"/setPaymentInstrumentsOrder";
 static NSString * const PLVInAppClientAPIDisablePiTokenEndPoint = @"/disablePaymentInstrument";
+static NSString * const PLVInAppClientAPIRemovePiTokenEndPoint = @"/removePaymentInstrument";
 
 
 #if useLocalEndpoint
@@ -53,7 +54,7 @@ static NSString * const PLVInAppClientAPIHost = @"http://localhost/staging/api";
 
 /** macMini in office endpoint. */
 
-static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.46/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/staging/api";
 
 
 #elif useOtherEndpoint
@@ -456,7 +457,13 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     }];
 }
 
-
+- (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+//    PLVInAppClientAPIRemovePiTokenEndPoint
+    
+    
+    
+}
 
 #pragma mark -
 
