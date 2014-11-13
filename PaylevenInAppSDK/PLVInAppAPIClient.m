@@ -16,8 +16,9 @@
 #import "OrderedDictionary.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#define useLocalEndpoint 1
+#define useLocalEndpoint 0
 #define usemacMiniEndpoint 0
+#define useOtherEndpoint 1
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
@@ -53,6 +54,11 @@ static NSString * const PLVInAppClientAPIHost = @"http://localhost/staging/api";
 /** macMini in office endpoint. */
 
 static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.46/staging/api";
+
+
+#elif useOtherEndpoint
+
+static NSString * const PLVInAppClientAPIHost = @"http://192.168.32.47/staging/api";
 
 #else
 
@@ -342,9 +348,14 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     }];
 }
 
-- (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderSet forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderSet forUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    
+    if (useCase != Nil) {
+        // add use case in case of ... otherwise it default value form BE will be used
+        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
+    }
     
     if(piOrderSet != Nil && piOrderSet.count > 0) {
         
@@ -501,12 +512,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
         }
         
-        NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
-        
-        //TODO CHeck for valid NSHTTPURLResponse
-        
-        SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
-        
         NSDictionary *responseDict = nil;
         
         NSError *JSONError;
@@ -522,6 +527,15 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             });
             
             return;
+        } else {
+            
+            NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
+            
+            //TODO CHeck for valid NSHTTPURLResponse
+            
+            SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
+            
+            SDLog(@"String sent from server %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         }
         
 
