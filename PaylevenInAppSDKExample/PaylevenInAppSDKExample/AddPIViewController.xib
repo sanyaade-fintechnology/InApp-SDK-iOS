@@ -122,10 +122,10 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="IUd-74-QGr"/>
-                    <exclude reference="Jht-1d-Icx"/>
                     <exclude reference="3PV-bX-XQC"/>
                     <exclude reference="iO5-aW-sBV"/>
+                    <exclude reference="IUd-74-QGr"/>
+                    <exclude reference="Jht-1d-Icx"/>
                 </mask>
             </variation>
             <point key="canvasLocation" x="1019" y="570"/>
