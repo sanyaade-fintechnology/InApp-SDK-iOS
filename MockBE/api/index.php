@@ -185,7 +185,7 @@ function listPaymentInstrumentsForUserToken() {
 
 function piTokenForUserAndUseCase($userToken,$useCase) {
 	
-	$sql = "SELECT PITABLE.piDetails, PITABLE.piIndex FROM PITABLE INNER JOIN USECASETABLE ON PITABLE.piToken=USECASETABLE.piToken WHERE USECASETABLE.useCase=:useCaseValue AND USECASETABLE.userToken=:userTokenValue ORDER BY USECASETABLE.sortIndex";
+	$sql = "SELECT PITABLE.piDetails, PITABLE.piIndex, USECASETABLE.sortIndex FROM PITABLE INNER JOIN USECASETABLE ON PITABLE.piToken=USECASETABLE.piToken WHERE USECASETABLE.useCase=:useCaseValue AND USECASETABLE.userToken=:userTokenValue ORDER BY USECASETABLE.sortIndex";
 		
      try {
 
@@ -200,6 +200,7 @@ function piTokenForUserAndUseCase($userToken,$useCase) {
          while($fetchPi = $stmt->fetchObject()) {
 			 $pi = (array)json_decode($fetchPi->piDetails);
 			 $pi['identifier'] = $fetchPi->piIndex;
+			 $pi['sortIndex'] = $fetchPi->sortIndex;
              array_push($piTokens,$pi);   
          }
 					

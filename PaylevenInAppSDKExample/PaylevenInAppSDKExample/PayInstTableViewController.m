@@ -193,6 +193,10 @@
         return;
     }
     
+    if (fromIndexPath.row == toIndexPath.row) {
+        return;
+    }
+    
     self.indexPathFromOrder = [fromIndexPath copy];
     self.indexPathToOrder = [toIndexPath copy];
     
@@ -342,6 +346,21 @@
             self.indexPathToDelete = Nil;
             
         }];
+    } else if (buttonIndex == 0){
+        
+        // cancel edit
+        
+        if (self.indexPathToDelete == Nil   ) {
+            return;
+        }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.tableView reloadData];
+            
+        });
+        
+
     }
 }
 
