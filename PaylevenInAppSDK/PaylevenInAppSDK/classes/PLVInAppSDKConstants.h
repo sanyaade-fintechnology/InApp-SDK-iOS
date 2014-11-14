@@ -31,7 +31,7 @@
 #define ccExpiryMonthKey        @"expiryMonth"
 #define ccExpiryYearKey         @"expiryYear"
 #define ccPanKey                @"pan"
-#define ccCCVKey                @"ccv"
+#define ccCVVKey                @"cvv"
 #define ccBrandKey              @"cardBrand"
 
 #define ddExpiryMonthKey        @"expiryMonth"

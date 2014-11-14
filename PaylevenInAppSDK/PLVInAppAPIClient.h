@@ -22,6 +22,8 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  */
 @interface PLVInAppAPIClient : NSObject
 
+- (void) setSpecificBaseServiceURL:(NSString*)serviceURLString;
+
 /** Queue to operate on. */
 @property (nonatomic, readonly) NSOperationQueue *queue;
 

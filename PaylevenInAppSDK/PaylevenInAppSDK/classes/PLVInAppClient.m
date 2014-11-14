@@ -61,6 +61,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
 }
 
+- (void) registerWithAPIKey:(NSString*)apiKey andSpecificBaseServiceURL:(NSString*)serviceURLString {
+    
+    assert(apiKey);
+    
+    [self.inAppAPIClient registerWithAPIKey:apiKey andBundleID:self.bundleID];
+    
+    [self.inAppAPIClient setSpecificBaseServiceURL:serviceURLString];
+    
+    self.apiKey = apiKey;
+    
+}
+
+
 - (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check

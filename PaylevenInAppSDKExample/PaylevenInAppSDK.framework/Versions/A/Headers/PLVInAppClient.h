@@ -27,6 +27,12 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 + (instancetype) sharedInstance;
 
+/**
+ *  registerWithAPIKey:
+ *
+ *  @param apiKey your API Key, and register specific baseServiceURL
+ */
+- (void) registerWithAPIKey:(NSString*)apiKey andSpecificBaseServiceURL:(NSString*)serviceURLString;
 
 /**
  *  registerWithAPIKey:

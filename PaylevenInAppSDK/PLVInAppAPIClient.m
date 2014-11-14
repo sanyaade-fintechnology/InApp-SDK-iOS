@@ -162,7 +162,11 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [self stop];
 }
 
-
+- (void) setSpecificBaseServiceURL:(NSString*)serviceURLString {
+    
+    self.serviceBaseURL = serviceURLString;
+    
+}
 #pragma mark -
 
 - (void)registerWithAPIKey:(NSString *)apiKey andBundleID:(NSString *)bundleID {
@@ -179,13 +183,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     self.registerBundleID = bundleID;
 
-    NSMutableDictionary* dummyParameter = [NSMutableDictionary dictionaryWithDictionary:@{@"hmacTime":@"2014-11-13T12:49:39",@"authToken":@"paylpal_auth_token",@"userToken":@"37c339b0435f4f22639b713e15a1b9"}];
-    
-    [self addHmacForParameterDict:dummyParameter];
-    
-    NSLog (@"%@",dummyParameter);
-    
-    
     return;
 }
 
@@ -197,7 +194,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
     [self addHmacForParameterDict:parameters];
     
-    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIUserTokenEndPoint];
     
@@ -250,7 +247,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self addHmacForParameterDict:parameters];
     
-    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIAddPiEndPoint];
     
@@ -291,7 +288,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self addHmacForParameterDict:parameters];
     
-    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIListPiTokenEndPoint];
     
@@ -389,7 +386,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self addHmacForParameterDict:parameters];
     
-    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppClientAPISetPiTokenListOrderEndPoint];
     
@@ -438,7 +435,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self addHmacForParameterDict:parameters];
     
-    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIDisablePiTokenEndPoint];
     
@@ -491,7 +488,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self addHmacForParameterDict:parameters];
     
-    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIRemovePiTokenEndPoint];
     
@@ -521,6 +518,15 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void)stop {
     [self.session invalidateAndCancel];
+}
+
+- (NSURL*) getBaseServiceURL {
+    
+    if (self.serviceBaseURL != Nil) {
+        return  [NSURL URLWithString:self.serviceBaseURL];
+    }
+    
+    return [NSURL URLWithString:PLVInAppClientAPIHost];
 }
 
 - (NSMutableURLRequest *)requestWithPath:(NSString *)path

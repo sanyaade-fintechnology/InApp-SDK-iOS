@@ -95,7 +95,7 @@
     OrderedDictionary* content = [OrderedDictionary new];
     
     if (self.cvv != Nil) {
-        [content setObject:self.cvv forKey:ccCCVKey];
+        [content setObject:self.cvv forKey:ccCVVKey];
     }
     
     if (self.expiryMonth != Nil) {
