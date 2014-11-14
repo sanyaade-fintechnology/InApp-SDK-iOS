@@ -200,14 +200,20 @@
         if ([result isKindOfClass:[NSDictionary class]]) {
             
             if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
-                
+
                 if ([result objectForKey:@"paymentInstruments"]) {
                     
                     NSArray* piListArray = [result objectForKey:@"paymentInstruments"];
                     
                     PayInstTableViewController* listVC = [[PayInstTableViewController alloc] initWithNibName:@"PayInstTableViewController" bundle:Nil];
                     
-                    [listVC setPIArray:piListArray forUserToken:self.userTokenLabel.text andUseCase:self.useCase];
+                    NSString* listUseCase = self.useCase;
+                    
+                    if ([result objectForKey:@"useCase"]) { // update the useCase
+                        listUseCase = [result objectForKey:@"useCase"];
+                    }
+                    
+                    [listVC setPIArray:piListArray forUserToken:self.userTokenLabel.text andUseCase:listUseCase];
                     
                     [self.navigationController pushViewController:listVC animated:YES];
                     

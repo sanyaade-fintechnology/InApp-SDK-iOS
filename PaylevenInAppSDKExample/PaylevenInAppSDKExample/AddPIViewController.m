@@ -157,15 +157,30 @@
 
 - (IBAction)sendPI:(id)sender {
     
+    self.currentTextField = Nil;
+    
    PLVPaymentInstrument* pi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
     
     [self closeKeyboard];
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:pi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
-        
+        if (self.currentTextField == Nil) {
+            // does not start an other textInput
+            // so we clear the fields
+            
+            for(UITextField* tField in self.scrollView.subviews) {
+                
+                if ([tField isKindOfClass:[UITextField class]]) {
+                    tField.text = @"";
+                }
+            }
+ 
+        }
         
     }];
+    
+    [self backButton:self];
     
 }
 
@@ -178,7 +193,7 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
         
-        self.keyArray = @[@"pan",@"expiryMonth",@"expiryYear",@"ccv"];
+        self.keyArray = @[@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
         self.keyValueLengthArray = @[@21,@2,@2,@4];
         self.keyboardTypeArray = @[@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
         
@@ -250,7 +265,7 @@
         newTextFieldFrame.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         newTextFieldFrame.layer.borderWidth = 1.f;
         
-        UITextField* newTextField = [[UITextField alloc] initWithFrame:CGRectMake(textFieldMargin,0., self.view.frame.size.width - (2 * textFieldMargin), textFieldHeight)];
+        UITextField* newTextField = [[UITextField alloc] initWithFrame:CGRectMake(textFieldMargin * 2 ,textFieldIndex * (textFieldPad + textFieldHeight), self.view.frame.size.width - (4 * textFieldMargin), textFieldHeight)];
         
         newTextField.tag = textFieldIndex + textFieldTagOffSet;
         
@@ -264,9 +279,9 @@
         
         newTextField.delegate = (id<UITextFieldDelegate>)self;
         
-        [newTextFieldFrame addSubview:newTextField];
-        
         [scrollView addSubview:newTextFieldFrame];
+        
+        [scrollView addSubview:newTextField];
         
         textFieldIndex++;
     }
@@ -285,11 +300,17 @@
         [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, (textFieldIndex * (textFieldPad + textFieldHeight)) + textFieldHeight * 5)];
     }
     
+    [self.scrollView setContentOffset:CGPointMake(0., 0.) animated:TRUE];
+    
+    self.sendButton.enabled = FALSE;
+    self.sendButton.alpha = 0.5;
 }
 
 - (void)closeKeyboard {
     
     [self.currentTextField resignFirstResponder];
+    
+    self.currentTextField = Nil;
     
     [self.scrollView setContentOffset:CGPointMake(0., 0.) animated:TRUE];
 }
@@ -353,16 +374,20 @@
     
     NSUInteger tfTag = textField.tag - textFieldTagOffSet;
     
-    NSString* key = [self.keyArray objectAtIndex:tfTag];
-    
-    [self.addInfoDict setObject:textField.text forKey:key];
-    
-    if (self.addInfoDict.count == self.keyArray.count) {
-        self.sendButton.enabled = TRUE;
-        self.sendButton.alpha = 1.0;
-    } else {
-        self.sendButton.enabled = FALSE;
-        self.sendButton.alpha = 0.5;
+    if (tfTag < self.keyArray.count) {
+        
+        NSString* key = [self.keyArray objectAtIndex:tfTag];
+        
+        [self.addInfoDict setObject:textField.text forKey:key];
+        
+        if (self.addInfoDict.count == self.keyArray.count) {
+            self.sendButton.enabled = TRUE;
+            self.sendButton.alpha = 1.0;
+        } else {
+            self.sendButton.enabled = FALSE;
+            self.sendButton.alpha = 0.5;
+        }
+        
     }
     
 }

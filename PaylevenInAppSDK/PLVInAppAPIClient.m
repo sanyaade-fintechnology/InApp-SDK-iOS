@@ -16,8 +16,8 @@
 #import "OrderedDictionary.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
+#define useLocalEndpoint 1
+#define usemacMiniEndpoint 0
 #define useOtherEndpoint 0
 
 #define apiParameterKeyEmail @"email"
@@ -42,7 +42,7 @@ static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstrument
 static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
 static NSString * const PLVInAppClientAPISetPiTokenListOrderEndPoint = @"/setPaymentInstrumentsOrder";
 static NSString * const PLVInAppClientAPIDisablePiTokenEndPoint = @"/disablePaymentInstrument";
-static NSString * const PLVInAppClientAPIRemovePiTokenEndPoint = @"/removePaymentInstrument";
+static NSString * const PLVInAppClientAPIRemovePiTokenEndPoint = @"/removePaymentInstrumentForUseCase";
 
 
 #if useLocalEndpoint
@@ -421,10 +421,16 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     if(payInstrument != Nil ) {
         
-        NSString* piID = payInstrument.identifier;
-        
-        if(piID != Nil) {
-            [parameters setObject:piID forKey:apiParameterKeyPI];
+        if ([payInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
+            
+            OrderedDictionary* newOrderedPi = [OrderedDictionary new];
+            
+            NSString* piID = [NSString stringWithString:payInstrument.identifier];
+            
+            if (piID != Nil) {
+                [newOrderedPi setObject:piID forKey:@"identifier"];
+                [parameters setObject:newOrderedPi forKey:apiParameterKeyPI];
+            }
         }
     }
     
@@ -459,9 +465,55 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-//    PLVInAppClientAPIRemovePiTokenEndPoint
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
     
+    if (useCase != Nil) {
+        // add use case in case of ... otherwise it default value form BE will be used
+        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
+    }
     
+    if(payInstrument != Nil ) {
+        
+        if ([payInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
+            
+            OrderedDictionary* newOrderedPi = [OrderedDictionary new];
+            
+            NSString* piID = [NSString stringWithString:payInstrument.identifier];
+            
+            if (piID != Nil) {
+                [newOrderedPi setObject:piID forKey:@"identifier"];
+                [parameters setObject:newOrderedPi forKey:apiParameterKeyPI];
+            }
+        }
+    }
+    
+    //add HMAC
+    
+    [self addHmacForParameterDict:parameters];
+    
+    NSURL *URL = [NSURL URLWithString:PLVInAppClientAPIHost];
+    
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIRemovePiTokenEndPoint];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"POST";
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData;
+    
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        if (completionHandler != Nil) {
+            SDLog(@"removePaymentInstrumentForUseCase: %@",response);
+            completionHandler(response, error);
+        }
+    }];
     
 }
 

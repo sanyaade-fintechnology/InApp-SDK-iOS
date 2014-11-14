@@ -14,7 +14,7 @@ $app->post('/userToken', 'getUserTokenForEmail');
 $app->post('/addPaymentInstrument', 'addPaymentInstrumentForUserToken');
 $app->post('/listPaymentInstruments', 'listPaymentInstrumentsForUserToken');
 $app->post('/setPaymentInstrumentsOrder', 'setPIOrderForUserToken');
-$app->post('/removePaymentInstrument', 'removePaymentInstrument');
+$app->post('/removePaymentInstrumentForUseCase', 'removePaymentInstrumentForUseCase');
 $app->post('/disablePaymentInstrument', 'disablePaymentInstrumentForUserToken');
 $app->response()->header('Connection','close');
 
@@ -195,8 +195,7 @@ function piTokenForUserAndUseCase($userToken,$useCase) {
 		 $stmt->bindParam("useCaseValue", $useCase);
 
          $stmt->execute();
-
-		$piTokens = array();
+		 $piTokens = array();
 		
          while($fetchPi = $stmt->fetchObject()) {
 			 $pi = (array)json_decode($fetchPi->piDetails);
@@ -240,7 +239,7 @@ function disablePaymentInstrumentForUserToken() {
     # error_log('disablePaymentInstrumentForUserToken userToken:'.json_encode($userToken));
     # error_log('disablePaymentInstrumentForUserToken piArray:'.json_encode((array)$piArray));
      
-    $sql = "UPDATE PITABLE SET piEnabled=0 WHERE userToken=:userTokenValue AND identifier=:identifierValue";
+    $sql = "UPDATE PITABLE SET piEnabled=0 WHERE userToken=:userTokenValue AND piIndex=:identifierValue";
 	
 	# TODO update sortIndex 
 	
@@ -272,7 +271,7 @@ function disablePaymentInstrumentForUserToken() {
 	returnOKStatus(NULL);
 }
 
-function removePaymentInstrument() {
+function removePaymentInstrumentForUseCase() {
 	
     $request = Slim::getInstance()->request();
     $details = json_decode($request->getBody());
@@ -518,27 +517,31 @@ function addPIsToUserToken($userToken,$piArray,$useCase) {
 
 function addPI($userToken,$piDetails,$useCase) {
 	
-    $piIdenfifier = createIdentifier($userToken,$piDetails);
+    $piIdentifier = createIdentifier($userToken,$piDetails);
 
-    if(checkPiIdentifier($piIdenfifier)) {
+    if(checkPiIdentifier($piIdentifier)) {
 		 
          $piHash = sha1(mt_rand());
          $piToken = substr($piHash, 0,30);
 
-		return addPIWithDetails ($piToken,$piIdenfifier,$userToken,$piDetails,$useCase);
+		return addPIWithDetails ($piToken,$piIdentifier,$userToken,$piDetails,$useCase);
 
      } else {
      	
 		 #known pi ... make sure is enabled
 		 
-	     $sql = "UPDATE PITABLE SET piEnabled=1 WHERE userToken=:userTokenValue AND identifier=:identifierValue";
+	     $sql = "UPDATE PITABLE SET piEnabled=1 WHERE (userToken=:userTokenValue AND identifier=:identifierValue)";
 	 
+	 	# error_log('UPDATE PITABLE SET piEnabled=1 WHERE (userToken='.$userToken.' AND identifier='.$piIdentifier.')');
+		
          try {
              $db = getConnection();
              $stmt = $db->prepare($sql);  
              $stmt->bindParam("userTokenValue", $userToken);
              $stmt->bindParam("identifierValue", $piIdentifier);
              $stmt->execute();
+			 
+			 $result = $stmt->fetchObject();
             
          } catch(PDOException $e) {
              returnErrorWithDescription($e->getMessage());

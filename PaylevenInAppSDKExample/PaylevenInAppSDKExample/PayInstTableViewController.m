@@ -244,7 +244,9 @@
 
 - (void) deletePaymentInstrument {
     
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable" message:@"Really Disable PaymentInstrument??" delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:@"Disable",nil];
+    NSString* message = [NSString stringWithFormat:@"Disable PI or\nremove from %@ useCase?", self.useCase];
+    
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable or Remove" message:message delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"Disable",@"Remove UseCsae",nil];
     
     [alertView show];
     
@@ -254,6 +256,8 @@
     
     if (buttonIndex == 1) {
         
+        // disable PI
+        
         if (self.indexPathToDelete == Nil   ) {
             return;
         }
@@ -262,7 +266,7 @@
         
         PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
         
-        [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi forUserToken:self.userToken withCompletion:^(NSDictionary* result, NSError* error){
+        [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi forUserToken:self.userToken andCompletion:^(NSDictionary* result, NSError* error){
             
             if (error != Nil ) {
                 UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
@@ -293,6 +297,50 @@
             self.activityPlane.hidden = TRUE;
             self.indexPathToDelete = Nil;
         
+        }];
+    } else if (buttonIndex == 2) {
+        
+        // remove useCase for PI
+        
+        if (self.indexPathToDelete == Nil   ) {
+            return;
+        }
+        
+        self.activityPlane.hidden = FALSE;
+        
+        PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
+        
+        [[PLVInAppClient sharedInstance] removePaymentInstrument:pi fromUseCase:self.useCase forUserToken:self.userToken andCompletion:^(NSDictionary* result, NSError* error){
+            
+            if (error != Nil ) {
+                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
+                
+                [alertView show];
+                
+            } else if ([result isKindOfClass:[NSDictionary class]]) {
+                
+                if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+                    
+                    NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
+                    
+                    [newArray removeObjectAtIndex:self.indexPathToDelete.row];
+                    
+                    self.payInstruments = newArray;
+                    // Animate the deletion
+                    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    // Additional code to configure the Edit Button, if any
+                    if (self.payInstruments.count == 0) {
+                        self.editTableButton.enabled = NO;
+                        self.editTableButton.titleLabel.text = @"Edit";
+                    }
+                    
+                }
+            }
+            
+            self.activityPlane.hidden = TRUE;
+            self.indexPathToDelete = Nil;
+            
         }];
     }
 }

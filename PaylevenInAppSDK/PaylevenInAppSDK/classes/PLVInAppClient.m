@@ -100,7 +100,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     [self.inAppAPIClient setPaymentInstrumentsOrder:piOrderedSet forUserToken:userToken withUseCase:useCaseChecked andCompletion:completionHandler];
 }
 
-- (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
     if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
@@ -109,7 +109,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 }
 
 
-- (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
     if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
