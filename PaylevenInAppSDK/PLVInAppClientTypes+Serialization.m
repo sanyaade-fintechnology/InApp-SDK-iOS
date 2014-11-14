@@ -25,14 +25,11 @@
         
         if ([piType isEqualToString:PLVPITypeCC]) {
             newPI = [[PLVPayInstrumentCC alloc] init];
-        }
-        if ([piType isEqualToString:PLVPITypeDD]) {
+        } else if ([piType isEqualToString:PLVPITypeDD]) {
             newPI = [[PLVPayInstrumentDD alloc] init];
-        }
-        if ([piType isEqualToString:PLVPITypeSEPA]) {
+        } else if ([piType isEqualToString:PLVPITypeSEPA]) {
             newPI = [[PLVPayInstrumentSEPA alloc] init];
-        }
-        if ([piType isEqualToString:PLVPITypePAYPAL]) {
+        } else if ([piType isEqualToString:PLVPITypePAYPAL]) {
             newPI = [[PLVPayInstrumentPAYPAL alloc] init];
         }
         

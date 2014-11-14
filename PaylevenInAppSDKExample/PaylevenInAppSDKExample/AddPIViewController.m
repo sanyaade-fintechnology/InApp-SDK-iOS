@@ -157,11 +157,11 @@
 
 - (IBAction)sendPI:(id)sender {
     
-    self.currentTextField = Nil;
-    
-   PLVPaymentInstrument* pi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    PLVPaymentInstrument* pi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
     
     [self closeKeyboard];
+    
+    self.currentTextField = Nil;
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:pi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
@@ -175,7 +175,6 @@
                     tField.text = @"";
                 }
             }
- 
         }
         
     }];
@@ -236,6 +235,14 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
         pi = [[PLVPayInstrumentPAYPAL alloc] init];
+    }
+    
+    if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
+        pi = [[PLVPayInstrumentSEPA alloc] init];
+    }
+    
+    if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
+        pi = [[PLVPayInstrumentDD alloc] init];
     }
     
     for (NSString* key in content.allKeys) {

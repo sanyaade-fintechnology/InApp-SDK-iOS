@@ -2,22 +2,22 @@
 -- version 4.2.10
 -- http://www.phpmyadmin.net
 --
--- Host: localhost:3306
--- Erstellungszeit: 14. Nov 2014 um 09:42
--- Server Version: 5.5.38
--- PHP-Version: 5.6.2
+-- Host: localhost:8889
+-- Generation Time: Nov 14, 2014 at 02:58 PM
+-- Server version: 5.5.38
+-- PHP Version: 5.6.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Datenbank: `inAppPayment`
+-- Database: `inAppPayment`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `PITABLE`
+-- Table structure for table `PITABLE`
 --
 
 CREATE TABLE `PITABLE` (
@@ -30,153 +30,38 @@ CREATE TABLE `PITABLE` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Daten für Tabelle `PITABLE`
+-- Dumping data for table `PITABLE`
 --
 
 INSERT INTO `PITABLE` (`piToken`, `userToken`, `piDetails`, `identifier`, `piIndex`, `piEnabled`) VALUES
-('09111b5d354469321747ddcf53179d', '0ba56b09d0fac85d23bce3ffa271e4', '{"authToken":"q4234wer","type":"PAYPAL"}', '03bf1fc08c908e1f1701475a46b198c7', 6, 1),
-('24650827867b89d55837bf75f3c3f0', '0ba56b09d0fac85d23bce3ffa271e4', '{"ccv":"sadf","expiryMonth":"12","expiryYear":"12","pan":"123123","type":"CC"}', 'f1533864395ca8f60eba795ed32b1e9f', 3, 1),
-('3a2b08223ca7e501f80c8c97ec00cf', '37c339b0435f4f22639b713e15a1b9', '{"authToken":"paypal_auth_token","type":"PAYPAL"}', '503d4aa91c1bb07316192070310786a7', 0, 1),
-('434558b4a6a4819876047faf9ff5ec', '37c339b0435f4f22639b713e15a1b9', '{"cvv":"123","expiryMonth":"02","expiryYear":"02","pan":"123456789123456","type":"CC"}', '661912a8b60e88f3bb6915cddb3e7296', 2, 1),
-('47ad404275ae06ed1fbd85f5ca5b3f', '0ba56b09d0fac85d23bce3ffa271e4', '{"authToken":"dasfasdgasdg","type":"PAYPAL"}', '740491d1e346efc979c1f4a67c8859b6', 7, 1),
+('075188b8616564a1c5cb53fede15cb', '5d1e7e08abfc13807d1a1d42c22ad8', '{"cvv":"775","expiryMonth":"41","expiryYear":"41","pan":"1254589907559856","type":"CC"}', '623aa1a933469ff56cd55d5bbd4a71b9', 1, 0),
+('08fb38990ce665ff9863a4d8d1b17e', '0ba56b09d0fac85d23bce3ffa271e4', '{"ccv":"555","expiryMonth":"25","expiryYear":"55","pan":"254588","type":"CC"}', 'c4693c20e8dccfcc2e7da5feb9704b83', 15, 1),
+('12170f59eae00aa6c972821da8315a', '0ba56b09d0fac85d23bce3ffa271e4', '{"authToken":"Auhskkdmms","type":"PAYPAL"}', '676d1b977d38504a491c08eee22d2c64', 11, 1),
+('24650827867b89d55837bf75f3c3f0', '0ba56b09d0fac85d23bce3ffa271e4', '{"cvv":"sadf","expiryMonth":"12","expiryYear":"12","pan":"123123","type":"CC"}', 'f1533864395ca8f60eba795ed32b1e9f', 3, 1),
+('2b35bc528ca0dcff01b43122a1ccef', '5d1e7e08abfc13807d1a1d42c22ad8', '{"cvv":"552525","expiryMonth":"288","expiryYear":"288","pan":"22578666667575754545","type":"CC"}', 'ae928b7bc3015700f0d08f76f9ed8493', 0, 0),
+('34ee55d2aa62fc6d48816650ac2146', '0ba56b09d0fac85d23bce3ffa271e4', '{"bic":"Hdhns","iban":"Sujshs","type":"SEPA"}', '73329510b13a07fc3965f3c7b053cdf2', 14, 1),
 ('48eb167fd1d452ebe3b6a77d0673e5', '0ba56b09d0fac85d23bce3ffa271e4', '{"ccv":"1232","expiryMonth":"12","expiryYear":"12","pan":"abcdef","type":"CC"}', '1ecbc65511394d82eb381e3d5817adf0', 4, 1),
-('534d88cf108a22eb28d95a54e1a2cb', '37c339b0435f4f22639b713e15a1b9', '{"cvv":"123","expiryMonth":"01","expiryYear":"01","pan":"2184343561243465","type":"CC"}', 'd43505995962b523938db82b6259f16f', 5, 1),
-('5e7e964124686ec1caa322688100aa', '37c339b0435f4f22639b713e15a1b9', '{"iban":"xfffrtt","type":"SEPA"}', '0b88ff5435f5847c03839589cb66b735', 1, 1),
-('6b7a24f8e77d45273bbe365b389d65', '0ffadd28dd395fe9ab7601e5a848e0', '{"ccv":"2424","expiryMonth":"12","expiryYear":"24","pan":"23412412","type":"CC"}', '496793865fb535408830c72f38c888d0', 0, 1),
-('7b6a7384a6439b3fb8eff9c8806030', '0ba56b09d0fac85d23bce3ffa271e4', '{"authToken":"1232343241235","type":"PAYPAL"}', '8423e9e8c426a82b4fbb201b5db34a9c', 8, 1),
-('843eef363b543dd658086b725cc444', '0ba56b09d0fac85d23bce3ffa271e4', '{"type":"PAYPAL"}', '4c3a62b6ddfa717c48362ec5c43e168b', 5, 1),
-('a3097b09d007eb78d883acbad54f96', '0ba56b09d0fac85d23bce3ffa271e4', '{"type":"CC","pan":"asdfdssd","expiryMonth":"sd","expiryYear":"sd","ccv":"sadf"}', 'f80675aee4c23674b045713d66df7fb5', 2, 1),
-('c2934d745f9f19cb1b695f67057a56', '0ba56b09d0fac85d23bce3ffa271e4', '{"expiryMonth":"11","expiryYear":"13","pan":"12312","type":"CC"}', '061cbbe4057dd35716ac5c77da7f831e', 9, 1),
-('cead53e074f5137ddaa054387637d1', '0ba56b09d0fac85d23bce3ffa271e4', '{"type":"CC","pan":"0123456789","expiryMonth":"12","expiryYear":"20","ccv":"1223"}', 'a2d5a5eae188662316f8742f32d92f2c', 1, 1),
-('cfc2111b4070851d85b505b55dd87c', '0ffadd28dd395fe9ab7601e5a848e0', '{"ccv":"1244","expiryMonth":"12","expiryYear":"12","pan":"1234567","type":"CC"}', 'fb716cead672f9cbaa30349c14221f26', 1, 1),
-('d231c1d98c4d5c789c20db9479cd43', '0ba56b09d0fac85d23bce3ffa271e4', '{"pan":"548484","expiryMonth":"21","type":"CC","expiryYear":"54","ccv":"5154"}', 'b4bc9e4b7b591a555acb17a6be735c4c', 0, 1),
-('d3ee6fb4bb56c159fdc5872a5aaa51', '37c339b0435f4f22639b713e15a1b9', '{"iban":"123464828829","type":"SEPA"}', '4b86ab22e545f0d75829cea98502be66', 3, 1),
-('e7055830d9d2d552c4f3bf92817377', '37c339b0435f4f22639b713e15a1b9', '{"accountNo":"526272737","routingNo":"262627","type":"DD"}', '65c8d67e36ef5cbcd3ed1a56b7a31351', 4, 1),
-('f5f8db6b09621406c243e5e45592b9', '0ffadd28dd395fe9ab7601e5a848e0', '{"type":"PAYPAL"}', '7c944b33b15d591e1641f2ae3e34aaac', 2, 1);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `SERVICEURLS`
---
-
-CREATE TABLE `SERVICEURLS` (
-`id` int(11) NOT NULL,
-  `apiKey` varchar(255) NOT NULL,
-  `apiVersion` varchar(8) NOT NULL,
-  `bundleID` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+('567596b8bb3a11e9b7238f5efccd68', '0ba56b09d0fac85d23bce3ffa271e4', '{"cvv":"5485","expiryMonth":"51","expiryYear":"51","pan":"218848564646","type":"CC"}', 'e1ed025147380089b655fd5839dd804f', 7, 1),
+('68b0bf406dbe431dd8a2bbd948e39e', '0ba56b09d0fac85d23bce3ffa271e4', '{"ccv":"2558","expiryMonth":"65","expiryYear":"28","pan":"85463464","type":"CC"}', '94b525f31bd7c5a2716bdb77681478ed', 16, 1),
+('73574af17a38b8f87656d4e9231526', '5d1e7e08abfc13807d1a1d42c22ad8', '{"authToken":"shshsheheu82hdjw","type":"PAYPAL"}', '0870c544b93d43778e32322e8655627f', 2, 0),
+('8f509c5d0cb5d8f4ac047620c6aaca', '0ba56b09d0fac85d23bce3ffa271e4', '{"cvv":"5546","expiryMonth":"25","expiryYear":"25","pan":"25545","type":"CC"}', '3450e4c63853a92695eba92c6cd21382', 8, 1),
+('9425d99823efff65caa05195d81a97', '0ba56b09d0fac85d23bce3ffa271e4', '{"expiryMonth":"21","expiryYear":"15","pan":"21584364","cvv":"123","type":"CC"}', '9d45c2a2b522ff5bea40797d728f098d', 6, 1),
+('a050e8b2ba8a5d9ece0f969ae205f5', '0ba56b09d0fac85d23bce3ffa271e4', '{"accountNumber":"Accoun57286","routingNumber":"Routen7379","type":"DD"}', '342da15d7e5d4d3d7b567b1f58058be4', 12, 0),
+('a3097b09d007eb78d883acbad54f96', '0ba56b09d0fac85d23bce3ffa271e4', '{"type":"CC","pan":"asdfdssd","expiryMonth":"sd","expiryYear":"sd","cvv":"sadf"}', 'f80675aee4c23674b045713d66df7fb5', 2, 1),
+('a821978da61f17bf12a9c2da2264e5', '0ba56b09d0fac85d23bce3ffa271e4', '{"expiryMonth":"23","expiryYear":"23","pan":"qeqwr","cvv":"123","type":"CC"}', '4941c7acb6b2066b182884f5d3602527', 5, 0),
+('ae8dca4a3bf9495b287e15afd70125', '0ba56b09d0fac85d23bce3ffa271e4', '{"accountNumber":"Hahbsb","routingNumber":"Hhshhhs","type":"DD"}', 'd3bc14d388381d7ecc148aa23785d9c7', 10, 0),
+('b2fc4d916236e6b4466daf57c5fdb9', '0ba56b09d0fac85d23bce3ffa271e4', '{"accountNumber":"Ybsndbdj","routingNumber":"Shcndj","type":"DD"}', '94fb9986e894d90de6ffa2555a106ccd', 13, 1),
+('cead53e074f5137ddaa054387637d1', '0ba56b09d0fac85d23bce3ffa271e4', '{"type":"CC","pan":"0123456789","expiryMonth":"12","expiryYear":"20","cvv":"1223"}', 'a2d5a5eae188662316f8742f32d92f2c', 1, 1),
+('d231c1d98c4d5c789c20db9479cd43', '0ba56b09d0fac85d23bce3ffa271e4', '{"pan":"548484","expiryMonth":"21","type":"CC","expiryYear":"54","cvv":"5154"}', 'b4bc9e4b7b591a555acb17a6be735c4c', 0, 1),
+('d6d37f1eb3800285db709e0cc03e03', '0ba56b09d0fac85d23bce3ffa271e4', '{"type":"PAYPAL"}', '4c3a62b6ddfa717c48362ec5c43e168b', 9, 0),
+('fd19d60b7abe1eac87d1df30c5f7d7', '5d1e7e08abfc13807d1a1d42c22ad8', '{"iban":"RO23441183838","type":"SEPA"}', '8999121508907a4271458abb059be535', 3, 1);
 
 --
--- Daten für Tabelle `SERVICEURLS`
---
-
-INSERT INTO `SERVICEURLS` (`id`, `apiKey`, `apiVersion`, `bundleID`) VALUES
-(1, '4840bbc6429dacd56bfa98390ddf43', '1.0', 'com.payleven.payment.PaylevenInAppSDKExample'),
-(2, 'nAj6Rensh2Ew3Oc4Ic2gig1F', '1.0', 'com.test.payment'),
-(3, 'nAj6Rensh2Ew3Oc4Ic2gig1F', '1.0', 'de.payleven.inappdemo'),
-(4, 'cad1e1e506ded49e6c579603e155f7', '1.0', 'com.test.paymenfsdtsdsdsd'),
-(5, '8354a42049aeae538f741595cb3fca', '1.0', 'com.test.paymenfsdcvcvsd');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `USECASETABLE`
---
-
-CREATE TABLE `USECASETABLE` (
-`id` int(11) NOT NULL,
-  `userToken` varchar(255) NOT NULL,
-  `piToken` varchar(255) NOT NULL,
-  `useCase` varchar(16) NOT NULL DEFAULT 'PRIVATE',
-  `sortIndex` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `USECASETABLE`
---
-
-INSERT INTO `USECASETABLE` (`id`, `userToken`, `piToken`, `useCase`, `sortIndex`) VALUES
-(15, '0ba56b09d0fac85d23bce3ffa271e4', 'a3097b09d007eb78d883acbad54f96', 'PRIVATE', 2),
-(16, '0ba56b09d0fac85d23bce3ffa271e4', '24650827867b89d55837bf75f3c3f0', 'PRIVATE', 0),
-(19, '0ffadd28dd395fe9ab7601e5a848e0', '6b7a24f8e77d45273bbe365b389d65', 'PRIVATE', 0),
-(20, '0ffadd28dd395fe9ab7601e5a848e0', 'cfc2111b4070851d85b505b55dd87c', 'BUSINESS', 0),
-(21, '0ffadd28dd395fe9ab7601e5a848e0', 'f5f8db6b09621406c243e5e45592b9', 'PRIVATE', 1),
-(24, '37c339b0435f4f22639b713e15a1b9', '3a2b08223ca7e501f80c8c97ec00cf', 'PRIVATE', 0),
-(25, '37c339b0435f4f22639b713e15a1b9', '5e7e964124686ec1caa322688100aa', 'PRIVATE', 1),
-(27, '0ba56b09d0fac85d23bce3ffa271e4', 'c2934d745f9f19cb1b695f67057a56', 'PRIVATE', 1),
-(28, '37c339b0435f4f22639b713e15a1b9', '434558b4a6a4819876047faf9ff5ec', 'BUSINESS', 0),
-(29, '37c339b0435f4f22639b713e15a1b9', 'd3ee6fb4bb56c159fdc5872a5aaa51', 'PRIVATE', 2),
-(30, '37c339b0435f4f22639b713e15a1b9', 'e7055830d9d2d552c4f3bf92817377', 'PRIVATE', 3),
-(31, '37c339b0435f4f22639b713e15a1b9', '534d88cf108a22eb28d95a54e1a2cb', 'PRIVATE', 4),
-(32, '37c339b0435f4f22639b713e15a1b9', '534d88cf108a22eb28d95a54e1a2cb', 'BUSINESS', 1);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `USERS`
---
-
-CREATE TABLE `USERS` (
-`identifier` bigint(255) NOT NULL,
-  `userToken` varchar(48) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `apiKey` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
-
---
--- Daten für Tabelle `USERS`
---
-
-INSERT INTO `USERS` (`identifier`, `userToken`, `email`, `apiKey`) VALUES
-(26, '0ba56b09d0fac85d23bce3ffa271e4', 'test@test.de', '4840bbc6429dacd56bfa98390ddf43'),
-(27, '37c339b0435f4f22639b713e15a1b9', 'test@test.com', 'nAj6Rensh2Ew3Oc4Ic2gig1F'),
-(28, '0ffadd28dd395fe9ab7601e5a848e0', 'mike@dummy.de0', '4840bbc6429dacd56bfa98390ddf43');
-
---
--- Indizes der exportierten Tabellen
+-- Indexes for dumped tables
 --
 
 --
--- Indizes für die Tabelle `PITABLE`
+-- Indexes for table `PITABLE`
 --
 ALTER TABLE `PITABLE`
  ADD UNIQUE KEY `piToken` (`piToken`), ADD UNIQUE KEY `piHash` (`identifier`), ADD KEY `userToken` (`userToken`);
-
---
--- Indizes für die Tabelle `SERVICEURLS`
---
-ALTER TABLE `SERVICEURLS`
- ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `USECASETABLE`
---
-ALTER TABLE `USECASETABLE`
- ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `USERS`
---
-ALTER TABLE `USERS`
- ADD PRIMARY KEY (`identifier`);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `SERVICEURLS`
---
-ALTER TABLE `SERVICEURLS`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT für Tabelle `USECASETABLE`
---
-ALTER TABLE `USECASETABLE`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
---
--- AUTO_INCREMENT für Tabelle `USERS`
---
-ALTER TABLE `USERS`
-MODIFY `identifier` bigint(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;

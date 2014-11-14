@@ -121,13 +121,13 @@
         return cc.pan;
     } else if([shortType isEqualToString:@"DD"]) {
         PLVPayInstrumentDD* cc = (PLVPayInstrumentDD*)pi;
-        return cc.accountNumber;
+        return [NSString stringWithFormat:@"Account: %@",cc.accountNumber];
     } else if([shortType isEqualToString:@"SEPA"]) {
         PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
-        return [NSString stringWithFormat:@"IBAN:%@",cc.iban];
+        return [NSString stringWithFormat:@"IBAN: %@",cc.iban];
     } else if([shortType isEqualToString:@"PAYPAL"]) {
         PLVPayInstrumentPAYPAL* cc = (PLVPayInstrumentPAYPAL*)pi;
-        return [NSString stringWithFormat:@"PAYPAYL:%@",cc.authToken];
+        return [NSString stringWithFormat:@"Auth: %@",cc.authToken];
     }  else {
         return @"unknown";
     }

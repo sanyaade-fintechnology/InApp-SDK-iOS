@@ -46,7 +46,6 @@
     self.useCase = @"DEFAULT";
     
     [self updateFrameDesign:self.getUserTokenButton];
-    [self updateFrameDesign:self.backButton];
     [self updateFrameDesign:self.addPIButton];
     [self updateFrameDesign:self.listPIButton];
     [self updateFrameDesign:self.useCaseButton];
