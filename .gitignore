@@ -18,3 +18,5 @@ DerivedData
 UserInterfaceState.xcuserstate
 Breakpoints_v2.xcbkptlist
 PaylevenInAppSDKExample/PaylevenInAppSDK.framework
+MockBE/api/slim
+MockBE/api/.htaccess
