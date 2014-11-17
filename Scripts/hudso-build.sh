@@ -23,9 +23,9 @@ security set-keychain-settings -u -t 7200 /Users/build/Library/Keychains/login.k
 
 #buidl default or specific target
 
-XCODE_TARGET="ExampleApp"
+XCODE_SCHEME="ExampleApp"
 if [ $1 ]; then
-XCODE_TARGET=$1
+XCODE_SCHEME=$1
 fi
 
 export HOCKEY_API_TOKEN="b6a9d39a0955422096932d4a84d0fd74"
@@ -68,11 +68,11 @@ GIT_COMMIT_LOG=`git log -n1 --oneline | sed "s/'//g"`
 rm -rf ~/Library/Application\ Support/iPhone\ Simulator/*
 rm -rf ~/Library/Developer/Xcode/DerivedData/*
 
-xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "${XCODE_ADHOC_SCHEME}" -sdk "iphoneos8.1" -configuration "Debug" clean build || exit 1 ;
+xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "${XCODE_SCHEME}" -sdk "iphoneos8.1" -configuration "Debug" clean build || exit 1 ;
 
 # build and release ipa to hockey server
 if [ $HOCKEY_APP_TOKEN ]; then
 
-	xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "${XCODE_ADHOC_SCHEME}" -sdk "iphoneos8.1" -configuration "Debug" clean build || exit 1 ;
+	# xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "${XCODE_SCHEME}" -sdk "iphoneos8.1" -configuration "Debug" clean build || exit 1 ;
 
 fi
