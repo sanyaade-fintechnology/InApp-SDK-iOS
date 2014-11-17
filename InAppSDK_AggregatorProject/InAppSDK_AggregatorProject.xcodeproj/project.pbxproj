@@ -207,7 +207,7 @@
 				9F4F808619F53C650008CBBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		9F4F808A19F53CA50008CBBE /* Build configuration list for PBXAggregateTarget "ExampleApp" */ = {
 			isa = XCConfigurationList;
@@ -216,7 +216,7 @@
 				9F4F808919F53CA50008CBBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

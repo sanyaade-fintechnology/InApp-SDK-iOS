@@ -514,7 +514,7 @@
 				9F4F807219F5348A0008CBBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		9FA5CAA419F5189C00FCB314 /* Build configuration list for PBXProject "PaylevenInAppSDK" */ = {
 			isa = XCConfigurationList;
@@ -523,7 +523,7 @@
 				9FA5CAB919F5189C00FCB314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		9FA5CABA19F5189C00FCB314 /* Build configuration list for PBXNativeTarget "PaylevenInAppSDK" */ = {
 			isa = XCConfigurationList;
@@ -532,7 +532,7 @@
 				9FA5CABC19F5189C00FCB314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		9FA5CABD19F5189C00FCB314 /* Build configuration list for PBXNativeTarget "PaylevenInAppSDKTests" */ = {
 			isa = XCConfigurationList;
@@ -541,7 +541,7 @@
 				9FA5CABF19F5189C00FCB314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

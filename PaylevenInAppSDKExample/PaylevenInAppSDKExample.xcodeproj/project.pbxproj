@@ -384,7 +384,7 @@
 				9FA5CBAE19F5270800FCB314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		9FA5CBAF19F5270800FCB314 /* Build configuration list for PBXNativeTarget "PaylevenInAppSDKExample" */ = {
 			isa = XCConfigurationList;
@@ -393,7 +393,7 @@
 				9FA5CBB119F5270800FCB314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
