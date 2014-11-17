@@ -341,7 +341,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/ploenne/Documents/Projekte/paylevenInAppSDK-iOS",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = PaylevenInAppSDKExample/Info.plist;
@@ -363,7 +362,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/ploenne/Documents/Projekte/paylevenInAppSDK-iOS",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = PaylevenInAppSDKExample/Info.plist;
