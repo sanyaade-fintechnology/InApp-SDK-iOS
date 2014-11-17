@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9FA5CB8519F5270700FCB314"
-               BuildableName = "PaylevenInAppSDKExample.app"
-               BlueprintName = "PaylevenInAppSDKExample"
+               BuildableName = "InAppSDKExample.app"
+               BlueprintName = "InAppSDKExample"
                ReferencedContainer = "container:PaylevenInAppSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -57,8 +57,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9FA5CB8519F5270700FCB314"
-            BuildableName = "PaylevenInAppSDKExample.app"
-            BlueprintName = "PaylevenInAppSDKExample"
+            BuildableName = "InAppSDKExample.app"
+            BlueprintName = "InAppSDKExample"
             ReferencedContainer = "container:PaylevenInAppSDKExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -76,8 +76,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9FA5CB8519F5270700FCB314"
-            BuildableName = "PaylevenInAppSDKExample.app"
-            BlueprintName = "PaylevenInAppSDKExample"
+            BuildableName = "InAppSDKExample.app"
+            BlueprintName = "InAppSDKExample"
             ReferencedContainer = "container:PaylevenInAppSDKExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -94,8 +94,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9FA5CB8519F5270700FCB314"
-            BuildableName = "PaylevenInAppSDKExample.app"
-            BlueprintName = "PaylevenInAppSDKExample"
+            BuildableName = "InAppSDKExample.app"
+            BlueprintName = "InAppSDKExample"
             ReferencedContainer = "container:PaylevenInAppSDKExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

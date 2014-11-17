@@ -134,9 +134,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9FA5CB8519F5270700FCB314 /* PaylevenInAppSDKExample */ = {
+		9FA5CB8519F5270700FCB314 /* InAppSDKExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9FA5CBAF19F5270800FCB314 /* Build configuration list for PBXNativeTarget "PaylevenInAppSDKExample" */;
+			buildConfigurationList = 9FA5CBAF19F5270800FCB314 /* Build configuration list for PBXNativeTarget "InAppSDKExample" */;
 			buildPhases = (
 				9FA5CB8219F5270700FCB314 /* Sources */,
 				9FA5CB8319F5270700FCB314 /* Frameworks */,
@@ -147,7 +147,7 @@
 			);
 			dependencies = (
 			);
-			name = PaylevenInAppSDKExample;
+			name = InAppSDKExample;
 			productName = PaylevenInAppSDKExample;
 			productReference = 9FA5CB8619F5270700FCB314 /* PaylevenInAppSDKExample.app */;
 			productType = "com.apple.product-type.application";
@@ -180,7 +180,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9FA5CB8519F5270700FCB314 /* PaylevenInAppSDKExample */,
+				9FA5CB8519F5270700FCB314 /* InAppSDKExample */,
 			);
 		};
 /* End PBXProject section */
@@ -386,7 +386,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		9FA5CBAF19F5270800FCB314 /* Build configuration list for PBXNativeTarget "PaylevenInAppSDKExample" */ = {
+		9FA5CBAF19F5270800FCB314 /* Build configuration list for PBXNativeTarget "InAppSDKExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9FA5CBB019F5270800FCB314 /* Debug */,
