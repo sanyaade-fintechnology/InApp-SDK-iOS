@@ -12,6 +12,7 @@
 #import "PLVInAppAPIClient.h"
 #import "PLVInAppClientTypes.h"
 #import "PLVInAppSDKConstants.h"
+#import "PLVInAppErrors.h"
 
 @interface PLVInAppClient ()
 

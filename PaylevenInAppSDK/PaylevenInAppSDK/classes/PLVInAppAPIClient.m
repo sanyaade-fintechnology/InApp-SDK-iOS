@@ -12,13 +12,14 @@
 #import "PLVServerCertificate.h"
 #import "PLVServerTrustValidator.h"
 #import "PLVInAppSDKConstants.h"
+#import "PLVInAppErrors.h"
 #import "PLVInAppClientTypes+Serialization.h"
 #import "OrderedDictionary.h"
 #import <CommonCrypto/CommonCrypto.h>
 
 #define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
-#define useOtherEndpoint 0
+#define usemacMiniEndpoint 0
+#define useOtherEndpoint 1
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
@@ -59,7 +60,7 @@ static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/stag
 
 #elif useOtherEndpoint
 
-static NSString * const PLVInAppClientAPIHost = @"http://192.168.32.47/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.67/staging/api";
 
 #else
 
@@ -584,7 +585,10 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         responseDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&JSONError];
         
         if (JSONError != noErr) {
+            
             SDLog(@"Error creating dictionary from JSON data: %@", JSONError);
+            
+            SDLog(@"String sent from server %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 
@@ -600,7 +604,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             
             SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
             
-            SDLog(@"String sent from server %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            
         }
         
 

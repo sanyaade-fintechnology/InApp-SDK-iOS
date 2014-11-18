@@ -43,6 +43,10 @@ typedef enum : NSUInteger {
     return self;
 }
 
+- (NSError*) errorWithCode:(NSInteger)codeNumber andDescription:(NSString*)errorDescription {
+    return [NSError errorWithDomain:PLVAPIClientErrorDomain code:codeNumber userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:NSLocalizedFailureReasonErrorKey]];
+}
+
 @end
 
 
