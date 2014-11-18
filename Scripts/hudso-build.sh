@@ -37,6 +37,7 @@ MARKETING_VERSION=`/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString"
 BUNDLE_VERSION=${BUILD_NUMBER}
 export BUNDLE_IDENTIFIER=`/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$INFO_PLIST_PATH"`
 
+echo "BundleIdentifier: \"$BUNDLE_IDENTIFIER\" is used"
 if [ $2 ]; then
   export HOCKEY_APP_TOKEN=$2
 fi
