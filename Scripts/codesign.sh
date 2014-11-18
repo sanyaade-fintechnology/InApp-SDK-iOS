@@ -2,6 +2,10 @@
 
 set -ex
 
+
+# HOCKEY_APP_TOKEN = "fa4d75f90d230a773190b9fa44ee1330"
+# HOCKEY_API_TOKEN = "b6a9d39a0955422096932d4a84d0fd74"
+
 if [ $HOCKEY_APP_TOKEN ]; then
 
 # constants
@@ -38,6 +42,7 @@ if [ ! -d "${CONFIGURATION_BUILD_DIR}/$appFile" ]; then
   exit 1;
 fi
 
+echo "Configuration Build Dir => \"${CONFIGURATION_BUILD_DIR}/$appFile\" does not exist"
 # sign app
 /usr/bin/xcrun -verbose -sdk iphoneos PackageApplication "${CONFIGURATION_BUILD_DIR}/$appFile" -o "${CONFIGURATION_BUILD_DIR}/$ipaFile" --sign "$adHocCertificate" --embed "$provisioningProfilePath" || exit 1
 
