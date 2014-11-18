@@ -11,13 +11,23 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 9F4F808A19F53CA50008CBBE /* Build configuration list for PBXAggregateTarget "ExampleApp" */;
 			buildPhases = (
-				9FC8B2801A1B5AEA00DD3370 /* ShellScript */,
 			);
 			dependencies = (
 				9F4F80B719F58F910008CBBE /* PBXTargetDependency */,
 				9F4F80A919F58C760008CBBE /* PBXTargetDependency */,
 			);
 			name = ExampleApp;
+			productName = ExampleApp;
+		};
+		9FC8B2831A1B5C0B00DD3370 /* ExampleAppHudson */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9FC8B2891A1B5C0B00DD3370 /* Build configuration list for PBXAggregateTarget "ExampleAppHudson" */;
+			buildPhases = (
+				9FC8B2881A1B5C0B00DD3370 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = ExampleAppHudson;
 			productName = ExampleApp;
 		};
 /* End PBXAggregateTarget section */
@@ -126,6 +136,7 @@
 			projectRoot = "";
 			targets = (
 				9F4F808719F53CA50008CBBE /* ExampleApp */,
+				9FC8B2831A1B5C0B00DD3370 /* ExampleAppHudson */,
 			);
 		};
 /* End PBXProject section */
@@ -155,7 +166,7 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9FC8B2801A1B5AEA00DD3370 /* ShellScript */ = {
+		9FC8B2881A1B5C0B00DD3370 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -166,7 +177,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ./Scripts/codesign.sh";
+			shellScript = "sh ../Scripts/codesign.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -214,6 +225,20 @@
 			};
 			name = Release;
 		};
+		9FC8B28A1A1B5C0B00DD3370 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "ExampleApp copy";
+			};
+			name = Debug;
+		};
+		9FC8B28B1A1B5C0B00DD3370 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "ExampleApp copy";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -231,6 +256,15 @@
 			buildConfigurations = (
 				9F4F808819F53CA50008CBBE /* Debug */,
 				9F4F808919F53CA50008CBBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9FC8B2891A1B5C0B00DD3370 /* Build configuration list for PBXAggregateTarget "ExampleAppHudson" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9FC8B28A1A1B5C0B00DD3370 /* Debug */,
+				9FC8B28B1A1B5C0B00DD3370 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

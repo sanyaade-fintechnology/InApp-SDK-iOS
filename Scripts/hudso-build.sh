@@ -76,6 +76,8 @@ xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -wo
 
 xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "InAppSDKExample" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
 
+xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "ExampleAppHudson" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
+
 # build and release ipa to hockey server
 # xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "${XCODE_SCHEME}" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
 

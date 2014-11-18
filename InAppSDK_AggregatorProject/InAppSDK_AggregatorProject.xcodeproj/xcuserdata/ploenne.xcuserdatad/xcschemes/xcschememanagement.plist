@@ -9,10 +9,20 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>ExampleAppHudson.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>9F4F808719F53CA50008CBBE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9FC8B2831A1B5C0B00DD3370</key>
 		<dict>
 			<key>primary</key>
 			<true/>
