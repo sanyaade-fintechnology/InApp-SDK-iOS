@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		9F4F806F19F5348A0008CBBE /* Framework */ = {
+		9F4F806F19F5348A0008CBBE /* BundleFramework */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 9F4F807019F5348A0008CBBE /* Build configuration list for PBXAggregateTarget "Framework" */;
+			buildConfigurationList = 9F4F807019F5348A0008CBBE /* Build configuration list for PBXAggregateTarget "BundleFramework" */;
 			buildPhases = (
 				9F4F807519F534A90008CBBE /* MultiPlatform Build */,
 			);
 			dependencies = (
 				9F4F80C419F5A6950008CBBE /* PBXTargetDependency */,
 			);
-			name = Framework;
+			name = BundleFramework;
 			productName = Framework;
 		};
 /* End PBXAggregateTarget section */
@@ -277,7 +277,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9F4F806F19F5348A0008CBBE /* Framework */,
+				9F4F806F19F5348A0008CBBE /* BundleFramework */,
 				9FA5CAA819F5189C00FCB314 /* PaylevenInAppSDK */,
 				9FA5CAB319F5189C00FCB314 /* PaylevenInAppSDKTests */,
 			);
@@ -507,7 +507,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9F4F807019F5348A0008CBBE /* Build configuration list for PBXAggregateTarget "Framework" */ = {
+		9F4F807019F5348A0008CBBE /* Build configuration list for PBXAggregateTarget "BundleFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9F4F807119F5348A0008CBBE /* Debug */,
