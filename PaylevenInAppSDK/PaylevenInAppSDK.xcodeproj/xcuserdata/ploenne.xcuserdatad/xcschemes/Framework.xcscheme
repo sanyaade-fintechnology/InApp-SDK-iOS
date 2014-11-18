@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9F4F806F19F5348A0008CBBE"
-               BuildableName = "Framework"
-               BlueprintName = "Framework"
+               BuildableName = "BundleFramework"
+               BlueprintName = "BundleFramework"
                ReferencedContainer = "container:PaylevenInAppSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,8 +43,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9F4F806F19F5348A0008CBBE"
-            BuildableName = "Framework"
-            BlueprintName = "Framework"
+            BuildableName = "BundleFramework"
+            BlueprintName = "BundleFramework"
             ReferencedContainer = "container:PaylevenInAppSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -61,8 +61,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9F4F806F19F5348A0008CBBE"
-            BuildableName = "Framework"
-            BlueprintName = "Framework"
+            BuildableName = "BundleFramework"
+            BlueprintName = "BundleFramework"
             ReferencedContainer = "container:PaylevenInAppSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
