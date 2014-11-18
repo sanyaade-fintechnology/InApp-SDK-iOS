@@ -60,11 +60,11 @@ if [ `echo $CURL_APP_RESPONSE | grep -o error` ]; then
 fi
 
 # submit mobileprovision to hockey
-CURL_PROV_RESPONSE=`curl --silent --show-error -F "mobileprovision=@$provisioningProfilePath" -H "X-HockeyAppToken: ${HOCKEY_API_TOKEN}" https://rink.hockeyapp.net/api/2/apps/${HOCKEY_APP_TOKEN}/provisioning_profiles || exit 1`
-if [ `echo $CURL_PROV_RESPONSE | grep -o error` ]; then
-  echo $CURL_PROV_RESPONSE
-  exit 1;
-fi
+# CURL_PROV_RESPONSE=`curl --silent --show-error -F "mobileprovision=@$provisioningProfilePath" -H "X-HockeyAppToken: ${HOCKEY_API_TOKEN}" https://rink.hockeyapp.net/api/2/apps/${HOCKEY_APP_TOKEN}/provisioning_profiles || exit 1`
+# if [ `echo $CURL_PROV_RESPONSE | grep -o error` ]; then
+#   echo $CURL_PROV_RESPONSE
+#   exit 1;
+# fi
 
 # remove old versions from hockey
 CURL_REMOVE_RESPONSE=`curl --silent --show-error -F "keep=10" -H "X-HockeyAppToken: ${HOCKEY_API_TOKEN}" https://rink.hockeyapp.net/api/2/apps/${HOCKEY_APP_TOKEN}/app_versions/delete`
