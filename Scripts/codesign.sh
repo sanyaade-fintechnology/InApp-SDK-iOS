@@ -19,7 +19,7 @@ case BUNDLE_IDENTIFIER in
     ;;
 esac
 
-provisioningProfilePath="${PROJECT_DIR}/Scripts/InAppSDKExampleInHouse.mobileprovision"
+provisioningProfilePath="../Scripts/InAppSDKExampleInHouse.mobileprovision"
 
 if [ ! -f "$provisioningProfilePath" ]; then
   echo "ERROR => Provisioning \"$provisioningProfilePath\" does not exist"
