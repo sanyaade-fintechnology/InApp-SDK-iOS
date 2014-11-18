@@ -249,6 +249,12 @@
         [pi setValue:[content objectForKey:key] forKey:key];
     }
     
+    NSError* validateResult = [pi validate];
+    
+    if (validateResult != Nil) {
+        NSLog(@"error: %@",validateResult.localizedFailureReason);
+    }
+    
     return pi;
     
 }
