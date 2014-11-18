@@ -13,13 +13,13 @@ adHocCertificate="iPhone Distribution: Jade 1360. GmbH"
 
 provisioningProfilePath=""
 
-case $BUNDLE_IDENTIFIER in
+case BUNDLE_IDENTIFIER in
   "com.payleven.Payment.InAppSDKExample" )
     provisioningProfilePath="${PROJECT_DIR}/Scripts/InAppSDKExampleInHouse.mobileprovision" 
     ;;
 esac
 
-
+provisioningProfilePath="${PROJECT_DIR}/Scripts/InAppSDKExampleInHouse.mobileprovision"
 
 if [ ! -f "$provisioningProfilePath" ]; then
   echo "ERROR => Provisioning \"$provisioningProfilePath\" does not exist"
