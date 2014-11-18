@@ -10,84 +10,9 @@ adHocCertificate="iPhone Distribution: Jade 1360. GmbH"
 provisioningProfilePath=""
 
 case $BUNDLE_IDENTIFIER in
-  "com.payleven.Payment.dev" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Dev.mobileprovision" 
+  "com.payleven.Payment.InAppSDKExample" )
+    provisioningProfilePath="${PROJECT_DIR}/Scripts/InAppSDKExampleInHouse.mobileprovision" 
     ;;
-    "com.payleven.Payment.computop" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Computop.mobileprovision"
-    ;;
-  "com.payleven.Payment.stable" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Stable.mobileprovision" 
-    ;;
-  "com.payleven.Payment.test" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Test.mobileprovision" 
-    ;;
-  "com.payleven.Payment.beta" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Beta.mobileprovision" 
-    ;;
-  "com.payleven.Payment.iPad.dev" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Dev.mobileprovision"
-    ;;
-  "com.payleven.Payment.iPad.computop" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Computop.mobileprovision"
-    ;;
-  "com.payleven.Payment.iPad.stable" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Stable.mobileprovision"
-    ;;
-  "com.payleven.Payment.iPad.test" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Test.mobileprovision"
-    ;;
-  "com.payleven.Payment.iPad.beta" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Beta.mobileprovision"
-    ;;
-  "com.payleven.Payment.Backend" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Backend.mobileprovision"
-    ;;
-  "com.payleven.Payment" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Distribution.mobileprovision" 
-    ;;
-  "com.payleven.Payment.beta.internal" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Beta_Internal.mobileprovision"
-    ;;
-  "com.payleven.Payment.iPad.beta.internal" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Beta_internal.mobileprovision"
-    ;;
-  "com.payleven.Payment.demo" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payleven_Demo.mobileprovision"
-    ;;
-  "com.payleven.Payment.ipad.demo" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payleven_iPad_Demo.mobileprovision"
-    ;;
-  "com.payleven.Payment.kif" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Kif.mobileprovision"
-    ;;
-  "com.payleven.Payment.iPad.kif" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Kif.mobileprovision"
-    ;;
-  "com.payleven.payment.Playground" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Playground.mobileprovision"
-    ;;
-  "com.payleven.Payment.stable.inv" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Inv.mobileprovision"
-    ;;
-  "com.payleven.Payment.iPad.stable.inv" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Inv.mobileprovision"
-    ;;
-  "com.payleven.Payment.austria" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Austria.mobileprovision" 
-    ;;
-  "com.payleven.Payment.iPad.austria" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Austria.mobileprovision"
-    ;;    
-  "com.payleven.Payment.newadyen" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_Newadyen.mobileprovision" 
-    ;;
-  "com.payleven.Payment.iPad.newadyen" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/Payment_iPad_Newadyen.mobileprovision"
-    ;;
-  "com.payleven.CardDataCaptureApp" )
-    provisioningProfilePath="${PROJECT_DIR}/mobileprovision/CardData_InHouse.mobileprovision"
-    ;;  
 esac
 
 
@@ -97,7 +22,7 @@ if [ ! -f "$provisioningProfilePath" ]; then
   exit 1;
 fi
 
-XCODE_TARGET="payleven"
+XCODE_TARGET="InAppSDKExample"
 if [ $1 ]; then
 XCODE_TARGET=$1
 fi

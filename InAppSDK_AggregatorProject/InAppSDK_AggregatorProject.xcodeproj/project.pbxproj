@@ -11,6 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 9F4F808A19F53CA50008CBBE /* Build configuration list for PBXAggregateTarget "ExampleApp" */;
 			buildPhases = (
+				9FC8B2801A1B5AEA00DD3370 /* ShellScript */,
 			);
 			dependencies = (
 				9F4F80B719F58F910008CBBE /* PBXTargetDependency */,
@@ -85,7 +86,7 @@
 		9F4F80A119F58C640008CBBE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9F4F80A519F58C640008CBBE /* PaylevenInAppSDKExample.app */,
+				9F4F80A519F58C640008CBBE /* InAppSDKExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -144,14 +145,30 @@
 			remoteRef = 9F4F809E19F58C5C0008CBBE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9F4F80A519F58C640008CBBE /* PaylevenInAppSDKExample.app */ = {
+		9F4F80A519F58C640008CBBE /* InAppSDKExample.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = PaylevenInAppSDKExample.app;
+			path = InAppSDKExample.app;
 			remoteRef = 9F4F80A419F58C640008CBBE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9FC8B2801A1B5AEA00DD3370 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh ./Scripts/codesign.sh";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		9F4F80A919F58C760008CBBE /* PBXTargetDependency */ = {
