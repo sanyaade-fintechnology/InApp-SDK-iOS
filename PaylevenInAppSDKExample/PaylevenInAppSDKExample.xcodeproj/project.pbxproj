@@ -29,7 +29,7 @@
 		9F44485D1A10BB2600B949F5 /* AddPIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPIViewController.m; sourceTree = "<group>"; };
 		9F44485E1A10BB2600B949F5 /* AddPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPIViewController.xib; sourceTree = "<group>"; };
 		9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PaylevenInAppSDK.framework; sourceTree = SOURCE_ROOT; };
-		9FA5CB8619F5270700FCB314 /* PaylevenInAppSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaylevenInAppSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FA5CB8619F5270700FCB314 /* InAppSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InAppSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FA5CB8A19F5270700FCB314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FA5CB8B19F5270700FCB314 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9FA5CB8D19F5270700FCB314 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		9FA5CB8719F5270700FCB314 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9FA5CB8619F5270700FCB314 /* PaylevenInAppSDKExample.app */,
+				9FA5CB8619F5270700FCB314 /* InAppSDKExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,7 +149,7 @@
 			);
 			name = InAppSDKExample;
 			productName = PaylevenInAppSDKExample;
-			productReference = 9FA5CB8619F5270700FCB314 /* PaylevenInAppSDKExample.app */;
+			productReference = 9FA5CB8619F5270700FCB314 /* InAppSDKExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

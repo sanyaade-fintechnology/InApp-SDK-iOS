@@ -68,15 +68,15 @@ GIT_COMMIT_LOG=`git log -n1 --oneline | sed "s/'//g"`
 rm -rf ~/Library/Application\ Support/iPhone\ Simulator/*
 rm -rf ~/Library/Developer/Xcode/DerivedData/*
 
+if [ $HOCKEY_APP_TOKEN ]; then
+	
 xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "PaylevenInAppSDK" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
 
 xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "BundleFramework" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
 
-xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "ExampleApp" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
+xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "InAppSDKExample" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
 
 # build and release ipa to hockey server
-if [ $HOCKEY_APP_TOKEN ]; then
-
-	# xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "${XCODE_SCHEME}" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
+# xcodebuild VALID_ARCHS="armv7 arm64" ARCHS="armv7 arm64" ONLY_ACTIVE_ARCH=NO -workspace "PaylevenInAppSDK.xcworkspace" -scheme "${XCODE_SCHEME}" -sdk "iphoneos8.1" -configuration Debug clean build || exit 1 ;
 
 fi

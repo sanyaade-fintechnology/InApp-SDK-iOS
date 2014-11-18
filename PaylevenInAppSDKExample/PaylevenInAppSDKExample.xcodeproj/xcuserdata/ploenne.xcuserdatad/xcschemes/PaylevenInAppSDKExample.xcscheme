@@ -3,7 +3,7 @@
    LastUpgradeVersion = "0600"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
@@ -20,20 +20,6 @@
                ReferencedContainer = "container:PaylevenInAppSDKExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9FA5CBA419F5270800FCB314"
-               BuildableName = "PaylevenInAppSDKExampleTests.xctest"
-               BlueprintName = "PaylevenInAppSDKExampleTests"
-               ReferencedContainer = "container:PaylevenInAppSDKExample.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9FA5CBA419F5270800FCB314"
-               BuildableName = "PaylevenInAppSDKExampleTests.xctest"
-               BlueprintName = "PaylevenInAppSDKExampleTests"
-               ReferencedContainer = "container:PaylevenInAppSDKExample.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
