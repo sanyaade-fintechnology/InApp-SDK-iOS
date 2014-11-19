@@ -14,8 +14,28 @@
 #import "PLVInAppClientTypes+Serialization.h"
 #import "OrderedDictionary.h"
 
-#define ccNumberMinLength 9
-#define ccNumberMaxLength 21
+#define ccPANNumberMinLength 9
+#define ccPANNumberMaxLength 21
+
+
+#define ddAccountNumberMinLength 5
+#define ddAccountNumberMaxLength 30
+
+
+#define ddRoutingNumberMinLength 5
+#define ddRoutingNumberMaxLength 30
+
+#define sepaIBANNumberMinLength 5
+#define sepaIBANNumberMaxLength 30
+
+
+#define sepaBICNumberMinLength 5
+#define sepaBICNumberMaxLength 30
+
+
+#define paypalAuthTokenNumberMinLength 5
+#define paypalAuthTokenNumberMaxLength 30
+
 
 
 #define CreateError(errorCode,errorMessage) [NSError errorWithDomain:PLVAPIClientErrorDomain code:errorCode userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedFailureReasonErrorKey]]
@@ -39,15 +59,42 @@
     return TRUE;
 }
 
+- (BOOL) containsDigits:(NSString*)valueToCheck {
+    
+    NSCharacterSet* digits = [NSCharacterSet decimalDigitCharacterSet];
+    
+    if ([valueToCheck rangeOfCharacterFromSet:digits].location != NSNotFound)
+    {
+        return TRUE;
+    }
+    
+    return TRUE;
+}
+
 - (NSError*) validExpiryDateForMonth:(NSString*)month andYear:(NSString*)year {
     
     if (![self containsOnlyDigits:month] || ![self containsOnlyDigits:year]) {
-        
         return CreateError(ERROR_DATE_INVALID_CHARS_CODE,ERROR_DATE_INVALID_CHARS_MESSAGE);
     }
     
+    int yearInt = [NSDecimalNumber decimalNumberWithString:year].intValue;
+    int monthInt = [NSDecimalNumber decimalNumberWithString:month].intValue;
     
+    if (monthInt > 12 || monthInt < 1) {
+        return CreateError(ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
+    }
     
+    if (yearInt > 50 || yearInt < 10) {
+        return CreateError(ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
+    }
+    
+    NSDate *currentDate = [NSDate date];
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate];
+    
+    if ((yearInt < components.year) || ((yearInt == components.year) && (monthInt < components.month))) {
+        return CreateError(ERROR_DATE_PASSED_CODE,ERROR_DATE_PASSES_MESSAGE);
+    }
     
     return Nil;
 }
@@ -63,11 +110,11 @@
         return CreateError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
     }
     
-    if (self.pan.length < ccNumberMinLength) {
+    if (self.pan.length < ccPANNumberMinLength) {
         return CreateError(ERROR_CC_TOO_SHORT_CODE,ERROR_CC_TOO_SHORT_MESSAGE);
     }
     
-    if (self.pan.length > ccNumberMaxLength) {
+    if (self.pan.length > ccPANNumberMaxLength) {
         return CreateError(ERROR_CC_TOO_LONG_CODE,ERROR_CC_TOO_LONG_MESSAGE);
     }
     
@@ -89,6 +136,25 @@
         return expiryDateError;
     }
     
+    if (self.cvv == Nil || self.cvv.length == 0) {
+        return CreateError(ERROR_CVV_EMPTY_CODE,ERROR_CVV_EMPTY_MESSAGE);
+    }
+    
+    if (![self containsOnlyDigits:self.cvv]) {
+        return CreateError(ERROR_CVV_INVALID_CHARS_CODE,ERROR_CVV_INVALID_CHARS_MESSAGE);
+    }
+    
+    int ccvLength = 3;
+    
+    if ([self.pan hasPrefix:@"37"] || [self.pan hasPrefix:@"34"]) {
+        // should be a AMEX card, so we aspect 4 digit for the cvv
+        ccvLength = 4;
+    }
+    
+    if (self.cvv.length != ccvLength) {
+        return CreateError(ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
+    }
+
     return Nil;
 }
 
@@ -130,83 +196,92 @@
 @end
 
 
-@implementation PLVPayInstrumentDD (Serialization)
+@implementation PLVPayInstrumentDD (Validation)
 
-- (NSDictionary*) piDictDescription {
-    
-    OrderedDictionary* content = [OrderedDictionary new];
+- (NSError*) validate {
     
     
-    if (self.accountNumber != Nil) {
-        [content setObject:self.accountNumber forKey:ddAccountNumberKey];
+    if (self.accountNumber == Nil || self.accountNumber.length == 0) {
+        return CreateError(ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
     }
     
-    if (self.identifier != Nil) {
-        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    if (![self containsOnlyDigits:self.accountNumber]) {
+        return CreateError(ERROR_DD_ACCOUNT_INVALID_CHARS_CODE,ERROR_DD_ACCOUNT_INVALID_CHARS_MESSAGE);
     }
     
-    if (self.routingNumber != Nil) {
-        [content setObject:self.routingNumber forKey:ddRoutingNumberKey];
+    if (self.accountNumber.length < ddAccountNumberMinLength) {
+        return CreateError(ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
     }
     
-    if (self.type != Nil) {
-        [content setObject:self.type forKey:piTypeKey];
+    if (self.accountNumber.length > ddAccountNumberMaxLength) {
+        return CreateError(ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
     }
     
-    return content;
+    
+    
+    
+    if (self.routingNumber == Nil || self.routingNumber.length == 0) {
+        return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
+    }
+    
+    if (![self containsOnlyDigits:self.routingNumber]) {
+        return CreateError(ERROR_DD_ROUTING_INVALID_CHARS_CODE,ERROR_DD_ROUTING_INVALID_CHARS_MESSAGE);
+    }
+    
+    if (self.routingNumber.length < ddRoutingNumberMinLength) {
+        return CreateError(ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
+    }
+    
+    if (self.routingNumber.length > ddRoutingNumberMaxLength) {
+        return CreateError(ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
+    }
+    
+    return Nil;
 }
 
 @end
 
 
-@implementation PLVPayInstrumentSEPA (Serialization)
+@implementation PLVPayInstrumentSEPA (Validation)
 
 
-- (NSDictionary*) piDictDescription {
+- (NSError*) validate {
     
-    OrderedDictionary* content = [OrderedDictionary new];
-    
-    if (self.bic != Nil) {
-        [content setObject:self.bic forKey:sepaBICNumberKey];
+    if (self.iban == Nil || self.iban.length == 0) {
+        return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     }
     
-    if (self.iban != Nil) {
-        [content setObject:self.iban forKey:sepaIBANNumberKey];
+    if (self.iban.length < sepaIBANNumberMinLength || self.iban.length > sepaIBANNumberMaxLength) {
+        return CreateError(ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
     }
     
-    if (self.identifier != Nil) {
-        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    if (![self containsDigits:[self.iban substringToIndex:2]]) {
+        return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
+    }
+    
+    if (![self containsOnlyDigits:[self.iban substringFromIndex:2]]) {
+        return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
     }
 
-    if (self.type != Nil) {
-        [content setObject:self.type forKey:piTypeKey];
-    }
-    
-    return content;
+    return Nil;
 }
 
 
 @end
 
-@implementation PLVPayInstrumentPAYPAL (Serialization)
+@implementation PLVPayInstrumentPAYPAL (Validation)
 
-- (NSDictionary*) piDictDescription {
+- (NSError*) validate {
     
-    OrderedDictionary* content = [OrderedDictionary new];
-    
-    if (self.authToken != Nil) {
-        [content setObject:self.authToken forKey:paypalAuthTokenKey];
-    }
-
-    if (self.identifier != Nil) {
-        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    if (self.authToken == Nil || self.authToken.length == 0) {
+        return CreateError(ERROR_PAYPAL_TOKEN_EMPTY_CODE,ERROR_PAYPAL_TOKEN_EMPTY_MESSAGE);
     }
     
-    if (self.type != Nil) {
-        [content setObject:self.type forKey:piTypeKey];
+    if (self.authToken.length < paypalAuthTokenNumberMinLength || self.authToken.length > paypalAuthTokenNumberMaxLength) {
+        return CreateError(ERROR_PAYPAL_TOKEN_INVALID_CODE,ERROR_PAYPAL_TOKEN_INVALID_MESSAGE);
     }
     
-    return content;
+    return Nil;
 }
 
 @end
