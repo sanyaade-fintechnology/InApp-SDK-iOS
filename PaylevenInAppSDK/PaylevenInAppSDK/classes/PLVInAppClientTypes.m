@@ -39,6 +39,7 @@ typedef enum : NSUInteger {
     self = [super init];
     if (self) {
         _type = PLVPICCTypeUnknown;
+        _identifier = @"";
     }
     return self;
 }
@@ -53,6 +54,11 @@ typedef enum : NSUInteger {
     self = [super init];
     if (self) {
         self.type = PLVPITypeCC;
+        self.pan = @"";
+        self.expiryYear = @"";
+        self.expiryMonth = @"";
+        self.cvv = @"";
+        _cardBrand = @"";
     }
     return self;
 }
@@ -67,6 +73,8 @@ typedef enum : NSUInteger {
     self = [super init];
     if (self) {
         self.type = PLVPITypeDD;
+        self.routingNumber = @"";
+        self.accountNumber = @"";
     }
     return self;
 }
@@ -81,6 +89,8 @@ typedef enum : NSUInteger {
     self = [super init];
     if (self) {
         self.type = PLVPITypeSEPA;
+        self.iban = @"";
+        self.bic = @"";
     }
     return self;
 }
@@ -95,6 +105,7 @@ typedef enum : NSUInteger {
     self = [super init];
     if (self) {
         self.type = PLVPITypePAYPAL;
+        self.authToken = @"";
     }
     return self;
 }

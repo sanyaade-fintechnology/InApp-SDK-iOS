@@ -131,8 +131,45 @@
     }  else {
         return @"unknown";
     }
-    
 }
+
+- (NSString*) humanDetailsForPI:(PLVPaymentInstrument*)pi {
+    
+    NSString* shortType = pi.type;
+    
+    if([shortType isEqualToString:@"CC"]) {
+        PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
+        
+        NSArray* details = @[@"  ",[NSString stringWithFormat:@"PAN: %@",cc.pan],[NSString stringWithFormat:@"EXPIRYDATE: %@/%@",cc.expiryMonth,cc.expiryYear],[NSString stringWithFormat:@"BRAND: %@",cc.cardBrand]];
+        
+        return [details componentsJoinedByString:@"\n"];
+
+    } else if([shortType isEqualToString:@"DD"]) {
+        PLVPayInstrumentDD* cc = (PLVPayInstrumentDD*)pi;
+        
+        NSArray* details = @[@"  ",[NSString stringWithFormat:@"Account: %@",cc.accountNumber],[NSString stringWithFormat:@"Routing: %@",cc.routingNumber]];
+        
+        return [details componentsJoinedByString:@"\n"];
+    } else if([shortType isEqualToString:@"SEPA"]) {
+        PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
+        
+        NSArray* details = @[@"  ",[NSString stringWithFormat:@"IBAN: %@",cc.iban],[NSString stringWithFormat:@"BIC: %@",cc.bic]];
+        
+        return [details componentsJoinedByString:@"\n"];
+    } else if([shortType isEqualToString:@"PAYPAL"]) {
+        
+        PLVPayInstrumentPAYPAL* cc = (PLVPayInstrumentPAYPAL*)pi;
+        
+        NSArray* details = @[@"  ",[NSString stringWithFormat:@"AuthToken: %@",cc.authToken]];
+        
+        return [details componentsJoinedByString:@"\n"];
+                             
+    }  else {
+        return @"unknown";
+    }
+}
+
+
 
 - (NSString*) humandValidForPI:(PLVPaymentInstrument*)pi {
     
@@ -165,6 +202,37 @@
 
         [self deletePaymentInstrument];
 
+    }
+}
+
+
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
+    
+    PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:indexPath.row];
+
+    UIAlertController* detailsAlertController = [UIAlertController alertControllerWithTitle:[self humanTypeForShort:pi.type] message:[self humanDetailsForPI:pi] preferredStyle:UIAlertControllerStyleAlert];
+    
+    if (detailsAlertController != Nil) {
+
+        UIAlertAction* destroyAction = [UIAlertAction actionWithTitle:@"OK"
+                                                 style:UIAlertActionStyleCancel
+                                               handler:^(UIAlertAction *hideDetails) {
+                                                   // do destructive stuff here
+                                                   
+                                                   [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                                               }];
+
+        [detailsAlertController addAction:destroyAction];
+        
+        [detailsAlertController setModalPresentationStyle:UIModalPresentationPopover];
+
+        [self presentViewController:detailsAlertController animated:YES completion:Nil];
+        
+    } else {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        });
     }
 }
 
