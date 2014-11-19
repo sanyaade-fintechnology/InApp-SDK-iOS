@@ -23,8 +23,6 @@
 @property (strong) NSString* identifier;
 @property (strong) NSString* type;
 
-- (NSError*) validate;
-
 @end
 
 @interface PLVPayInstrumentCC : PLVPaymentInstrument

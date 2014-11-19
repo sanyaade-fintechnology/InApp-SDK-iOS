@@ -42,10 +42,10 @@
 
 @implementation PLVPaymentInstrument (Validation)
 
-//- (NSError*) validate {
-//    
-//    return Nil;
-//}
+- (NSError*) validate {
+    
+    return Nil;
+}
 
 - (BOOL) containsOnlyDigits:(NSString*)valueToCheck {
 
