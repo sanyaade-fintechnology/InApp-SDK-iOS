@@ -322,8 +322,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             if ([emailAddress isKindOfClass:[NSString class]]) {
                 
                 if(emailAddress.length > 0) {
-                    self.lastError = Nil;
-                    return TRUE;
+                    
+                    if ([self stringIsValidEmail:emailAddress]) {
+                        self.lastError = Nil;
+                        return TRUE;
+                    } else {
+                        
+                        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_INVALID_EMAILADDRESS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_INVALID_EMAILADDRESS_MESSAGE forKey:NSLocalizedDescriptionKey]];
+                        self.lastError = error;
+                        
+                        completionHandler(nil,error);
+                    }
+
                 }
             }
         }
@@ -376,6 +386,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     self.lastError = Nil;
     
     return TRUE;
+}
+
+
+-(BOOL) stringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = NO;
+    NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
+    NSString *laxString = @".+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
 }
 
 @end
