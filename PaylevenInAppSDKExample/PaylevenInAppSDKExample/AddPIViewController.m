@@ -165,22 +165,30 @@
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:pi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
-        if (self.currentTextField == Nil) {
-            // does not start an other textInput
-            // so we clear the fields
+        if (error != Nil) {
             
-            for(UITextField* tField in self.scrollView.subviews) {
-                
-                if ([tField isKindOfClass:[UITextField class]]) {
-                    tField.text = @"";
-                }
-            }
-        }
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedFailureReason delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+            
+            [alertView show];
+            
+        } else {
         
+                if (self.currentTextField == Nil) {
+                    // does not start an other textInput
+                    // so we clear the fields
+                    
+                    for(UITextField* tField in self.scrollView.subviews) {
+                        
+                        if ([tField isKindOfClass:[UITextField class]]) {
+                            tField.text = @"";
+                        }
+                    }
+                }
+            
+            [self backButton:self];
+        }
     }];
-    
-    [self backButton:self];
-    
+
 }
 
 
@@ -343,11 +351,6 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
-    if ([string isEqualToString:@""]) {
-        // backString
-        return TRUE;
-    }
-    
     NSString* replacedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
     NSUInteger tfTag = textField.tag - textFieldTagOffSet;
@@ -360,7 +363,7 @@
     
     NSString* key = [self.keyArray objectAtIndex:tfTag];
     
-    [self.addInfoDict setObject:textField.text forKey:key];
+    [self.addInfoDict setObject:replacedString forKey:key];
     
     if (self.addInfoDict.count == self.keyArray.count) {
         self.sendButton.enabled = TRUE;
@@ -369,6 +372,8 @@
         self.sendButton.enabled = FALSE;
         self.sendButton.alpha = 0.5;
     }
+    
+    NSLog(@"Dict: %@",self.addInfoDict);
     
     return TRUE;
 }

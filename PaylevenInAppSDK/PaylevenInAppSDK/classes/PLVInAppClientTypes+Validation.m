@@ -77,14 +77,14 @@
         return CreateError(ERROR_DATE_INVALID_CHARS_CODE,ERROR_DATE_INVALID_CHARS_MESSAGE);
     }
     
-    int yearInt = [NSDecimalNumber decimalNumberWithString:year].intValue;
+    int yearInt = 2000 + [NSDecimalNumber decimalNumberWithString:year].intValue;
     int monthInt = [NSDecimalNumber decimalNumberWithString:month].intValue;
     
     if (monthInt > 12 || monthInt < 1) {
         return CreateError(ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
     }
     
-    if (yearInt > 50 || yearInt < 10) {
+    if (yearInt > 2050 || yearInt < 2010) {
         return CreateError(ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
     }
     

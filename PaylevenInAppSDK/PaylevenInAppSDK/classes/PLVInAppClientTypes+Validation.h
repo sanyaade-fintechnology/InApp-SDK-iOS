@@ -10,6 +10,8 @@
 
 @interface PLVPaymentInstrument (Validation)
 
+- (NSError*) validate;
+
 @end
 
 @interface PLVPayInstrumentCC (Validation)

@@ -13,6 +13,7 @@
 #import "PLVInAppClientTypes.h"
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppErrors.h"
+#import "PLVInAppClientTypes+Validation.h"
 
 @interface PLVInAppClient ()
 
@@ -59,7 +60,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     [self.inAppAPIClient registerWithAPIKey:apiKey andBundleID:self.bundleID];
     
     self.apiKey = apiKey;
-    
 }
 
 - (void) registerWithAPIKey:(NSString*)apiKey andSpecificBaseServiceURL:(NSString*)serviceURLString {
@@ -71,7 +71,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     [self.inAppAPIClient setSpecificBaseServiceURL:serviceURLString];
     
     self.apiKey = apiKey;
-    
 }
 
 
@@ -81,7 +80,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     if (![self checkEmailAddress:emailAddress andCompletion:completionHandler]) { return; }
     
     [self.inAppAPIClient userTokenForEmail:emailAddress withCompletion:completionHandler];
-    
 }
 
 - (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -210,18 +208,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     if([self checkUserToken:userToken andCompletion:completionHandler]) {
         
-        if (paymentInstrument != Nil) {
+        if ((paymentInstrument != Nil) && [paymentInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
             
-            if ([paymentInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
+                if([self validatePaymentInstrument:paymentInstrument withCompletion:completionHandler]) {
+                    return TRUE;
+                }
+            
+            } else {
                 
-                return TRUE;
-            }
+            // Nil PaymentInstrument
+        
+            NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
+            self.lastError = error;
+            
+            completionHandler(nil,error);
         }
-        
-        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_MISSING_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_MISSING_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
-        self.lastError = error;
-        
-        completionHandler(nil,error);
     }
     
     return FALSE;
@@ -265,6 +266,38 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     return FALSE;
 
+}
+
+
+
+/**
+ *  checkEmailAddress
+ *
+ *  Before runing BE communication
+ *  Checks for email address, API Key and compeltion handler
+ *
+ *  @param completionHandler completionHandler to check
+ *  @param emailAddress      email address
+ *
+ *  @return TRUE for passed Checks, FALSE for failed Checks
+ */
+
+- (BOOL) validatePaymentInstrument:(PLVPaymentInstrument*)pi withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    // PI should already tested for class and Nil before
+    
+    NSError* validationError = [pi validate];
+    
+    if (validationError != Nil) {
+
+        self.lastError = validationError;
+        
+        completionHandler(nil,validationError);
+        
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 
