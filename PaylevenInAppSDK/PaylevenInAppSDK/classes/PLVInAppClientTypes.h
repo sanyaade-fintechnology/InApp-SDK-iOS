@@ -20,8 +20,9 @@
 
 @interface PLVPaymentInstrument : NSObject
 
-@property (strong) NSString* identifier;
 @property (strong) NSString* type;
+@property (strong, readonly) NSString* sortIndex;
+@property (strong, readonly) NSString* identifier;
 
 @end
 
