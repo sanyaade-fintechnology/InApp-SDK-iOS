@@ -9,6 +9,7 @@
 @import Foundation;
 
 #import "PLVInAppSDKConstants.h"
+#import "PLVInAppClientTypes.h"
 #import "PLVInAppClientTypes+Serialization.h"
 #import "OrderedDictionary.h"
 

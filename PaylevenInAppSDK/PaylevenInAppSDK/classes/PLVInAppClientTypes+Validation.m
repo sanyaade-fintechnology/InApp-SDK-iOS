@@ -42,7 +42,20 @@
 
 @implementation PLVPaymentInstrument (Validation)
 
-- (NSError*) validate {
+- (NSError*)  validateOnCreation {
+    
+    return Nil;
+}
+
+- (NSError*)validateOnUpdate {
+    
+    if (self.identifier == Nil || self.identifier.length == 0) {
+        return CreateError(ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
+    }
+    
+    if (self.sortIndex == Nil || self.sortIndex.length == 0) {
+        return CreateError(ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
+    }
     
     return Nil;
 }
@@ -104,7 +117,7 @@
 
 @implementation PLVPayInstrumentCC (Validation)
 
-- (NSError*) validate {
+- (NSError*)   validateOnCreation {
     
     if (self.pan == Nil || self.pan.length == 0) {
         return CreateError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
@@ -119,7 +132,7 @@
     }
     
     if (![self luhnCheck:self.pan]) {
-        //return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
+        return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
     }
     
     if (![self containsOnlyDigits:self.pan]) {
@@ -157,7 +170,6 @@
 
     return Nil;
 }
-
 
 - (BOOL) luhnCheck:(NSString *)stringToTest
 {
@@ -198,7 +210,7 @@
 
 @implementation PLVPayInstrumentDD (Validation)
 
-- (NSError*) validate {
+- (NSError*)   validateOnCreation {
     
     
     if (self.accountNumber == Nil || self.accountNumber.length == 0) {
@@ -245,7 +257,7 @@
 @implementation PLVPayInstrumentSEPA (Validation)
 
 
-- (NSError*) validate {
+- (NSError*)   validateOnCreation {
     
     if (self.iban == Nil || self.iban.length == 0) {
         return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
@@ -271,7 +283,7 @@
 
 @implementation PLVPayInstrumentPAYPAL (Validation)
 
-- (NSError*) validate {
+- (NSError*)   validateOnCreation {
     
     if (self.authToken == Nil || self.authToken.length == 0) {
         return CreateError(ERROR_PAYPAL_TOKEN_EMPTY_CODE,ERROR_PAYPAL_TOKEN_EMPTY_MESSAGE);

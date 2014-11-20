@@ -27,6 +27,7 @@ typedef enum : NSUInteger {
 @interface PLVPaymentInstrument()
 
 @property (readwrite) NSString* sortIndex;
+@property (readwrite) NSString* identifier;
 
 @end
 

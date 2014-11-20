@@ -37,6 +37,8 @@
 		9FA5CBC819F527C600FCB314 /* PLVInAppSDKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CBC519F527C600FCB314 /* PLVInAppSDKConstants.m */; };
 		9FA5CBCE19F52B2D00FCB314 /* PLVInAppSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA5CAAC19F5189C00FCB314 /* PLVInAppSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FA5CBDB19F52E2300FCB314 /* PLVInAppClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA5CBC219F527C600FCB314 /* PLVInAppClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9FA6C7CB1A1E31CE0062326A /* PLVRequestPersistManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA6C7C91A1E31CE0062326A /* PLVRequestPersistManager.h */; };
+		9FA6C7CC1A1E31CE0062326A /* PLVRequestPersistManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA6C7CA1A1E31CE0062326A /* PLVRequestPersistManager.m */; };
 		9FC8B2931A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2911A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h */; };
 		9FC8B2941A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */; };
 		9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */; };
@@ -90,6 +92,8 @@
 		9FA5CBC419F527C600FCB314 /* PLVInAppSDKConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppSDKConstants.h; path = PaylevenInAppSDK/classes/PLVInAppSDKConstants.h; sourceTree = "<group>"; };
 		9FA5CBC519F527C600FCB314 /* PLVInAppSDKConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppSDKConstants.m; path = PaylevenInAppSDK/classes/PLVInAppSDKConstants.m; sourceTree = "<group>"; };
 		9FA5CBC619F527C600FCB314 /* singletonHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = singletonHelper.h; path = PaylevenInAppSDK/classes/singletonHelper.h; sourceTree = "<group>"; };
+		9FA6C7C91A1E31CE0062326A /* PLVRequestPersistManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVRequestPersistManager.h; path = PaylevenInAppSDK/classes/PLVRequestPersistManager.h; sourceTree = "<group>"; };
+		9FA6C7CA1A1E31CE0062326A /* PLVRequestPersistManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVRequestPersistManager.m; path = PaylevenInAppSDK/classes/PLVRequestPersistManager.m; sourceTree = "<group>"; };
 		9FC8B2911A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PLVInAppClientTypes+Validation.h"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Validation.h"; sourceTree = "<group>"; };
 		9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PLVInAppClientTypes+Validation.m"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Validation.m"; sourceTree = "<group>"; };
 		9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppErrors.h; path = PaylevenInAppSDK/classes/PLVInAppErrors.h; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 				9F6552BB19F6876A003D07A5 /* PLVServerTrustValidator.h */,
 				9F6552BC19F6876A003D07A5 /* PLVServerTrustValidator.m */,
 				9F6552BD19F6876A003D07A5 /* PLVServerTrustValidatorTests.m */,
+				9FA6C7C91A1E31CE0062326A /* PLVRequestPersistManager.h */,
+				9FA6C7CA1A1E31CE0062326A /* PLVRequestPersistManager.m */,
 			);
 			name = APIClient;
 			sourceTree = "<group>";
@@ -212,6 +218,7 @@
 				9F7CFC881A079A950047203A /* PLVInAppClientTypes+Serialization.h in Headers */,
 				9FF6E64D1A0239F300C12AAA /* PLVInAppClientTypes.h in Headers */,
 				9FC8B2931A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h in Headers */,
+				9FA6C7CB1A1E31CE0062326A /* PLVRequestPersistManager.h in Headers */,
 				9F6552C319F6876A003D07A5 /* PLVServerTrustValidator.h in Headers */,
 				9FD583FC1A14B6C000E9B83E /* OrderedDictionary.h in Headers */,
 				9F6552BE19F6876A003D07A5 /* PLVInAppAPIClient.h in Headers */,
@@ -344,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FA6C7CC1A1E31CE0062326A /* PLVRequestPersistManager.m in Sources */,
 				9FA5CBC719F527C600FCB314 /* PLVInAppClient.m in Sources */,
 				9FD583FD1A14B6C000E9B83E /* OrderedDictionary.m in Sources */,
 				9F6552C119F6876A003D07A5 /* PLVServerCertificate.m in Sources */,

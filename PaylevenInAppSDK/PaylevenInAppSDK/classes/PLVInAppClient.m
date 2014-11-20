@@ -85,7 +85,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 - (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
-    if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
+    if (![self checkUserToken:userToken withPI:payInstrument onCreation:YES andCompletion:completionHandler]) { return; }
     
     NSString* useCaseChecked = [self checkUseCase:useCase];
     
@@ -115,7 +115,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 - (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
-    if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
+    if (![self checkUserToken:userToken withPI:payInstrument onCreation:NO andCompletion:completionHandler]) { return; }
     
     [self.inAppAPIClient disablePaymentInstrument:payInstrument forUserToken:userToken withCompletion:completionHandler];
 }
@@ -124,7 +124,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 - (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
-    if (![self checkUserToken:userToken withPI:payInstrument andCompletion:completionHandler]) { return; }
+    if (![self checkUserToken:userToken withPI:payInstrument onCreation:NO andCompletion:completionHandler]) { return; }
     
     NSString* useCaseChecked = [self checkUseCase:useCase];
     
@@ -204,13 +204,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
  *  @return TRUE for passed Checks, FALSE for failed Checks
  */
 
-- (BOOL) checkUserToken:(NSString*)userToken withPI:(PLVPaymentInstrument*)paymentInstrument andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (BOOL) checkUserToken:(NSString*)userToken withPI:(PLVPaymentInstrument*)paymentInstrument onCreation:(BOOL)validateOnCreation andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     if([self checkUserToken:userToken andCompletion:completionHandler]) {
         
         if ((paymentInstrument != Nil) && [paymentInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
             
-                if([self validatePaymentInstrument:paymentInstrument withCompletion:completionHandler]) {
+                if([self validatePaymentInstrument:paymentInstrument onCreation:validateOnCreation withCompletion:completionHandler]) {
                     return TRUE;
                 }
             
@@ -282,11 +282,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
  *  @return TRUE for passed Checks, FALSE for failed Checks
  */
 
-- (BOOL) validatePaymentInstrument:(PLVPaymentInstrument*)pi withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (BOOL) validatePaymentInstrument:(PLVPaymentInstrument*)pi onCreation:(BOOL)validateOnCreation withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // PI should already tested for class and Nil before
     
-    NSError* validationError = [pi validate];
+    NSError* validationError;
+    
+    if (validateOnCreation) {
+        validationError = [pi validateOnCreation];
+    } else {
+        validationError = [pi validateOnUpdate];
+    }
     
     if (validationError != Nil) {
 
