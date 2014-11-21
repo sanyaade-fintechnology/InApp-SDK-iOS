@@ -7,14 +7,58 @@
 //
 
 #import "PLVRequestPersistManager.h"
-
+#import "KeychainItemWrapper.h"
+#import "PLVInAppAPIClient.h"
 #import "singletonHelper.h"
 
+#define PLVInAPPSDKKeyChainPersistRequestArrayGroup @"PLVInAPPSDKKeyChainPersistRequestArrayGroup"
+#define PLVInAPPSDKKeyChainPersistRequestArrayKey @"PLVInAPPSDKKeyChainPersistRequestArrayKey"
 
+@interface PLVRequestPersistManager()
 
+@property (strong) NSArray* requestArray;
+@property (nonatomic, strong) KeychainItemWrapper *keychainPersistRequests;
+@property (nonatomic, strong) PLVInAppAPIClient* apiClient;
+
+@end
 @implementation PLVRequestPersistManager
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
+
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        
+        _keychainPersistRequests = [[KeychainItemWrapper alloc] initWithIdentifier:PLVInAPPSDKKeyChainPersistRequestArrayGroup accessGroup:Nil];
+        
+        self.requestArray = [_keychainPersistRequests objectForKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+        
+        
+    }
+    return self;
+}
+
+- (void) registerAPIClient:(PLVInAppAPIClient*)apiClient {
+    
+    self.apiClient = apiClient;
+    
+    if (self.requestArray.count > 0) {
+        
+        // start
+    }
+    
+}
+
+- (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)selector httpMethod:(NSString*)method {
+    
+    
+    
+    
+    return Nil;
+}
+
 
 -(NSString*) encryptDecrypt:(NSString*)toEncrypt {
     

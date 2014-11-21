@@ -15,6 +15,7 @@
 #import "PLVInAppErrors.h"
 #import "PLVInAppClientTypes+Serialization.h"
 #import "OrderedDictionary.h"
+#import "PLVRequestPersistManager.h"
 #import <CommonCrypto/CommonCrypto.h>
 
 #define useLocalEndpoint 0
@@ -154,6 +155,9 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         
         _waitForRegisterFinishedCondition = [[NSCondition alloc] init];
         
+        PLVRequestPersistManager* puh = [PLVRequestPersistManager sharedInstance];
+        
+        
     }
     
     return self;
@@ -190,6 +194,10 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 - (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,self.registerBundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion,nil];
+    
+    
+    [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:parameters toEndpoint:PLVInAppClientAPIUserTokenEndPoint httpMethod:@"POST"];
+    
     
     //add HMAC
 

@@ -20,4 +20,17 @@
 + (instancetype) sharedInstance;
 
 
+/**
+ *  addRequestToPersistStore
+ *
+ *  @param params   the parameters
+ *  @param endpoint the endpoint to call
+ *  @param method   the http method (get,post,delete)
+ *
+ *  @return unique identifier for this request
+ */
+- (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)endpoint httpMethod:(NSString*)method ;
+
+
+
 @end
