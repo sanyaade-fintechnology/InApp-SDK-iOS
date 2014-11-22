@@ -18,8 +18,8 @@
 #import "PLVRequestPersistManager.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
+#define useLocalEndpoint 1
+#define usemacMiniEndpoint 0
 #define useOtherEndpoint 0
 
 #define apiParameterKeyEmail @"email"
@@ -29,14 +29,6 @@
 #define apiParameterKeyBundleID @"bundleID"
 #define apiParameterKeyAPIVersion @"version"
 #define apiParameterKeyUseCase @"useCase"
-
-
-typedef enum : NSUInteger {
-    apiClientStateJustStartet = 0,
-    apiClientStateUnregistered,
-    apiClientStateRegistered,
-    apiClientStateRegisterError,
-} PLVInAppAPIClientState;
 
 
 static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/userToken";
@@ -77,8 +69,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 @interface PLVInAppAPIClient () <NSURLSessionTaskDelegate>
 
-
-@property (nonatomic) PLVInAppAPIClientState apiClientState;
 
 /** The Base Service URL */
 @property (nonatomic, strong) NSString *serviceBaseURL;
@@ -140,8 +130,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         _queue = queue;
         assert(_queue != nil);
         
-        _apiClientState = apiClientStateJustStartet;
-        
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
         configuration.HTTPCookieAcceptPolicy = NSHTTPCookieAcceptPolicyNever;
         configuration.HTTPCookieStorage = nil;
@@ -186,14 +174,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     self.registerAPIKey = apiKey;
     
-    if (self.apiClientState != apiClientStateJustStartet) {
-        return;
-    }
-
-    _apiClientState = apiClientStateUnregistered;
-    
-    self.registerAPIKey = apiKey;
-    
     self.registerBundleID = bundleID;
 
     return;
@@ -229,9 +209,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
-        [[PLVRequestPersistManager sharedInstance] removeRequestFromPersistStore:requestIdentifierToken];
-
+        if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+            [[PLVRequestPersistManager sharedInstance] removeRequestFromPersistStore:requestIdentifierToken];
+        }
+        
         if (completionHandler != Nil) {
+            
             SDLog(@"Response from UserToken: %@",response);
             
             if (error == Nil) {
@@ -587,13 +570,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                 completionHandler(Nil, error);
             });
             
-            if (self.apiClientState == apiClientStateUnregistered) {
-                
-                self.apiClientState = apiClientStateRegisterError;
-            }
-            
-            return;
-
         }
         
         NSDictionary *responseDict = nil;
@@ -625,10 +601,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             
         }
         
-
-        if (self.apiClientState == apiClientStateUnregistered) {
-            
-        }
         dispatch_async(dispatch_get_main_queue(), ^{
                 
             completionHandler(responseDict, error);
