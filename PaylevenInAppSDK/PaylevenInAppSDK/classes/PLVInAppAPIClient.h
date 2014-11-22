@@ -51,5 +51,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
+- (void)addHmacForParameterDict:(NSMutableDictionary*)parameters ;
+
 @end
 

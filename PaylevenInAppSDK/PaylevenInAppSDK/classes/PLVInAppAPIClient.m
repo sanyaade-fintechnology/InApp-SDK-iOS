@@ -108,6 +108,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 /** Server trust validator. */
 @property (nonatomic, readonly, strong) PLVServerTrustValidator *serverTrustValidator;
 
+@property (nonatomic,strong) NSDateFormatter *dateFormatter;
+
 /** Stops the receiver invalidating all sessions. */
 - (void)stop;
 
@@ -158,6 +160,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         PLVRequestPersistManager* puh = [PLVRequestPersistManager sharedInstance];
         
         
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+        [_dateFormatter setTimeZone:timeZone];
+        _dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss";
+        
+        
     }
     
     return self;
@@ -196,7 +204,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,self.registerBundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion,nil];
     
     
-    [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:parameters toEndpoint:PLVInAppClientAPIUserTokenEndPoint httpMethod:@"POST"];
+    NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:parameters toEndpoint:PLVInAppClientAPIUserTokenEndPoint httpMethod:@"POST"];
     
     
     //add HMAC
@@ -706,11 +714,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 -(void)addHmacForParameterDict:(NSMutableDictionary*)parameters {
     
     //1. create timestamp string
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-    [formatter setTimeZone:timeZone];
-    formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss";
-    NSString *timestamp = [formatter stringFromDate:[NSDate date]];
+
+    NSString *timestamp = [self.dateFormatter stringFromDate:[NSDate date]];
     
     //2. add timestamp to params
     [parameters setObject:timestamp forKey:@"hmacTime"];
