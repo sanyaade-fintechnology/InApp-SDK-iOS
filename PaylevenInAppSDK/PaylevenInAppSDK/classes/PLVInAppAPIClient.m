@@ -229,6 +229,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
+        [[PLVRequestPersistManager sharedInstance] removeRequestFromPersistStore:requestIdentifierToken];
+
         if (completionHandler != Nil) {
             SDLog(@"Response from UserToken: %@",response);
             

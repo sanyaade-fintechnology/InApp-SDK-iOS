@@ -89,7 +89,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [self.requestArray addObject:paramDict];
     
-    [self.keychainPersistRequests  setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    [self.keychainPersistRequests setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
     
     return requestToken;
 }
@@ -113,7 +113,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [self.requestArray removeObject:requestToRemove];
     
-    [self.keychainPersistRequests  setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    [self.keychainPersistRequests setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
 
 }
 

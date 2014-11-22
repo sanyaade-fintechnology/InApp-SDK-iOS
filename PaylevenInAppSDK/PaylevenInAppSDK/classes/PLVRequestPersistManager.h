@@ -27,10 +27,16 @@
  *  @param endpoint the endpoint to call
  *  @param method   the http method (get,post,delete)
  *
- *  @return unique identifier for this request
+ *  @return requestToken (identifier) for this request
  */
 - (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)endpoint httpMethod:(NSString*)method ;
 
 
+/**
+ *  removeRequestFromPersistStore
+ *
+ *  @param requestToken the Token for the request to remove
+ */
+- (void) removeRequestFromPersistStore:(NSString*)requestToken;
 
 @end
