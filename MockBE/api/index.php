@@ -16,10 +16,55 @@ $app->post('/listPaymentInstruments', 'listPaymentInstrumentsForUserToken');
 $app->post('/setPaymentInstrumentsOrder', 'setPIOrderForUserToken');
 $app->post('/removePaymentInstrumentForUseCase', 'removePaymentInstrumentForUseCase');
 $app->post('/disablePaymentInstrument', 'disablePaymentInstrumentForUserToken');
+
+# new endPoints
+
+$app->post('/users', 'getUserTokenForEmail');
+$app->post('/users/:userToken/:paymentInstruments',	'addPIToUserToken');
+# $app->get('/users/:userToken/:paymentInstrument',	'listPiForUserToken');
+$app->post('/users/:userToken/:paymentInstruments/:sort-index',	'sortPIForUserToken');
+
+$app->delete('/users/:userToken/:paymentInstruments/:piID',	'deletePIForUserToken');
+$app->delete('/users/:userToken/:paymentInstruments/:piID/:useCase/:useCaseValue',	'removeUseCaseForPiAndUserToken');
+
 $app->response()->header('Connection','close');
 
 $app->run();
 
+function addPIToUserToken ($userToken, $paymentInstruments) {
+	
+	if(!is_null($userToken)) {
+		
+		if ($paymentInstruments == 'paymentInstruments') {
+			# code...
+			if(checkUserToken($userToken)) {
+				addPaymentInstrumentForUserToken();
+			}
+		}
+	}
+}
+
+function listPiForUserToken ($userToken) {
+	
+	listPaymentInstrumentsForUserToken();
+
+}
+
+function sortPIForUserToken ($userToken) {
+	
+	setPIOrderForUserToken();
+}
+
+
+function deletePIForUserToken($userToken,$piID) {
+	
+	disablePaymentInstrumentForUserToken();
+}
+
+function removeUseCaseForPiAndUserToken($userToken,$piID,$useCase) {
+	
+	removePaymentInstrumentForUseCase();
+}
 
 
 function getUserTokenForEmail() {
@@ -47,7 +92,12 @@ function getUserTokenForEmail() {
 	
 	$apiKey = getAPIKeyForBundleAndVersion($details->bundleID,$details->version);
 	
-	if($apiKey and checkHMACForRequestAndSeed($details,$apiKey)) {
+	if(is_null($apiKey)) {	
+		returnErrorWithDescription('Invalid credentials');
+		return;
+	}
+	
+	if(checkHMACForRequestAndSeed($details,$apiKey)) {
 			
 	       error_log('ApiKey: '. $apiKey);
 	
@@ -67,7 +117,7 @@ function getUserTokenForEmail() {
                 if($token) {
                         # KNOWN EMAIL FOR THIS API KEY 
 						Slim::getInstance()->response()->status(200);
-                        returnOKStatus(array('userToken'=>$token->userToken)); 
+                        returnOKStatus(array('userToken'=>$token->userToken));
                 } else {
                     # create new token 
                     $hash = sha1(mt_rand());
@@ -103,12 +153,28 @@ function getUserTokenForEmail() {
                 if (isset($details->paymentInstrument)) {
                 
                     # error_log('add PAyment Instruments for token '.$token->userToken);
+					
+					$useCase = DEFAULTUSECASE;
+	
+					if (isset($details->useCase)) {
+						$useCase = $details->useCase;
+					}
                     
-                    addPIsToUserToken($token->userToken,$details->paymentInstrument,$details->useCase);
+					$piArray = array();
+	
+					if (is_array($details->paymentInstrument)) {
+						$piArray = array_merge($piArray, $details->paymentInstrument);
+					} else {
+						array_push($piArray,$details->paymentInstrument);
+					}
+					
+                    addPIsToUserToken($token->userToken,$piArray,$useCase);
                 }
 
             } catch(PDOException $e) {
                 returnErrorWithDescription($e->getMessage()); 
+				
+				return;
             }
          
         }
@@ -188,7 +254,6 @@ function piTokenForUserAndUseCase($userToken,$useCase) {
 	$sql = "SELECT PITABLE.piDetails, PITABLE.piIndex, USECASETABLE.sortIndex FROM PITABLE INNER JOIN USECASETABLE ON PITABLE.piToken=USECASETABLE.piToken WHERE USECASETABLE.useCase=:useCaseValue AND USECASETABLE.userToken=:userTokenValue ORDER BY USECASETABLE.sortIndex";
 		
      try {
-
          $db = getConnection();
          $stmt = $db->prepare($sql);  
          $stmt->bindParam("userTokenValue", $userToken);
@@ -203,19 +268,14 @@ function piTokenForUserAndUseCase($userToken,$useCase) {
 			 $pi['sortIndex'] = $fetchPi->sortIndex;
              array_push($piTokens,$pi);   
          }
-					
 		return $piTokens;
 				
      } catch(PDOException $e) {
-    
 		returnErrorWithDescription($e->getMessage());
-   
      } 
 
 	 return null;	
 }
-
-
 
 function disablePaymentInstrumentForUserToken() {
 	
@@ -268,7 +328,6 @@ function disablePaymentInstrumentForUserToken() {
 			return;
         }       
     }     
-	
 	returnOKStatus(NULL);
 }
 
@@ -305,7 +364,6 @@ function removePaymentInstrumentForUseCase() {
 		returnOKStatus(NULL);
 		return;
 	}
-	
 }
 
 function removePaymentInstrumentForUserTokenAndUseCase($userToken,$piIdentifier,$useCase) {
@@ -508,7 +566,6 @@ function addPIsToUserToken($userToken,$piArray,$useCase) {
 	}
 	
 	foreach ($piArray as $pi) {
-		
        	$piDetails =  json_encode($pi);
 		addPI($userToken,$piDetails,$useCase);
     }
@@ -542,8 +599,6 @@ function addPI($userToken,$piDetails,$useCase) {
              $stmt->bindParam("identifierValue", $piIdentifier);
              $stmt->execute();
 			 
-			 $result = $stmt->fetchObject();
-            
          } catch(PDOException $e) {
              returnErrorWithDescription($e->getMessage());
  			return;
@@ -551,7 +606,7 @@ function addPI($userToken,$piDetails,$useCase) {
 		 
 		 #known pi ... so check if this useCase is known
 		 
-		 $piToken = getPiTokenForPiIdentifier($piIdenfifier);
+		 $piToken = getPiTokenForPiIdentifier($piIdentifier);
 		 
 		 addPIToUseCaseTable($piToken,$userToken,$useCase);
 		
@@ -565,8 +620,10 @@ function addPIWithDetails ($piTokenValue,$piIdentifier,$userTokenValue,$piDetail
 	
 	$piIndexValue = countPiForUserToken($userTokenValue);
 	
-    $sql = "INSERT INTO PITABLE (piToken,identifier,userToken, piDetails, piIndex) VALUES (:piTokenValue,:piIdentifierValue, :userTokenValue, :piDetailsValue, :piIndexValue)";
+    $sql = "INSERT INTO PITABLE (piToken,identifier,userToken, piDetails, piDetailsUnMasked, piIndex) VALUES (:piTokenValue,:piIdentifierValue, :userTokenValue, :piDetailsValue, :piDetailsUnMaskedValue, :piIndexValue)";
     
+	$maskedPiDetails = createMaskedPI($piDetailsValue);
+	
     try {
             $db = getConnection();
             $stmt = $db->prepare($sql);  
@@ -574,7 +631,8 @@ function addPIWithDetails ($piTokenValue,$piIdentifier,$userTokenValue,$piDetail
 			$stmt->bindParam("piTokenValue", $piTokenValue);
             $stmt->bindParam("piIdentifierValue", $piIdentifier);						
             $stmt->bindParam("userTokenValue", $userTokenValue);
-            $stmt->bindParam("piDetailsValue",$piDetailsValue);
+            $stmt->bindParam("piDetailsValue",$maskedPiDetails);
+			$stmt->bindParam("piDetailsUnMaskedValue",$piDetailsValue);
 			$stmt->bindParam("piIndexValue",$piIndexValue);
             $stmt->execute();
 
@@ -604,6 +662,75 @@ function addPIWithDetails ($piTokenValue,$piIdentifier,$userTokenValue,$piDetail
 	$result = addPIToUseCaseTable($piTokenValue,$userTokenValue,$useCaseValue);
 
 	return $result;
+}
+
+function createMaskedPI($piDetails) {
+	
+	$piDetailArray = (array)json_decode($piDetails);
+	
+	if (is_array($piDetailArray)) {
+		
+		if (array_key_exists('type',$piDetailArray)) {
+			
+			$piType = $piDetailArray['type'];
+			
+			$maskedPi = array();
+			
+			$maskedPi = array_merge($maskedPi,$piDetailArray);
+			
+			if (strcasecmp(strtoupper($piType),'CC') == 0) {
+
+				if (array_key_exists('pan',$maskedPi)) {
+					
+					$pan = $maskedPi['pan'];
+					
+					$maskedPan = maskStringToLength($pan,4);
+					
+					$maskedPi['pan'] = $maskedPan;
+				}
+				
+				if (array_key_exists('cvv',$maskedPi)) {
+					unset($maskedPi['cvv']);
+				}
+			}
+			
+			if (strcasecmp(strtoupper($piType),'DD') == 0) {
+								
+				if (array_key_exists('accountNumber',$maskedPi)) {
+					
+					$accountNumber = $maskedPi['accountNumber'];
+					
+					$maskedAccountNumber = maskStringToLength($accountNumber,4);
+					
+					$maskedPi['pan'] = $maskedAccountNumber;
+				}
+			}
+			
+			return json_encode($maskedPi);
+		}
+	}
+	
+	return $piDetails;
+}
+
+function maskStringToLength($strToMask,$lengthToMask) {
+	
+	if (strlen($strToMask > $lengthToMask)) {
+
+		$replaceLenght = strlen($strToMask) - $lengthToMask;
+		
+		$replaceStr = '';
+		
+		for($i=0; $i < $replaceLenght; $i++) {
+		 $replaceStr = $replaceStr . '*';
+		}
+		
+		$maskedPan = substr_replace($strToMask,$replaceStr,0,$replaceLenght);
+		
+		return $maskedPan;
+	}
+	
+	return $strToMask;
 }
 
 function addPIToUseCaseTable($piTokenValue,$userTokenValue,$useCaseValue) {
