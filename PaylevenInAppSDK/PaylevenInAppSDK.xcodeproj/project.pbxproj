@@ -22,8 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		9F30869F1A2351E3000D2AD5 /* PLVInAppAPIClientNewBE.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F30869D1A2351E3000D2AD5 /* PLVInAppAPIClientNewBE.m */; };
 		9F6552BE19F6876A003D07A5 /* PLVInAppAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F6552B619F6876A003D07A5 /* PLVInAppAPIClient.h */; };
-		9F6552BF19F6876A003D07A5 /* PLVInAppAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6552B719F6876A003D07A5 /* PLVInAppAPIClient.m */; };
 		9F6552C019F6876A003D07A5 /* PLVServerCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F6552B819F6876A003D07A5 /* PLVServerCertificate.h */; };
 		9F6552C119F6876A003D07A5 /* PLVServerCertificate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6552B919F6876A003D07A5 /* PLVServerCertificate.m */; };
 		9F6552C319F6876A003D07A5 /* PLVServerTrustValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F6552BB19F6876A003D07A5 /* PLVServerTrustValidator.h */; };
@@ -75,6 +75,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9F30869D1A2351E3000D2AD5 /* PLVInAppAPIClientNewBE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppAPIClientNewBE.m; path = PaylevenInAppSDK/classes/PLVInAppAPIClientNewBE.m; sourceTree = "<group>"; };
 		9F6552B619F6876A003D07A5 /* PLVInAppAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppAPIClient.h; path = PaylevenInAppSDK/classes/PLVInAppAPIClient.h; sourceTree = "<group>"; };
 		9F6552B719F6876A003D07A5 /* PLVInAppAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppAPIClient.m; path = PaylevenInAppSDK/classes/PLVInAppAPIClient.m; sourceTree = "<group>"; };
 		9F6552B819F6876A003D07A5 /* PLVServerCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVServerCertificate.h; path = PaylevenInAppSDK/classes/PLVServerCertificate.h; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 		9F6552B519F6874F003D07A5 /* APIClient */ = {
 			isa = PBXGroup;
 			children = (
+				9F30869D1A2351E3000D2AD5 /* PLVInAppAPIClientNewBE.m */,
 				9F6552B619F6876A003D07A5 /* PLVInAppAPIClient.h */,
 				9F6552B719F6876A003D07A5 /* PLVInAppAPIClient.m */,
 				9F6552B819F6876A003D07A5 /* PLVServerCertificate.h */,
@@ -381,9 +383,9 @@
 				9F6552C419F6876A003D07A5 /* PLVServerTrustValidator.m in Sources */,
 				9FC8B2941A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m in Sources */,
 				9FC8B2981A1B978100DD3370 /* PLVInAppErrors.m in Sources */,
-				9F6552BF19F6876A003D07A5 /* PLVInAppAPIClient.m in Sources */,
 				9FBC2EFE1A1F4400007D1341 /* KeychainItemWrapper.m in Sources */,
 				9F7CFC891A079A950047203A /* PLVInAppClientTypes+Serialization.m in Sources */,
+				9F30869F1A2351E3000D2AD5 /* PLVInAppAPIClientNewBE.m in Sources */,
 				9FF6E64E1A0239F300C12AAA /* PLVInAppClientTypes.m in Sources */,
 				9FA5CBC819F527C600FCB314 /* PLVInAppSDKConstants.m in Sources */,
 			);
