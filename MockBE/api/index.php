@@ -1,52 +1,43 @@
 <?php
 
 define('DEFAULTUSECASE','PRIVATE');
+define('USECASEDEFAULT','DEFAULT');
 
-define('USECASEBUSINESS','BUSINESS');
-define('USECASEPRIVATE','PRIVATE');
-define('USECASEBOTH','BOTH');
 
 require 'Slim/Slim.php';
 
 $app = new Slim();
 
-$app->post('/userToken', 'getUserTokenForEmail');
-$app->post('/addPaymentInstrument', 'addPaymentInstrumentForUserToken');
-$app->post('/listPaymentInstruments', 'listPaymentInstrumentsForUserToken');
-$app->post('/setPaymentInstrumentsOrder', 'setPIOrderForUserToken');
-$app->post('/removePaymentInstrumentForUseCase', 'removePaymentInstrumentForUseCase');
-$app->post('/disablePaymentInstrument', 'disablePaymentInstrumentForUserToken');
+$app->post('/logs', 'addLogs');
 
 # new endPoints
 
 $app->post('/users', 'getUserTokenForEmail');
-$app->post('/users/:userToken/:paymentInstruments',	'addPIToUserToken');
-# $app->get('/users/:userToken/:paymentInstrument',	'listPiForUserToken');
-$app->post('/users/:userToken/:paymentInstruments/:sort-index',	'sortPIForUserToken');
+$app->post('/users/:userToken/:paymentinstruments',	'addPIToUserToken');
+$app->get('/users/:userToken/payment-instruments',	'listPiForUserToken');
+$app->post('/users/:userToken/:paymentinstruments/:sort-index',	'sortPIForUserToken');
 
-$app->delete('/users/:userToken/:paymentInstruments/:piID',	'deletePIForUserToken');
-$app->delete('/users/:userToken/:paymentInstruments/:piID/:useCase/:useCaseValue',	'removeUseCaseForPiAndUserToken');
+$app->delete('/users/:userToken/:paymentinstruments/:piID',	'deletePIForUserToken');
+$app->delete('/users/:userToken/:paymentinstruments/:piID/:useCase/:useCaseValue',	'removeUseCaseForPiAndUserToken');
 
 $app->response()->header('Connection','close');
 
 $app->run();
 
-function addPIToUserToken ($userToken, $paymentInstruments) {
+function addPIToUserToken ($userToken, $useCase) {
 	
-	if(!is_null($userToken)) {
-		
-		if ($paymentInstruments == 'paymentInstruments') {
-			# code...
-			if(checkUserToken($userToken)) {
-				addPaymentInstrumentForUserToken();
-			}
+	if(!is_null($userToken) AND !is_null($useCase)) {
+		# code...
+		if(checkUserToken($userToken)) {
+			addPaymentInstrumentForUserToken($userToken,$useCase);
 		}
 	}
+
 }
 
 function listPiForUserToken ($userToken) {
 	
-	listPaymentInstrumentsForUserToken();
+	listPaymentInstrumentsForUserToken($userToken);
 
 }
 
@@ -75,13 +66,26 @@ function getUserTokenForEmail() {
 
 	$details = json_decode($request->getBody());
 	
-	if (!isset($details->bundleID)) {
-		returnErrorWithDescription('Missing bundleID value in Request');
-		return;
+	$headers = $request->headers();
+		
+	if (!isset($headers['x-bundle-id']) && !isset($headers['x-package-name'])) {
+	#	returnErrorWithDescription('Missing bundle idenfifier in header');
+	#	return;
 	}
 	
-	if (!isset($details->version)) {
-		returnErrorWithDescription('Missing version value in Request');
+	$bundleID = 'bundleID';
+	$sdkVersion = '1.0';
+	
+	if (isset($headers['x-bundle-id'])) {
+		$bundleID = $headers['x-bundle-id'];
+	} else if (isset($headers['x-package-name'])) {
+		$bundleID = $headers['x-package-name'];
+	}
+	
+	if (isset($headers['x-sdk-version'])) {
+		$sdkVersion = $headers['x-sdk-version'];
+	} else {
+		returnErrorWithDescription('Missing sdk version in header');
 		return;
 	}
 	
@@ -90,7 +94,7 @@ function getUserTokenForEmail() {
 		return;
 	}
 	
-	$apiKey = getAPIKeyForBundleAndVersion($details->bundleID,$details->version);
+	$apiKey = getAPIKeyForBundleAndVersion($bundleID,$sdkVersion);
 	
 	if(is_null($apiKey)) {	
 		returnErrorWithDescription('Invalid credentials');
@@ -215,7 +219,7 @@ function returnOKStatus($result) {
         echo json_encode($responseArray);
 }
 
-function listPaymentInstrumentsForUserToken() {
+function listPaymentInstrumentsForUserToken($userToken) {
 
     $request = Slim::getInstance()->request();
     $details = json_decode($request->getBody());
@@ -224,19 +228,21 @@ function listPaymentInstrumentsForUserToken() {
 		return;
 	}
 	
+	$get = $request->get();
+	
 	$useCase = DEFAULTUSECASE;
 	
-	if (isset($details->useCase)) {
-		$useCase = $details->useCase;
+	if (isset($get['use-case'])) {
+		$useCase = $get['use-case'];
 	}
 	
-	if(!checkUseCase($useCase)) {
+	$useCase = checkUseCase($useCase);
+	
+	if(!$useCase) {
 		returnErrorWithDescription('Invalid UseCase');
 		return;		
 	}
-			
-	$userToken = $details->userToken;
-	
+				
 	$piList = array();
 	
 	$piTokens = piTokenForUserAndUseCase($userToken,$useCase);
@@ -514,31 +520,16 @@ function setPIOrderForUserToken() {
 	}
 }
 
-function addPaymentInstrumentForUserToken() {
+function addPaymentInstrumentForUserToken($userToken,$useCase) {
 
     $request = Slim::getInstance()->request();
     $details = json_decode($request->getBody());
-	
-	if (!checkHMACForUserTokenRequest($request)) {
-		return;
-	}
 	
 	if (!isset($details->paymentInstrument)) {
 		returnErrorWithDescription('Missing paymentInstrument value in Request');
 		return;
 	}
-	
-	if (!isset($details->userToken)) {
-		returnErrorWithDescription('Missing userToken value in Request');
-		return;
-	}
-	
-	$useCase = DEFAULTUSECASE;
-	
-	if (isset($details->useCase)) {
-		$useCase = $details->useCase;
-	}
-	
+			
 	$piArray = array();
 	
 	if (is_array($details->paymentInstrument)) {
@@ -547,7 +538,7 @@ function addPaymentInstrumentForUserToken() {
 		array_push($piArray,$details->paymentInstrument);
 	}
 
-    if(addPIsToUserToken($details->userToken,$piArray,$useCase)) {
+    if(addPIsToUserToken($userToken,$piArray,$useCase)) {
         returnOKStatus(NULL);
     } else {
 		$errorMessage = 'can’t add PIS';
@@ -907,11 +898,11 @@ function checkPiIdentifier($piIdentifier) {
 
 function checkUseCase($useCase) {
 	
-	if (strcmp(USECASEPRIVATE,$useCase) == 0) {
-		return true;
+	if (strcmp(USECASEDEFAULT,strtoupper($useCase)) == 0) {
+		return DEFAULTUSECASE;
 	}
 	
-	if (strcmp(USECASEBUSINESS,$useCase) == 0) {
+	if (strlen($useCase) > 0) {
 		return true;
 	}
 
@@ -998,7 +989,9 @@ function countPiForUserToken($userToken) {
 
 function checkHMACForUserTokenRequest($request) {
 	
-    $details = json_decode($request->getBody());
+	return true;
+    
+	$details = json_decode($request->getBody());
     
 	if (!isset($details->userToken)) {
 		returnErrorWithDescription('Authentication error missing userToken');
@@ -1017,6 +1010,8 @@ function checkHMACForUserTokenRequest($request) {
 }
 
 function checkHMACForRequestAndSeed($request,$seed) {
+
+	return true;
 
 	$itemArray = (array)$request;
 	
@@ -1060,6 +1055,44 @@ function checkHMACForRequestAndSeed($request,$seed) {
 	returnErrorWithDescription('Authentication error wrong hmac');
 	
 	return false;
+}
+
+function addLogs() {
+	
+    $request = Slim::getInstance()->request();
+    $details = json_decode($request->getBody());
+	
+	if(!isset($details->events)) {
+		
+		return;
+	}
+
+	$sendedEvents = $details->events;
+	$eventsToLog = array();
+	
+	if (is_array($sendedEvents)) {
+		$eventsToLog = array_merge($eventsToLog, $sendedEvents);
+	} else {
+		array_push($eventsToLog,$sendedEvents);
+	}
+
+    $sql = "INSERT INTO LOGS Set event=:eventValue";
+	
+    $db = getConnection();
+    $stmt = $db->prepare($sql); 
+	
+	foreach ($eventsToLog as $event) {
+	
+	    try {
+	            $db = getConnection();
+	            $stmt = $db->prepare($sql);  
+				
+				$jsonEvent = json_encode($event);
+	            $stmt->bindParam("eventValue", $jsonEvent);
+	            $stmt->execute();             
+            
+	        } catch(PDOException $e) { }
+		}
 }
 
 function getConnection() {
