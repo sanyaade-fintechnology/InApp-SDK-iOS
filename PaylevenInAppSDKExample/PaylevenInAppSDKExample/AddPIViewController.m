@@ -167,7 +167,7 @@
         
         if (error != Nil) {
             
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedFailureReason delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
             
             [alertView show];
             

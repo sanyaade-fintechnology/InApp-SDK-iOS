@@ -79,7 +79,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [paramDict setObject:[self.dateFormatter stringFromDate:[NSDate date]] forKey:PLVRequestRequestTimeKey];
     
-    [self.apiClient addHmacForParameterDict:paramDict];
+//    [self.apiClient addHmacForParameterDict:paramDict];
     
     NSString* requestToken = [paramDict objectForKey:@"hmac"];
     

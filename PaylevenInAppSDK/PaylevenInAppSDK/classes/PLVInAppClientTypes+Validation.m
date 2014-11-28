@@ -132,7 +132,7 @@
     }
     
     if (![self luhnCheck:self.pan]) {
-        return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
+//        return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
     }
     
     if (![self containsOnlyDigits:self.pan]) {
