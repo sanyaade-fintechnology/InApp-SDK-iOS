@@ -33,7 +33,7 @@
 
 #define apiHeaderKeyXHmacTimeStamp @"X-Hmac-Timestamp"
 #define apiHeaderKeyXHmac @"X-Hmac"
-#define apiHeaderKeyXBundleID @"X-Bundle-ID"
+#define apiHeaderKeyXBundleID @"X-Bundle-Id"
 #define apiHeaderKeyXSDKVersion @"X-Sdk-Version"
 #define apiHeaderKeyXOSVersion @"X-OS-Version"
 #define apiHeaderKeyXDeviceType @"X-Device-Model"
@@ -48,7 +48,7 @@
 #define PLVInAppClientAPIUsersEndPoint @"/users"
 #define PLVInAppClientAPIUsersAddPiEndPoint @"/users/%@/payment-instruments"
 #define PLVInAppClientAPIListPisEndPoint @"%@/users/%@/payment-instruments?use-case=%@"
-#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments"
+#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments/sort-index"
 #define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/payment-instruments/%@"
 #define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
 
@@ -394,7 +394,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     request.HTTPBody = jsonData;
     
-    
     [self addHmacForParameterDict:bodyParameters toRequest:request];
     
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
@@ -649,9 +648,9 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSString *timestamp = [self.dateFormatter stringFromDate:[NSDate date]];
 
     //2. add timestamp to params
-    [parameters setObject:timestamp forKey:apiHeaderKeyXHmacTimeStamp];
-    [parameters setObject:self.registerBundleID forKey:apiHeaderKeyXBundleID];
-    [parameters setObject:PLVInAppSDKVersion forKey:apiHeaderKeyXSDKVersion];
+    [parameters setObject:timestamp forKey:[apiHeaderKeyXHmacTimeStamp lowercaseString]];
+    [parameters setObject:self.registerBundleID forKey:[apiHeaderKeyXBundleID lowercaseString]];
+    [parameters setObject:PLVInAppSDKVersion forKey:[apiHeaderKeyXSDKVersion lowercaseString]];
     
     [request setValue:timestamp forHTTPHeaderField:apiHeaderKeyXHmacTimeStamp];
     [request setValue:self.registerBundleID forHTTPHeaderField:apiHeaderKeyXBundleID];
