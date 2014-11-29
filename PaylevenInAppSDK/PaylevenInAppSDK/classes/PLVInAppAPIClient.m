@@ -31,7 +31,7 @@
 #define apiParameterKeyUseCase @"useCase"
 
 
-static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/userToken";
+static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/users";
 static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstrument";
 static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
 static NSString * const PLVInAppClientAPISetPiTokenListOrderEndPoint = @"/setPaymentInstrumentsOrder";
@@ -53,7 +53,7 @@ static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/stag
 
 #elif useOtherEndpoint
 
-static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.67/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"http://192.168.32.51/staging/api";
 
 #else
 
@@ -182,7 +182,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 - (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,self.registerBundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion,nil];
-    
     
     NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:parameters toEndpoint:PLVInAppClientAPIUserTokenEndPoint httpMethod:@"POST"];
     

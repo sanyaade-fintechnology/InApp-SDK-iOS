@@ -141,11 +141,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 
 - (NSString*) checkUseCase:(PLVInAppUseCase*)useCase {
     
-    if ( useCase != Nil && ([useCase isEqualToString:PLVPIUseCaseBusiness] || [useCase isEqualToString:PLVPIUseCasePrivate])) {
+    if ( useCase != Nil) {
         return useCase;
     }
     
-    return Nil;
+    return @"DEFAULT";
 }
 /**
  *  checkUserToken withPIAsOrderedSet

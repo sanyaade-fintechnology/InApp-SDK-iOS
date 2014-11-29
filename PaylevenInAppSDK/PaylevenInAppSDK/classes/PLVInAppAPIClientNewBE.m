@@ -46,11 +46,11 @@
 
 
 #define PLVInAppClientAPIUsersEndPoint @"/users"
-#define PLVInAppClientAPIUsersAddPiEndPoint @"/users/%@/paymentinstruments"
-#define PLVInAppClientAPIListPisEndPoint @"/users/%@/paymentinstruments/%@"
-#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/paymentinstruments"
-#define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/paymentinstruments/%@"
-#define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/paymentinstruments/%@/use-case/%@"
+#define PLVInAppClientAPIUsersAddPiEndPoint @"/users/%@/payment-instruments"
+#define PLVInAppClientAPIListPisEndPoint @"%@/users/%@/payment-instruments?use-case=%@"
+#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments"
+#define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/payment-instruments/%@"
+#define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
 
 
 #if useLocalEndpoint
@@ -67,7 +67,7 @@ static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/stag
 
 #elif useOtherEndpoint
 
-static NSString * const PLVInAppClientAPIHost = @"http://192.168.32.56/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"http://192.168.32.51/staging/api";
 
 #else
 
@@ -292,9 +292,9 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSMutableDictionary* bodyParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useCase, apiParameterKeyUseCase,nil];
     
-    NSURL *URL = [self getBaseServiceURL];
+//    NSURL *URL = [self getBaseServiceURL];
     
-    URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIListPisEndPoint,userToken,useCase]];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:PLVInAppClientAPIListPisEndPoint,[self getBaseServiceURL],userToken,useCase]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = httpMethodeGET;
@@ -414,11 +414,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSString* piID;
     
     if(payInstrument != Nil ) {
-        
         if ([payInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
-            
-            OrderedDictionary* newOrderedPi = [OrderedDictionary new];
-            
             piID = [NSString stringWithString:payInstrument.identifier];
         }
     }
@@ -449,22 +445,21 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSString* piID;
     if(payInstrument != Nil ) {
-        
         if ([payInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
-            
             piID = [NSString stringWithString:payInstrument.identifier];
-
         }
     }
-    
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piID,apiParameterPIIdentifier,useCase,apiParameterKeyUseCase,nil];
-    
+
     NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIRemovePiForUseCaseEndPoint,userToken,piID,useCase]];
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = httpMethodeDELETE;
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piID,apiParameterPIIdentifier,useCase,apiParameterKeyUseCase,nil];
+    
+    [self addHmacForParameterDict:parameters toRequest:request];
 
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
