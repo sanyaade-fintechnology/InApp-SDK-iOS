@@ -15,7 +15,7 @@ $app->post('/logs', 'addLogs');
 $app->post('/users', 'getUserTokenForEmail');
 $app->post('/users/:userToken/payment-instruments',	'addPIToUserToken');
 $app->get('/users/:userToken/payment-instruments',	'listPiForUserToken');
-$app->post('/users/:userToken/payment-instruments/:sort-index',	'sortPIForUserToken');
+$app->post('/users/:userToken/payment-instruments/sort-index',	'sortPIForUserToken');
 
 $app->delete('/users/:userToken/payment-instruments/:piID',	'deletePIForUserToken');
 $app->delete('/users/:userToken/payment-instruments/:piID/use-case/:useCaseValue',	'removeUseCaseForPiAndUserToken');
@@ -42,7 +42,7 @@ function listPiForUserToken ($userToken) {
 
 function sortPIForUserToken ($userToken) {
 	
-	setPIOrderForUserToken();
+	setPIOrderForUserToken($userToken);
 }
 
 
@@ -61,30 +61,12 @@ function getUserTokenForEmail() {
 
     $request = Slim::getInstance()->request();
 
-    # error_log('RequestBody Staging:'.$request->getBody());
-
 	$details = json_decode($request->getBody());
 	
-	$headers = $request->headers();
-		
-	if (!isset($headers['x-bundle-id']) && !isset($headers['x-package-name'])) {
-	#	returnErrorWithDescription('Missing bundle idenfifier in header');
-	#	return;
-	}
+	$apiKey = checkHMACForRequest($request);
 	
-	$bundleID = 'bundleID';
-	$sdkVersion = '1.0';
-	
-	if (isset($headers['x-bundle-id'])) {
-		$bundleID = $headers['x-bundle-id'];
-	} else if (isset($headers['x-package-name'])) {
-		$bundleID = $headers['x-package-name'];
-	}
-	
-	if (isset($headers['x-sdk-version'])) {
-		$sdkVersion = $headers['x-sdk-version'];
-	} else {
-		returnErrorWithDescription('Missing sdk version in header');
+	if(is_null($apiKey)) {	
+		returnErrorWithDescription('Invalid credentials');
 		return;
 	}
 	
@@ -93,94 +75,81 @@ function getUserTokenForEmail() {
 		return;
 	}
 	
-	$apiKey = getAPIKeyForBundleAndVersion($bundleID,$sdkVersion);
-	
-	if(is_null($apiKey)) {	
-		returnErrorWithDescription('Invalid credentials');
-		return;
-	}
-	
-	if(checkHMACForRequestAndSeed($details,$apiKey)) {
-			
-	       error_log('ApiKey: '. $apiKey);
-	
-		   # TODO check HMAC for this APIKey
+	error_log('ApiKey: '. $apiKey);
 		   
-            $sql = "SELECT userToken FROM USERS WHERE email=:emailValue AND apiKey=:apiKeyValue";
-            
-            try {
-                $db = getConnection();
-                $stmt = $db->prepare($sql);  
-                $stmt->bindParam("emailValue", $details->email);
-                $stmt->bindParam("apiKeyValue", $apiKey);
-                $stmt->execute();
-                $token = $stmt->fetchObject();  
-                $db = null;
-                
-                if($token) {
-                        # KNOWN EMAIL FOR THIS API KEY 
-						Slim::getInstance()->response()->status(200);
-                        returnOKStatus(array('userToken'=>$token->userToken));
-                } else {
-                    # create new token 
-                    $hash = sha1(mt_rand());
-                    $token = substr($hash, 0,30);
-                    $sql = "INSERT INTO USERS (userToken, email, apiKey) VALUES (:userTokenValue, :emailValue, :apiKeyValue)";
-                    try {
-                            $db = getConnection();
-                            $stmt = $db->prepare($sql);  
-                            $stmt->bindParam("userTokenValue", $token);
-                            $stmt->bindParam("emailValue", $details->email);
-                            $stmt->bindParam("apiKeyValue", $apiKey);
-                            $stmt->execute();
+    $sql = "SELECT userToken FROM USERS WHERE email=:emailValue AND apiKey=:apiKeyValue";
+    
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("emailValue", $details->email);
+        $stmt->bindParam("apiKeyValue", $apiKey);
+        $stmt->execute();
+        $token = $stmt->fetchObject();  
+        $db = null;
         
-                            if ($db->lastInsertId()) {
-                                $db = null;
-                                
-                                returnOKStatus(array('userToken'=>$token)); 
-                                
-                            } else {
-                                
-                                returnErrorWithDescription($e->getMessage()); 
-                                return;
-                            }               
-                            
-                        } catch(PDOException $e) {
+        if($token) {
+                # KNOWN EMAIL FOR THIS API KEY 
+				Slim::getInstance()->response()->status(200);
+                returnOKStatus(array('userToken'=>$token->userToken));
+        } else {
+            # create new token 
+            $hash = sha1(mt_rand());
+            $token = substr($hash, 0,30);
+            $sql = "INSERT INTO USERS (userToken, email, apiKey) VALUES (:userTokenValue, :emailValue, :apiKeyValue)";
+            try {
+                    $db = getConnection();
+                    $stmt = $db->prepare($sql);  
+                    $stmt->bindParam("userTokenValue", $token);
+                    $stmt->bindParam("emailValue", $details->email);
+                    $stmt->bindParam("apiKeyValue", $apiKey);
+                    $stmt->execute();
+
+                    if ($db->lastInsertId()) {
+                        $db = null;
                         
-                        # insert failed
+                        returnOKStatus(array('userToken'=>$token)); 
+                        
+                    } else {
+                        
                         returnErrorWithDescription($e->getMessage()); 
                         return;
-                    }
-                }
-                
-                if (isset($details->paymentInstrument)) {
-                
-                    # error_log('add PAyment Instruments for token '.$token->userToken);
-					
-					$useCase = DEFAULTUSECASE;
-	
-					if (isset($details->useCase)) {
-						$useCase = $details->useCase;
-					}
+                    }               
                     
-					$piArray = array();
-	
-					if (is_array($details->paymentInstrument)) {
-						$piArray = array_merge($piArray, $details->paymentInstrument);
-					} else {
-						array_push($piArray,$details->paymentInstrument);
-					}
-					
-                    addPIsToUserToken($token->userToken,$piArray,$useCase);
-                }
-
-            } catch(PDOException $e) {
+                } catch(PDOException $e) {
+                
+                # insert failed
                 returnErrorWithDescription($e->getMessage()); 
-				
-				return;
+                return;
             }
-         
         }
+        
+        if (isset($details->paymentInstrument)) {
+        
+            # error_log('add PAyment Instruments for token '.$token->userToken);
+			
+			$useCase = DEFAULTUSECASE;
+
+			if (isset($details->useCase)) {
+				$useCase = $details->useCase;
+			}
+            
+			$piArray = array();
+
+			if (is_array($details->paymentInstrument)) {
+				$piArray = array_merge($piArray, $details->paymentInstrument);
+			} else {
+				array_push($piArray,$details->paymentInstrument);
+			}
+			
+            addPIsToUserToken($token->userToken,$piArray,$useCase);
+        }
+
+    } catch(PDOException $e) {
+        returnErrorWithDescription($e->getMessage()); 
+		
+		return;
+    }
 }
 
 function returnErrorWithDescription($description) {
@@ -414,7 +383,7 @@ function reorderUseCaseUpFromIndex($sortIndex,$useCase,$userToken) {
 	return true;
 }
 
-function setPIOrderForUserToken() {
+function setPIOrderForUserToken($userToken) {
 
     $request = Slim::getInstance()->request();
 	
@@ -423,8 +392,7 @@ function setPIOrderForUserToken() {
 	}
 	
     $details = json_decode($request->getBody());
-    
-    $userToken = $details->userToken;
+
     $piArray = $details->paymentInstruments;
 	
 	$useCase = DEFAULTUSECASE;
@@ -433,7 +401,9 @@ function setPIOrderForUserToken() {
 		$useCase = $details->useCase;
 	}
 	
-	if(!checkUseCase($useCase)) {
+	$useCase = checkUseCase($useCase);
+	
+	if(!$useCase) {
 		returnErrorWithDescription('Invalid UseCase');
 		return;		
 	}
@@ -997,33 +967,77 @@ function checkHMACForUserTokenRequest($request) {
 	returnErrorWithDescription('Authentication cant confirm userToken');
 }
 
-function checkHMACForRequestAndSeed($request,$seed) {
+function checkHMACForRequest($request) {
 
-	return true;
-
-	$itemArray = (array)$request;
+	$headers = $request->headers();
 	
-	# for testing via REST Browser Client we cann bypass HMAC check 
-	if (array_key_exists('hmacFooIgnore',$itemArray)) { return true;}	
+	if (!isset($headers['x-bundle-id']) && !isset($headers['x-package-name'])) {
+		returnErrorWithDescription('Missing bundle idenfifier in header');
+		return false;
+	}
 	
-	if (!array_key_exists('hmac',$itemArray)) { 
-		returnErrorWithDescription('Authentication error missing hmac');
+	$hmacResult = 'hmac';
+	$bundleID = 'bundleId';
+	$sdkVersion = 'version';
+	$hmacItemArray = array();
+	
+	if (isset($headers['x-bundle-id'])) {
+		$hmacItemArray['x-bundle-id'] = $headers['x-bundle-id'];
+		$bundleID = $headers['x-bundle-id'];
+	} else if (isset($headers['x-package-name'])) {
+		$hmacItemArray['x-Package-Name'] = $headers['x-package-name'];
+		$bundleID = $headers['x-package-name'];
+	}
+	
+	if (isset($headers['x-sdk-version'])) {
+		$hmacItemArray['x-sdk-version'] = $headers['x-sdk-version'];
+		$sdkVersion = $headers['x-sdk-version'];
+	} else {
+		returnErrorWithDescription('Missing sdk version in header');
+		return false;
+	}
+	
+	if (isset($headers['x-hmac-timestamp'])) {
+		$hmacItemArray['x-hmac-timestamp'] = $headers['x-hmac-timestamp'];
+	} else {
+		returnErrorWithDescription('Missing hmac-time in header');
+		return false;
+	}
+	
+	if (isset($headers['x-hmac'])) {
+		$hmacResult = $headers['x-hmac'];
+	} else {
+		returnErrorWithDescription('Missing hmac in header');
 		return false;
 	}
 
-	$hmacResult = $itemArray['hmac'];
+	$apiKey = getAPIKeyForBundleAndVersion($bundleID,$sdkVersion);
 	
-	unset($itemArray['hmac']);
+	if (!isset($apiKey)) {
+		returnErrorWithDescription('Authentication error');
+		return false;
+	}
+
+	$details = (array)json_decode($request->getBody());
 	
-	ksort($itemArray);
+	if (is_array($details)) {
+		$hmacItemArray = array_merge($hmacItemArray, $details);
+	} else {
+		array_push($hmacItemArray,$details);
+	}
+	
+	# for testing via REST Browser Client we cann bypass HMAC check 
+	if (array_key_exists('hmacFooIgnore',$hmacItemArray)) { return true;}	
+		
+	ksort($hmacItemArray);
 		
 	$glue = '&';
 	
-	$stringInt = http_build_query($itemArray, '', $glue);
+	$stringInt = http_build_query($hmacItemArray, '', $glue);
 	
 	$stringInt = rawurldecode($stringInt);
 		
-	$calcResult = hash_hmac ( 'sha1' , $stringInt ,  $seed ,true );
+	$calcResult = hash_hmac ( 'sha1' , $stringInt ,  $apiKey ,true );
 	
 	$calcResult = base64_encode($calcResult);
 	
@@ -1037,7 +1051,7 @@ function checkHMACForRequestAndSeed($request,$seed) {
 	*/
 	
 	if (md5($modCalcresult) === md5($hmacResult)){
-		return true;
+		return $apiKey;
 	}
 	
 	returnErrorWithDescription('Authentication error wrong hmac');
