@@ -13,26 +13,25 @@ $app->post('/logs', 'addLogs');
 # new endPoints
 
 $app->post('/users', 'getUserTokenForEmail');
-$app->post('/users/:userToken/:paymentinstruments',	'addPIToUserToken');
+$app->post('/users/:userToken/payment-instruments',	'addPIToUserToken');
 $app->get('/users/:userToken/payment-instruments',	'listPiForUserToken');
-$app->post('/users/:userToken/:paymentinstruments/:sort-index',	'sortPIForUserToken');
+$app->post('/users/:userToken/payment-instruments/:sort-index',	'sortPIForUserToken');
 
-$app->delete('/users/:userToken/:paymentinstruments/:piID',	'deletePIForUserToken');
-$app->delete('/users/:userToken/:paymentinstruments/:piID/:useCase/:useCaseValue',	'removeUseCaseForPiAndUserToken');
+$app->delete('/users/:userToken/payment-instruments/:piID',	'deletePIForUserToken');
+$app->delete('/users/:userToken/payment-instruments/:piID/use-case/:useCaseValue',	'removeUseCaseForPiAndUserToken');
 
 $app->response()->header('Connection','close');
 
 $app->run();
 
-function addPIToUserToken ($userToken, $useCase) {
+function addPIToUserToken ($userToken) {
 	
-	if(!is_null($userToken) AND !is_null($useCase)) {
+	if(!is_null($userToken)) {
 		# code...
 		if(checkUserToken($userToken)) {
-			addPaymentInstrumentForUserToken($userToken,$useCase);
+			addPaymentInstrumentForUserToken($userToken);
 		}
 	}
-
 }
 
 function listPiForUserToken ($userToken) {
@@ -49,12 +48,12 @@ function sortPIForUserToken ($userToken) {
 
 function deletePIForUserToken($userToken,$piID) {
 	
-	disablePaymentInstrumentForUserToken();
+	disablePaymentInstrumentForUserToken($userToken,$piID);
 }
 
 function removeUseCaseForPiAndUserToken($userToken,$piID,$useCase) {
 	
-	removePaymentInstrumentForUseCase();
+	removePaymentInstrumentForUseCase($userToken,$piID,$useCase);
 }
 
 
@@ -283,90 +282,50 @@ function piTokenForUserAndUseCase($userToken,$useCase) {
 	 return null;	
 }
 
-function disablePaymentInstrumentForUserToken() {
-	
-    $request = Slim::getInstance()->request();
-    $details = json_decode($request->getBody());
-	
-	if (!isset($details->userToken)) {
-		returnErrorWithDescription('Missing userToken value in Request');
-		return;
-	}
-	
-	if (!isset($details->paymentInstrument)) {
-		returnErrorWithDescription('Missing paymentInstrument value in Request');
-		return;
-	}
+function disablePaymentInstrumentForUserToken($userToken,$piID) {
 	
 	# error_log('disablePaymentInstrumentForUserToken details:'.json_encode($details));
-
-    $userToken = $details->userToken;
-    $piArray = $details->paymentInstrument;
 	
     # error_log('disablePaymentInstrumentForUserToken userToken:'.json_encode($userToken));
-    # error_log('disablePaymentInstrumentForUserToken piArray:'.json_encode((array)$piArray));
+
      
     $sql = "UPDATE PITABLE SET piEnabled=0 WHERE userToken=:userTokenValue AND piIndex=:identifierValue";
 	
 	# TODO update sortIndex 
-	
-    foreach ($piArray as $piIdentifier) {
-   		
-        try {
-            $db = getConnection();
-            $stmt = $db->prepare($sql);  
-            $stmt->bindParam("userTokenValue", $userToken);
-            $stmt->bindParam("identifierValue", $piIdentifier);
-            $stmt->execute();
-			
-			# remove all useCases
-			
-			$removeUseCaseResult = removePaymentInstrumentForUserTokenAndUseCase($userToken,$piIdentifier,USECASEBUSINESS);
-			
-			$removeUseCaseResult = $removeUseCaseResult && removePaymentInstrumentForUserTokenAndUseCase($userToken,$piIdentifier,USECASEPRIVATE);
-			
-			if(!$removeUseCaseResult){
-				returnErrorWithDescription('Error on removing pi');
-			}
-                
-        } catch(PDOException $e) {
-            returnErrorWithDescription($e->getMessage());
-			return;
-        }       
-    }     
+
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->bindParam("userTokenValue", $userToken);
+        $stmt->bindParam("identifierValue", $piID);
+        $stmt->execute();
+		
+		# remove all useCases
+		
+		$removeUseCaseResult = removePaymentInstrumentForUserTokenAndUseCase($userToken,$piID,null);
+				
+		if(!$removeUseCaseResult){
+			returnErrorWithDescription('Error on removing pi');
+		}
+            
+    } catch(PDOException $e) {
+        returnErrorWithDescription($e->getMessage());
+		return;
+    }       
+    
 	returnOKStatus(NULL);
 }
 
-function removePaymentInstrumentForUseCase() {
-	
-    $request = Slim::getInstance()->request();
-    $details = json_decode($request->getBody());
-	
-	if(!checkHMACForUserTokenRequest($request)) {
-		error_log('failed hmac check on removePaymentInstrumentForUseCase');
-	}
-	
-	if (!isset($details->paymentInstrument)) {
-		returnErrorWithDescription('Missing paymentInstrument value in Request');
-		return;
-	}
-	
-	$userToken = $details->userToken;
-	$pi = $details->paymentInstrument;
-	$piIdentifier = $pi->identifier;
-	
-	$useCase = DEFAULTUSECASE;
-	
-	if (isset($details->useCase)) {
-		$useCase = $details->useCase;
-	}
-	
-	if(!checkUseCase($useCase)) {
+function removePaymentInstrumentForUseCase($userToken,$piID,$useCase) {
+		
+	$useCase = checkUseCase($useCase);
+
+	if(!$useCase) {
 		returnErrorWithDescription('Invalid UseCase');
 		return;		
 	}
 	
-	if(removePaymentInstrumentForUserTokenAndUseCase($userToken,$piIdentifier,$useCase)) {
+	if(removePaymentInstrumentForUserTokenAndUseCase($userToken,$piID,$useCase)) {
 		returnOKStatus(NULL);
 		return;
 	}
@@ -376,40 +335,56 @@ function removePaymentInstrumentForUserTokenAndUseCase($userToken,$piIdentifier,
 	
 	# error_log('removePaymentInstrumentForUserTokenAndUseCase details:'.json_encode($details));
 	
-	$sql = "SELECT u.sortIndex FROM USECASETABLE u INNER JOIN PITABLE p ON u.piToken = p.piToken WHERE (p.userToken=:userTokenValue AND p.piIndex=:piIndexValue AND u.useCase=:useCaseValue)";
+	if(isset($useCase)) {
+		$sql = "SELECT u.sortIndex FROM USECASETABLE u INNER JOIN PITABLE p ON u.piToken = p.piToken WHERE (p.userToken=:userTokenValue AND p.piIndex=:piIndexValue AND u.useCase=:useCaseValue)";
 	
-    try {
-        $db = getConnection();
-        $stmt = $db->prepare($sql);  
-        $stmt->bindParam("userTokenValue", $userToken);
-        $stmt->bindParam("piIndexValue", $piIdentifier);
-		$stmt->bindParam("useCaseValue", $useCase);
-        $stmt->execute();
+	    try {
+	        $db = getConnection();
+	        $stmt = $db->prepare($sql);  
+	        $stmt->bindParam("userTokenValue", $userToken);
+	        $stmt->bindParam("piIndexValue", $piIdentifier);
+			$stmt->bindParam("useCaseValue", $useCase);
+	        $stmt->execute();
 		
-		$sortIndexResult = $stmt->fetchObject();            
-    } catch(PDOException $e) {
-        returnErrorWithDescription($e->getMessage());
-		return false;
-    } 
-	
-	if(!$sortIndexResult) {
-		# dont found this sortIndex
-		return true;
+			$sortIndexResult = $stmt->fetchObject();
+			if(isset($sortIndexResult)) {
+				$sortIndex = $sortIndexResult->sortIndex;
+			}else {
+				$sortIndex = false;
+			}
+			            
+	    } catch(PDOException $e) {
+	        returnErrorWithDescription($e->getMessage());
+			return false;
+	    } 
+		
+		$sql = "DELETE u.* FROM USECASETABLE u INNER JOIN PITABLE p ON u.piToken = p.piToken WHERE (p.userToken=:userTokenValue AND p.piIndex=:piIndexValue AND u.useCase=:useCaseValue)";
+
+	} else {
+		$sql = "DELETE u.* FROM USECASETABLE u INNER JOIN PITABLE p ON u.piToken = p.piToken WHERE (p.userToken=:userTokenValue AND p.piIndex=:piIndexValue)";
 	}
 	
-	$sortIndex = $sortIndexResult->sortIndex;
-	
-	$sql = "DELETE u.* FROM USECASETABLE u INNER JOIN PITABLE p ON u.piToken = p.piToken WHERE (p.userToken=:userTokenValue AND p.piIndex=:piIndexValue AND u.useCase=:useCaseValue)";
-	
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);  
         $stmt->bindParam("userTokenValue", $userToken);
         $stmt->bindParam("piIndexValue", $piIdentifier);
-		$stmt->bindParam("useCaseValue", $useCase);
+		if(isset($useCase)) {
+			$stmt->bindParam("useCaseValue", $useCase);
+		}
         $stmt->execute();
 		
-		return reorderUseCaseUpFromIndex($sortIndex,$useCase,$userToken);
+		if(isset($useCase)) {
+			
+			if ($sortIndex) {
+				return reorderUseCaseUpFromIndex($sortIndex,$useCase,$userToken);
+			}
+			
+			return true;
+			
+		} else {
+			return true;
+		}
 		
     } catch(PDOException $e) {
         returnErrorWithDescription($e->getMessage());
@@ -520,7 +495,7 @@ function setPIOrderForUserToken() {
 	}
 }
 
-function addPaymentInstrumentForUserToken($userToken,$useCase) {
+function addPaymentInstrumentForUserToken($userToken) {
 
     $request = Slim::getInstance()->request();
     $details = json_decode($request->getBody());
@@ -529,7 +504,20 @@ function addPaymentInstrumentForUserToken($userToken,$useCase) {
 		returnErrorWithDescription('Missing paymentInstrument value in Request');
 		return;
 	}
-			
+		
+	$useCase = DEFAULTUSECASE;
+	
+	if (isset($details->useCase)) {
+		$useCase = $details->useCase;
+	}
+	
+	$useCase = checkUseCase($useCase);
+	
+	if(!$useCase) {
+		returnErrorWithDescription('Invalid UseCase');
+		return;
+	}
+	
 	$piArray = array();
 	
 	if (is_array($details->paymentInstrument)) {
@@ -903,9 +891,9 @@ function checkUseCase($useCase) {
 	}
 	
 	if (strlen($useCase) > 0) {
-		return true;
+		return $useCase;
 	}
-
+	
 	return false;
 }
 
