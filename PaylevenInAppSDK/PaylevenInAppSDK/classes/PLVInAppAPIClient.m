@@ -1,5 +1,5 @@
 //
-//  PLVInAppAPIClient.m
+//  PLVInAppAPIClientNewBE.m
 //  PaylevenSDK
 //
 //  Created by Alexei Kuznetsov on 01.10.14.
@@ -17,6 +17,7 @@
 #import "OrderedDictionary.h"
 #import "PLVRequestPersistManager.h"
 #import <CommonCrypto/CommonCrypto.h>
+#import "UIDevice+Platform.h"
 
 #define useLocalEndpoint 0
 #define usemacMiniEndpoint 1
@@ -24,19 +25,32 @@
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
+#define apiParameterPIIdentifier @"identifier"
 #define apiParameterKeyAddPIs @"paymentInstruments"
 #define apiParameterKeyPI @"paymentInstrument"
-#define apiParameterKeyBundleID @"bundleID"
-#define apiParameterKeyAPIVersion @"version"
 #define apiParameterKeyUseCase @"useCase"
 
 
-static NSString * const PLVInAppClientAPIUserTokenEndPoint = @"/users";
-static NSString * const PLVInAppClientAPIAddPiEndPoint = @"/addPaymentInstrument";
-static NSString * const PLVInAppClientAPIListPiTokenEndPoint = @"/listPaymentInstruments";
-static NSString * const PLVInAppClientAPISetPiTokenListOrderEndPoint = @"/setPaymentInstrumentsOrder";
-static NSString * const PLVInAppClientAPIDisablePiTokenEndPoint = @"/disablePaymentInstrument";
-static NSString * const PLVInAppClientAPIRemovePiTokenEndPoint = @"/removePaymentInstrumentForUseCase";
+#define apiHeaderKeyXHmacTimeStamp @"X-Hmac-Timestamp"
+#define apiHeaderKeyXHmac @"X-Hmac"
+#define apiHeaderKeyXBundleID @"X-Bundle-Id"
+#define apiHeaderKeyXSDKVersion @"X-Sdk-Version"
+#define apiHeaderKeyXOSVersion @"X-OS-Version"
+#define apiHeaderKeyXDeviceType @"X-Device-Model"
+#define apiHeaderKeyXAuthType @"X-Authorization"
+
+
+#define httpMethodePOST @"POST"
+#define httpMethodeGET @"GET"
+#define httpMethodeDELETE @"DELETE"
+
+
+#define PLVInAppClientAPIUsersEndPoint @"/users"
+#define PLVInAppClientAPIUsersAddPiEndPoint @"/users/%@/payment-instruments"
+#define PLVInAppClientAPIListPisEndPoint @"%@/users/%@/payment-instruments?use-case=%@"
+#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments/sort-index"
+#define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/payment-instruments/%@"
+#define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
 
 
 #if useLocalEndpoint
@@ -181,36 +195,29 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,self.registerBundleID,apiParameterKeyBundleID,PLVInAppSDKVersion,apiParameterKeyAPIVersion,nil];
-    
-    NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:parameters toEndpoint:PLVInAppClientAPIUserTokenEndPoint httpMethod:@"POST"];
-    
-    
-    //add HMAC
-
-    [self addHmacForParameterDict:parameters];
+    NSMutableDictionary* bodyParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,nil];
     
     NSURL *URL = [self getBaseServiceURL];
     
-    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIUserTokenEndPoint];
+    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIUsersEndPoint];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"POST";
+    request.HTTPMethod = httpMethodePOST;
     NSError *JSONError;
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bodyParameters
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&JSONError];
     
     request.HTTPBody = jsonData;
-
+    
+    // add HMAC
+    
+    [self addHmacForParameterDict:bodyParameters toRequest:request];
+    
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
-        
-        if (![error.domain isEqualToString:NSURLErrorDomain] ) {
-            [[PLVRequestPersistManager sharedInstance] removeRequestFromPersistStore:requestIdentifierToken];
-        }
         
         if (completionHandler != Nil) {
             
@@ -228,11 +235,11 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    NSMutableDictionary* bodyParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
     
     if (useCase != Nil) {
         // add use case in case of ... otherwise it default value form BE will be used
-        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
+        [bodyParameters setObject:useCase forKey:apiParameterKeyUseCase];
     }
     
     if(payInstrument != Nil) {
@@ -240,31 +247,38 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             NSDictionary* desc = [payInstrument piDictDescription];
             
             if (desc != Nil) {
-                    [parameters setObject:desc forKey:apiParameterKeyPI];
+                    [bodyParameters setObject:desc forKey:apiParameterKeyPI];
             }
     }
     
-    //add HMAC
-    
-    [self addHmacForParameterDict:parameters];
-    
     NSURL *URL = [self getBaseServiceURL];
     
-    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIAddPiEndPoint];
+    URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIUsersAddPiEndPoint,userToken]];
+    
+    NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:bodyParameters toEndpoint:[URL absoluteString] httpMethod:httpMethodePOST];
+    
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"POST";
+    request.HTTPMethod = httpMethodePOST;
     NSError *JSONError;
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bodyParameters
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&JSONError];
     
     request.HTTPBody = jsonData;
     
+    // add HMAC
+    
+    [self addHmacForParameterDict:bodyParameters toRequest:request];
+    
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+            [[PLVRequestPersistManager sharedInstance] removeRequestFromPersistStore:requestIdentifierToken];
+        }
         
         if (completionHandler != Nil) {
             
@@ -278,30 +292,18 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    NSMutableDictionary* bodyParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useCase, apiParameterKeyUseCase,nil];
     
-    if (useCase != Nil) {
-        // add use case in case of ... otherwise it default value form BE will be used
-        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
-    }
+//    NSURL *URL = [self getBaseServiceURL];
     
-    //add HMAC
-    
-    [self addHmacForParameterDict:parameters];
-    
-    NSURL *URL = [self getBaseServiceURL];
-    
-    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIListPiTokenEndPoint];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:PLVInAppClientAPIListPisEndPoint,[self getBaseServiceURL],userToken,useCase]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"POST";
-    NSError *JSONError;
+    request.HTTPMethod = httpMethodeGET;
+
+    // add HMAC
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&JSONError];
-    
-    request.HTTPBody = jsonData;
+    [self addHmacForParameterDict:bodyParameters toRequest:request];
     
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
@@ -349,13 +351,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderSet forUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
-    
-    if (useCase != Nil) {
-        // add use case in case of ... otherwise it default value form BE will be used
-        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
-    }
-    
+    NSMutableDictionary* bodyParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:useCase,apiParameterKeyUseCase,nil];
+
     if(piOrderSet != Nil && piOrderSet.count > 0) {
         
         NSMutableArray* orderedPIArray = [NSMutableArray new];
@@ -380,26 +377,26 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
         }];
         
-        [parameters setObject:orderedPIArray forKey:apiParameterKeyAddPIs];
+        [bodyParameters setObject:orderedPIArray forKey:apiParameterKeyAddPIs];
     }
-    
-    //add HMAC
-    
-    [self addHmacForParameterDict:parameters];
     
     NSURL *URL = [self getBaseServiceURL];
     
-    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPISetPiTokenListOrderEndPoint];
+    URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPISetPiListOrderEndPoint,userToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"POST";
+    request.HTTPMethod = httpMethodePOST;
     NSError *JSONError;
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bodyParameters
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&JSONError];
     
+    [bodyParameters setObject:userToken forKey:apiParameterKeyUserToken];
+    
     request.HTTPBody = jsonData;
+    
+    [self addHmacForParameterDict:bodyParameters toRequest:request];
     
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
@@ -415,42 +412,26 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(NSString*)userToken withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
+    NSString* piID;
     
     if(payInstrument != Nil ) {
-        
         if ([payInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
-            
-            OrderedDictionary* newOrderedPi = [OrderedDictionary new];
-            
-            NSString* piID = [NSString stringWithString:payInstrument.identifier];
-            
-            if (piID != Nil) {
-                [newOrderedPi setObject:piID forKey:@"identifier"];
-                [parameters setObject:newOrderedPi forKey:apiParameterKeyPI];
-            }
+            piID = [NSString stringWithString:payInstrument.identifier];
         }
     }
     
-    //add HMAC
-    
-    [self addHmacForParameterDict:parameters];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piID,apiParameterPIIdentifier,nil];
     
     NSURL *URL = [self getBaseServiceURL];
     
-    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIDisablePiTokenEndPoint];
+    URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIUsersDisablePiEndPoint,userToken,piID]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"POST";
-    NSError *JSONError;
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&JSONError];
-    
-    request.HTTPBody = jsonData;
-    
+    request.HTTPMethod = httpMethodeDELETE;
+
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self addHmacForParameterDict:parameters toRequest:request];
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
@@ -463,46 +444,24 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,nil];
-    
-    if (useCase != Nil) {
-        // add use case in case of ... otherwise it default value form BE will be used
-        [parameters setObject:useCase forKey:apiParameterKeyUseCase];
-    }
-    
+    NSString* piID;
     if(payInstrument != Nil ) {
-        
         if ([payInstrument isKindOfClass:[PLVPaymentInstrument class]]) {
-            
-            OrderedDictionary* newOrderedPi = [OrderedDictionary new];
-            
-            NSString* piID = [NSString stringWithString:payInstrument.identifier];
-            
-            if (piID != Nil) {
-                [newOrderedPi setObject:piID forKey:@"identifier"];
-                [parameters setObject:newOrderedPi forKey:apiParameterKeyPI];
-            }
+            piID = [NSString stringWithString:payInstrument.identifier];
         }
     }
-    
-    //add HMAC
-    
-    [self addHmacForParameterDict:parameters];
-    
+
     NSURL *URL = [self getBaseServiceURL];
     
-    URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIRemovePiTokenEndPoint];
-    
+    URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIRemovePiForUseCaseEndPoint,userToken,piID,useCase]];
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"POST";
-    NSError *JSONError;
+    request.HTTPMethod = httpMethodeDELETE;
     
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:parameters
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&JSONError];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piID,apiParameterPIIdentifier,useCase,apiParameterKeyUseCase,nil];
     
-    request.HTTPBody = jsonData;
-    
+    [self addHmacForParameterDict:parameters toRequest:request];
+
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
@@ -684,14 +643,25 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 
 
--(void)addHmacForParameterDict:(NSMutableDictionary*)parameters {
+-(void)addHmacForParameterDict:(NSMutableDictionary*)parameters toRequest:(NSMutableURLRequest*)request {
     
     //1. create timestamp string
 
     NSString *timestamp = [self.dateFormatter stringFromDate:[NSDate date]];
-    
+
     //2. add timestamp to params
-    [parameters setObject:timestamp forKey:@"hmacTime"];
+    [parameters setObject:timestamp forKey:[apiHeaderKeyXHmacTimeStamp lowercaseString]];
+    [parameters setObject:self.registerBundleID forKey:[apiHeaderKeyXBundleID lowercaseString]];
+    [parameters setObject:PLVInAppSDKVersion forKey:[apiHeaderKeyXSDKVersion lowercaseString]];
+    
+    [request setValue:timestamp forHTTPHeaderField:apiHeaderKeyXHmacTimeStamp];
+    [request setValue:self.registerBundleID forHTTPHeaderField:apiHeaderKeyXBundleID];
+    [request setValue:PLVInAppSDKVersion forHTTPHeaderField:apiHeaderKeyXSDKVersion];
+
+    [request setValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:apiHeaderKeyXOSVersion];
+    [request setValue:[[UIDevice currentDevice] platformString] forHTTPHeaderField:apiHeaderKeyXDeviceType];
+    
+    [request setValue:@"baseAuthToken" forHTTPHeaderField:apiHeaderKeyXAuthType];
     
     //3. sort params alphabetically & generate query string
     NSString* query = [self generateHmacQueryString:parameters];
@@ -706,9 +676,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSString *hash = [[HMAC base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
     HMAC = nil;
     
-    //5. add hash to params
-    [parameters setObject:hash forKey:@"hmac"];
-    
+    [request setValue:hash forHTTPHeaderField:apiHeaderKeyXHmac];
+
 }
 
 -(NSString *)generateHmacQueryString:(NSDictionary *)params

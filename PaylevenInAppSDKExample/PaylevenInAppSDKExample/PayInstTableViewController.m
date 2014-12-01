@@ -280,7 +280,7 @@
     
     NSOrderedSet* ordedSet = [[NSOrderedSet alloc] initWithArray:tempOrder];
     
-    [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet forUserToken:self.userToken withUseCase:Nil andCompletion:^(NSDictionary* result, NSError* error){
+    [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error){
         
         if (error != Nil ) {
             UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];

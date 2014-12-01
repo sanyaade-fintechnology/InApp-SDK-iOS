@@ -16,7 +16,8 @@
 
 #define PLVRequestEndpointKey @"PLVRequestEndpoint"
 #define PLVRequestHttpMethodKey @"PLVRequestHttpMethod"
-#define PLVRequestRequestTimeKey @"PLVRequestTime"
+#define PLVRequestFireTimeKey @"PLVRequestFireTime"
+#define PLVRequestIdentifierKey @"PLVIdentifier"
 
 
 @interface PLVRequestPersistManager()
@@ -36,11 +37,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
 {
     self = [super init];
     if (self) {
-        
-        _keychainPersistRequests = [[KeychainItemWrapper alloc] initWithIdentifier:PLVInAPPSDKKeyChainPersistRequestArrayGroup accessGroup:Nil];
-        
-        _requestArray = [_keychainPersistRequests objectForKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
-        
+
         if (_requestArray == Nil) {
             _requestArray = [NSMutableArray new];
         }
@@ -67,7 +64,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
 
 - (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)endpoint httpMethod:(NSString*)method {
     
-    if (params == Nil || endpoint == Nil || method == Nil) {
+    if (params == Nil || endpoint == Nil || method == Nil || self.apiClient == Nil) {
         return @"unvalid";
     }
     
@@ -77,19 +74,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [paramDict setObject:method forKey:PLVRequestHttpMethodKey];
     
-    [paramDict setObject:[self.dateFormatter stringFromDate:[NSDate date]] forKey:PLVRequestRequestTimeKey];
+    [paramDict setObject:[self.dateFormatter stringFromDate:[NSDate date]] forKey:PLVRequestFireTimeKey];
     
-//    [self.apiClient addHmacForParameterDict:paramDict];
+    NSString* requestToken = [self.apiClient generateHmacQueryString:paramDict];
     
-    NSString* requestToken = [paramDict objectForKey:@"hmac"];
-    
-    if (requestToken == Nil) {
-        return Nil;
+    if (requestToken == Nil || requestToken.length == 0) {
+        return @"unvalid";
     }
+    
+    [paramDict setObject:requestToken forKey:PLVRequestIdentifierKey];
+    
     
     [self.requestArray addObject:paramDict];
     
-    [self.keychainPersistRequests setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    [self savePersisitRequests:self.requestArray];
     
     return requestToken;
 }
@@ -113,10 +111,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [self.requestArray removeObject:requestToRemove];
     
-    [self.keychainPersistRequests setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
-
+    [self savePersisitRequests:self.requestArray];
 }
 
+-(void) retryRequest:(NSDictionary*)requestDict {
+    
+    
+    
+}
 
 -(NSString*) encryptDecrypt:(NSString*)toEncrypt {
     
@@ -130,6 +132,41 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
         output[i] = encryptChar[i] ^ key;
     
     return [NSString stringWithUTF8String:output];
+}
+
+-(NSArray*) getPersisitRequests {
+    
+    
+#ifdef DEBUG
+    
+    return [[NSUserDefaults standardUserDefaults] objectForKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    
+#else
+    
+    _keychainPersistRequests = [[KeychainItemWrapper alloc] initWithIdentifier:PLVInAPPSDKKeyChainPersistRequestArrayGroup accessGroup:Nil];
+    
+    return [_keychainPersistRequests objectForKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    
+#endif
+    
+}
+
+
+-(void) savePersisitRequests:(NSArray*)requests {
+    
+    
+#ifdef DEBUG
+    
+    [[NSUserDefaults standardUserDefaults] setObject:requests forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+#else
+    
+    [self.keychainPersistRequests setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    
+#endif
+    
 }
 
 @end
