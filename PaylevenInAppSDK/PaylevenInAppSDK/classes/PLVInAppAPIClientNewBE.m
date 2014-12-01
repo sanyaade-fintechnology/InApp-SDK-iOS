@@ -20,8 +20,8 @@
 #import "UIDevice+Platform.h"
 
 #define useLocalEndpoint 0
-#define usemacMiniEndpoint 0
-#define useOtherEndpoint 1
+#define usemacMiniEndpoint 1
+#define useOtherEndpoint 0
 
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
@@ -198,6 +198,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSMutableDictionary* bodyParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:emailAddress,apiParameterKeyEmail,nil];
     
     NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:bodyParameters toEndpoint:PLVInAppClientAPIUsersEndPoint httpMethod:httpMethodePOST];
+    
     NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:PLVInAppClientAPIUsersEndPoint];
