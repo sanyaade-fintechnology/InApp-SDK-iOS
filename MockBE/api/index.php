@@ -1,6 +1,6 @@
 <?php
 
-define('DEFAULTUSECASE','PRIVATE');
+define('DEFAULTUSECASE','DEFAULT');
 define('USECASEDEFAULT','DEFAULT');
 
 
@@ -1012,12 +1012,14 @@ function checkHMACForRequest($request) {
 	}
 
 	$apiKey = getAPIKeyForBundleAndVersion($bundleID,$sdkVersion);
-	
+		
 	if (!isset($apiKey)) {
 		returnErrorWithDescription('Authentication error');
 		return false;
 	}
 
+	return $apiKey;
+	
 	$details = (array)json_decode($request->getBody());
 	
 	if (is_array($details)) {
