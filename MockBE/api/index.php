@@ -225,6 +225,8 @@ function listPaymentInstrumentsForUserToken($userToken) {
 
 function piTokenForUserAndUseCase($userToken,$useCase) {
 	
+	$useCase = strtoupper($useCase);
+	
 	$sql = "SELECT PITABLE.piDetails, PITABLE.piIndex, USECASETABLE.sortIndex FROM PITABLE INNER JOIN USECASETABLE ON PITABLE.piToken=USECASETABLE.piToken WHERE USECASETABLE.useCase=:useCaseValue AND USECASETABLE.userToken=:userTokenValue ORDER BY USECASETABLE.sortIndex";
 		
      try {
@@ -305,6 +307,9 @@ function removePaymentInstrumentForUserTokenAndUseCase($userToken,$piIdentifier,
 	# error_log('removePaymentInstrumentForUserTokenAndUseCase details:'.json_encode($details));
 	
 	if(isset($useCase)) {
+		
+		$useCase = strtoupper($useCase);
+		
 		$sql = "SELECT u.sortIndex FROM USECASETABLE u INNER JOIN PITABLE p ON u.piToken = p.piToken WHERE (p.userToken=:userTokenValue AND p.piIndex=:piIndexValue AND u.useCase=:useCaseValue)";
 	
 	    try {
@@ -365,6 +370,8 @@ function removePaymentInstrumentForUserTokenAndUseCase($userToken,$piIdentifier,
 
 function reorderUseCaseUpFromIndex($sortIndex,$useCase,$userToken) {
 	
+	$useCase = strtoupper($useCase);
+	
 	$sql = "UPDATE USECASETABLE SET USECASETABLE.sortIndex=USECASETABLE.sortIndex-1 WHERE (USECASETABLE.userToken=:userTokenValue AND USECASETABLE.useCase=:useCaseValue AND USECASETABLE.sortIndex>=:sortIndexValue)" ;
 	
     try {
@@ -407,6 +414,8 @@ function setPIOrderForUserToken($userToken) {
 		returnErrorWithDescription('Invalid UseCase');
 		return;		
 	}
+	
+	$useCase = strtoupper($useCase);
 	
 	if(Count($piArray) == countPiUseCasesForUserToken($userToken,$useCase)) {
      
@@ -683,6 +692,8 @@ function maskStringToLength($strToMask,$lengthToMask) {
 }
 
 function addPIToUseCaseTable($piTokenValue,$userTokenValue,$useCaseValue) {
+	
+	$useCaseValue = strtoupper($useCaseValue);
 	
 	$sortIndex = countPiUseCasesForPiTokenAndUserToken($userTokenValue,$piTokenValue,$useCaseValue);
 	
