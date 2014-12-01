@@ -8,7 +8,7 @@
 
 #import "PLVRequestPersistManager.h"
 #import "KeychainItemWrapper.h"
-#import "PLVInAppAPIClient.h"
+#import <CommonCrypto/CommonCrypto.h>
 #import "singletonHelper.h"
 
 #define PLVInAPPSDKKeyChainPersistRequestArrayGroup @"PLVInAPPSDKKeyChainPersistRequestArrayGroup"
@@ -16,16 +16,18 @@
 
 #define PLVRequestEndpointKey @"PLVRequestEndpoint"
 #define PLVRequestHttpMethodKey @"PLVRequestHttpMethod"
+#define PLVRequestParameterKey @"PLVRequestParameters"
 #define PLVRequestFireTimeKey @"PLVRequestFireTime"
-#define PLVRequestIdentifierKey @"PLVIdentifier"
+#define PLVRequestWaitIndexKey @"PLVRequestWaitIndexKey"
+#define PLVRequestIdentifierKey @"PLVRequestIdentifier"
 
 
 @interface PLVRequestPersistManager()
 
 @property (strong) NSMutableArray* requestArray;
+@property (strong) NSArray* repeatTimeSlotArray;
 @property (nonatomic, strong) KeychainItemWrapper *keychainPersistRequests;
 @property (nonatomic, strong) PLVInAppAPIClient* apiClient;
-@property (nonatomic, strong) NSDateFormatter* dateFormatter;
 
 @end
 @implementation PLVRequestPersistManager
@@ -42,10 +44,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
             _requestArray = [NSMutableArray new];
         }
         
-        _dateFormatter = [[NSDateFormatter alloc] init];
-        NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
-        [_dateFormatter setTimeZone:timeZone];
-        _dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss";
+        _repeatTimeSlotArray = @[@3,@15,@60];
         
     }
     return self;
@@ -68,28 +67,46 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
         return @"unvalid";
     }
     
-    NSMutableDictionary* paramDict = [NSMutableDictionary dictionaryWithDictionary:params];
+    NSTimeInterval waitingSeconds = [[self.repeatTimeSlotArray firstObject] intValue] * 60.;
+    
+    NSMutableDictionary* paramDict = [NSMutableDictionary new];
     
     [paramDict setObject:endpoint forKey:PLVRequestEndpointKey];
     
     [paramDict setObject:method forKey:PLVRequestHttpMethodKey];
     
-    [paramDict setObject:[self.dateFormatter stringFromDate:[NSDate date]] forKey:PLVRequestFireTimeKey];
+    [paramDict setObject:[NSNumber numberWithFloat:[NSDate timeIntervalSinceReferenceDate] + waitingSeconds] forKey:PLVRequestFireTimeKey];
     
-    NSString* requestToken = [self.apiClient generateHmacQueryString:paramDict];
+    [paramDict setObject:method forKey:PLVRequestHttpMethodKey];
     
-    if (requestToken == Nil || requestToken.length == 0) {
+    [paramDict setObject:params forKey:PLVRequestParameterKey];
+    
+    [paramDict setObject:[NSNumber numberWithFloat:0] forKey:PLVRequestWaitIndexKey];
+    
+    
+    NSString* requestTokenPhase = [self.apiClient generateHmacQueryString:(NSDictionary*)params];
+    
+    //4. generate hash
+    const char *cKey = [self.apiClient.registerAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    const char *cData = [requestTokenPhase cStringUsingEncoding:NSUTF8StringEncoding];
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    NSString *requestHash = [[HMAC base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    HMAC = nil;
+    
+    if (requestHash == Nil || requestHash.length == 0) {
         return @"unvalid";
     }
     
-    [paramDict setObject:requestToken forKey:PLVRequestIdentifierKey];
-    
+    [paramDict setObject:requestHash forKey:PLVRequestIdentifierKey];
     
     [self.requestArray addObject:paramDict];
     
     [self savePersisitRequests:self.requestArray];
     
-    return requestToken;
+    return requestHash;
 }
 
 - (void) removeRequestFromPersistStore:(NSString*)requestToken {
@@ -98,7 +115,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     for (NSDictionary* request in self.requestArray) {
         
-        if ([[request objectForKey:@"hmac"] isEqualToString:requestToken]) {
+        if ([[request objectForKey:PLVRequestIdentifierKey] isEqualToString:requestToken]) {
             
             requestToRemove = request;
             break;
@@ -117,6 +134,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
 -(void) retryRequest:(NSDictionary*)requestDict {
     
     
+    
+    if (self.apiClient != Nil) {
+        
+        [self.apiClient startRequestWithBody:[requestDict objectForKey:PLVRequestParameterKey] addEndpoint:[requestDict objectForKey:PLVRequestEndpointKey] andHTTPMethod:[requestDict objectForKey:PLVRequestHttpMethodKey] andRequestIdentifier:[requestDict objectForKey:PLVRequestIdentifierKey]];
+        
+        
+    }
     
 }
 

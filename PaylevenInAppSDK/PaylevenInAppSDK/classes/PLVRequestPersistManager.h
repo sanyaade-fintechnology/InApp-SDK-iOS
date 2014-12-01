@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+#import "PLVInAppAPIClient.h"
 
 @interface PLVRequestPersistManager : NSObject
 
@@ -21,6 +22,13 @@
 
 
 /**
+ *  Register the APICLient how done the requests
+ *
+ *  @param apiClient
+ */
+- (void) registerAPIClient:(PLVInAppAPIClient*)apiClient;
+
+/**
  *  addRequestToPersistStore
  *
  *  @param params   the parameters
@@ -29,7 +37,7 @@
  *
  *  @return requestToken (identifier) for this request
  */
-- (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)endpoint httpMethod:(NSString*)method ;
+- (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)endpoint httpMethod:(NSString*)method;
 
 
 /**

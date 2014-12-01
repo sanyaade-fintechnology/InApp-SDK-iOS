@@ -19,8 +19,8 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import "UIDevice+Platform.h"
 
-#define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
+#define useLocalEndpoint 1
+#define usemacMiniEndpoint 0
 #define useOtherEndpoint 0
 
 #define apiParameterKeyEmail @"email"
@@ -93,8 +93,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 /** The Base Service URL */
 @property (nonatomic, strong) NSString *tryToRegisterToAPIKey;
 
-/** The Base Service URL */
-@property (nonatomic, strong) NSString *registerAPIKey;
+
 
 
 /** The Base Service URL */
@@ -159,8 +158,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         
         _waitForRegisterFinishedCondition = [[NSCondition alloc] init];
         
-        PLVRequestPersistManager* puh = [PLVRequestPersistManager sharedInstance];
-        
+        [[PLVRequestPersistManager sharedInstance] registerAPIClient:self];
         
         _dateFormatter = [[NSDateFormatter alloc] init];
         NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
@@ -255,8 +253,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIUsersAddPiEndPoint,userToken]];
     
-    NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:bodyParameters toEndpoint:[URL absoluteString] httpMethod:httpMethodePOST];
-    
+    NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:bodyParameters toEndpoint:[NSString stringWithFormat:PLVInAppClientAPIUsersAddPiEndPoint,userToken] httpMethod:httpMethodePOST];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = httpMethodePOST;
@@ -281,7 +278,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         }
         
         if (completionHandler != Nil) {
-            
+        
             SDLog(@"addPaymentInstruments %@",response);
             completionHandler(response, error);
             
@@ -289,6 +286,43 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     }];
     
 }
+
+
+- (void) startRequestWithBody:(NSDictionary*)bodyParameters addEndpoint:(NSString*)endpoint andHTTPMethod:(NSString*)httpMethod andRequestIdentifier:(NSString*)requestIdentifierToken {
+    
+    NSURL *URL = [self getBaseServiceURL];
+    
+    URL = [URL URLByAppendingPathComponent:endpoint];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = httpMethod;
+    NSError *JSONError;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bodyParameters
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&JSONError];
+    
+    request.HTTPBody = jsonData;
+    
+    NSMutableDictionary* mutableBodyParameters = [NSMutableDictionary dictionaryWithDictionary:bodyParameters];
+    
+    // add HMAC
+    
+    [self addHmacForParameterDict:mutableBodyParameters toRequest:request];
+    
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
+        
+        if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+            [[PLVRequestPersistManager sharedInstance] removeRequestFromPersistStore:requestIdentifierToken];
+        }
+        
+    }];
+    
+}
+
+
 
 - (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     

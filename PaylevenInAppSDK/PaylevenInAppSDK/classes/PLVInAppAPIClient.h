@@ -27,6 +27,9 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 /** Queue to operate on. */
 @property (nonatomic, readonly) NSOperationQueue *queue;
 
+/** The Base Service URL */
+@property (nonatomic, strong) NSString *registerAPIKey;
+
 /** Initializes the receiver with the queue. */
 - (instancetype)initWithQueue:(NSOperationQueue *)queue;
 
@@ -51,7 +54,21 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
-- (NSString*) generateHmacQueryString:(NSMutableDictionary*)parameters ;
+/**
+ *  startRequestWithBody
+ *
+ *  Startpoint for 'repeat' request starts
+ *
+ *  @param bodyParameters         bodyParameters of ths request
+ *  @param endpoint               the endpoint  of ths request
+ *  @param httpMethod             http method  of ths request
+ *  @param requestIdentifierToken identifier  of ths request
+ */
+- (void) startRequestWithBody:(NSDictionary*)bodyParameters addEndpoint:(NSString*)endpoint andHTTPMethod:(NSString*)httpMethod andRequestIdentifier:(NSString*)requestIdentifierToken;
+
+
+- (NSString*) generateHmacQueryString:(NSDictionary*)parameters ;
+
 
 @end
 
