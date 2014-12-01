@@ -10,6 +10,7 @@
 #import "KeychainItemWrapper.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "singletonHelper.h"
+#import "PLVInAppSDKConstants.h"
 
 #define PLVInAPPSDKKeyChainPersistRequestArrayGroup @"PLVInAPPSDKKeyChainPersistRequestArrayGroup"
 #define PLVInAPPSDKKeyChainPersistRequestArrayKey @"PLVInAPPSDKKeyChainPersistRequestArrayKey"
@@ -18,16 +19,18 @@
 #define PLVRequestHttpMethodKey @"PLVRequestHttpMethod"
 #define PLVRequestParameterKey @"PLVRequestParameters"
 #define PLVRequestFireTimeKey @"PLVRequestFireTime"
-#define PLVRequestWaitIndexKey @"PLVRequestWaitIndexKey"
+#define PLVRequestWaitingSlotKey @"PLVRequestWaitingSlotKey"
 #define PLVRequestIdentifierKey @"PLVRequestIdentifier"
 
+#define kRepeatCheckIntervall 5.
 
 @interface PLVRequestPersistManager()
 
 @property (strong) NSMutableArray* requestArray;
-@property (strong) NSArray* repeatTimeSlotArray;
+@property (strong) NSArray* waitingSlotLenghtArray;
 @property (nonatomic, strong) KeychainItemWrapper *keychainPersistRequests;
 @property (nonatomic, strong) PLVInAppAPIClient* apiClient;
+@property (nonatomic, strong) NSTimer* requestRetryTimer;
 
 @end
 @implementation PLVRequestPersistManager
@@ -44,7 +47,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
             _requestArray = [NSMutableArray new];
         }
         
-        _repeatTimeSlotArray = @[@3,@15,@60];
+        _waitingSlotLenghtArray = @[@0.,@1.5,@2];
         
     }
     return self;
@@ -57,9 +60,37 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     if (self.requestArray.count > 0) {
         
         // start
+        
+        self.requestRetryTimer = [NSTimer scheduledTimerWithTimeInterval:kRepeatCheckIntervall target:self selector:@selector(checkRetryTiming) userInfo:Nil repeats:YES];
+    }
+}
+
+- (void) checkRetryTiming {
+    
+    if (self.requestArray.count == 0 ) {
+       [self.requestRetryTimer invalidate];
+    }
+    
+    SDLog (@"Check RepeatRequest");
+    
+    NSTimeInterval nowTimeStamp = [NSDate timeIntervalSinceReferenceDate];
+    
+    NSMutableArray* runNowRequest = [NSMutableArray new];
+    
+    for (NSDictionary* request in self.requestArray) {
+        
+        if ([[request objectForKey:PLVRequestFireTimeKey] floatValue] < nowTimeStamp) {
+            [runNowRequest addObject:request];
+        }
+    }
+    
+    for (NSDictionary* request in runNowRequest) {
+        [self retryRequest:request];
     }
     
 }
+
+
 
 - (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)endpoint httpMethod:(NSString*)method {
     
@@ -67,7 +98,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
         return @"unvalid";
     }
     
-    NSTimeInterval waitingSeconds = [[self.repeatTimeSlotArray firstObject] intValue] * 60.;
+    NSTimeInterval waitingSeconds = [[self.waitingSlotLenghtArray firstObject] floatValue] * 60.;
     
     NSMutableDictionary* paramDict = [NSMutableDictionary new];
     
@@ -75,16 +106,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [paramDict setObject:method forKey:PLVRequestHttpMethodKey];
     
-    [paramDict setObject:[NSNumber numberWithFloat:[NSDate timeIntervalSinceReferenceDate] + waitingSeconds] forKey:PLVRequestFireTimeKey];
-    
     [paramDict setObject:method forKey:PLVRequestHttpMethodKey];
     
     [paramDict setObject:params forKey:PLVRequestParameterKey];
     
-    [paramDict setObject:[NSNumber numberWithFloat:0] forKey:PLVRequestWaitIndexKey];
-    
-    
     NSString* requestTokenPhase = [self.apiClient generateHmacQueryString:(NSDictionary*)params];
+    
+    // execlude repeatSlot and firetime from hash creation
+    
+    [paramDict setObject:[NSNumber numberWithUnsignedLong:0] forKey:PLVRequestWaitingSlotKey];
+    
+    [paramDict setObject:[NSNumber numberWithFloat:[NSDate timeIntervalSinceReferenceDate] + waitingSeconds] forKey:PLVRequestFireTimeKey];
+    
     
     //4. generate hash
     const char *cKey = [self.apiClient.registerAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
@@ -106,40 +139,72 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [self savePersisitRequests:self.requestArray];
     
+    if (!self.requestRetryTimer.isValid) {
+        self.requestRetryTimer = [NSTimer scheduledTimerWithTimeInterval:kRepeatCheckIntervall target:self selector:@selector(checkRetryTiming) userInfo:Nil repeats:YES];
+    }
+    
     return requestHash;
 }
 
 - (void) removeRequestFromPersistStore:(NSString*)requestToken {
     
-    NSDictionary* requestToRemove;
-    
-    for (NSDictionary* request in self.requestArray) {
+    @synchronized(self) {
         
-        if ([[request objectForKey:PLVRequestIdentifierKey] isEqualToString:requestToken]) {
+        NSDictionary* requestToRemove;
+        
+        for (NSDictionary* request in self.requestArray) {
             
-            requestToRemove = request;
-            break;
+            if ([[request objectForKey:PLVRequestIdentifierKey] isEqualToString:requestToken]) {
+                
+                requestToRemove = request;
+                
+                break;
+            }
         }
+        
+        if (requestToRemove == Nil) {
+            return;
+        }
+        
+        [self.requestArray removeObject:requestToRemove];
+        
+        [self savePersisitRequests:self.requestArray];
     }
     
-    if (requestToRemove == Nil) {
-        return;
-    }
-    
-    [self.requestArray removeObject:requestToRemove];
-    
-    [self savePersisitRequests:self.requestArray];
 }
 
 -(void) retryRequest:(NSDictionary*)requestDict {
     
-    
-    
     if (self.apiClient != Nil) {
         
-        [self.apiClient startRequestWithBody:[requestDict objectForKey:PLVRequestParameterKey] addEndpoint:[requestDict objectForKey:PLVRequestEndpointKey] andHTTPMethod:[requestDict objectForKey:PLVRequestHttpMethodKey] andRequestIdentifier:[requestDict objectForKey:PLVRequestIdentifierKey]];
-        
-        
+        @synchronized(self) {
+            
+            NSMutableDictionary* requestToRun = [NSMutableDictionary dictionaryWithDictionary:requestDict];
+            
+            unsigned long repeatSlot = [[requestDict objectForKey:PLVRequestWaitingSlotKey] unsignedLongValue];
+            
+            repeatSlot++;
+            
+            if (repeatSlot >= self.waitingSlotLenghtArray.count) {
+                repeatSlot = self.waitingSlotLenghtArray.count - 1;
+            }
+            
+            float waitingSlotLength = [[self.waitingSlotLenghtArray objectAtIndex:repeatSlot] floatValue] * 60.;
+            
+            [requestToRun setObject:[NSNumber numberWithFloat:[NSDate timeIntervalSinceReferenceDate] + waitingSlotLength] forKey:PLVRequestFireTimeKey];
+            
+            [requestToRun setObject:[NSNumber numberWithUnsignedLong:repeatSlot] forKey:PLVRequestWaitingSlotKey];
+            
+            [self.requestArray removeObject:requestDict];
+            
+            [self.requestArray addObject:requestToRun];
+            
+            [self savePersisitRequests:self.requestArray];
+            
+            [self.apiClient startRequestWithBody:[requestToRun objectForKey:PLVRequestParameterKey] addEndpoint:[requestToRun objectForKey:PLVRequestEndpointKey] andHTTPMethod:[requestToRun objectForKey:PLVRequestHttpMethodKey] andRequestIdentifier:[requestToRun objectForKey:PLVRequestIdentifierKey]];
+            
+        }
+
     }
     
 }

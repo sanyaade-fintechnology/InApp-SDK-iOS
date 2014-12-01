@@ -290,6 +290,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) startRequestWithBody:(NSDictionary*)bodyParameters addEndpoint:(NSString*)endpoint andHTTPMethod:(NSString*)httpMethod andRequestIdentifier:(NSString*)requestIdentifierToken {
     
+    SDLog(@"Retray Request with Identifier: %@",requestIdentifierToken);
+    
     NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:endpoint];
@@ -562,6 +564,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                 completionHandler(Nil, error);
             });
             
+            return;
         }
         
         NSDictionary *responseDict = nil;
@@ -582,6 +585,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             });
             
             return;
+            
         } else {
             
             NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
@@ -589,7 +593,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             //TODO CHeck for valid NSHTTPURLResponse
             
             SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
-            
             
         }
         

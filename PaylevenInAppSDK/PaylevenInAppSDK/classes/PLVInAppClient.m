@@ -15,6 +15,8 @@
 #import "PLVInAppErrors.h"
 #import "PLVInAppClientTypes+Validation.h"
 
+#define kUserTokenKey @"userToken"
+
 @interface PLVInAppClient ()
 
 @property (strong) NSString* apiKey;
@@ -74,6 +76,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 }
 
 
+- (void) createUserToken:(NSString*)emailAddress withPaymentInstrument:(PLVPaymentInstrument*)payInstrument useCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+    
+    [self getUserToken:emailAddress withCompletion:^(NSDictionary* response, NSError* error) {
+    
+        if ([response objectForKey:kUserTokenKey] && error == noErr) {
+            [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:Nil];
+        }
+        
+        if (completionHandler != Nil) {
+            completionHandler(response,error);
+        }
+        
+    }];
+}
+
 - (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
@@ -92,7 +109,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:userToken withUseCase:useCaseChecked andCompletion:completionHandler];
 }
 
-- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
+- (void) getPaymentInstrumentsList:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
     if (![self checkUserToken:userToken andCompletion:completionHandler]) { return; }

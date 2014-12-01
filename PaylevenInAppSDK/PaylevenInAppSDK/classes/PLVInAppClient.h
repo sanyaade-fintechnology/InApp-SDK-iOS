@@ -51,6 +51,18 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
+
+
+/**
+ *  createUserToken:
+ *
+ *  @param emailAddress      email address for userToken
+ *  @param payInstrument     payment instrument to add
+ *  @param useCase           useCase
+ *  @param completionHandler completionHandler
+ */
+- (void) createUserToken:(NSString*)emailAddress withPaymentInstrument:(PLVPaymentInstrument*)payInstrument useCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
 /**
  *  addPaymentInstrument:
  *
@@ -71,7 +83,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param userToken         userToken
  *  @param completionHandler completion block
  */
-- (void) listPaymentInstrumentsForUserToken:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) getPaymentInstrumentsList:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 /**

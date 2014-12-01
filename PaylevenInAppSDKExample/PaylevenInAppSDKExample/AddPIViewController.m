@@ -165,30 +165,32 @@
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:pi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
-        if (error != Nil) {
-            
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
-            
-            [alertView show];
-            
-        } else {
-        
-                if (self.currentTextField == Nil) {
-                    // does not start an other textInput
-                    // so we clear the fields
-                    
-                    for(UITextField* tField in self.scrollView.subviews) {
-                        
-                        if ([tField isKindOfClass:[UITextField class]]) {
-                            tField.text = @"";
-                        }
-                    }
-                }
-            
-            [self backButton:self];
-        }
+//        if (error != Nil) {
+//            
+//            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+//            
+//            [alertView show];
+//            
+//        } else {
+//        
+//                if (self.currentTextField == Nil) {
+//                    // does not start an other textInput
+//                    // so we clear the fields
+//                    
+//                    for(UITextField* tField in self.scrollView.subviews) {
+//                        
+//                        if ([tField isKindOfClass:[UITextField class]]) {
+//                            tField.text = @"";
+//                        }
+//                    }
+//                }
+//            
+//            
+//        }
     }];
 
+    [self backButton:self];
+    
 }
 
 
