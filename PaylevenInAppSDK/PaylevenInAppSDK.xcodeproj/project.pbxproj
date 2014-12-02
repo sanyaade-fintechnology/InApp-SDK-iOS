@@ -19,6 +19,17 @@
 			name = BundleFramework;
 			productName = Framework;
 		};
+		9F76AB971A2DCDE00092338F /* BuildDocs */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9F76AB9A1A2DCDE00092338F /* Build configuration list for PBXAggregateTarget "BuildDocs" */;
+			buildPhases = (
+				9F76AB9B1A2DCDE80092338F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = BuildDocs;
+			productName = BuildDocs;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -88,10 +99,10 @@
 		9F7CFC861A079A950047203A /* PLVInAppClientTypes+Serialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PLVInAppClientTypes+Serialization.h"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Serialization.h"; sourceTree = "<group>"; };
 		9F7CFC871A079A950047203A /* PLVInAppClientTypes+Serialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PLVInAppClientTypes+Serialization.m"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Serialization.m"; sourceTree = "<group>"; };
 		9FA5CAA919F5189C00FCB314 /* libPaylevenInAppSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPaylevenInAppSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		9FA5CAAC19F5189C00FCB314 /* PLVInAppSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PLVInAppSDK.h; path = classes/PLVInAppSDK.h; sourceTree = "<group>"; };
+		9FA5CAAC19F5189C00FCB314 /* PLVInAppSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PLVInAppSDK.h; path = publicHeaders/PLVInAppSDK.h; sourceTree = "<group>"; };
 		9FA5CAB419F5189C00FCB314 /* PaylevenInAppSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaylevenInAppSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FA5CAB719F5189C00FCB314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9FA5CBC219F527C600FCB314 /* PLVInAppClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppClient.h; path = PaylevenInAppSDK/classes/PLVInAppClient.h; sourceTree = "<group>"; };
+		9FA5CBC219F527C600FCB314 /* PLVInAppClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppClient.h; path = PaylevenInAppSDK/publicHeaders/PLVInAppClient.h; sourceTree = "<group>"; };
 		9FA5CBC319F527C600FCB314 /* PLVInAppClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppClient.m; path = PaylevenInAppSDK/classes/PLVInAppClient.m; sourceTree = "<group>"; };
 		9FA5CBC419F527C600FCB314 /* PLVInAppSDKConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppSDKConstants.h; path = PaylevenInAppSDK/classes/PLVInAppSDKConstants.h; sourceTree = "<group>"; };
 		9FA5CBC519F527C600FCB314 /* PLVInAppSDKConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppSDKConstants.m; path = PaylevenInAppSDK/classes/PLVInAppSDKConstants.m; sourceTree = "<group>"; };
@@ -102,13 +113,13 @@
 		9FBC2EFC1A1F4400007D1341 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainItemWrapper.m; path = PaylevenInAppSDK/classes/KeychainItemWrapper.m; sourceTree = "<group>"; };
 		9FC8B2911A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PLVInAppClientTypes+Validation.h"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Validation.h"; sourceTree = "<group>"; };
 		9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PLVInAppClientTypes+Validation.m"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Validation.m"; sourceTree = "<group>"; };
-		9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppErrors.h; path = PaylevenInAppSDK/classes/PLVInAppErrors.h; sourceTree = "<group>"; };
+		9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppErrors.h; path = PaylevenInAppSDK/publicHeaders/PLVInAppErrors.h; sourceTree = "<group>"; };
 		9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppErrors.m; path = PaylevenInAppSDK/classes/PLVInAppErrors.m; sourceTree = "<group>"; };
 		9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrderedDictionary.h; path = PaylevenInAppSDK/classes/OrderedDictionary.h; sourceTree = "<group>"; };
 		9FD583FB1A14B6C000E9B83E /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OrderedDictionary.m; path = PaylevenInAppSDK/classes/OrderedDictionary.m; sourceTree = "<group>"; };
-		9FD7E7C81A2912CB00A5B166 /* UIDevice+Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Platform.h"; sourceTree = "<group>"; };
-		9FD7E7C91A2912CB00A5B166 /* UIDevice+Platform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Platform.m"; sourceTree = "<group>"; };
-		9FF6E64B1A0239F300C12AAA /* PLVInAppClientTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppClientTypes.h; path = PaylevenInAppSDK/classes/PLVInAppClientTypes.h; sourceTree = "<group>"; };
+		9FD7E7C81A2912CB00A5B166 /* UIDevice+Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIDevice+Platform.h"; path = "PaylevenInAppSDK/classes/UIDevice+Platform.h"; sourceTree = "<group>"; };
+		9FD7E7C91A2912CB00A5B166 /* UIDevice+Platform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIDevice+Platform.m"; path = "PaylevenInAppSDK/classes/UIDevice+Platform.m"; sourceTree = "<group>"; };
+		9FF6E64B1A0239F300C12AAA /* PLVInAppClientTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppClientTypes.h; path = PaylevenInAppSDK/publicHeaders/PLVInAppClientTypes.h; sourceTree = "<group>"; };
 		9FF6E64C1A0239F300C12AAA /* PLVInAppClientTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppClientTypes.m; path = PaylevenInAppSDK/classes/PLVInAppClientTypes.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -269,6 +280,7 @@
 				9FA5CAA719F5189C00FCB314 /* CopyFiles */,
 				9FA5CBCD19F52B2100FCB314 /* Headers */,
 				9F4F806E19F533D90008CBBE /* Build Framework */,
+				9F76AB9C1A2DCFB00092338F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -308,6 +320,9 @@
 					9F4F806F19F5348A0008CBBE = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
+					9F76AB971A2DCDE00092338F = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
 					9FA5CAA819F5189C00FCB314 = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
@@ -331,6 +346,7 @@
 				9F4F806F19F5348A0008CBBE /* BundleFramework */,
 				9FA5CAA819F5189C00FCB314 /* PaylevenInAppSDK */,
 				9FA5CAB319F5189C00FCB314 /* PaylevenInAppSDKTests */,
+				9F76AB971A2DCDE00092338F /* BuildDocs */,
 			);
 		};
 /* End PBXProject section */
@@ -373,6 +389,32 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\n# echo \"START MULTIPLATFORM FRAMEWORK BUILD\"\n\n# If we're already inside this script then die\nif [ -n \"$PLV_MULTIPLATFORM_BUILD_IN_PROGRESS\" ]; then\necho \"DIE WITH MULTIPLATFORM BUILD ALREADY IN PROGRESS\"\nexit 0\nfi\nexport PLV_MULTIPLATFORM_BUILD_IN_PROGRESS=1\n\nPLV_FRAMEWORK_NAME=${PROJECT_NAME}\nPLV_INPUT_STATIC_LIB=\"lib${PROJECT_NAME}.a\"\nPLV_FRAMEWORK_LOCATION=\"${BUILT_PRODUCTS_DIR}/${PLV_FRAMEWORK_NAME}.framework\"\n\nfunction build_static_library {\n    # Will rebuild the static library as specified\n    #     build_static_library sdk\n    xcrun xcodebuild -project \"${PROJECT_FILE_PATH}\" \\\n    -target \"${TARGET_NAME}\" \\\n    -configuration \"${CONFIGURATION}\" \\\n    -sdk \"${1}\" \\\n    ONLY_ACTIVE_ARCH=NO \\\n    BUILD_DIR=\"${BUILD_DIR}\" \\\n    OBJROOT=\"${OBJROOT}\" \\\n    BUILD_ROOT=\"${BUILD_ROOT}\" \\\n    SYMROOT=\"${SYMROOT}\" $ACTION\n}\n\nfunction make_fat_library {\n    # Will smash 2 static libs together\n    #     make_fat_library in1 in2 out\n    xcrun lipo -create \"${1}\" \"${2}\" -output \"${3}\"\n}\n\n# 1 - Extract the platform (iphoneos/iphonesimulator) from the SDK name\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]; then\nRW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 2 - Extract the version from the SDK\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]; then\nRW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n# 3 - Determine the other platform\nif [ \"$RW_SDK_PLATFORM\" == \"iphoneos\" ]; then\nRW_OTHER_PLATFORM=iphonesimulator\nelse\nRW_OTHER_PLATFORM=iphoneos\nfi\n\n# 4 - Find the build directory\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$RW_SDK_PLATFORM$ ]]; then\nRW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${RW_OTHER_PLATFORM}\"\nelse\necho \"Could not find other platform build directory.\"\nexit 1\nfi\n\n# Build the other platform.\nbuild_static_library \"${RW_OTHER_PLATFORM}${RW_SDK_VERSION}\"\n\n# If we're currently building for iphonesimulator, then need to rebuild\n#   to ensure that we get both i386 and x86_64\nif [ \"$RW_SDK_PLATFORM\" == \"iphonesimulator\" ]; then\nbuild_static_library \"${SDK_NAME}\"\nfi\n\n# Join the 2 static libs into 1 and push into the .framework\nmake_fat_library \"${BUILT_PRODUCTS_DIR}/${PLV_INPUT_STATIC_LIB}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${PLV_INPUT_STATIC_LIB}\" \\\n\"${PLV_FRAMEWORK_LOCATION}/Versions/A/${PLV_FRAMEWORK_NAME}\"\n\n\n# Ensure that the framework is present in both platform's build directories\ncp -a \"${PLV_FRAMEWORK_LOCATION}/Versions/A/${PLV_FRAMEWORK_NAME}\" \\\n\"${RW_OTHER_BUILT_PRODUCTS_DIR}/${PLV_FRAMEWORK_NAME}.framework/Versions/A/${PLV_FRAMEWORK_NAME}\"\n\n# Copy the framework to the example project\n\n# rm -rf \"../PaylevenInAppSDKExample/${PLV_FRAMEWORK_NAME}.framework\"\nditto -V \"${PLV_FRAMEWORK_LOCATION}\" \"../PaylevenInAppSDKExample/${PLV_FRAMEWORK_NAME}.framework\"\n\nexport PLV_MULTIPLATFORM_BUILD_IN_PROGRESS=0\n";
+		};
+		9F76AB9B1A2DCDE80092338F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#if [ ${CONFIGURATION} == \"Release\" ]; then\nAPPLEDOC_PATH=`which appledoc`\nif [ $APPLEDOC_PATH ]; then\n\necho 'Start Build docs for ${PRODUCT_NAME}'\n\n$APPLEDOC_PATH \\\n--project-name ${PRODUCT_NAME} \\\n--project-company \"Payleven\" \\\n--company-id \"com.payleven\" \\\n--output ${PRODUCT_NAME}Docs \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--exit-threshold 2 \\\n${PROJECT_DIR}/${PRODUCT_NAME}\nfi;\n\necho 'Finish Build docs for' . ${PRODUCT_NAME}\n#fi;";
+		};
+		9F76AB9C1A2DCFB00092338F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "#if [ ${CONFIGURATION} == \"Release\" ]; then\n#APPLEDOC_PATH=``;\n\necho 'Start Build docs for' ${APPLEDOC_PATH}\n\n#if [ $APPLEDOC_PATH ]; then\n\n#echo 'Start Build docs for ${PRODUCT_NAME}'\n\n/usr/local/bin/appledoc \\\n--project-name ${PRODUCT_NAME} \\\n--project-company \"Payleven\" \\\n--company-id \"com.payleven\" \\\n--output ${PRODUCT_NAME}Docs \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--exit-threshold 2 \\\n--ignore \"classes\" \\\n${PROJECT_DIR}/${PRODUCT_NAME}\n#fi;\n\necho 'Finish Build docs for' . ${PRODUCT_NAME}\n#fi;";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -425,6 +467,20 @@
 			name = Debug;
 		};
 		9F4F807219F5348A0008CBBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		9F76AB981A2DCDE00092338F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9F76AB991A2DCDE00092338F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -571,6 +627,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
+		};
+		9F76AB9A1A2DCDE00092338F /* Build configuration list for PBXAggregateTarget "BuildDocs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F76AB981A2DCDE00092338F /* Debug */,
+				9F76AB991A2DCDE00092338F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		9FA5CAA419F5189C00FCB314 /* Build configuration list for PBXProject "PaylevenInAppSDK" */ = {
 			isa = XCConfigurationList;

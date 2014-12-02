@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+
+@import Foundation;
 
 
-
+@interface PLVInAppClientErrors : NSObject
 
 extern NSInteger const ERROR_INVALID_BACKEND_RESPONSE_CODE;
 
@@ -127,4 +128,7 @@ extern NSString * const ERROR_CVV_INVALID_CHARS_MESSAGE;
 
 extern NSInteger const ERROR_CVV_INVALID_LENGTH_CODE;
 extern NSString * const ERROR_CVV_INVALID_LENGTH_MESSAGE;
+
+@end
+
 

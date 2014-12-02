@@ -8,6 +8,10 @@
 
 #import "PLVInAppErrors.h"
 
+
+@implementation PLVInAppClientErrors
+
+
 NSInteger const ERROR_INVALID_BACKEND_RESPONSE_CODE                 = 8000;
 
 NSString * const ERROR_INVALID_BACKEND_RESPONSE_MESSAGE             = @"INVALID BACKEND RESPONSE";
@@ -117,3 +121,7 @@ NSString * const ERROR_CVV_INVALID_CHARS_MESSAGE  =  @"CVV INVALID CHARACTERS";
 
 NSInteger const ERROR_CVV_INVALID_LENGTH_CODE = 10620;
 NSString * const ERROR_CVV_INVALID_LENGTH_MESSAGE  =  @"CVV INVALID LENGTH";
+
+
+
+@end

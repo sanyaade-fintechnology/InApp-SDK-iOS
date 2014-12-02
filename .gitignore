@@ -1,10 +1,8 @@
 .DS_Store
 */build/*
-
 # Exclude temp nibs and swap files
 *~.nib
 *.swp
-
 *.mode1
 *.mode1v3
 *.mode2v3
@@ -14,11 +12,10 @@
 *.xcworkspace
 *.xcconfig
 xcuserdata
-
 *.moved-aside
 .idea/
 *.hmap
-
 PaylevenInAppSDKExample/PaylevenInAppSDK.framework
 MockBE/api/slim
 MockBE/api/.htaccess
+PaylevenInAppSDK/PaylevenInAppSDKDocs

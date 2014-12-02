@@ -65,6 +65,10 @@ function getUserTokenForEmail() {
 	
 	$apiKey = checkHMACForRequest($request);
 	
+	if(!$apiKey) {
+		return;
+	}
+	
 	if(is_null($apiKey)) {	
 		returnErrorWithDescription('Invalid credentials');
 		return;
