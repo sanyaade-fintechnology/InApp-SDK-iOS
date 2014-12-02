@@ -11,4 +11,5 @@
 
 #import <PaylevenInAppSDK/PLVInAppClient.h>
 #import <PaylevenInAppSDK/PLVInAppClientTypes.h>
+#import <PaylevenInAppSDK/PLVInAppErrors.h>
 

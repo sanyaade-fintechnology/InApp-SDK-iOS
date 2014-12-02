@@ -14,10 +14,14 @@
 #define     PLVPITypePAYPAL     @"PAYPAL"
 
 
-#define     PLVPIUseCasePrivate     @"PRIVATE"
-#define     PLVPIUseCaseBusiness    @"BUSINESS"
-
-
+/**
+ *  PLVPaymentInstrument    Base class of PLVPaymentInstrument
+ *
+ *  @property sortIndex     index the payment instrument in a certain usecase (readonly)
+ *
+ *  @property identifier    identifier of this payment instrument (readonly
+ *
+ */
 @interface PLVPaymentInstrument : NSObject
 
 @property (strong) NSString* type;
@@ -25,6 +29,21 @@
 @property (strong, readonly) NSString* identifier;
 
 @end
+
+/**
+ *  PLVPayInstrumentCC      CrediCard PaymentInstrument
+ *
+ *  @property pan           pan of the Creditcard
+ *
+ *  @property cardBrand     cardbrand
+ *
+ *  @property expiryMonth   expiryMonth
+ *
+ *  @property expiryYear    expiryYear
+ *
+ *  @property cvv           Card verification value
+ *
+ */
 
 @interface PLVPayInstrumentCC : PLVPaymentInstrument
 
@@ -36,11 +55,29 @@
 
 @end
 
+/**
+ *  PLVPayInstrumentDD      Debit PaymentInstrument
+ *
+ *  @property accountNumber accountNumber for this debit account
+ *
+ *  @property routingNumber routingNumber for this debit account
+ *
+ */
+
 @interface PLVPayInstrumentDD : PLVPaymentInstrument
 
 @property (strong) NSString* accountNumber;
 @property (strong) NSString* routingNumber;
 @end
+
+/**
+ *  PLVPayInstrumentSEPA    SEPA Account PaymentInstrument
+ *
+ *  @property iban          IBAN for this SEPA account
+ *
+ *  @property bic           BIC Number for this SEPA account
+ *
+ */
 
 @interface PLVPayInstrumentSEPA : PLVPaymentInstrument
 
@@ -48,6 +85,13 @@
 @property (strong) NSString* bic;
 
 @end
+
+/**
+ *  PLVPayInstrumentPAYPAL  PayPal Account PaymentInstrument
+ *
+ *  @property authToken     authToken for this PayPal Account
+ *
+ */
 
 @interface PLVPayInstrumentPAYPAL : PLVPaymentInstrument
 

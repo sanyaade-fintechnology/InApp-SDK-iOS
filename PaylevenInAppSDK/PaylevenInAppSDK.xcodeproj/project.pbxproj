@@ -43,7 +43,7 @@
 		9FBC2EFE1A1F4400007D1341 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBC2EFC1A1F4400007D1341 /* KeychainItemWrapper.m */; };
 		9FC8B2931A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2911A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h */; };
 		9FC8B2941A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */; };
-		9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */; };
+		9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FC8B2981A1B978100DD3370 /* PLVInAppErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */; };
 		9FD583FC1A14B6C000E9B83E /* OrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */; };
 		9FD583FD1A14B6C000E9B83E /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD583FB1A14B6C000E9B83E /* OrderedDictionary.m */; };
@@ -241,9 +241,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */,
 				9F6552C019F6876A003D07A5 /* PLVServerCertificate.h in Headers */,
 				9F7CFC881A079A950047203A /* PLVInAppClientTypes+Serialization.h in Headers */,
+				9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */,
 				9FD7E7CA1A2912CB00A5B166 /* UIDevice+Platform.h in Headers */,
 				9FF6E64D1A0239F300C12AAA /* PLVInAppClientTypes.h in Headers */,
 				9FC8B2931A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h in Headers */,
