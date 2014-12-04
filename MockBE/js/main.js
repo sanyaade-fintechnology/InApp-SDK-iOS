@@ -136,7 +136,33 @@ function renderDetails(data) {
 	$.each(keys, function(index, keyValue) {
 		//console.log('Details ... :' + index +  '  :' + keyValue);
 		$('.detailKeyList').append('<li><a href="#" class="detailItem" >' + index + ' : ' + keyValue + '</a></li>');
-		$('.detailValueList').append('<li><a href="#" class="detailItem" >' + currentDetails[keyValue] + '</a></li>');
+		
+		keyMainValue = currentDetails[keyValue];
+		
+		console.log('keyMainValue :' + typeof(keyMainValue));
+		
+		if (typeof(keyMainValue) === 'object') {
+			
+			console.log('object Value');
+			
+			// subDetails = $.parseJSON(keyMainValue);
+			
+			console.log('subDetails :' + typeof(keyMainValue));
+			
+			subKeys = Object.keys(keyMainValue);
+			
+			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp&nbspobject</a></li>');
+			
+			$.each(subKeys, function(subIndex, subKeyValue) {
+				//console.log('Details ... :' + index +  '  :' + keyValue);
+				$('.detailKeyList').append('<li><a href="#" class="detailItem" >&nbsp&nbsp&nbsp' + subIndex + ' : ' + subKeyValue + '</a></li>');
+				$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp&nbsp&nbsp&nbsp&nbsp' +  + ' : ' + keyMainValue[subKeyValue] + '</a></li>');
+			});
+		} else {
+			console.log('Non object Value');
+			
+			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp&nbsp' + keyMainValue + '</a></li>');
+		}
 	});
 	
 }

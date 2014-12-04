@@ -49,7 +49,6 @@ function listLogs () {
         $events = json_encode($stmt->fetchAll());
 		
 		$result = array();
-		
 		$result['events'] = $events;
 		
 		returnOKStatus($result);
@@ -594,8 +593,6 @@ function addPI($userToken,$piDetails,$useCase) {
 		 #known pi ... make sure is enabled
 		 
 	     $sql = "UPDATE PITABLE SET piEnabled=1 WHERE (userToken=:userTokenValue AND identifier=:identifierValue)";
-	 
-	 	# error_log('UPDATE PITABLE SET piEnabled=1 WHERE (userToken='.$userToken.' AND identifier='.$piIdentifier.')');
 		
          try {
              $db = getConnection();
@@ -658,10 +655,6 @@ function addPIWithDetails ($piTokenValue,$piIdentifier,$userTokenValue,$piDetail
 		
 	# add to useCase Table
 	
-	if (is_null($useCaseValue)) {
-		$useCaseValue = DEFAULTUSECASE;
-	}
-		
 	$result = false;
 		
 	$result = addPIToUseCaseTable($piTokenValue,$userTokenValue,$useCaseValue);
@@ -743,6 +736,39 @@ function addPIToUseCaseTable($piTokenValue,$userTokenValue,$useCaseValue) {
 	$useCaseValue = strtoupper($useCaseValue);
 	
 	$sortIndex = countPiUseCasesForPiTokenAndUserToken($userTokenValue,$piTokenValue,$useCaseValue);
+	
+	if($sortIndex == 0 && (strcasecmp($useCaseValue,DEFAULTUSECASE) != 0)) {
+		
+		// new useCase copy Default useCases
+		
+		$defaultPiTokens = piTokensForDefaultUseCase($userTokenValue);
+		
+		$sql = "INSERT INTO USECASETABLE ( piToken, userToken, useCase, sortIndex) VALUES ( :piTokenValue, :userTokenValue, :useCaseValue, :sortIndexValue)";
+		
+		$sortIndexValue = 0;
+		
+		foreach ($defaultPiTokens as $defaultPiToken) {
+			    try {
+			            $db = getConnection();
+			            $stmt = $db->prepare($sql);  
+		
+						$defaultTokenToAdd = $defaultPiToken['piToken'];
+						$stmt->bindParam("piTokenValue", $defaultTokenToAdd);						
+			            $stmt->bindParam("userTokenValue", $userTokenValue);
+						$stmt->bindParam("useCaseValue", $useCaseValue);
+				        $stmt->bindParam("sortIndexValue", $sortIndexValue);
+			            $stmt->execute();
+				
+						$sortIndexValue++;
+
+			        } catch(PDOException $e) {
+			            return false;
+			        }
+			}
+			
+		$sortIndex = $sortIndexValue;
+		
+	}
 	
 	if ($sortIndex < 0) {
 		# known useCase
@@ -983,6 +1009,28 @@ function countPiUseCasesForPiTokenAndUserToken($userToken,$piToken,$useCase) {
         return false;
     }
 }
+
+function piTokensForDefaultUseCase($userToken) {
+
+    $sql = "SELECT piToken FROM USECASETABLE WHERE userToken=:userTokenValue AND useCase=:useCaseValue";
+
+	$defaultUsecase = DEFAULTUSECASE;
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("userTokenValue", $userToken);
+		$stmt->bindParam("useCaseValue",$defaultUsecase);
+        $stmt->execute();
+        $defaultPiToken = $stmt->fetchAll();
+
+		return $defaultPiToken;
+
+    } catch(PDOException $e) {
+
+        return false;
+    }
+}
+
 
 function countPiForUserToken($userToken) {
 
