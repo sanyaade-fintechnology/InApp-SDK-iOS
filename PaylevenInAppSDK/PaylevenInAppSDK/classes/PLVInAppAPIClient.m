@@ -252,7 +252,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIUsersAddPiEndPoint,userToken]];
     
-    NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:bodyParameters toEndpoint:[NSString stringWithFormat:PLVInAppClientAPIUsersAddPiEndPoint,userToken] httpMethod:httpMethodePOST];
+    __block NSString* requestIdentifierToken = [[PLVRequestPersistManager sharedInstance] addRequestToPersistStore:bodyParameters toEndpoint:[NSString stringWithFormat:PLVInAppClientAPIUsersAddPiEndPoint,userToken] httpMethod:httpMethodePOST];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = httpMethodePOST;
