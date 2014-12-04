@@ -12,6 +12,9 @@ $app->post('/logs', 'addLogs');
 
 # new endPoints
 
+$app->post('/status', 'setBackEndStatus');
+$app->get('/logs',	'listLogs');
+
 $app->post('/users', 'getUserTokenForEmail');
 $app->post('/users/:userToken/payment-instruments',	'addPIToUserToken');
 $app->get('/users/:userToken/payment-instruments',	'listPiForUserToken');
@@ -32,6 +35,43 @@ function addPIToUserToken ($userToken) {
 			addPaymentInstrumentForUserToken($userToken);
 		}
 	}
+}
+
+
+function listLogs () {
+	
+    $sql = "SELECT * FROM `LOGTABLE` ORDER BY `id` DESC LIMIT 25";
+
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);  
+        $stmt->execute();
+        $events = json_encode($stmt->fetchAll());
+		
+		$result = array();
+		
+		$result['events'] = $events;
+		
+		returnOKStatus($result);
+        $db = null;
+		} catch (PDOException $e) {
+                returnErrorWithDescription($e->getMessage()); 
+                return;
+        }
+}
+
+
+function setBackEndStatus ($userToken) {
+	
+    $request = Slim::getInstance()->request();
+
+	$details = json_decode($request->getBody());
+	
+	if (!isset($details->backEndStatus)) {
+		returnErrorWithDescription('Missing status value in Request');
+		return;
+	}
+
 }
 
 function listPiForUserToken ($userToken) {
@@ -58,7 +98,7 @@ function removeUseCaseForPiAndUserToken($userToken,$piID,$useCase) {
 
 
 function getUserTokenForEmail() {
-
+	
     $request = Slim::getInstance()->request();
 
 	$details = json_decode($request->getBody());
@@ -175,7 +215,10 @@ function returnOKStatus($result) {
 		
 		$app = Slim::getInstance();
 		$response = $app->response();
+		
 		$response->header('Connection', 'close');
+
+		$response->header('Access-Control-Allow-Origin', '*');
 		
 		$responseArray = array('status'=>'OK','code'=>'200');
 		
@@ -1082,7 +1125,6 @@ function addLogs() {
     $details = json_decode($request->getBody());
 	
 	if(!isset($details->events)) {
-		
 		return;
 	}
 
@@ -1095,7 +1137,7 @@ function addLogs() {
 		array_push($eventsToLog,$sendedEvents);
 	}
 
-    $sql = "INSERT INTO LOGS Set event=:eventValue";
+    $sql = "INSERT INTO LOGTABLE Set event=:eventValue";
 	
     $db = getConnection();
     $stmt = $db->prepare($sql); 
