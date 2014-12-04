@@ -16,6 +16,9 @@
 #import "PLVInAppClientTypes+Validation.h"
 #import "PLVInAppClientTypes+Serialization.h"
 #import "DevicePlatform.h"
+#import "PLVEventLoggingClient.h"
+#import "PLVEventLogger.h"
+#import "PLVEvent.h"
 
 #define kUserTokenKey @"userToken"
 
@@ -31,6 +34,8 @@
 
 /** API client. */
 @property (nonatomic, strong) PLVInAppAPIClient *inAppAPIClient;
+
+@property (nonatomic, strong) PLVEventLogger* eventLogger;
 
 @end
 
@@ -53,6 +58,18 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
         _queue.maxConcurrentOperationCount = 1;
         _queue.name = NSStringFromClass([self class]);
         _inAppAPIClient = [[PLVInAppAPIClient alloc] initWithQueue:_queue];
+        
+        PLVEventLoggingClient *eventLoggingClient = [[PLVEventLoggingClient alloc] initWithQueue:_queue  andDelegate:_inAppAPIClient];
+        _eventLogger = [[PLVEventLogger alloc] initWithQueue:_queue
+                                          eventLoggingClient:eventLoggingClient
+                                                timeInterval:10.0];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [self.eventLogger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeInitInAPPClient parameters:Nil]];
+            
+        });
+        
         
     }
     return self;
@@ -91,11 +108,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
         if ([response objectForKey:kUserTokenKey] && error == noErr) {
             
+            [self.eventLogger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenSuccess parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:@"email"]]];
+            
             [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:^(NSDictionary* response, NSError* error) {
                 
-                
-                
             }];
+        } else {
+            
+            [self.eventLogger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenFail parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:@"email"]]];
         }
         
         if (completionHandler != Nil) {

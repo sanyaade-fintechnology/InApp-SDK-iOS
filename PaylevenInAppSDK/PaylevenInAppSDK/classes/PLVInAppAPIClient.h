@@ -20,7 +20,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  * @discussion
  * The minimum TLS version is set to 1.2.
  */
-@interface PLVInAppAPIClient : NSObject
+@interface PLVInAppAPIClient : NSObject <NSURLSessionDelegate>
 
 - (void) setSpecificBaseServiceURL:(NSString*)serviceURLString;
 
