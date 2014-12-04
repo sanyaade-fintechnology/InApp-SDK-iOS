@@ -34,7 +34,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 - (instancetype)initWithQueue:(NSOperationQueue *)queue;
 
 /** Performs login with the specified username and password. */
-- (void)registerWithAPIKey:(NSString *)apiKey andBundleID:(NSString *)bundleID;
+- (void) registerWithAPIKey:(NSString *)apiKey andBundleID:(NSString *)bundleID;
 
 
 - (void) userTokenForEmail:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;

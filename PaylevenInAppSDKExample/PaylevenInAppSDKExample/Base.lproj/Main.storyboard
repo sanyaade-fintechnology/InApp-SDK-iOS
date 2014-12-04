@@ -403,8 +403,8 @@
                                             </mask>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="useCase:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U4A-43-UX9" userLabel="useCaseLabel">
-                                        <rect key="frame" x="16" y="54" width="568" height="37"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="useCase:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U4A-43-UX9" userLabel="useCaseLabel">
+                                        <rect key="frame" x="32" y="54" width="552" height="37"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="48" id="Aei-ah-5IP"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="B8A-YU-WID"/>
@@ -451,6 +451,18 @@
                                         <connections>
                                             <action selector="showUseCaseActionSheet:" destination="J1S-1x-cPw" eventType="touchUpInside" id="C9z-FL-Z1x"/>
                                         </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hw6-R5-ggn" userLabel="EditUseCaseButtons">
+                                        <rect key="frame" x="443" y="59" width="121" height="20"/>
+                                        <color key="backgroundColor" red="0.81960784310000001" green="0.82745098039999998" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="121" id="5Al-jQ-OYH"/>
+                                            <constraint firstAttribute="height" constant="20" id="o8Z-e4-Ych"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="EDIT">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzL-97-pre">
                                         <rect key="frame" x="32" y="160" width="536" height="55"/>
@@ -526,9 +538,11 @@
                                     <constraint firstItem="U4A-43-UX9" firstAttribute="leading" secondItem="3NQ-d0-idL" secondAttribute="trailing" constant="16" id="JJc-EZ-8es"/>
                                     <constraint firstItem="Lg4-Aq-n5u" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="32" id="Kc9-jO-Ezp"/>
                                     <constraint firstAttribute="trailing" secondItem="Lg4-Aq-n5u" secondAttribute="trailing" constant="32" id="P8A-bA-YX4"/>
-                                    <constraint firstItem="U4A-43-UX9" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="16" id="SAe-A0-GrC"/>
+                                    <constraint firstItem="U4A-43-UX9" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="32" id="SAe-A0-GrC"/>
+                                    <constraint firstItem="hw6-R5-ggn" firstAttribute="top" secondItem="H19-p3-CmP" secondAttribute="bottom" constant="12" id="TwC-ZC-1Ys"/>
                                     <constraint firstItem="gzL-97-pre" firstAttribute="top" secondItem="L4c-CG-s8h" secondAttribute="bottom" constant="-100" id="XS2-Ql-V9g"/>
                                     <constraint firstItem="Lg4-Aq-n5u" firstAttribute="top" secondItem="H19-p3-CmP" secondAttribute="bottom" constant="36" id="XdT-c7-cYZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="hw6-R5-ggn" secondAttribute="trailing" constant="36" id="agN-Ud-P8h"/>
                                     <constraint firstAttribute="trailing" secondItem="H19-p3-CmP" secondAttribute="trailing" constant="32" id="ags-LT-en7"/>
                                     <constraint firstAttribute="trailing" secondItem="L4c-CG-s8h" secondAttribute="trailing" constant="32" id="bqm-iS-elH"/>
                                     <constraint firstItem="gzL-97-pre" firstAttribute="leading" secondItem="MLo-rV-VHd" secondAttribute="leading" constant="32" id="dIw-bb-IK2"/>
@@ -620,7 +634,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qQd-Fv-0GT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1036" y="-204"/>
+            <point key="canvasLocation" x="1000" y="-173"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T8n-Vl-Rkl">
@@ -640,7 +654,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hwr-uF-ofG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-265" y="-204"/>
+            <point key="canvasLocation" x="-335" y="-204"/>
         </scene>
     </scenes>
 </document>

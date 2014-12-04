@@ -51,15 +51,12 @@
     [self updateFrameDesign:self.useCaseButton];
     
     self.useCaseButton.titleLabel.text = self.useCase;
-    
 }
 
 - (void) updateFrameDesign:(UIView*)button {
-    
     button.layer.cornerRadius = 5.f;
     button.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     button.layer.borderWidth = 1.f;
-    
 }
 
 
@@ -69,9 +66,7 @@
 }
 
 - (IBAction)unregisterAPI:(id)sender {
-    
     [self.navigationController popToRootViewControllerAnimated:YES];
-
 }
 
 
@@ -148,7 +143,12 @@
     
     self.activityPlane.hidden = FALSE;
     
-    [[PLVInAppClient sharedInstance] getUserToken:self.emailTextField.text withCompletion:^(NSDictionary* result, NSError* error){
+    PLVPayInstrumentPAYPAL* paypal = [[PLVPayInstrumentPAYPAL alloc] init];
+    
+    paypal.authToken = @"kjgsfkjsdfjksdfjkgsdjkfgsdjkg";
+    
+    
+    [[PLVInAppClient sharedInstance] createUserToken:self.emailTextField.text withPaymentInstrument:paypal useCase:Nil andCompletion:^(NSDictionary* result, NSError* error){
         
         self.activityPlane.hidden = TRUE;
         
@@ -181,10 +181,7 @@
                     }
                 }
             }
-            
         }
-        
-        
     }];
 }
 

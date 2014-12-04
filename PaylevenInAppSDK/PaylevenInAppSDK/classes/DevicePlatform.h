@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIDevice (Platform)
 
-@property (nonatomic, strong, readonly) NSString *platform;
-@property (nonatomic, strong, readonly) NSString *platformString;
+@interface DevicePlatform : NSObject
+
++ (NSString *)platformString;
 
 @end

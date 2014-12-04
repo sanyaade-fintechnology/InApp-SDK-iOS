@@ -6,7 +6,11 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
+
+@import Foundation;
+
 #import "PLVInAppClientTypes.h"
+
 
 @interface PLVPaymentInstrument (Serialization)
 

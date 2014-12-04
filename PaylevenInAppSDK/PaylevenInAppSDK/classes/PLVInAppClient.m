@@ -14,6 +14,8 @@
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppErrors.h"
 #import "PLVInAppClientTypes+Validation.h"
+#import "PLVInAppClientTypes+Serialization.h"
+#import "DevicePlatform.h"
 
 #define kUserTokenKey @"userToken"
 
@@ -22,6 +24,7 @@
 @property (strong) NSString* apiKey;
 @property (strong) NSString* bundleID;
 @property (strong) NSError* lastError;
+
 
 /** Serial operation queue. */
 @property (nonatomic, strong) NSOperationQueue *queue;
@@ -64,6 +67,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     self.apiKey = apiKey;
 }
 
+/**
+ *  registerWithAPIKey:andSpecificBaseServiceURL:
+ *
+ *  @param apiKey your API Key, and register specific baseServiceURL
+ */
+
 - (void) registerWithAPIKey:(NSString*)apiKey andSpecificBaseServiceURL:(NSString*)serviceURLString {
     
     assert(apiKey);
@@ -81,7 +90,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     [self getUserToken:emailAddress withCompletion:^(NSDictionary* response, NSError* error) {
     
         if ([response objectForKey:kUserTokenKey] && error == noErr) {
-            [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:Nil];
+            
+            [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:^(NSDictionary* response, NSError* error) {
+                
+                
+                
+            }];
         }
         
         if (completionHandler != Nil) {

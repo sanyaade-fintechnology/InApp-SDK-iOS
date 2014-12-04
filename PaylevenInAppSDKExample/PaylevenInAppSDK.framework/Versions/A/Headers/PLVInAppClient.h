@@ -30,17 +30,9 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 /**
  *  registerWithAPIKey:
  *
- *  @param apiKey your API Key, and register specific baseServiceURL
- */
-- (void) registerWithAPIKey:(NSString*)apiKey andSpecificBaseServiceURL:(NSString*)serviceURLString;
-
-/**
- *  registerWithAPIKey:
- *
  *  @param apiKey your API Key
  */
 - (void) registerWithAPIKey:(NSString*)apiKey ;
-
 
 /**
  *  getUsertoken
@@ -50,8 +42,6 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  */
 
 - (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
-
-
 
 /**
  *  createUserToken:
@@ -114,6 +104,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param useCase           useCase to remove from
  *  @param completionHandler completionHandler
  */
+
 - (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 @end

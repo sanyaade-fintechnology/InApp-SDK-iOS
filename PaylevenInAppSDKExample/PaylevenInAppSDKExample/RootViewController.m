@@ -108,9 +108,7 @@
 
 
 - (IBAction) setAPIKey:(id)sender {
-    
-    [[PLVInAppClient sharedInstance] registerWithAPIKey:self.apiKeyTextField.text andSpecificBaseServiceURL: self.savedBEIP];
-    
+    [[PLVInAppClient sharedInstance] registerWithAPIKey:self.apiKeyTextField.text];
 }
 
 
@@ -119,8 +117,8 @@
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsBEIPKey] isKindOfClass:[NSString class]]) {
         
         self.savedBEIP = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsBEIPKey];
-    
     }
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

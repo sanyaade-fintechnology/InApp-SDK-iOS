@@ -57,6 +57,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F1FDEE21A2E1E4D0003280D /* UseCaseTable */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = UseCaseTable;
+			sourceTree = "<group>";
+		};
 		9F44485B1A10BAFC00B949F5 /* add Pi */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +101,7 @@
 		9FA5CB8819F5270700FCB314 /* PaylevenInAppSDKExample */ = {
 			isa = PBXGroup;
 			children = (
+				9F1FDEE21A2E1E4D0003280D /* UseCaseTable */,
 				9F44485B1A10BAFC00B949F5 /* add Pi */,
 				9FBE52AA1A0D05C50030E165 /* Pi Table */,
 				9F4F807A19F536CC0008CBBE /* framework */,

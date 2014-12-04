@@ -10,11 +10,20 @@
 
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppErrors.h"
-#import "PLVInAppClientTypes.h"
+#import "PLVInAppClientTypes+Validation.h"
 #import "PLVInAppClientTypes+Serialization.h"
 #import "OrderedDictionary.h"
 
-#define ccPANNumberMinLength 9
+
+
+
+@implementation Dummy3Class
+
+
+@end
+
+
+#define ccPANNumberMinLength 12
 #define ccPANNumberMaxLength 21
 
 
@@ -132,7 +141,7 @@
     }
     
     if (![self luhnCheck:self.pan]) {
-//        return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
+        return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
     }
     
     if (![self containsOnlyDigits:self.pan]) {

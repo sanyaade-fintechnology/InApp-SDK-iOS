@@ -17,7 +17,7 @@
 #import "OrderedDictionary.h"
 #import "PLVRequestPersistManager.h"
 #import <CommonCrypto/CommonCrypto.h>
-#import "UIDevice+Platform.h"
+#import "DevicePlatform.h"
 
 #define useLocalEndpoint 1
 #define usemacMiniEndpoint 0
@@ -63,7 +63,6 @@ static NSString * const PLVInAppClientAPIHost = @"http://localhost/staging/api";
 /** macMini in office endpoint. */
 
 static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/staging/api";
-
 
 #elif useOtherEndpoint
 
@@ -696,7 +695,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [request setValue:PLVInAppSDKVersion forHTTPHeaderField:apiHeaderKeyXSDKVersion];
 
     [request setValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:apiHeaderKeyXOSVersion];
-    [request setValue:[[UIDevice currentDevice] platformString] forHTTPHeaderField:apiHeaderKeyXDeviceType];
+    [request setValue:[DevicePlatform platformString] forHTTPHeaderField:apiHeaderKeyXDeviceType];
     
     [request setValue:@"baseAuthToken" forHTTPHeaderField:apiHeaderKeyXAuthType];
     

@@ -30,13 +30,6 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 /**
  *  registerWithAPIKey:
  *
- *  @param apiKey your API Key, and register specific baseServiceURL
- */
-- (void) registerWithAPIKey:(NSString*)apiKey andSpecificBaseServiceURL:(NSString*)serviceURLString;
-
-/**
- *  registerWithAPIKey:
- *
  *  @param apiKey your API Key
  */
 - (void) registerWithAPIKey:(NSString*)apiKey ;

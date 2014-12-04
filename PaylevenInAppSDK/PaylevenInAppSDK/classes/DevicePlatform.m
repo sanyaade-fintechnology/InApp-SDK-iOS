@@ -6,13 +6,13 @@
 //  Copyright (c) 2012 payleven Holding GmbH. All rights reserved.
 //
 
-#import "UIDevice+Platform.h"
+#import "DevicePlatform.h"
 #include <sys/types.h>
 #include <sys/sysctl.h>
 
-@implementation UIDevice (Platform)
+@implementation DevicePlatform
 
-- (NSString *)platform
++ (NSString *)platformString
 {
     size_t size;
     sysctlbyname("hw.machine", NULL, &size, NULL, 0);
@@ -20,12 +20,7 @@
     sysctlbyname("hw.machine", machine, &size, NULL, 0);
     NSString *platform = [NSString stringWithUTF8String:machine];
     free(machine);
-    return platform;
-}
-
-- (NSString *)platformString
-{
-    NSString *platform = [self platform];
+    
     if ([platform isEqualToString:@"iPhone3,1"])    return @"iPhone 4";
     if ([platform isEqualToString:@"iPhone3,2"])    return @"iPhone 4";
     if ([platform isEqualToString:@"iPhone3,3"])    return @"iPhone 4 (CDMA)";

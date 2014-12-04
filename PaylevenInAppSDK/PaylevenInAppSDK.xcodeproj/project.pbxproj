@@ -58,8 +58,8 @@
 		9FC8B2981A1B978100DD3370 /* PLVInAppErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */; };
 		9FD583FC1A14B6C000E9B83E /* OrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */; };
 		9FD583FD1A14B6C000E9B83E /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD583FB1A14B6C000E9B83E /* OrderedDictionary.m */; };
-		9FD7E7CA1A2912CB00A5B166 /* UIDevice+Platform.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FD7E7C81A2912CB00A5B166 /* UIDevice+Platform.h */; };
-		9FD7E7CB1A2912CB00A5B166 /* UIDevice+Platform.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD7E7C91A2912CB00A5B166 /* UIDevice+Platform.m */; };
+		9FD7E7CA1A2912CB00A5B166 /* DevicePlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FD7E7C81A2912CB00A5B166 /* DevicePlatform.h */; };
+		9FD7E7CB1A2912CB00A5B166 /* DevicePlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FD7E7C91A2912CB00A5B166 /* DevicePlatform.m */; };
 		9FF6E64D1A0239F300C12AAA /* PLVInAppClientTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FF6E64B1A0239F300C12AAA /* PLVInAppClientTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FF6E64E1A0239F300C12AAA /* PLVInAppClientTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FF6E64C1A0239F300C12AAA /* PLVInAppClientTypes.m */; };
 /* End PBXBuildFile section */
@@ -117,8 +117,8 @@
 		9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppErrors.m; path = PaylevenInAppSDK/classes/PLVInAppErrors.m; sourceTree = "<group>"; };
 		9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrderedDictionary.h; path = PaylevenInAppSDK/classes/OrderedDictionary.h; sourceTree = "<group>"; };
 		9FD583FB1A14B6C000E9B83E /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OrderedDictionary.m; path = PaylevenInAppSDK/classes/OrderedDictionary.m; sourceTree = "<group>"; };
-		9FD7E7C81A2912CB00A5B166 /* UIDevice+Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIDevice+Platform.h"; path = "PaylevenInAppSDK/classes/UIDevice+Platform.h"; sourceTree = "<group>"; };
-		9FD7E7C91A2912CB00A5B166 /* UIDevice+Platform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIDevice+Platform.m"; path = "PaylevenInAppSDK/classes/UIDevice+Platform.m"; sourceTree = "<group>"; };
+		9FD7E7C81A2912CB00A5B166 /* DevicePlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DevicePlatform.h; path = PaylevenInAppSDK/classes/DevicePlatform.h; sourceTree = "<group>"; };
+		9FD7E7C91A2912CB00A5B166 /* DevicePlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DevicePlatform.m; path = PaylevenInAppSDK/classes/DevicePlatform.m; sourceTree = "<group>"; };
 		9FF6E64B1A0239F300C12AAA /* PLVInAppClientTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppClientTypes.h; path = PaylevenInAppSDK/publicHeaders/PLVInAppClientTypes.h; sourceTree = "<group>"; };
 		9FF6E64C1A0239F300C12AAA /* PLVInAppClientTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppClientTypes.m; path = PaylevenInAppSDK/classes/PLVInAppClientTypes.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,8 +144,8 @@
 		9F6552B519F6874F003D07A5 /* APIClient */ = {
 			isa = PBXGroup;
 			children = (
-				9F30869D1A2351E3000D2AD5 /* PLVInAppAPIClient.m */,
 				9F6552B619F6876A003D07A5 /* PLVInAppAPIClient.h */,
+				9F30869D1A2351E3000D2AD5 /* PLVInAppAPIClient.m */,
 				9F6552B819F6876A003D07A5 /* PLVServerCertificate.h */,
 				9F6552B919F6876A003D07A5 /* PLVServerCertificate.m */,
 				9F6552BA19F6876A003D07A5 /* PLVServerCertificateTests.m */,
@@ -234,8 +234,8 @@
 		9FBC2EFF1A1F4B79007D1341 /* Utilis */ = {
 			isa = PBXGroup;
 			children = (
-				9FD7E7C81A2912CB00A5B166 /* UIDevice+Platform.h */,
-				9FD7E7C91A2912CB00A5B166 /* UIDevice+Platform.m */,
+				9FD7E7C81A2912CB00A5B166 /* DevicePlatform.h */,
+				9FD7E7C91A2912CB00A5B166 /* DevicePlatform.m */,
 				9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */,
 				9FD583FB1A14B6C000E9B83E /* OrderedDictionary.m */,
 				9FA5CBC619F527C600FCB314 /* singletonHelper.h */,
@@ -255,7 +255,7 @@
 				9F6552C019F6876A003D07A5 /* PLVServerCertificate.h in Headers */,
 				9F7CFC881A079A950047203A /* PLVInAppClientTypes+Serialization.h in Headers */,
 				9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */,
-				9FD7E7CA1A2912CB00A5B166 /* UIDevice+Platform.h in Headers */,
+				9FD7E7CA1A2912CB00A5B166 /* DevicePlatform.h in Headers */,
 				9FF6E64D1A0239F300C12AAA /* PLVInAppClientTypes.h in Headers */,
 				9FC8B2931A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h in Headers */,
 				9FA6C7CB1A1E31CE0062326A /* PLVRequestPersistManager.h in Headers */,
@@ -434,7 +434,7 @@
 				9F7CFC891A079A950047203A /* PLVInAppClientTypes+Serialization.m in Sources */,
 				9F30869F1A2351E3000D2AD5 /* PLVInAppAPIClient.m in Sources */,
 				9FF6E64E1A0239F300C12AAA /* PLVInAppClientTypes.m in Sources */,
-				9FD7E7CB1A2912CB00A5B166 /* UIDevice+Platform.m in Sources */,
+				9FD7E7CB1A2912CB00A5B166 /* DevicePlatform.m in Sources */,
 				9FA5CBC819F527C600FCB314 /* PLVInAppSDKConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,7 +565,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = include/$PROJECT_NAME;
 				SKIP_INSTALL = YES;
@@ -577,7 +580,10 @@
 		9FA5CABC19F5189C00FCB314 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = include/$PROJECT_NAME;
 				SKIP_INSTALL = YES;
@@ -635,6 +641,7 @@
 				9F76AB991A2DCDE00092338F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		9FA5CAA419F5189C00FCB314 /* Build configuration list for PBXProject "PaylevenInAppSDK" */ = {
 			isa = XCConfigurationList;
