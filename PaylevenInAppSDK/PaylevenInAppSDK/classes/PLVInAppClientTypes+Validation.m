@@ -18,16 +18,15 @@
 #define ccPANNumberMaxLength 21
 
 
-#define ddAccountNumberMinLength 5
-#define ddAccountNumberMaxLength 30
+#define ddAccountNumberMinLength 8
+#define ddAccountNumberMaxLength 10
 
 
-#define ddRoutingNumberMinLength 5
-#define ddRoutingNumberMaxLength 30
+#define ddRoutingNumberMinLength 8
+#define ddRoutingNumberMaxLength 8
 
-#define sepaIBANNumberMinLength 5
-#define sepaIBANNumberMaxLength 30
-
+#define sepaIBANNumberMinLength 10
+#define sepaIBANNumberMaxLength 34
 
 #define sepaBICNumberMinLength 5
 #define sepaBICNumberMaxLength 30
@@ -230,8 +229,6 @@
     }
     
     
-    
-    
     if (self.routingNumber == Nil || self.routingNumber.length == 0) {
         return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
     }
@@ -259,6 +256,11 @@
 
 - (NSError*)   validateOnCreation {
     
+    // replace whitespaces;
+    
+    NSArray* parts = [self.iban componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.iban = [parts componentsJoinedByString:@""];
+    
     if (self.iban == Nil || self.iban.length == 0) {
         return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     }
@@ -271,11 +273,99 @@
         return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
     }
     
-    if (![self containsOnlyDigits:[self.iban substringFromIndex:2]]) {
+    if (![self containsOnlyDigits:[self.iban substringWithRange:NSMakeRange(2, 2)]]) {
         return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
     }
+    
+    if (![self containsOnlyDigits:[self.iban substringFromIndex:8]]) {
+        return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
+    }
+    
+    [self  checkIBAN:self.iban];
 
     return Nil;
+}
+
+
+- (BOOL) checkIBAN:(NSString*)ibanInput {
+    
+    NSMutableString* iban = [NSMutableString stringWithString:[ibanInput substringFromIndex:4]];
+    
+    //Move the four initial characters to the end of the string
+    NSString* countryPrefix = [[ibanInput substringToIndex:2] lowercaseString];
+    
+    //Replace the letters in the string with digits, expanding the string as necessary,
+    // such that A or a = 10, B or b = 11, and Z or z = 35.
+    // Each alphabetic character is therefore replaced by 2 digits
+    
+    const char* countryCode = [countryPrefix cStringUsingEncoding:NSASCIIStringEncoding];
+    
+    unsigned short digitValue = 0;
+    
+    for (int index = 0; index < 2; index++) {
+        
+        digitValue = (unsigned short) countryCode[index];
+        
+        digitValue = digitValue - 87;
+        
+        if (digitValue < 10 || digitValue > 35) {
+            // invalid digits
+            return FALSE;
+        }
+        
+        [iban appendString:[[NSNumber numberWithShort:digitValue] stringValue]];
+    }
+    
+    if (![self containsOnlyDigits:[iban substringWithRange:NSMakeRange(0, 4)]]) {
+        
+        NSString* specific = [[iban substringWithRange:NSMakeRange(0, 4)] lowercaseString];
+        
+        iban = [NSMutableString stringWithString:[iban substringFromIndex:4]];
+        
+        const char* specificCode = [specific cStringUsingEncoding:NSASCIIStringEncoding];
+        
+        unsigned short digitValue = 0;
+        
+        for (int index = 3; index >= 0; index--) {
+            
+            digitValue = (unsigned short) specificCode[index];
+            
+            digitValue = digitValue - 87;
+            
+            if (digitValue < 10 || digitValue > 35) {
+                // invalid digits
+                return FALSE;
+            }
+
+            [iban  insertString:[[NSNumber numberWithShort:digitValue] stringValue] atIndex:0];
+        }
+    }
+    
+    [iban appendString:[ibanInput substringWithRange:NSMakeRange(2, 2)]];
+    
+    NSDecimalNumber* ibanDecimalNumber = [NSDecimalNumber decimalNumberWithString:iban];
+    
+    NSDecimalNumber* mod = [ibanDecimalNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"97"] withBehavior:(id <NSDecimalNumberBehaviors>)self];
+    
+    NSDecimalNumber* reminder = [ibanDecimalNumber decimalNumberBySubtracting:[[NSDecimalNumber decimalNumberWithString:@"97"] decimalNumberByMultiplyingBy:mod]];
+    
+    return 1 == reminder.intValue;
+}
+
+- (NSRoundingMode)roundingMode {
+    
+    return NSRoundDown;
+}
+
+- (short)scale {
+    
+    return 0;
+}
+// The scale could return NO_SCALE for no defined scale.
+
+- (NSDecimalNumber *)exceptionDuringOperation:(SEL)operation error:(NSCalculationError)error leftOperand:(NSDecimalNumber *)leftOperand rightOperand:(NSDecimalNumber *)rightOperand {
+    
+    return [NSDecimalNumber decimalNumberWithString:@"0"];
 }
 
 
