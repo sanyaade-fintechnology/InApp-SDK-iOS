@@ -12,12 +12,6 @@
 #import "PLVInAppClientTypes.h"
 
 
-@interface Dummy3Class : NSObject
-
-@end
-
-
-
 @interface PLVPaymentInstrument (Validation)
 
 - (NSError*) validateOnCreation;

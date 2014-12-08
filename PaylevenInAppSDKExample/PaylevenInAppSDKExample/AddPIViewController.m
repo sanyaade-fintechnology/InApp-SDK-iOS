@@ -11,8 +11,6 @@
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
-
-#define selectUseCaseActionSheet 456
 #define selectPItoAddActionSheet 666
 
 #define textFieldTagOffSet 1000
@@ -45,7 +43,6 @@
     self = [super init];
     if (self) {
         _piTypeToCreate = PLVPITypeCC;
-        _useCase = @"DEFAULT";
     }
     return self;
 }
@@ -67,7 +64,6 @@
     self.useCaseLabel.text = [NSString stringWithFormat:@"add PI to useCase: %@",self.useCase];
 
 }
-
 
 - (void) viewDidAppear:(BOOL)animated {
     
@@ -106,10 +102,19 @@
     button.layer.borderWidth = 1.f;
     
     [self.piTypeButton setTitle:self.useCase forState:UIControlStateNormal];
-    
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    
+    if (actionSheet.tag == selectUseCaseActionSheet) {
+        
+        [super actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
+        
+        self.useCaseLabel.text = [NSString stringWithFormat:@"add PI to useCase: %@",self.useCase];
+        
+        return;
+    }
     
     NSString* currentType = self.piTypeToCreate;
     

@@ -14,15 +14,6 @@
 #import "PLVInAppClientTypes+Serialization.h"
 #import "OrderedDictionary.h"
 
-
-
-
-@implementation Dummy3Class
-
-
-@end
-
-
 #define ccPANNumberMinLength 12
 #define ccPANNumberMaxLength 21
 

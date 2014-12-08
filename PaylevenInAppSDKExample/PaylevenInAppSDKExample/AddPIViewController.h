@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UseCaseViewController.h"
 
-@interface AddPIViewController : UIViewController <UIActionSheetDelegate>
+@interface AddPIViewController : UseCaseViewController
 
 @property (strong) NSString* piTypeToCreate;
 @property (strong) NSString* userToken;

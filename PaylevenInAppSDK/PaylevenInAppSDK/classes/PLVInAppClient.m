@@ -104,6 +104,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 
 - (void) createUserToken:(NSString*)emailAddress withPaymentInstrument:(PLVPaymentInstrument*)payInstrument useCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
+    // run validation check
+    if (![self validatePaymentInstrument:payInstrument onCreation:TRUE withCompletion:completionHandler]) { return; }
+    
     [self getUserToken:emailAddress withCompletion:^(NSDictionary* response, NSError* error) {
     
         if ([response objectForKey:kUserTokenKey] && error == noErr) {
@@ -278,7 +281,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     return FALSE;
 }
-
 
 
 /**

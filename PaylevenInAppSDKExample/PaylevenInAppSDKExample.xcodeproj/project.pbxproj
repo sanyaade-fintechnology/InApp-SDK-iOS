@@ -19,6 +19,7 @@
 		9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9E19F5270700FCB314 /* LaunchScreen.xib */; };
 		9FA776D41A35A15600F7AFBE /* AddUserTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA776D21A35A15600F7AFBE /* AddUserTokenViewController.m */; };
 		9FA776D51A35A15600F7AFBE /* AddUserTokenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA776D31A35A15600F7AFBE /* AddUserTokenViewController.xib */; };
+		9FA776D81A35F2DE00F7AFBE /* UseCaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA776D71A35F2DE00F7AFBE /* UseCaseViewController.m */; };
 		9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */; };
 		9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */; };
 		9FBE52A91A0D058F0030E165 /* PayInstrumentsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A81A0D058F0030E165 /* PayInstrumentsTableCell.xib */; };
@@ -44,6 +45,8 @@
 		9FA776D11A35A15600F7AFBE /* AddUserTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUserTokenViewController.h; sourceTree = "<group>"; };
 		9FA776D21A35A15600F7AFBE /* AddUserTokenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUserTokenViewController.m; sourceTree = "<group>"; };
 		9FA776D31A35A15600F7AFBE /* AddUserTokenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddUserTokenViewController.xib; sourceTree = "<group>"; };
+		9FA776D61A35F2DE00F7AFBE /* UseCaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseCaseViewController.h; sourceTree = "<group>"; };
+		9FA776D71A35F2DE00F7AFBE /* UseCaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseCaseViewController.m; sourceTree = "<group>"; };
 		9FBE52A31A0CFCF70030E165 /* PayInstTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayInstTableViewController.h; sourceTree = "<group>"; };
 		9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayInstTableViewController.m; sourceTree = "<group>"; };
 		9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayInstTableViewController.xib; sourceTree = "<group>"; };
@@ -121,6 +124,8 @@
 				9FA5CB9C19F5270700FCB314 /* Images.xcassets */,
 				9FA5CB9E19F5270700FCB314 /* LaunchScreen.xib */,
 				9FA5CB8919F5270700FCB314 /* Supporting Files */,
+				9FA776D61A35F2DE00F7AFBE /* UseCaseViewController.h */,
+				9FA776D71A35F2DE00F7AFBE /* UseCaseViewController.m */,
 			);
 			path = PaylevenInAppSDKExample;
 			sourceTree = "<group>";
@@ -250,6 +255,7 @@
 			files = (
 				9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */,
 				9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */,
+				9FA776D81A35F2DE00F7AFBE /* UseCaseViewController.m in Sources */,
 				9FA5CB8C19F5270700FCB314 /* main.m in Sources */,
 				9FA776D41A35A15600F7AFBE /* AddUserTokenViewController.m in Sources */,
 				9F44485F1A10BB2600B949F5 /* AddPIViewController.m in Sources */,
