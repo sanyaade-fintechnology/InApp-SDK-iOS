@@ -10,10 +10,8 @@
 
 @interface RootViewController : UIViewController <UIActionSheetDelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *bundleIDLabel;
-@property (weak, nonatomic) IBOutlet UITextField *apiKeyTextField;
-@property (weak, nonatomic) IBOutlet UIButton *registerAPIKeyButton;
+@property (nonatomic) BOOL doNotWind;
+
 
 @end
 

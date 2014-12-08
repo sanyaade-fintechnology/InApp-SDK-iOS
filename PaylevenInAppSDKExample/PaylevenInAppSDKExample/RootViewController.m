@@ -13,20 +13,36 @@
 #include <arpa/inet.h>
 
 #import "RootViewController.h"
+#import "AddUserTokenViewController.h"
+#import "DetailViewController.h"
 
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 
-#define kUserDefaultsBEIPKey @"backEndIP"
+#define kUserDefaultsUserTokenPKey @"userToken"
+#define kUserDefaultsMailAddressKey @"mailAddress"
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
 @interface RootViewController()
 
-@property (strong) NSString* savedBEIP;
 @property (weak) IBOutlet UITextField* backEndIPTextField;
-@property (weak) IBOutlet UIButton* resetButton;
+@property (weak) IBOutlet UIButton* resetAPIClientButton;
+@property (weak) IBOutlet UIButton* registerAPIClientButton;
 @property (weak) IBOutlet UIView* setBEipPanel;
+
+@property (weak) IBOutlet UITextField* userTokenTextField;
+@property (weak) IBOutlet UITextField* emailTextField;
+
+@property (weak, nonatomic) IBOutlet UILabel *versionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bundleIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel *apiKeyLabel;
+@property (strong) NSPredicate *emailTest;
+
+@property (strong) NSString *userToken;
+@property (strong) NSString *emailAddress;
+
+@property (weak) IBOutlet DetailViewController* detailVC;
 
 @end
 
@@ -38,112 +54,159 @@
     
     [super viewDidLoad];
     
-    self.savedBEIP = Nil;
-    
-    [self loadBackEndIP];
-    
-    if (self.savedBEIP != Nil) {
-        self.backEndIPTextField.text = self.savedBEIP;
-    }
+    self.doNotWind = FALSE;
     
     self.bundleIDLabel.text = [NSString stringWithFormat:@"%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey]];
     
     self.versionLabel.text = [NSString stringWithFormat:@"Version: %@ (Build: %@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
     
-    self.registerAPIKeyButton.layer.cornerRadius = 5.f;
-    self.registerAPIKeyButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    self.registerAPIKeyButton.layer.borderWidth = 1.f;
+    self.registerAPIClientButton.layer.cornerRadius = 5.f;
+    self.registerAPIClientButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    self.registerAPIClientButton.layer.borderWidth = 1.f;
     
-//    if ([[self getIPAddress] hasPrefix:@"10.15.100."]) {
-//        
-//        self.setBEipPanel.hidden = TRUE;
-//    } else {
-//        self.setBEipPanel.hidden = FALSE;
-//    }
+    self.resetAPIClientButton.layer.cornerRadius = 5.f;
+    self.resetAPIClientButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    self.resetAPIClientButton.layer.borderWidth = 1.f;
+    
+    self.apiKeyLabel.text = @"API Key: 4840bbc6429dacd56bfa98390ddf43";
+    
+    BOOL stricterFilter = NO;
+    NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
+    NSString *laxString = @".+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    self.emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    
+    [self loadSettings];
+
+}
+
+
+- (void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+    
+    [self loadSettings];
     
 }
 
-- (IBAction)longPress:(id)sender {
 
-    self.savedBEIP = Nil;
-    self.backEndIPTextField.text = @"Default";
-    self.apiKeyTextField.text = @"4840bbc6429dacd56bfa98390ddf43";
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSLog(@"source VC %p",segue.sourceViewController);
+    NSLog(@"destination VC %p",segue.destinationViewController);
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsBEIPKey];
+    if ([[segue identifier] isEqualToString:@"showDetails"])
+    {
+        self.detailVC = (DetailViewController*)[segue destinationViewController] ;
+        
+        self.detailVC.userToken = self.userToken;
+        self.detailVC.emailAddress = self.emailAddress;
+        self.detailVC.rootVC = self;
+    }
+}
+
+- (IBAction)restPress:(id)sender {
+
+    self.userTokenTextField.text = @"";
+    self.emailTextField.text = @"";
+    
+    self.resetAPIClientButton.enabled = FALSE;
+    self.registerAPIClientButton.enabled = FALSE;
+    self.resetAPIClientButton.alpha = .50;
+    self.registerAPIClientButton.alpha = .50;
+    
+    self.userToken = Nil;
+    self.emailAddress = Nil;
+    
+    [self.registerAPIClientButton setTitle:@"Register User"  forState:UIControlStateNormal];
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsUserTokenPKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsMailAddressKey];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 
 }
 
-- (IBAction)showSelectAPIKeyActionSheet:(id)sender {
+- (IBAction) startRegisterUserToken:(id)sender {
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose the API Key"
-                                                             delegate:self
-                                                    cancelButtonTitle:(isIPAD ? Nil : @"Cancel")
-                                               destructiveButtonTitle:Nil
-                                                    otherButtonTitles:@"nAj6Rensh2Ew3Oc4Ic2gig1F", @"4840bbc6429dacd56bfa98390ddf43", @"462123efc681534108cf2b34b4f8fb", nil];
+    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"4840bbc6429dacd56bfa98390ddf43"];
     
-    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
-    
-}
-
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    switch (buttonIndex) {
-        case 0:
-            self.apiKeyTextField.text = @"nAj6Rensh2Ew3Oc4Ic2gig1F";
-            break;
-        case 1:
-            self.apiKeyTextField.text = @"4840bbc6429dacd56bfa98390ddf43";
-            break;
-        case 2:
-            self.apiKeyTextField.text = @"462123efc681534108cf2b34b4f8fb";
-            break;
-        default:
-            break;
-    }
-    
-}
-
-
-- (IBAction) setAPIKey:(id)sender {
-    [[PLVInAppClient sharedInstance] registerWithAPIKey:self.apiKeyTextField.text];
-}
-
-
-- (void) loadBackEndIP {
-    
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsBEIPKey] isKindOfClass:[NSString class]]) {
+    if (self.userToken != Nil) {
         
-        self.savedBEIP = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsBEIPKey];
+        [self performSegueWithIdentifier:@"showDetails" sender:self];
+        
+    } else {
+    
+        AddUserTokenViewController* addPiForUserTokenVC = [[AddUserTokenViewController alloc] initWithNibName:@"AddUserTokenViewController" bundle:Nil];
+        
+        addPiForUserTokenVC.piTypeToCreate = @"CC";
+        addPiForUserTokenVC.useCase = @"DEFAULT";
+        addPiForUserTokenVC.emailAddress = self.emailTextField.text;
+        
+        [self.navigationController pushViewController:addPiForUserTokenVC animated:YES];
+        
+    }
+}
+
+- (void) loadSettings {
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsUserTokenPKey] isKindOfClass:[NSString class]]) {
+        
+        self.resetAPIClientButton.enabled = TRUE;
+        self.registerAPIClientButton.enabled = TRUE;
+        self.resetAPIClientButton.alpha = 1.0;
+        self.registerAPIClientButton.alpha = 1.0;
+        
+        self.userToken = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsUserTokenPKey];
+        self.emailAddress = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsMailAddressKey];
+        
+        self.userTokenTextField.text = self.userToken;
+        self.emailTextField.text = self.emailAddress;
+        
+        [self.registerAPIClientButton setTitle:@"Edit PIs"  forState:UIControlStateNormal];
+        
+    } else {
+        
+        self.userTokenTextField.text = @"";
+        self.emailTextField.text = @"";
+        
+        self.userToken = Nil;
+        self.emailAddress = Nil;
+        
+        self.resetAPIClientButton.enabled = FALSE;
+        self.registerAPIClientButton.enabled = FALSE;
+        self.resetAPIClientButton.alpha = .50;
+        self.registerAPIClientButton.alpha = .50;
+        
+        [self.registerAPIClientButton setTitle:@"Register User"  forState:UIControlStateNormal];
     }
     
 }
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    NSString* replacedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    BOOL validEmail = [self.emailTest evaluateWithObject:replacedString];
+    
+    if (validEmail) {
+        self.resetAPIClientButton.enabled = TRUE;
+        self.registerAPIClientButton.enabled = TRUE;
+        self.resetAPIClientButton.alpha = 1.0;
+        self.registerAPIClientButton.alpha = 1.0;
+    } else {
+        self.resetAPIClientButton.enabled = FALSE;
+        self.registerAPIClientButton.enabled = FALSE;
+        self.resetAPIClientButton.alpha = .50;
+        self.registerAPIClientButton.alpha = .50;
+    }
+    
+    return TRUE;
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    
-    if (textField.text.length > 3) {
-        
-        self.savedBEIP = textField.text;
-        
-        if (![self.savedBEIP hasPrefix:@"http://"]) {
-            self.savedBEIP = [NSString stringWithFormat:@"http://%@",self.savedBEIP];
-        }
-        
-        
-        if (![self.savedBEIP hasSuffix:@"/staging/api"]) {
-            self.savedBEIP = [NSString stringWithFormat:@"%@/staging/api",self.savedBEIP];
-        }
-        
-        
-        textField.text = self.savedBEIP;
-        
-        [[NSUserDefaults standardUserDefaults] setObject:self.savedBEIP forKey:kUserDefaultsBEIPKey];
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-    }
     
     [textField resignFirstResponder];
     
@@ -151,35 +214,5 @@
 }
 
 
-- (NSString *)getIPAddress {
-    
-    NSString *address = @"error";
-    struct ifaddrs *interfaces = NULL;
-    struct ifaddrs *temp_addr = NULL;
-    int success = 0;
-    // retrieve the current interfaces - returns 0 on success
-    success = getifaddrs(&interfaces);
-    if (success == 0) {
-        // Loop through linked list of interfaces
-        temp_addr = interfaces;
-        while(temp_addr != NULL) {
-            if(temp_addr->ifa_addr->sa_family == AF_INET) {
-                // Check if interface is en0 which is the wifi connection on the iPhone
-                if([[NSString stringWithUTF8String:temp_addr->ifa_name] isEqualToString:@"en0"]) {
-                    // Get NSString from C String
-                    address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
-                    
-                }
-                
-            }
-            
-            temp_addr = temp_addr->ifa_next;
-        }
-    }
-    // Free memory
-    freeifaddrs(interfaces);
-    return address;
-    
-}
 
 @end

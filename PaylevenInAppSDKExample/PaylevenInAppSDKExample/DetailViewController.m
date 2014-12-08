@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
+#import "RootViewController.h"
 #import "DetailViewController.h"
 #import "PayInstTableViewController.h"
 #import "AddPIViewController.h"
@@ -20,17 +21,16 @@
 @interface DetailViewController ()
 
 
-@property (weak) IBOutlet UITextField* emailTextField;
 @property (weak) IBOutlet UIButton* getUserTokenButton;
-
 
 @property (weak) IBOutlet UIButton* listPIButton;
 @property (weak) IBOutlet UIButton* addPIButton;
 @property (weak) IBOutlet UIButton* backButton;
-@property (weak) IBOutlet UILabel* userTokenLabel;
 @property (weak) IBOutlet UIView* activityPlane;
 @property (weak) IBOutlet UIView* subPlane;
 @property (weak) IBOutlet UIButton* useCaseButton;
+@property (weak) IBOutlet UITextField* userTokenTextField;
+@property (weak) IBOutlet UITextField* emailTextField;
 
 @property (strong) NSString* useCase;
 
@@ -51,6 +51,11 @@
     [self updateFrameDesign:self.useCaseButton];
     
     self.useCaseButton.titleLabel.text = self.useCase;
+    
+    self.userTokenTextField.text = self.userToken;
+    self.emailTextField.text = self.emailAddress;
+    
+    self.subPlane.hidden = FALSE;
 }
 
 - (void) updateFrameDesign:(UIView*)button {
@@ -66,6 +71,9 @@
 }
 
 - (IBAction)unregisterAPI:(id)sender {
+    
+    self.rootVC.doNotWind = TRUE;
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -123,15 +131,6 @@
     }
 }
 
-- (IBAction)editEmailField:(id)sender {
-    
-    [self.emailTextField becomeFirstResponder];
-    
-    self.subPlane.hidden = TRUE;
-    self.userTokenLabel.text = @"";
-
-}
-
 -(BOOL) textFieldShouldReturn: (UITextField *) textField
 {
     [textField resignFirstResponder];
@@ -139,57 +138,58 @@
     return YES;
 }
 
-- (IBAction)getUserTokenAction:(id)sender {
-    
-    self.activityPlane.hidden = FALSE;
-    
-    PLVPayInstrumentPAYPAL* paypal = [[PLVPayInstrumentPAYPAL alloc] init];
-    
-    paypal.authToken = @"kjgsfkjsdfjksdfjkgsdjkfgsdjkg";
-    
-    
-    [[PLVInAppClient sharedInstance] createUserToken:self.emailTextField.text withPaymentInstrument:paypal useCase:Nil andCompletion:^(NSDictionary* result, NSError* error){
-        
-        self.activityPlane.hidden = TRUE;
-        
-        if (error != Nil) {
+//- (IBAction)getUserTokenAction:(id)sender {
+//    
+//    self.activityPlane.hidden = FALSE;
+//    
+//    PLVPayInstrumentPAYPAL* paypal = [[PLVPayInstrumentPAYPAL alloc] init];
+//    
+//    paypal.authToken = @"kjgsfkjsdfjksdfjkgsdjkfgsdjkg";
+//    
+//    
+//    [[PLVInAppClient sharedInstance] createUserToken:self.emailTextField.text withPaymentInstrument:paypal useCase:Nil andCompletion:^(NSDictionary* result, NSError* error){
+//        
+//        self.activityPlane.hidden = TRUE;
+//        
+//        if (error != Nil) {
+//
+//            NSString* errorMessage = error.localizedDescription;
+//            
+//            if (errorMessage == Nil) {
+//                errorMessage = [error.userInfo objectForKey:NSLocalizedDescriptionKey];
+//            }
+//            
+//            [self displayAlertViewWithMessage:errorMessage];
+//            
+//            self.subPlane.hidden = TRUE;
+//            
+//            self.userTokenLabel.text = @"";
+//            
+//        } else {
+//            
+//            if ([result isKindOfClass:[NSDictionary class]]) {
+//                
+//                if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+//                    
+//                    if ([result objectForKey:@"userToken"]) {
+//                        
+//                        self.subPlane.hidden = FALSE;
+//                        
+//                        self.userTokenLabel.text = [result objectForKey:@"userToken"];
+//                        
+//                    }
+//                }
+//            }
+//        }
+//    }];
+//}
 
-            NSString* errorMessage = error.localizedDescription;
-            
-            if (errorMessage == Nil) {
-                errorMessage = [error.userInfo objectForKey:NSLocalizedDescriptionKey];
-            }
-            
-            [self displayAlertViewWithMessage:errorMessage];
-            
-            self.subPlane.hidden = TRUE;
-            
-            self.userTokenLabel.text = @"";
-            
-        } else {
-            
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                
-                if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
-                    
-                    if ([result objectForKey:@"userToken"]) {
-                        
-                        self.subPlane.hidden = FALSE;
-                        
-                        self.userTokenLabel.text = [result objectForKey:@"userToken"];
-                        
-                    }
-                }
-            }
-        }
-    }];
-}
 
 - (IBAction)listPIs:(id)sender {
     
     self.activityPlane.hidden = FALSE;
     
-    [[PLVInAppClient sharedInstance] getPaymentInstrumentsList:self.userTokenLabel.text withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error){
+    [[PLVInAppClient sharedInstance] getPaymentInstrumentsList:self.userTokenTextField.text withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error){
         
         self.activityPlane.hidden = TRUE;
         
@@ -209,7 +209,7 @@
                         listUseCase = [result objectForKey:@"useCase"];
                     }
                     
-                    [listVC setPIArray:piListArray forUserToken:self.userTokenLabel.text andUseCase:listUseCase];
+                    [listVC setPIArray:piListArray forUserToken:self.userTokenTextField.text andUseCase:listUseCase];
                     
                     [self.navigationController pushViewController:listVC animated:YES];
                     
@@ -231,7 +231,7 @@
     
     addPiVC.piTypeToCreate = @"CC";
     addPiVC.useCase = self.useCase;
-    addPiVC.userToken = self.userTokenLabel.text;
+    addPiVC.userToken = self.userTokenTextField.text;
     
     [self.navigationController pushViewController:addPiVC animated:YES];
         
