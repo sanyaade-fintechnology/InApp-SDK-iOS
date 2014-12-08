@@ -19,8 +19,8 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import "DevicePlatform.h"
 
-#define useLocalEndpoint 1
-#define usemacMiniEndpoint 0
+#define useLocalEndpoint 0
+#define usemacMiniEndpoint 1
 #define useOtherEndpoint 0
 
 #define apiParameterKeyEmail @"email"
