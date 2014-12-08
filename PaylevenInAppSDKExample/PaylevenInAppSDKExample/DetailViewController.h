@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UseCaseViewController.h"
 
-@interface DetailViewController : UIViewController <UIActionSheetDelegate>
+@interface DetailViewController : UseCaseViewController
 
 @property (strong) RootViewController* rootVC;
 @property (strong) NSString* userToken;

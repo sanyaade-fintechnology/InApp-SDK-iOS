@@ -52,7 +52,7 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e21-0K-u9s">
                     <rect key="frame" x="0.0" y="127" width="600" height="409"/>
                 </scrollView>
-                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQn-93-pAl">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQn-93-pAl">
                     <rect key="frame" x="10" y="25" width="580" height="32"/>
                     <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -64,6 +64,9 @@
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="showUseCaseActionSheet:" destination="-1" eventType="touchUpInside" id="1LZ-ae-jez"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

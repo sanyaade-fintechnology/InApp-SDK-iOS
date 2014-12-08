@@ -11,8 +11,6 @@
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
-
-#define selectUseCaseActionSheet 456
 #define selectPItoAddActionSheet 666
 
 #define textFieldTagOffSet 1000
@@ -26,6 +24,8 @@
 
 #define kUserDefaultsUserTokenPKey @"userToken"
 #define kUserDefaultsMailAddressKey @"mailAddress"
+#define kUserDefaultsCurrentUseCaseKey @"currentUseCase"
+#define kUserDefaultsAllUseCasesKey @"allUseCase"
 
 
 @interface AddUserTokenViewController ()
@@ -49,7 +49,7 @@
     self = [super init];
     if (self) {
         _piTypeToCreate = PLVPITypeCC;
-        _useCase = @"DEFAULT";
+        self.useCase = @"DEFAULT";
     }
     return self;
 }
@@ -115,6 +115,16 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
+    if (actionSheet.tag == selectUseCaseActionSheet) {
+        
+        [super actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
+        
+        [self.useCaseButton setTitle:[NSString stringWithFormat:@"add PI to useCase: %@",self.useCase] forState:UIControlStateNormal];
+        
+        return;
+    }
+    
+
     NSString* currentType = self.piTypeToCreate;
     
     switch (buttonIndex) {
@@ -139,6 +149,8 @@
         [self createContentKeyArray];
         
         [self createTextFieldsOnScrollView:self.scrollView];
+        
+        self.addInfoDict = [NSMutableDictionary new];
         
     }
     
@@ -181,7 +193,7 @@
                 
                 [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"userToken"] forKey:kUserDefaultsUserTokenPKey];
                 [[NSUserDefaults standardUserDefaults] setObject:self.emailAddress forKey:kUserDefaultsMailAddressKey];
-                
+                [[NSUserDefaults standardUserDefaults] setObject:self.useCase forKey:kUserDefaultsCurrentUseCaseKey];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 [self.navigationController popViewControllerAnimated:true];
@@ -258,15 +270,10 @@
         [pi setValue:[content objectForKey:key] forKey:key];
     }
     
-////    NSError* validateResult = [pi validate];
-//    
-//    if (validateResult != Nil) {
-//        NSLog(@"error: %@",validateResult.localizedFailureReason);
-//    }
-    
     return pi;
     
 }
+
 
 - (void) createTextFieldsOnScrollView:(UIScrollView*)scrollView {
     
@@ -275,7 +282,6 @@
     for (UIView* subView in subViews) {
         [subView removeFromSuperview];
     }
-    
     
     NSUInteger textFieldIndex = 0;
     

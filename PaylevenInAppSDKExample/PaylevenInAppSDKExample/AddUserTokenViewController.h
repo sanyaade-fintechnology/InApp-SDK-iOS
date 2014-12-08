@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UseCaseViewController.h"
 
-@interface AddUserTokenViewController : UIViewController <UIActionSheetDelegate>
+@interface AddUserTokenViewController : UseCaseViewController
 
 @property (strong) NSString* piTypeToCreate;
 @property (strong) NSString* emailAddress;
-@property (strong) NSString* useCase;
 
 @end

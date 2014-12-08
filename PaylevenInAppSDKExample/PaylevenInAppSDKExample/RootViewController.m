@@ -21,6 +21,8 @@
 
 #define kUserDefaultsUserTokenPKey @"userToken"
 #define kUserDefaultsMailAddressKey @"mailAddress"
+#define kUserDefaultsCurrentUseCaseKey @"currentUseCase"
+#define kUserDefaultsAllUseCasesKey @"allUseCase"
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
@@ -41,6 +43,7 @@
 
 @property (strong) NSString *userToken;
 @property (strong) NSString *emailAddress;
+@property (strong) NSString *useCase;
 
 @property (weak) IBOutlet DetailViewController* detailVC;
 
@@ -101,6 +104,7 @@
         
         self.detailVC.userToken = self.userToken;
         self.detailVC.emailAddress = self.emailAddress;
+        self.detailVC.useCase = self.useCase;
         self.detailVC.rootVC = self;
     }
 }
@@ -122,6 +126,8 @@
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsUserTokenPKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsMailAddressKey];
+
+    self.useCase = @"DEFAULT";
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 
@@ -159,6 +165,7 @@
         
         self.userToken = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsUserTokenPKey];
         self.emailAddress = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsMailAddressKey];
+        self.useCase = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsCurrentUseCaseKey];
         
         self.userTokenTextField.text = self.userToken;
         self.emailTextField.text = self.emailAddress;
