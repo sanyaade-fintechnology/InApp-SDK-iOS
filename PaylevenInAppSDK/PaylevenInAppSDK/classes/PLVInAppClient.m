@@ -21,6 +21,14 @@
 #import "PLVEvent.h"
 
 #define kUserTokenKey @"userToken"
+#define kRequestErrorKey @"requestError"
+#define kRequestErrorCodeKey @"requestErrorCode"
+
+#define kPaymentInstrumentTypeKey @"paymentInstrumentType"
+
+#define kPaymentInstrumentIdentifierKey @"paymentInstrumentIdentifier"
+#define kUseCaseKey @"usecase"
+#define kEmailKey @"email"
 
 @interface PLVInAppClient ()
 
@@ -107,18 +115,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     // run validation check
     if (![self validatePaymentInstrument:payInstrument onCreation:TRUE withCompletion:completionHandler]) { return; }
     
+    __block PLVEventLogger* logger = self.eventLogger;
+    
     [self getUserToken:emailAddress withCompletion:^(NSDictionary* response, NSError* error) {
     
         if ([response objectForKey:kUserTokenKey] && error == noErr) {
             
-            [self.eventLogger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenSuccess parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:@"email"]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenSuccess parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:kEmailKey]]];
             
             [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:^(NSDictionary* response, NSError* error) {
                 
             }];
         } else {
             
-            [self.eventLogger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenFail parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:@"email"]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenFail parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:kEmailKey]]];
         }
         
         if (completionHandler != Nil) {
@@ -143,7 +153,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     NSString* useCaseChecked = [self checkUseCase:useCase];
     
-    [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:userToken withUseCase:useCaseChecked andCompletion:completionHandler];
+    __block PLVEventLogger* logger = self.eventLogger;
+    
+    [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:userToken withUseCase:useCaseChecked andCompletion:^(NSDictionary* response, NSError* error) {
+        
+        if (error == noErr) {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:payInstrument.type, kPaymentInstrumentTypeKey, useCase, kUseCaseKey, Nil]]];
+
+        } else {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+        }
+        
+        if (completionHandler != Nil) {
+            completionHandler(response,error);
+        }
+        
+    }];
 }
 
 - (void) getPaymentInstrumentsList:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -153,7 +180,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     NSString* useCaseChecked = [self checkUseCase:useCase];
     
-    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseCase:useCaseChecked andCompletion:completionHandler];
+    __block PLVEventLogger* logger = self.eventLogger;
+    
+    [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseCase:useCaseChecked andCompletion:^(NSDictionary* response, NSError* error) {
+        
+        if (error == noErr) {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeListPaymentInstrumentsSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, Nil]]];
+            
+        } else {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeListPaymentInstrumentsFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+        }
+        
+        if (completionHandler != Nil) {
+            completionHandler(response,error);
+        }
+        
+    }];
 }
 
 - (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrderedSet forUserToken:(PLVInAppUserToken*)userToken  withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -163,7 +207,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     // run validation check
     if (![self checkUserToken:userToken withPIAsOrderedSet:piOrderedSet andCompletion:completionHandler]) { return; }
     
-    [self.inAppAPIClient setPaymentInstrumentsOrder:piOrderedSet forUserToken:userToken withUseCase:useCaseChecked andCompletion:completionHandler];
+    __block PLVEventLogger* logger = self.eventLogger;
+    
+    [self.inAppAPIClient setPaymentInstrumentsOrder:piOrderedSet forUserToken:userToken withUseCase:useCaseChecked andCompletion:^(NSDictionary* response, NSError* error) {
+        
+        if (error == noErr) {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, Nil]]];
+            
+        } else {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+        }
+        
+        if (completionHandler != Nil) {
+            completionHandler(response,error);
+        }
+        
+    }];
 }
 
 - (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
@@ -171,7 +232,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     // run validation check
     if (![self checkUserToken:userToken withPI:payInstrument onCreation:NO andCompletion:completionHandler]) { return; }
     
-    [self.inAppAPIClient disablePaymentInstrument:payInstrument forUserToken:userToken withCompletion:completionHandler];
+    __block PLVEventLogger* logger = self.eventLogger;
+    
+    [self.inAppAPIClient disablePaymentInstrument:payInstrument forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
+        
+        if (error == noErr) {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeDisablePaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, payInstrument.type, kPaymentInstrumentTypeKey, payInstrument.identifier, kPaymentInstrumentIdentifierKey,Nil]]];
+            
+        } else {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeDisablePaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+        }
+        
+        if (completionHandler != Nil) {
+            completionHandler(response,error);
+        }
+        
+    }];
 }
 
 
@@ -182,7 +260,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     NSString* useCaseChecked = [self checkUseCase:useCase];
     
-    [self.inAppAPIClient removePaymentInstrument:payInstrument fromUseCase:useCaseChecked forUserToken:userToken withCompletion:completionHandler];
+    __block PLVEventLogger* logger = self.eventLogger;
+    
+    [self.inAppAPIClient removePaymentInstrument:payInstrument fromUseCase:useCaseChecked forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
+        
+        if (error == noErr) {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeRemovePaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, payInstrument.type, kPaymentInstrumentTypeKey, payInstrument.identifier, kPaymentInstrumentIdentifierKey,Nil]]];
+            
+        } else {
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeRemovePaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+        }
+        
+        if (completionHandler != Nil) {
+            completionHandler(response,error);
+        }
+        
+    }];
 }
 
 /**
