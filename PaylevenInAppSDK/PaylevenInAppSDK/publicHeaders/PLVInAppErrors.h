@@ -68,6 +68,16 @@ extern NSInteger const ERROR_SEPA_IBAN_INVALID_CODE;
 extern NSString * const ERROR_SEPA_IBAN_INVALID_MESSAGE;
 
 
+extern NSInteger const ERROR_SEPA_BIC_EMPTY_CODE;
+extern NSString * const ERROR_SEPA_BIC_EMPTY_MESSAGE;
+
+extern NSInteger const ERROR_SEPA_BIC_INVALID_LENGTH_CODE;
+extern NSString * const ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE;
+
+extern NSInteger const ERROR_SEPA_BIC_INVALID_CHARS_CODE;
+extern NSString * const ERROR_SEPA_BIC_INVALID_CHARS_MESSAGE;
+
+
 
 
 

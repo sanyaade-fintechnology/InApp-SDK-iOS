@@ -47,6 +47,9 @@ typedef enum : NSUInteger {
 
 @end
 
+@interface PLVPayInstrumentCC ()
+
+@end
 
 @implementation PLVPayInstrumentCC
 
@@ -56,9 +59,9 @@ typedef enum : NSUInteger {
     if (self) {
         self.type = PLVPITypeCC;
         self.pan = @"";
-        self.expiryYear = @"";
-        self.expiryMonth = @"";
-        self.cvv = @"";
+        _expiryYear = @"";
+        _expiryMonth = @"";
+        _cvv = @"";
         _cardBrand = @"";
     }
     return self;

@@ -13,6 +13,7 @@
 #import "PLVInAppClientTypes+Validation.h"
 #import "PLVInAppClientTypes+Serialization.h"
 #import "OrderedDictionary.h"
+#import "PLVInAppClientTypPanValidator.h"
 
 #define ccPANNumberMinLength 12
 #define ccPANNumberMaxLength 21
@@ -26,8 +27,8 @@
 #define sepaIBANNumberMinLength 10
 #define sepaIBANNumberMaxLength 34
 
-#define sepaBICNumberMinLength 5
-#define sepaBICNumberMaxLength 30
+#define sepaBICNumberMinLength 8
+#define sepaBICNumberMaxLength 11
 
 #define paypalAuthTokenNumberMinLength 5
 #define paypalAuthTokenNumberMaxLength 30
@@ -119,16 +120,24 @@
         return CreateError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
     }
     
-    if (self.pan.length < ccPANNumberMinLength) {
+    PLVInAppClientTypPanValidator* validator = [[PLVInAppClientTypPanValidator alloc] init];
+    
+    if (self.pan.length < [validator minLengthForPan:self.pan]) {
         return CreateError(ERROR_CC_TOO_SHORT_CODE,ERROR_CC_TOO_SHORT_MESSAGE);
     }
     
-    if (self.pan.length > ccPANNumberMaxLength) {
+    if (self.pan.length > [validator maxLengthForPan:self.pan]) {
         return CreateError(ERROR_CC_TOO_LONG_CODE,ERROR_CC_TOO_LONG_MESSAGE);
     }
     
-    if (![self luhnCheck:self.pan]) {
-        return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
+    if (self.pan.integerValue == 0) {
+        return CreateError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
+    }
+    
+    if ([validator doLuhnCheckForPan:self.pan]) {
+        if (![self luhnCheck:self.pan]) {
+            return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
+        }
     }
     
     if (![self containsOnlyDigits:self.pan]) {
@@ -153,14 +162,7 @@
         return CreateError(ERROR_CVV_INVALID_CHARS_CODE,ERROR_CVV_INVALID_CHARS_MESSAGE);
     }
     
-    int ccvLength = 3;
-    
-    if ([self.pan hasPrefix:@"37"] || [self.pan hasPrefix:@"34"]) {
-        // should be a AMEX card, so we aspect 4 digit for the cvv
-        ccvLength = 4;
-    }
-    
-    if (self.cvv.length != ccvLength) {
+    if (self.cvv.length != [validator cvvlengthForPan:self.pan]) {
         return CreateError(ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
     }
 
@@ -225,8 +227,16 @@
         return CreateError(ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
     }
     
+    if (self.accountNumber.integerValue == 0) {
+        return CreateError(ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
+    }
+    
     
     if (self.routingNumber == Nil || self.routingNumber.length == 0) {
+        return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
+    }
+    
+    if (self.routingNumber.integerValue == 0) {
         return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
     }
     
@@ -262,6 +272,10 @@
         return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     }
     
+    if ([self.iban substringFromIndex:2].integerValue == 0) {
+        return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
+    }
+    
     if (self.iban.length < sepaIBANNumberMinLength || self.iban.length > sepaIBANNumberMaxLength) {
         return CreateError(ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
     }
@@ -274,12 +288,30 @@
         return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
     }
     
-    if (![self containsOnlyDigits:[self.iban substringFromIndex:8]]) {
-        return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
+    if (![self checkIBAN:self.iban]) {
+        return CreateError(ERROR_SEPA_IBAN_INVALID_CODE,ERROR_SEPA_IBAN_INVALID_MESSAGE);
     }
     
-    [self  checkIBAN:self.iban];
-
+    if (self.bic == Nil || self.bic.length == 0) {
+        return CreateError(ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
+    }
+    
+    if (self.bic.integerValue == 0) {
+        return CreateError(ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
+    }
+    
+    if (self.bic.length < sepaBICNumberMinLength || self.bic.length > sepaBICNumberMaxLength) {
+        return CreateError(ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
+    }
+    
+    // update to UpperCase
+    
+    NSMutableString* tempIban = [[NSMutableString alloc] initWithString:self.iban];
+    
+    [tempIban replaceCharactersInRange:NSMakeRange(0, 2) withString:[[self.iban substringToIndex:2] uppercaseString]];
+    
+    self.iban = [NSString stringWithString:tempIban];
+    
     return Nil;
 }
 
