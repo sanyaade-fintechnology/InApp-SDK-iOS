@@ -221,7 +221,7 @@
         
     } else if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
         
-        self.keyArray = @[@"accountNumber",@"routingNumber"];
+        self.keyArray = @[@"accountNo",@"routingNo"];
         self.keyValueLengthArray = @[@11,@10];
         self.keyboardTypeArray = @[@TypeDefault,@TypeDefault];
         

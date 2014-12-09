@@ -121,7 +121,7 @@
         return cc.pan;
     } else if([shortType isEqualToString:@"DD"]) {
         PLVPayInstrumentDD* cc = (PLVPayInstrumentDD*)pi;
-        return [NSString stringWithFormat:@"Account: %@",cc.accountNumber];
+        return [NSString stringWithFormat:@"Account: %@",cc.accountNo];
     } else if([shortType isEqualToString:@"SEPA"]) {
         PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
         return [NSString stringWithFormat:@"IBAN: %@",cc.iban];
@@ -147,7 +147,7 @@
     } else if([shortType isEqualToString:@"DD"]) {
         PLVPayInstrumentDD* cc = (PLVPayInstrumentDD*)pi;
         
-        NSArray* details = @[@"  ",[NSString stringWithFormat:@"Account: %@",cc.accountNumber],[NSString stringWithFormat:@"Routing: %@",cc.routingNumber]];
+        NSArray* details = @[@"  ",[NSString stringWithFormat:@"Account: %@",cc.accountNo],[NSString stringWithFormat:@"Routing: %@",cc.routingNo]];
         
         return [details componentsJoinedByString:@"\n"];
     } else if([shortType isEqualToString:@"SEPA"]) {

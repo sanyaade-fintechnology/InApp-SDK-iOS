@@ -18,11 +18,11 @@
 #define ccPANNumberMinLength 12
 #define ccPANNumberMaxLength 21
 
-#define ddAccountNumberMinLength 8
-#define ddAccountNumberMaxLength 10
+#define ddaccountNoMinLength 8
+#define ddaccountNoMaxLength 10
 
-#define ddRoutingNumberMinLength 8
-#define ddRoutingNumberMaxLength 9
+#define ddroutingNoMinLength 8
+#define ddroutingNoMaxLength 9
 
 #define sepaIBANNumberMinLength 10
 #define sepaIBANNumberMaxLength 34
@@ -120,6 +120,9 @@
         return CreateError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
     }
     
+    NSArray* panParts = [self.pan componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.pan = [panParts componentsJoinedByString:@""];
+    
     PLVInAppClientTypPanValidator* validator = [[PLVInAppClientTypPanValidator alloc] init];
     
     if (self.pan.length < [validator minLengthForPan:self.pan]) {
@@ -211,44 +214,52 @@
 - (NSError*)   validateOnCreation {
     
     
-    if (self.accountNumber == Nil || self.accountNumber.length == 0) {
+    if (self.accountNo == Nil || self.accountNo.length == 0) {
         return CreateError(ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
     }
     
-    if (![self containsOnlyDigits:self.accountNumber]) {
+    NSArray* accountNoParts = [self.accountNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.accountNo = [accountNoParts componentsJoinedByString:@""];
+    
+    
+    if (![self containsOnlyDigits:self.accountNo]) {
         return CreateError(ERROR_DD_ACCOUNT_INVALID_CHARS_CODE,ERROR_DD_ACCOUNT_INVALID_CHARS_MESSAGE);
     }
     
-    if (self.accountNumber.length < ddAccountNumberMinLength) {
+    if (self.accountNo.length < ddaccountNoMinLength) {
         return CreateError(ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
     }
     
-    if (self.accountNumber.length > ddAccountNumberMaxLength) {
+    if (self.accountNo.length > ddaccountNoMaxLength) {
         return CreateError(ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
     }
     
-    if (self.accountNumber.integerValue == 0) {
+    if (self.accountNo.integerValue == 0) {
         return CreateError(ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
     }
     
     
-    if (self.routingNumber == Nil || self.routingNumber.length == 0) {
+    if (self.routingNo == Nil || self.routingNo.length == 0) {
         return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
     }
     
-    if (self.routingNumber.integerValue == 0) {
+    
+    NSArray* routingNoParts = [self.routingNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.routingNo = [routingNoParts componentsJoinedByString:@""];
+    
+    if (self.routingNo.integerValue == 0) {
         return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
     }
     
-    if (![self containsOnlyDigits:self.routingNumber]) {
+    if (![self containsOnlyDigits:self.routingNo]) {
         return CreateError(ERROR_DD_ROUTING_INVALID_CHARS_CODE,ERROR_DD_ROUTING_INVALID_CHARS_MESSAGE);
     }
     
-    if (self.routingNumber.length < ddRoutingNumberMinLength) {
+    if (self.routingNo.length < ddroutingNoMinLength) {
         return CreateError(ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
     }
     
-    if (self.routingNumber.length > ddRoutingNumberMaxLength) {
+    if (self.routingNo.length > ddroutingNoMaxLength) {
         return CreateError(ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
     }
     

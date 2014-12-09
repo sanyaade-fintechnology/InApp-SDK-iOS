@@ -59,16 +59,16 @@
 /**
  *  PLVPayInstrumentDD      Debit PaymentInstrument
  *
- *  @property accountNumber accountNumber for this debit account
+ *  @property accountNo accountNumber for this debit account
  *
- *  @property routingNumber routingNumber for this debit account
+ *  @property routingNo routingNumber for this debit account
  *
  */
 
 @interface PLVPayInstrumentDD : PLVPaymentInstrument
 
-@property (strong) NSString* accountNumber;
-@property (strong) NSString* routingNumber;
+@property (strong) NSString* accountNo;
+@property (strong) NSString* routingNo;
 @end
 
 /**

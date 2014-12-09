@@ -77,8 +77,8 @@ typedef enum : NSUInteger {
     self = [super init];
     if (self) {
         self.type = PLVPITypeDD;
-        self.routingNumber = @"";
-        self.accountNumber = @"";
+        self.routingNo = @"";
+        self.accountNo = @"";
     }
     return self;
 }

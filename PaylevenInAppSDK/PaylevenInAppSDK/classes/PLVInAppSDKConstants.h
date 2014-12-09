@@ -36,8 +36,8 @@
 
 #define ddExpiryMonthKey        @"expiryMonth"
 #define ddExpiryYearKey         @"expiryYear"
-#define ddRoutingNumberKey      @"routingNumber"
-#define ddAccountNumberKey      @"accountNumber"
+#define ddRoutingNoKey          @"routingNo"
+#define ddAccountNoKey          @"accountNo"
 
 #define sepaExpiryMonthKey      @"expiryMonth"
 #define sepaExpiryYearKey       @"expiryYear"

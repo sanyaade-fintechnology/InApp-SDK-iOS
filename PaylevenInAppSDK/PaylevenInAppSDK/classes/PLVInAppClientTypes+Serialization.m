@@ -129,16 +129,16 @@
     OrderedDictionary* content = [OrderedDictionary new];
     
     
-    if (self.accountNumber != Nil) {
-        [content setObject:self.accountNumber forKey:ddAccountNumberKey];
+    if (self.accountNo != Nil) {
+        [content setObject:self.accountNo forKey:ddAccountNoKey];
     }
     
     if (self.identifier != Nil) {
         [content setObject:self.identifier forKey:piIdentifierTypeKey];
     }
     
-    if (self.routingNumber != Nil) {
-        [content setObject:self.routingNumber forKey:ddRoutingNumberKey];
+    if (self.routingNo != Nil) {
+        [content setObject:self.routingNo forKey:ddRoutingNoKey];
     }
     
     if (self.type != Nil) {
