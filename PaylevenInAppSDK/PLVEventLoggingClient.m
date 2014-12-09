@@ -19,10 +19,10 @@ static NSString * const PLVEventLoggingUsername = @"logfrontend";
 /** Event logging password. */
 static NSString * const PLVEventLoggingPassword = @"cvzdtgyMMFuZT2xYy2LoYEcK";
 
-//static NSString * const PLVEventLoggingEndpoint = @"http://10.15.100.130:8888/staging/api/logs";
+static NSString * const PLVEventLoggingEndpoint = @"http://10.15.100.130:8888/staging/api/logs";
 
 /** Event logging endpoint. */
-static NSString * const PLVEventLoggingEndpoint = @"http://localhost/staging/api/logs";
+//static NSString * const PLVEventLoggingEndpoint = @"http://localhost/staging/api/logs";
 
 @interface PLVEventLoggingClient ()
 

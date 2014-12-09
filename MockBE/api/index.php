@@ -704,6 +704,18 @@ function createMaskedPI($piDetails) {
 				}
 			}
 			
+			if (strcasecmp(strtoupper($piType),'SEPA') == 0) {
+								
+				if (array_key_exists('iban',$maskedPi)) {
+					
+					$ibanNumber = $maskedPi['iban'];
+					
+					$maskedIbanNumber = maskStringToLength($ibanNumber,4);
+					
+					$maskedPi['iban'] = $maskedIbanNumber;
+				}
+			}
+			
 			return json_encode($maskedPi);
 		}
 	}
@@ -713,7 +725,7 @@ function createMaskedPI($piDetails) {
 
 function maskStringToLength($strToMask,$lengthToMask) {
 	
-	if (strlen($strToMask > $lengthToMask)) {
+	if (strlen($strToMask) > $lengthToMask) {
 
 		$replaceLenght = strlen($strToMask) - $lengthToMask;
 		

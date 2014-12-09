@@ -17,20 +17,17 @@
 #define ccPANNumberMinLength 12
 #define ccPANNumberMaxLength 21
 
-
 #define ddAccountNumberMinLength 8
 #define ddAccountNumberMaxLength 10
 
-
 #define ddRoutingNumberMinLength 8
-#define ddRoutingNumberMaxLength 8
+#define ddRoutingNumberMaxLength 9
 
 #define sepaIBANNumberMinLength 10
 #define sepaIBANNumberMaxLength 34
 
 #define sepaBICNumberMinLength 5
 #define sepaBICNumberMaxLength 30
-
 
 #define paypalAuthTokenNumberMinLength 5
 #define paypalAuthTokenNumberMaxLength 30
@@ -316,33 +313,37 @@
         [iban appendString:[[NSNumber numberWithShort:digitValue] stringValue]];
     }
     
-    if (![self containsOnlyDigits:[iban substringWithRange:NSMakeRange(0, 4)]]) {
-        
-        NSString* specific = [[iban substringWithRange:NSMakeRange(0, 4)] lowercaseString];
-        
-        iban = [NSMutableString stringWithString:[iban substringFromIndex:4]];
-        
-        const char* specificCode = [specific cStringUsingEncoding:NSASCIIStringEncoding];
-        
-        unsigned short digitValue = 0;
-        
-        for (int index = 3; index >= 0; index--) {
-            
-            digitValue = (unsigned short) specificCode[index];
-            
-            digitValue = digitValue - 87;
-            
-            if (digitValue < 10 || digitValue > 35) {
-                // invalid digits
-                return FALSE;
-            }
-
-            [iban  insertString:[[NSNumber numberWithShort:digitValue] stringValue] atIndex:0];
-        }
-    }
-    
     [iban appendString:[ibanInput substringWithRange:NSMakeRange(2, 2)]];
     
+    // check for containing non digit letters
+    
+    NSRange currentRange;
+    
+    for (int ibanStringPostion = (int)iban.length - 1; ibanStringPostion >= 0; ibanStringPostion --) {
+        
+        currentRange = NSMakeRange(ibanStringPostion, 1);
+        
+        if (![self containsOnlyDigits:[iban substringWithRange:currentRange]]) {
+            
+            NSString* specific = [[iban substringWithRange:currentRange] lowercaseString];
+            
+            const char* specificCode = [specific cStringUsingEncoding:NSASCIIStringEncoding];
+            
+            unsigned short digitValue = 0;
+            
+            digitValue = (unsigned short) specificCode[0];
+            
+            if (digitValue > 96 && digitValue < 123) {
+                // letter
+                
+                digitValue = digitValue - 87;
+                
+                [iban replaceCharactersInRange:currentRange withString:[[NSNumber numberWithShort:digitValue] stringValue]];
+            }
+            
+            }
+        }
+
     NSDecimalNumber* ibanDecimalNumber = [NSDecimalNumber decimalNumberWithString:iban];
     
     NSDecimalNumber* mod = [ibanDecimalNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"97"] withBehavior:(id <NSDecimalNumberBehaviors>)self];
