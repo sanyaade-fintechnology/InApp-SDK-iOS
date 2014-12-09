@@ -700,7 +700,7 @@ function createMaskedPI($piDetails) {
 					
 					$maskedAccountNumber = maskStringToLength($accountNumber,4);
 					
-					$maskedPi['pan'] = $maskedAccountNumber;
+					$maskedPi['accountNumber'] = $maskedAccountNumber;
 				}
 			}
 			
