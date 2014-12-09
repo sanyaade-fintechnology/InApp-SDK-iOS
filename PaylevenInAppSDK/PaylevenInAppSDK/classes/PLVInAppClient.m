@@ -36,10 +36,8 @@
 @property (strong) NSString* bundleID;
 @property (strong) NSError* lastError;
 
-
 /** Serial operation queue. */
 @property (nonatomic, strong) NSOperationQueue *queue;
-
 /** API client. */
 @property (nonatomic, strong) PLVInAppAPIClient *inAppAPIClient;
 
@@ -77,8 +75,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             [self.eventLogger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeInitInAPPClient parameters:Nil]];
             
         });
-        
-        
     }
     return self;
 }

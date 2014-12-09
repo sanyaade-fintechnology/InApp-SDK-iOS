@@ -55,7 +55,7 @@
     
     self.useCases = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsAllUseCasesKey];
     
-    if (self.useCases != Nil) {
+    if (self.useCases == Nil) {
         self.useCases = @[@"DEFAULT",@"PRIVATE",@"BUSINESS"];
         [[NSUserDefaults standardUserDefaults] setObject:self.useCases forKey:kUserDefaultsAllUseCasesKey];
         [[NSUserDefaults standardUserDefaults] synchronize];

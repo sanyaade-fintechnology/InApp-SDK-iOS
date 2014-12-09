@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
+@import Foundation;
 
 #define     PLVPITypeUnknown    @"PLVPITypeUnknown"
 #define     PLVPITypeCC         @"CC"

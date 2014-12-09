@@ -41,6 +41,10 @@
 		9F6552C419F6876A003D07A5 /* PLVServerTrustValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6552BC19F6876A003D07A5 /* PLVServerTrustValidator.m */; };
 		9F6552C619F6886F003D07A5 /* PLVServerCertificateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6552BA19F6876A003D07A5 /* PLVServerCertificateTests.m */; };
 		9F6552C719F6887D003D07A5 /* PLVServerTrustValidatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6552BD19F6876A003D07A5 /* PLVServerTrustValidatorTests.m */; };
+		9F71D6B11A370BF4007AEBC4 /* PLVCardBrands.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F71D6AF1A370BF4007AEBC4 /* PLVCardBrands.h */; };
+		9F71D6B21A370BF4007AEBC4 /* PLVCardBrands.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F71D6B01A370BF4007AEBC4 /* PLVCardBrands.m */; };
+		9F71D6B51A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F71D6B31A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h */; };
+		9F71D6B61A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F71D6B41A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m */; };
 		9F7CFC881A079A950047203A /* PLVInAppClientTypes+Serialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F7CFC861A079A950047203A /* PLVInAppClientTypes+Serialization.h */; };
 		9F7CFC891A079A950047203A /* PLVInAppClientTypes+Serialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F7CFC871A079A950047203A /* PLVInAppClientTypes+Serialization.m */; };
 		9FA5CAAD19F5189C00FCB314 /* PLVInAppSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FA5CAAC19F5189C00FCB314 /* PLVInAppSDK.h */; };
@@ -106,6 +110,10 @@
 		9F6552BB19F6876A003D07A5 /* PLVServerTrustValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVServerTrustValidator.h; path = PaylevenInAppSDK/classes/PLVServerTrustValidator.h; sourceTree = "<group>"; };
 		9F6552BC19F6876A003D07A5 /* PLVServerTrustValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVServerTrustValidator.m; path = PaylevenInAppSDK/classes/PLVServerTrustValidator.m; sourceTree = "<group>"; };
 		9F6552BD19F6876A003D07A5 /* PLVServerTrustValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVServerTrustValidatorTests.m; path = PaylevenInAppSDK/classes/PLVServerTrustValidatorTests.m; sourceTree = "<group>"; };
+		9F71D6AF1A370BF4007AEBC4 /* PLVCardBrands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVCardBrands.h; sourceTree = "<group>"; };
+		9F71D6B01A370BF4007AEBC4 /* PLVCardBrands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVCardBrands.m; sourceTree = "<group>"; };
+		9F71D6B31A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppClientTypPanValidator.h; path = PaylevenInAppSDK/classes/PLVInAppClientTypPanValidator.h; sourceTree = "<group>"; };
+		9F71D6B41A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppClientTypPanValidator.m; path = PaylevenInAppSDK/classes/PLVInAppClientTypPanValidator.m; sourceTree = "<group>"; };
 		9F7CFC861A079A950047203A /* PLVInAppClientTypes+Serialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PLVInAppClientTypes+Serialization.h"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Serialization.h"; sourceTree = "<group>"; };
 		9F7CFC871A079A950047203A /* PLVInAppClientTypes+Serialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PLVInAppClientTypes+Serialization.m"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Serialization.m"; sourceTree = "<group>"; };
 		9FA5CAA919F5189C00FCB314 /* libPaylevenInAppSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPaylevenInAppSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,6 +246,8 @@
 				9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */,
 				9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */,
 				9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */,
+				9F71D6B31A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h */,
+				9F71D6B41A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m */,
 			);
 			name = classes;
 			path = ..;
@@ -272,6 +282,8 @@
 		9FBC2EFF1A1F4B79007D1341 /* Utilis */ = {
 			isa = PBXGroup;
 			children = (
+				9F71D6AF1A370BF4007AEBC4 /* PLVCardBrands.h */,
+				9F71D6B01A370BF4007AEBC4 /* PLVCardBrands.m */,
 				9FD7E7C81A2912CB00A5B166 /* DevicePlatform.h */,
 				9FD7E7C91A2912CB00A5B166 /* DevicePlatform.m */,
 				9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */,
@@ -293,6 +305,8 @@
 				9F6552C019F6876A003D07A5 /* PLVServerCertificate.h in Headers */,
 				9F7CFC881A079A950047203A /* PLVInAppClientTypes+Serialization.h in Headers */,
 				9FB3E63F1A30790500FE9CAC /* PLVEventLogger.h in Headers */,
+				9F71D6B11A370BF4007AEBC4 /* PLVCardBrands.h in Headers */,
+				9F71D6B51A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h in Headers */,
 				9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */,
 				9FB3E6491A3079BD00FE9CAC /* PLVEventTransformer.h in Headers */,
 				9FB3E6451A30799900FE9CAC /* PLVEvent.h in Headers */,
@@ -475,8 +489,10 @@
 				9FC8B2941A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m in Sources */,
 				9FC8B2981A1B978100DD3370 /* PLVInAppErrors.m in Sources */,
 				9FBC2EFE1A1F4400007D1341 /* KeychainItemWrapper.m in Sources */,
+				9F71D6B61A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m in Sources */,
 				9FB3E6461A30799900FE9CAC /* PLVEvent.m in Sources */,
 				9F7CFC891A079A950047203A /* PLVInAppClientTypes+Serialization.m in Sources */,
+				9F71D6B21A370BF4007AEBC4 /* PLVCardBrands.m in Sources */,
 				9FB3E64E1A3079EF00FE9CAC /* PLVHTTPUserAgent.m in Sources */,
 				9F30869F1A2351E3000D2AD5 /* PLVInAppAPIClient.m in Sources */,
 				9FB3E6421A30790500FE9CAC /* PLVEventLoggingClient.m in Sources */,
