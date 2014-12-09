@@ -304,14 +304,12 @@
                 [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathFromOrder] withRowAnimation:UITableViewRowAnimationLeft];
                 // update your dataSource as well.
                 [self.tableView endUpdates];
-                
             }
         }
         
         self.activityPlane.hidden = TRUE;
         
     }];
-
 }
 
 - (void) deletePaymentInstrument {
@@ -321,7 +319,6 @@
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable or Remove" message:message delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"Disable",@"Remove UseCsae",nil];
     
     [alertView show];
-    
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

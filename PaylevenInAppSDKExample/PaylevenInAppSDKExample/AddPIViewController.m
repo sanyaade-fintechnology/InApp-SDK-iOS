@@ -225,7 +225,7 @@
     } else if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
         
         self.keyArray = @[@"iban",@"bic"];
-        self.keyValueLengthArray = @[@34,@34];
+        self.keyValueLengthArray = @[@45,@45];
         self.keyboardTypeArray = @[@TypeDefault,@TypeDefault];
         
         piType = @"SEPA Account";
@@ -380,6 +380,12 @@
     } else {
         self.sendButton.enabled = FALSE;
         self.sendButton.alpha = 0.5;
+    }
+    
+    if (([self.addInfoDict objectForKey:@"iban"] != Nil ) && (self.addInfoDict.count == 1)) {
+        // bic is optinal
+        self.sendButton.enabled = TRUE;
+        self.sendButton.alpha = 1.0;
     }
     
     NSLog(@"Dict: %@",self.addInfoDict);

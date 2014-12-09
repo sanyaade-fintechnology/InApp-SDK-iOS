@@ -229,7 +229,7 @@
     } else if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
         
         self.keyArray = @[@"iban",@"bic"];
-        self.keyValueLengthArray = @[@34,@34];
+        self.keyValueLengthArray = @[@44,@11];
         self.keyboardTypeArray = @[@TypeDefault,@TypeDefault];
         
         piType = @"SEPA Account";

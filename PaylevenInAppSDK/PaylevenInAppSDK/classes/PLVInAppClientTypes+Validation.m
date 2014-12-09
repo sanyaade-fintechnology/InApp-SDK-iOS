@@ -389,14 +389,38 @@
             
             }
         }
-
-    NSDecimalNumber* ibanDecimalNumber = [NSDecimalNumber decimalNumberWithString:iban];
     
-    NSDecimalNumber* mod = [ibanDecimalNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"97"] withBehavior:(id <NSDecimalNumberBehaviors>)self];
-    
-    NSDecimalNumber* reminder = [ibanDecimalNumber decimalNumberBySubtracting:[[NSDecimalNumber decimalNumberWithString:@"97"] decimalNumberByMultiplyingBy:mod]];
-    
-    return 1 == reminder.intValue;
+    if (iban.length < 39) {
+        
+        NSDecimalNumber* ibanDecimalNumber = [NSDecimalNumber decimalNumberWithString:iban];
+        
+        NSDecimalNumber* mod = [ibanDecimalNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"97"] withBehavior:(id <NSDecimalNumberBehaviors>)self];
+        
+        NSDecimalNumber* reminder = [ibanDecimalNumber decimalNumberBySubtracting:[[NSDecimalNumber decimalNumberWithString:@"97"] decimalNumberByMultiplyingBy:mod]];
+        
+        return 1 == reminder.intValue;
+        
+    } else {
+        
+        NSString* firstPart = [iban substringToIndex:38];
+        
+        NSDecimalNumber* ibanDecimalNumber = [NSDecimalNumber decimalNumberWithString:firstPart];
+        
+        NSDecimalNumber* mod = [ibanDecimalNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"97"] withBehavior:(id <NSDecimalNumberBehaviors>)self];
+        
+        NSDecimalNumber* reminder = [ibanDecimalNumber decimalNumberBySubtracting:[[NSDecimalNumber decimalNumberWithString:@"97"] decimalNumberByMultiplyingBy:mod]];
+        
+        
+        NSString* secondPart = [NSString stringWithFormat:@"%@%@",[reminder stringValue],[iban substringFromIndex:38]];
+        
+        ibanDecimalNumber = [NSDecimalNumber decimalNumberWithString:secondPart];
+        
+        mod = [ibanDecimalNumber decimalNumberByDividingBy:[NSDecimalNumber decimalNumberWithString:@"97"] withBehavior:(id <NSDecimalNumberBehaviors>)self];
+        
+        reminder = [ibanDecimalNumber decimalNumberBySubtracting:[[NSDecimalNumber decimalNumberWithString:@"97"] decimalNumberByMultiplyingBy:mod]];
+        
+        return 1 == reminder.intValue;
+    }
 }
 
 - (NSRoundingMode)roundingMode {
