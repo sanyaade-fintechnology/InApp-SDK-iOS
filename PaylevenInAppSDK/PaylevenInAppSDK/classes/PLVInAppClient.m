@@ -19,12 +19,14 @@
 #import "PLVEventLoggingClient.h"
 #import "PLVEventLogger.h"
 #import "PLVEvent.h"
+#import "OrderedDictionary.h"
 
 #define kUserTokenKey @"userToken"
 #define kRequestErrorKey @"requestError"
 #define kRequestErrorCodeKey @"requestErrorCode"
 
 #define kPaymentInstrumentTypeKey @"paymentInstrumentType"
+#define kPaymentInstrumentsKey @"paymentInstruments"
 
 #define kPaymentInstrumentIdentifierKey @"paymentInstrumentIdentifier"
 #define kUseCaseKey @"usecase"
@@ -209,7 +211,29 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
         
         if (error == noErr) {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, Nil]]];
+            NSMutableArray* orderedPIArray = [NSMutableArray new];
+            
+            [piOrderedSet enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+                
+                PLVPaymentInstrument* baseType = (PLVPaymentInstrument*) obj;
+                
+                if ([baseType isKindOfClass:[PLVPaymentInstrument class]]) {
+                    
+                    OrderedDictionary* newOrderedItem = [OrderedDictionary new];
+                    
+                    NSString* piID = [NSString stringWithString:baseType.identifier];
+                    
+                    if (piID != Nil) {
+                        
+                        [newOrderedItem setObject:piID forKey:@"identifier"];
+                        [newOrderedItem setObject:[NSString stringWithFormat:@"%lu",(unsigned long)idx] forKey:@"sortIndex"];
+                        [orderedPIArray addObject:newOrderedItem];
+                    }
+                }
+                
+            }];
+            
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, orderedPIArray,kPaymentInstrumentsKey, Nil]]];
             
         } else {
             

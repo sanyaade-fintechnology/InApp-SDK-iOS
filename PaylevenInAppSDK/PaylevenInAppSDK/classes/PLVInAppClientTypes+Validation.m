@@ -303,8 +303,19 @@
         return CreateError(ERROR_SEPA_IBAN_INVALID_CODE,ERROR_SEPA_IBAN_INVALID_MESSAGE);
     }
     
+    // update to UpperCase
+    
+    NSMutableString* tempIban = [[NSMutableString alloc] initWithString:self.iban];
+    
+    [tempIban replaceCharactersInRange:NSMakeRange(0, 2) withString:[[self.iban substringToIndex:2] uppercaseString]];
+    
+    self.iban = [NSString stringWithString:tempIban];
+    
     if (self.bic == Nil || self.bic.length == 0) {
-        return CreateError(ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
+        
+        self.bic = @"";  // optinal
+        
+        return Nil;
     }
     
     if (self.bic.integerValue == 0) {
@@ -315,13 +326,7 @@
         return CreateError(ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
     }
     
-    // update to UpperCase
-    
-    NSMutableString* tempIban = [[NSMutableString alloc] initWithString:self.iban];
-    
-    [tempIban replaceCharactersInRange:NSMakeRange(0, 2) withString:[[self.iban substringToIndex:2] uppercaseString]];
-    
-    self.iban = [NSString stringWithString:tempIban];
+
     
     return Nil;
 }
