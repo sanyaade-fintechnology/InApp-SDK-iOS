@@ -95,9 +95,6 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSLog(@"source VC %p",segue.sourceViewController);
-    NSLog(@"destination VC %p",segue.destinationViewController);
-    
     if ([[segue identifier] isEqualToString:@"showDetails"])
     {
         self.detailVC = (DetailViewController*)[segue destinationViewController] ;

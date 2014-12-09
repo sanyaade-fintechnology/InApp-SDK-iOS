@@ -326,8 +326,6 @@
         return CreateError(ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
     }
     
-
-    
     return Nil;
 }
 

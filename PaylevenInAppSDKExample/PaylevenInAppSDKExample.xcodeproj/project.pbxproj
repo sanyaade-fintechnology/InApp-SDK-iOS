@@ -11,6 +11,8 @@
 		9F44485F1A10BB2600B949F5 /* AddPIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F44485D1A10BB2600B949F5 /* AddPIViewController.m */; };
 		9F4448601A10BB2600B949F5 /* AddPIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F44485E1A10BB2600B949F5 /* AddPIViewController.xib */; };
 		9F6552B219F5AB0A003D07A5 /* PaylevenInAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */; };
+		9F71D6BD1A374D6E007AEBC4 /* EditUseCaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F71D6BB1A374D6E007AEBC4 /* EditUseCaseViewController.m */; };
+		9F71D6BE1A374D6E007AEBC4 /* EditUseCaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F71D6BC1A374D6E007AEBC4 /* EditUseCaseViewController.xib */; };
 		9FA5CB8C19F5270700FCB314 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB8B19F5270700FCB314 /* main.m */; };
 		9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB8E19F5270700FCB314 /* AppDelegate.m */; };
 		9FA5CB9219F5270700FCB314 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9119F5270700FCB314 /* RootViewController.m */; };
@@ -32,6 +34,9 @@
 		9F44485D1A10BB2600B949F5 /* AddPIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPIViewController.m; sourceTree = "<group>"; };
 		9F44485E1A10BB2600B949F5 /* AddPIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPIViewController.xib; sourceTree = "<group>"; };
 		9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PaylevenInAppSDK.framework; sourceTree = SOURCE_ROOT; };
+		9F71D6BA1A374D6E007AEBC4 /* EditUseCaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUseCaseViewController.h; sourceTree = "<group>"; };
+		9F71D6BB1A374D6E007AEBC4 /* EditUseCaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUseCaseViewController.m; sourceTree = "<group>"; };
+		9F71D6BC1A374D6E007AEBC4 /* EditUseCaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditUseCaseViewController.xib; sourceTree = "<group>"; };
 		9FA5CB8619F5270700FCB314 /* InAppSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InAppSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FA5CB8A19F5270700FCB314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FA5CB8B19F5270700FCB314 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -68,6 +73,9 @@
 		9F1FDEE21A2E1E4D0003280D /* UseCaseTable */ = {
 			isa = PBXGroup;
 			children = (
+				9F71D6BA1A374D6E007AEBC4 /* EditUseCaseViewController.h */,
+				9F71D6BB1A374D6E007AEBC4 /* EditUseCaseViewController.m */,
+				9F71D6BC1A374D6E007AEBC4 /* EditUseCaseViewController.xib */,
 			);
 			name = UseCaseTable;
 			sourceTree = "<group>";
@@ -223,6 +231,7 @@
 				9F4448601A10BB2600B949F5 /* AddPIViewController.xib in Resources */,
 				9FA776D51A35A15600F7AFBE /* AddUserTokenViewController.xib in Resources */,
 				9FA5CB9B19F5270700FCB314 /* Main.storyboard in Resources */,
+				9F71D6BE1A374D6E007AEBC4 /* EditUseCaseViewController.xib in Resources */,
 				9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */,
 				9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */,
 				9FA5CB9D19F5270700FCB314 /* Images.xcassets in Resources */,
@@ -253,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F71D6BD1A374D6E007AEBC4 /* EditUseCaseViewController.m in Sources */,
 				9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */,
 				9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */,
 				9FA776D81A35F2DE00F7AFBE /* UseCaseViewController.m in Sources */,

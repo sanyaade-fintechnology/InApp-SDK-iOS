@@ -10,6 +10,7 @@
 #import "DetailViewController.h"
 #import "PayInstTableViewController.h"
 #import "AddPIViewController.h"
+#import "EditUseCaseViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 #define selectPItoAddActionSheet 666
@@ -87,6 +88,15 @@
     
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
+- (IBAction)showEditUseCaseVC:(id)sender {
+    
+    EditUseCaseViewController* useCaseVC = [[EditUseCaseViewController alloc] initWithNibName:@"EditUseCaseViewController" bundle:Nil];
+    
+    [self.navigationController pushViewController:useCaseVC animated:YES];
+
+}
+
 
 -(BOOL) textFieldShouldReturn: (UITextField *) textField
 {
