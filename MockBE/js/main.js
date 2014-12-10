@@ -107,7 +107,7 @@ function renderList(data) {
 	
 	$.each(currentEvents, function(index, value) {
 		
-		console.log('Render Events ... Data:' + index +  '  :' + value.id + '  :' + value.event);
+		//console.log('Render Events ... Data:' + index +  '  :' + value.id + '  :' + value.event);
 
 		$('.eventList').append('<li><a href="#" class="eventItem" data-identity="' + loadIndex + '">' + value.id + ' ' + value.timeStamp + '</a></li>');
 		
@@ -134,37 +134,65 @@ function renderDetails(data) {
 	keys = Object.keys(currentDetails);
 			
 	$.each(keys, function(index, keyValue) {
-		//console.log('Details ... :' + index +  '  :' + keyValue);
+
+		currentValue = currentDetails[keyValue];
+		
 		$('.detailKeyList').append('<li><a href="#" class="detailItem" >' + index + ' : ' + keyValue + '</a></li>');
 		
-		keyMainValue = currentDetails[keyValue];
 		
-		console.log('keyMainValue :' + typeof(keyMainValue));
-		
-		if (typeof(keyMainValue) === 'object') {
-			
-			console.log('object Value');
-			
-			// subDetails = $.parseJSON(keyMainValue);
-			
-			console.log('subDetails :' + typeof(keyMainValue));
-			
-			subKeys = Object.keys(keyMainValue);
-			
-			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp&nbspobject</a></li>');
-			
-			$.each(subKeys, function(subIndex, subKeyValue) {
-				//console.log('Details ... :' + index +  '  :' + keyValue);
-				$('.detailKeyList').append('<li><a href="#" class="detailItem" >&nbsp&nbsp&nbsp' + subIndex + ' : ' + subKeyValue + '</a></li>');
-				$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp&nbsp&nbsp&nbsp&nbsp' +  + ' : ' + keyMainValue[subKeyValue] + '</a></li>');
-			});
+		if (typeof(currentValue) === 'object') {
+			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp;&nbsp;' + detectTypeForObject(currentValue) + '</a></li>');
+			insertObjectContent(currentValue,2);
 		} else {
-			console.log('Non object Value');
-			
-			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp&nbsp' + keyMainValue + '</a></li>');
+			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp;&nbsp;' + currentValue + '</a></li>');
+		}
+	});
+}
+
+function insertObjectContent(detailedObject,indention) {
+	
+	//console.log('Details ... :' + indention);
+	
+	detailedKeys = Object.keys(detailedObject);
+	
+	indentionStr = '';
+	
+	for(count = 0; count <= indention; count++){
+		indentionStr = indentionStr + '&nbsp;&nbsp;';
+	}
+	
+	$.each(detailedKeys, function(subIndex, subKeyValue) {
+		//console.log('Details ... :' + indention +  '  :' + subKeyValue);
+		
+		currentValue = detailedObject[subKeyValue];
+		
+		$('.detailKeyList').append('<li><a href="#" class="detailItem" >&nbsp;&nbsp;' + indentionStr + subIndex +' : ' + subKeyValue + '</a></li>');
+		
+		if (typeof(currentValue) === 'object') {
+			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp;&nbsp;' + indentionStr + detectTypeForObject(currentValue) + '</a></li>');
+			insertObjectContent(currentValue,indention+2);
+		} else {
+			$('.detailValueList').append('<li><a href="#" class="detailItem" >&nbsp;&nbsp;' + indentionStr + currentValue + '</a></li>');
+		}
+		
+		indentionStr = '';
+	
+		for(count = 0; count <= indention; count++){
+			indentionStr = indentionStr + '&nbsp;&nbsp;';
 		}
 	});
 	
+}
+
+function detectTypeForObject(unkownObject) {
+	
+	detailedKeys = Object.keys(unkownObject);
+	
+	if (detailedKeys[0] == '0') {
+		return 'Array';
+	}
+	
+	return 'Key-Value';
 }
 
 // Helper function to serialize all the form fields into a JSON string
