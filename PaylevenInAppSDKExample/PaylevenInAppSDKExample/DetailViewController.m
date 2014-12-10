@@ -154,16 +154,13 @@
     addPiVC.userToken = self.userTokenTextField.text;
     
     [self.navigationController pushViewController:addPiVC animated:YES];
-        
 }
-
 
 - (void) displayAlertViewWithMessage:(NSString*)message {
 
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:self cancelButtonTitle:@"Damm" otherButtonTitles:nil];
     
     [alertView show];
-    
 }
 
 

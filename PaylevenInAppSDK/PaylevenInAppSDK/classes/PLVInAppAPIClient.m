@@ -32,8 +32,9 @@
 
 
 #define apiHeaderKeyXHmacTimeStamp @"X-Hmac-Timestamp"
-#define apiHeaderKeyXHmac @"X-Hmac"
-#define apiHeaderKeyXBundleID @"X-Bundle-Id"
+#define apiHeaderKeyXHmac @"X-HMAC"
+#define apiHeaderKeyXBundleID @"X-ApplicationID"
+#define apiHeaderKeyXBodyHash @"X-Body-Hash"
 #define apiHeaderKeyXSDKVersion @"X-Sdk-Version"
 #define apiHeaderKeyXOSVersion @"X-OS-Version"
 #define apiHeaderKeyXDeviceType @"X-Device-Model"
@@ -206,13 +207,11 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&JSONError];
     
-    request.HTTPBody = jsonData;
+    NSString* bodyString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    // add HMAC
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
     
-    [self addHmacForParameterDict:bodyParameters toRequest:request];
-    
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [self addHmacWithBodyContent:bodyString toRequest:request];
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
@@ -262,14 +261,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&JSONError];
     
-    request.HTTPBody = jsonData;
+    NSString* bodyString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    // add HMAC
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
     
-    [self addHmacForParameterDict:bodyParameters toRequest:request];
-    
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
+    [self addHmacWithBodyContent:bodyString toRequest:request];
+
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         if (![error.domain isEqualToString:NSURLErrorDomain] ) {
@@ -277,10 +274,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         }
         
         if (completionHandler != Nil) {
-        
             SDLog(@"addPaymentInstruments %@",response);
             completionHandler(response, error);
-            
         }
     }];
     
@@ -303,16 +298,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&JSONError];
     
-    request.HTTPBody = jsonData;
+    NSString* bodyString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    NSMutableDictionary* mutableBodyParameters = [NSMutableDictionary dictionaryWithDictionary:bodyParameters];
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
     
-    // add HMAC
-    
-    [self addHmacForParameterDict:mutableBodyParameters toRequest:request];
-    
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
+    [self addHmacWithBodyContent:bodyString toRequest:request];
+
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         if (![error.domain isEqualToString:NSURLErrorDomain] ) {
@@ -320,27 +311,23 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         }
         
     }];
-    
 }
 
-
-
 - (void) listPaymentInstrumentsForUserToken:(NSString*)userToken withUseCase:(NSString*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
-    
-    NSMutableDictionary* bodyParameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,useCase, apiParameterKeyUseCase,nil];
-    
-//    NSURL *URL = [self getBaseServiceURL];
     
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:PLVInAppClientAPIListPisEndPoint,[self getBaseServiceURL],userToken,useCase]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    
     request.HTTPMethod = httpMethodeGET;
 
     // add HMAC
     
-    [self addHmacForParameterDict:bodyParameters toRequest:request];
+    NSString* bodyString = @"";
     
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [self addHmacWithBodyContent:bodyString toRequest:request];
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
@@ -427,14 +414,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&JSONError];
     
-    [bodyParameters setObject:userToken forKey:apiParameterKeyUserToken];
+    NSString* bodyString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    request.HTTPBody = jsonData;
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
     
-    [self addHmacForParameterDict:bodyParameters toRequest:request];
-    
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
+    [self addHmacWithBodyContent:bodyString toRequest:request];
+
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         if (completionHandler != Nil) {
@@ -455,8 +440,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         }
     }
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piID,apiParameterPIIdentifier,nil];
-    
     NSURL *URL = [self getBaseServiceURL];
     
     URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPIUsersDisablePiEndPoint,userToken,piID]];
@@ -464,9 +447,11 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = httpMethodeDELETE;
 
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    NSString* bodyString = @"";
     
-    [self addHmacForParameterDict:parameters toRequest:request];
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [self addHmacWithBodyContent:bodyString toRequest:request];
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
@@ -493,12 +478,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = httpMethodeDELETE;
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:userToken,apiParameterKeyUserToken,piID,apiParameterPIIdentifier,useCase,apiParameterKeyUseCase,nil];
+    NSString* bodyString = @"";
     
-    [self addHmacForParameterDict:parameters toRequest:request];
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [self addHmacWithBodyContent:bodyString toRequest:request];
 
-    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         if (completionHandler != Nil) {
@@ -679,17 +664,15 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 
 
--(void)addHmacForParameterDict:(NSMutableDictionary*)parameters toRequest:(NSMutableURLRequest*)request {
+-(void)addHmacWithBodyContent:(NSString*)bodyContent toRequest:(NSMutableURLRequest*)request {
     
     //1. create timestamp string
 
     NSString *timestamp = [self.dateFormatter stringFromDate:[NSDate date]];
 
-    //2. add timestamp to params
-    [parameters setObject:timestamp forKey:[apiHeaderKeyXHmacTimeStamp lowercaseString]];
-    [parameters setObject:self.registerBundleID forKey:[apiHeaderKeyXBundleID lowercaseString]];
-    [parameters setObject:PLVInAppSDKVersion forKey:[apiHeaderKeyXSDKVersion lowercaseString]];
+    //2. update headers
     
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [request setValue:timestamp forHTTPHeaderField:apiHeaderKeyXHmacTimeStamp];
     [request setValue:self.registerBundleID forHTTPHeaderField:apiHeaderKeyXBundleID];
     [request setValue:PLVInAppSDKVersion forHTTPHeaderField:apiHeaderKeyXSDKVersion];
@@ -697,10 +680,17 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [request setValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:apiHeaderKeyXOSVersion];
     [request setValue:[DevicePlatform platformString] forHTTPHeaderField:apiHeaderKeyXDeviceType];
     
-    [request setValue:@"baseAuthToken" forHTTPHeaderField:apiHeaderKeyXAuthType];
+    if (bodyContent == Nil) {
+        
+        bodyContent = @"";
+    }
+    
+    NSString* bodyHash = [self sha256:bodyContent];
+    
+    [request setValue:bodyHash forHTTPHeaderField:apiHeaderKeyXBodyHash];
     
     //3. sort params alphabetically & generate query string
-    NSString* query = [self generateHmacQueryString:parameters];
+    NSString* query = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@",request.HTTPMethod,request.URL.absoluteString,self.registerBundleID,bodyHash,timestamp];
     
     //4. generate hash
     const char *cKey = [self.registerAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
@@ -710,72 +700,24 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
     NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
     NSString *hash = [[HMAC base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    hash = [hash stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
     HMAC = nil;
     
     [request setValue:hash forHTTPHeaderField:apiHeaderKeyXHmac];
 
 }
 
--(NSString *)generateHmacQueryString:(NSDictionary *)params
-{
-    /*
-     Convert an NSDictionary to a query string
-     */
+-(NSString*) sha256:(NSString *)inputString{
+    const char *s=[inputString cStringUsingEncoding:NSASCIIStringEncoding];
+    NSData *keyData=[NSData dataWithBytes:s length:strlen(s)];
     
-    NSMutableArray* pairs = [NSMutableArray array];
-    
-    //sort params alphabetically
-    NSArray *paramKeys = [params allKeys];
-    BOOL reverseSort = NO;
-    NSArray *sortedParamKeys = [paramKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
-    
-    //generate query string by taking subarrays and dictionarys into account
-    for (NSString* key in sortedParamKeys)
-    {
-        id value = [params objectForKey:key];
-        
-        if ([value isKindOfClass:[NSDictionary class]])
-        {
-            NSDictionary* valueDict = (NSDictionary*)value;
-            
-            NSArray* keyArray = [valueDict.allKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
-            
-            for (NSString *subKey in keyArray)
-            {
-                [pairs addObject:[NSString stringWithFormat:@"%@[%@]=%@", key, subKey, [value objectForKey:subKey]]];
-            }
-        }
-        else if ([value isKindOfClass:[NSArray class]])
-        {
-            NSUInteger i = 0;
-            
-            for (NSString *subValue in value)
-            {
-                if ([subValue isKindOfClass:[NSDictionary class]])
-                {
-                    NSDictionary* subValueDict = (NSDictionary*)subValue;
-                    
-                    NSArray* keyArray = [subValueDict.allKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
-                    
-                    for (NSString *subKey in keyArray)
-                    {
-                        [pairs addObject:[NSString stringWithFormat:@"%@[%lu][%@]=%@", key,i, subKey, [subValueDict objectForKey:subKey]]];
-                    }
-                } else {
-                
-                    [pairs addObject:[NSString stringWithFormat:@"%@[%lu]=%@", key, (unsigned long)i, subValue]];
-                    
-                }
-                
-                i++;
-            }
-        }
-        else
-        {
-            [pairs addObject:[NSString stringWithFormat:@"%@=%@", key, [params objectForKey:key]]];
-        }
-    }
-    return [pairs componentsJoinedByString:@"&"];
+    uint8_t digest[CC_SHA256_DIGEST_LENGTH]={0};
+    CC_SHA256(keyData.bytes, keyData.length, digest);
+    NSData *out=[NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    NSString *hash=[out description];
+    hash = [hash stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    hash = [hash stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
+    return hash;
 }
 
 
@@ -801,15 +743,5 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 
 @end
-
-
-NSInteger alphabeticKeySort(id string1, id string2, void *reverse)
-{
-    if (*(BOOL *)reverse == YES)
-    {
-        return [string2 localizedCaseInsensitiveCompare:string1];
-    }
-    return [string1 localizedCaseInsensitiveCompare:string2];
-}
 
 

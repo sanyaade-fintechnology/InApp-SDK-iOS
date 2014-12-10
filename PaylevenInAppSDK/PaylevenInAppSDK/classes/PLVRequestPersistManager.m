@@ -24,6 +24,8 @@
 
 #define kRepeatCheckIntervall 5.
 
+NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
+
 @interface PLVRequestPersistManager()
 
 @property (strong) NSMutableArray* requestArray;
@@ -110,7 +112,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     [paramDict setObject:params forKey:PLVRequestParameterKey];
     
-    NSString* requestTokenPhase = [self.apiClient generateHmacQueryString:(NSDictionary*)params];
+    NSString* requestTokenPhase = [self generateHmacQueryString:(NSDictionary*)params];
     
     // execlude repeatSlot and firetime from hash creation
     
@@ -258,4 +260,78 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
 }
 
+-(NSString *)generateHmacQueryString:(NSDictionary *)params
+{
+    /*
+     Convert an NSDictionary to a query string
+     */
+    
+    NSMutableArray* pairs = [NSMutableArray array];
+    
+    //sort params alphabetically
+    NSArray *paramKeys = [params allKeys];
+    BOOL reverseSort = NO;
+    NSArray *sortedParamKeys = [paramKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
+    
+    //generate query string by taking subarrays and dictionarys into account
+    for (NSString* key in sortedParamKeys)
+    {
+        id value = [params objectForKey:key];
+        
+        if ([value isKindOfClass:[NSDictionary class]])
+        {
+            NSDictionary* valueDict = (NSDictionary*)value;
+            
+            NSArray* keyArray = [valueDict.allKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
+            
+            for (NSString *subKey in keyArray)
+            {
+                [pairs addObject:[NSString stringWithFormat:@"%@[%@]=%@", key, subKey, [value objectForKey:subKey]]];
+            }
+        }
+        else if ([value isKindOfClass:[NSArray class]])
+        {
+            NSUInteger i = 0;
+            
+            for (NSString *subValue in value)
+            {
+                if ([subValue isKindOfClass:[NSDictionary class]])
+                {
+                    NSDictionary* subValueDict = (NSDictionary*)subValue;
+                    
+                    NSArray* keyArray = [subValueDict.allKeys sortedArrayUsingFunction:alphabeticKeySort context:&reverseSort];
+                    
+                    for (NSString *subKey in keyArray)
+                    {
+                        [pairs addObject:[NSString stringWithFormat:@"%@[%lu][%@]=%@", key,(unsigned long)i, subKey, [subValueDict objectForKey:subKey]]];
+                    }
+                } else {
+                    
+                    [pairs addObject:[NSString stringWithFormat:@"%@[%lu]=%@", key, (unsigned long)i, subValue]];
+                    
+                }
+                
+                i++;
+            }
+        }
+        else
+        {
+            [pairs addObject:[NSString stringWithFormat:@"%@=%@", key, [params objectForKey:key]]];
+        }
+    }
+    return [pairs componentsJoinedByString:@"&"];
+}
+
 @end
+
+
+
+NSInteger alphabeticKeySort(id string1, id string2, void *reverse)
+{
+    if (*(BOOL *)reverse == YES)
+    {
+        return [string2 localizedCaseInsensitiveCompare:string1];
+    }
+    return [string1 localizedCaseInsensitiveCompare:string2];
+}
+

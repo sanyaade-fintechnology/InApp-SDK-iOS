@@ -66,9 +66,5 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  */
 - (void) startRequestWithBody:(NSDictionary*)bodyParameters addEndpoint:(NSString*)endpoint andHTTPMethod:(NSString*)httpMethod andRequestIdentifier:(NSString*)requestIdentifierToken;
 
-
-- (NSString*) generateHmacQueryString:(NSDictionary*)parameters ;
-
-
 @end
 
