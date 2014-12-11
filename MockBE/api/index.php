@@ -14,6 +14,7 @@ $app->post('/logs', 'addLogs');
 
 $app->post('/status', 'setBackEndStatus');
 $app->get('/logs',	'listLogs');
+$app->get('/logs/:needle',	'filterLogs');
 
 $app->post('/users', 'getUserTokenForEmail');
 $app->post('/users/:userToken/payment-instruments',	'addPIToUserToken');
@@ -59,6 +60,29 @@ function listLogs () {
         }
 }
 
+function filterLogs ($needle) {
+	
+    $sql = "SELECT * FROM `LOGTABLE` WHERE event LIKE :needleValue ORDER BY `id` DESC LIMIT 50";
+
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+		
+		$needleValue = '%' . $needle . '%';
+		$stmt->bindParam("needleValue", $needleValue);  
+        $stmt->execute();
+        $events = json_encode($stmt->fetchAll());
+		
+		$result = array();
+		$result['events'] = $events;
+		
+		returnOKStatus($result);
+        $db = null;
+		} catch (PDOException $e) {
+                returnErrorWithDescription($e->getMessage()); 
+                return;
+        }
+}
 
 function setBackEndStatus ($userToken) {
 	
@@ -694,13 +718,13 @@ function createMaskedPI($piDetails) {
 			
 			if (strcasecmp(strtoupper($piType),'DD') == 0) {
 								
-				if (array_key_exists('accountNumber',$maskedPi)) {
+				if (array_key_exists('accountNo',$maskedPi)) {
 					
-					$accountNumber = $maskedPi['accountNumber'];
+					$accountNumber = $maskedPi['accountNo'];
 					
 					$maskedAccountNumber = maskStringToLength($accountNumber,4);
 					
-					$maskedPi['accountNumber'] = $maskedAccountNumber;
+					$maskedPi['accountNo'] = $maskedAccountNumber;
 				}
 			}
 			
@@ -1088,14 +1112,9 @@ function checkHMACForUserTokenRequest($request) {
 function checkHMACForRequest($request) {
 
 	$headers = $request->headers();
-	
-	if (!isset($headers['x-bundle-id']) && !isset($headers['x-package-name'])) {
-		returnErrorWithDescription('Missing bundle idenfifier in header');
-		return false;
-	}
-	
+		
 	$hmacResult = 'hmac';
-	$bundleID = 'bundleId';
+	$bundleID = '####';
 	$sdkVersion = 'version';
 	$hmacItemArray = array();
 	
@@ -1105,6 +1124,14 @@ function checkHMACForRequest($request) {
 	} else if (isset($headers['x-package-name'])) {
 		$hmacItemArray['x-Package-Name'] = $headers['x-package-name'];
 		$bundleID = $headers['x-package-name'];
+	} else if (isset($headers['x-applicationid'])) {
+		$hmacItemArray['x-applicationid'] = $headers['x-applicationid'];
+		$bundleID = $headers['x-applicationid'];
+	}
+	
+	if ( $bundleID == '#####' ) {
+		returnErrorWithDescription('Missing bundle idenfifier in header');
+		return false;
 	}
 	
 	if (isset($headers['x-sdk-version'])) {
