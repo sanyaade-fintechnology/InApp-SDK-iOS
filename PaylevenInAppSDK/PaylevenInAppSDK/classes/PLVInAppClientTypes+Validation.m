@@ -35,7 +35,7 @@
 
 
 
-#define CreateError(errorCode,errorMessage) [NSError errorWithDomain:PLVAPIClientErrorDomain code:errorCode userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]]
+#define addError(validationErrors,errorCode,errorMessage) [validationErrors addObject:[NSError errorWithDomain:PLVAPIClientErrorDomain code:errorCode userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]]]
 
 @implementation PLVPaymentInstrument (Validation)
 
@@ -44,17 +44,19 @@
     return Nil;
 }
 
-- (NSError*)validateOnUpdate {
+- (NSArray*)validateOnUpdate {
+    
+    NSMutableArray* validationErrors = [NSMutableArray new];
     
     if (self.identifier == Nil || self.identifier.length == 0) {
-        return CreateError(ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
+        addError(validationErrors,ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
     }
     
     if (self.sortIndex == Nil || self.sortIndex.length == 0) {
-        return CreateError(ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
+        addError(validationErrors,ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
     }
     
-    return Nil;
+    return validationErrors;
 }
 
 - (BOOL) containsOnlyDigits:(NSString*)valueToCheck {
@@ -81,21 +83,23 @@
     return TRUE;
 }
 
-- (NSError*) validExpiryDateForMonth:(NSString*)month andYear:(NSString*)year {
+- (NSArray*) validExpiryDateForMonth:(NSString*)month andYear:(NSString*)year {
+    
+    NSMutableArray* validationErrors = [NSMutableArray new];
     
     if (![self containsOnlyDigits:month] || ![self containsOnlyDigits:year]) {
-        return CreateError(ERROR_DATE_INVALID_CHARS_CODE,ERROR_DATE_INVALID_CHARS_MESSAGE);
+        addError(validationErrors,ERROR_DATE_INVALID_CHARS_CODE,ERROR_DATE_INVALID_CHARS_MESSAGE);
     }
     
     int yearInt = 2000 + [NSDecimalNumber decimalNumberWithString:year].intValue;
     int monthInt = [NSDecimalNumber decimalNumberWithString:month].intValue;
     
     if (monthInt > 12 || monthInt < 1) {
-        return CreateError(ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
+        addError(validationErrors,ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
     }
     
     if (yearInt > 2050 || yearInt < 2010) {
-        return CreateError(ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
+        addError(validationErrors,ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
     }
     
     NSDate *currentDate = [NSDate date];
@@ -103,10 +107,10 @@
     NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate];
     
     if ((yearInt < components.year) || ((yearInt == components.year) && (monthInt < components.month))) {
-        return CreateError(ERROR_DATE_PASSED_CODE,ERROR_DATE_PASSES_MESSAGE);
+        addError(validationErrors,ERROR_DATE_PASSED_CODE,ERROR_DATE_PASSES_MESSAGE);
     }
     
-    return Nil;
+    return validationErrors;
 }
 
 @end
@@ -114,62 +118,57 @@
 
 @implementation PLVPayInstrumentCC (Validation)
 
-- (NSError*)   validateOnCreation {
+- (NSArray*) validateOnCreation {
+    
+    NSMutableArray* validationErrors = [NSMutableArray new];
     
     if (self.pan == Nil || self.pan.length == 0) {
-        return CreateError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
     }
-    
-    NSArray* panParts = [self.pan componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    self.pan = [panParts componentsJoinedByString:@""];
-    
+        
     PLVInAppClientTypPanValidator* validator = [[PLVInAppClientTypPanValidator alloc] init];
     
     if (self.pan.length < [validator minLengthForPan:self.pan]) {
-        return CreateError(ERROR_CC_TOO_SHORT_CODE,ERROR_CC_TOO_SHORT_MESSAGE);
+        addError(validationErrors,ERROR_CC_TOO_SHORT_CODE,ERROR_CC_TOO_SHORT_MESSAGE);
     }
     
     if (self.pan.length > [validator maxLengthForPan:self.pan]) {
-        return CreateError(ERROR_CC_TOO_LONG_CODE,ERROR_CC_TOO_LONG_MESSAGE);
+        addError(validationErrors,ERROR_CC_TOO_LONG_CODE,ERROR_CC_TOO_LONG_MESSAGE);
     }
     
     if (self.pan.integerValue == 0) {
-        return CreateError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
     }
     
     if ([validator doLuhnCheckForPan:self.pan]) {
         if (![self luhnCheck:self.pan]) {
-            return CreateError(ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
+            addError(validationErrors,ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
         }
     }
     
     if (![self containsOnlyDigits:self.pan]) {
-        return CreateError(ERROR_CC_INVALID_CHARS_CODE,ERROR_CC_INVALID_CHARS_MESSAGE);
+        addError(validationErrors,ERROR_CC_INVALID_CHARS_CODE,ERROR_CC_INVALID_CHARS_MESSAGE);
     }
     
     if (self.expiryMonth == Nil || self.expiryMonth.length == 0 || self.expiryYear == Nil || self.expiryYear.length == 0) {
-        return CreateError(ERROR_DATE_EMPTY_CODE,ERROR_DATE_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_DATE_EMPTY_CODE,ERROR_DATE_EMPTY_MESSAGE);
     }
     
-    NSError* expiryDateError = [self validExpiryDateForMonth:self.expiryMonth andYear:self.expiryYear];
-    
-    if (expiryDateError != Nil) {
-        return expiryDateError;
-    }
+    [validationErrors addObjectsFromArray:[self validExpiryDateForMonth:self.expiryMonth andYear:self.expiryYear]];
     
     if (self.cvv == Nil || self.cvv.length == 0) {
-        return CreateError(ERROR_CVV_EMPTY_CODE,ERROR_CVV_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_CVV_EMPTY_CODE,ERROR_CVV_EMPTY_MESSAGE);
     }
     
     if (![self containsOnlyDigits:self.cvv]) {
-        return CreateError(ERROR_CVV_INVALID_CHARS_CODE,ERROR_CVV_INVALID_CHARS_MESSAGE);
+        addError(validationErrors,ERROR_CVV_INVALID_CHARS_CODE,ERROR_CVV_INVALID_CHARS_MESSAGE);
     }
     
     if (self.cvv.length != [validator cvvlengthForPan:self.pan]) {
-        return CreateError(ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
+        addError(validationErrors,ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
     }
 
-    return Nil;
+    return validationErrors;
 }
 
 - (BOOL) luhnCheck:(NSString *)stringToTest
@@ -211,59 +210,53 @@
 
 @implementation PLVPayInstrumentDD (Validation)
 
-- (NSError*)   validateOnCreation {
+- (NSArray*)   validateOnCreation {
     
+    NSMutableArray* validationErrors = [NSMutableArray new];
     
     if (self.accountNo == Nil || self.accountNo.length == 0) {
-        return CreateError(ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
+        addError(validationErrors,ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
     }
     
-    NSArray* accountNoParts = [self.accountNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    self.accountNo = [accountNoParts componentsJoinedByString:@""];
-    
-    
     if (![self containsOnlyDigits:self.accountNo]) {
-        return CreateError(ERROR_DD_ACCOUNT_INVALID_CHARS_CODE,ERROR_DD_ACCOUNT_INVALID_CHARS_MESSAGE);
+        addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_CHARS_CODE,ERROR_DD_ACCOUNT_INVALID_CHARS_MESSAGE);
     }
     
     if (self.accountNo.length < ddaccountNoMinLength) {
-        return CreateError(ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
+        addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
     }
     
     if (self.accountNo.length > ddaccountNoMaxLength) {
-        return CreateError(ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
+        addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
     }
     
     if (self.accountNo.integerValue == 0) {
-        return CreateError(ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
+        addError(validationErrors,ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
     }
     
     
     if (self.routingNo == Nil || self.routingNo.length == 0) {
-        return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
+        addError(validationErrors,ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
     }
-    
-    
-    NSArray* routingNoParts = [self.routingNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    self.routingNo = [routingNoParts componentsJoinedByString:@""];
+
     
     if (self.routingNo.integerValue == 0) {
-        return CreateError(ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
+        addError(validationErrors,ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
     }
     
     if (![self containsOnlyDigits:self.routingNo]) {
-        return CreateError(ERROR_DD_ROUTING_INVALID_CHARS_CODE,ERROR_DD_ROUTING_INVALID_CHARS_MESSAGE);
+        addError(validationErrors,ERROR_DD_ROUTING_INVALID_CHARS_CODE,ERROR_DD_ROUTING_INVALID_CHARS_MESSAGE);
     }
     
     if (self.routingNo.length < ddroutingNoMinLength) {
-        return CreateError(ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
+        addError(validationErrors,ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
     }
     
     if (self.routingNo.length > ddroutingNoMaxLength) {
-        return CreateError(ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
+        addError(validationErrors,ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
     }
     
-    return Nil;
+    return validationErrors;
 }
 
 @end
@@ -274,56 +267,45 @@
 
 - (NSError*)   validateOnCreation {
     
-    // replace whitespaces;
-    
-    NSArray* parts = [self.iban componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    self.iban = [parts componentsJoinedByString:@""];
+    NSMutableArray* validationErrors = [NSMutableArray new];
     
     if (self.iban == Nil || self.iban.length == 0) {
-        return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     }
     
     if (self.iban.length < sepaIBANNumberMinLength || self.iban.length > sepaIBANNumberMaxLength) {
-        return CreateError(ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
     }
     
     if ([self.iban substringFromIndex:2].integerValue == 0) {
-        return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     }
     
     if (![self containsDigits:[self.iban substringToIndex:2]]) {
-        return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
     }
     
     if (![self containsOnlyDigits:[self.iban substringWithRange:NSMakeRange(2, 2)]]) {
-        return CreateError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
     }
     
     if (![self checkIBAN:self.iban]) {
-        return CreateError(ERROR_SEPA_IBAN_INVALID_CODE,ERROR_SEPA_IBAN_INVALID_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CODE,ERROR_SEPA_IBAN_INVALID_MESSAGE);
     }
-    
-    // update to UpperCase
-    
-    NSMutableString* tempIban = [[NSMutableString alloc] initWithString:self.iban];
-    
-    [tempIban replaceCharactersInRange:NSMakeRange(0, 2) withString:[[self.iban substringToIndex:2] uppercaseString]];
-    
-    self.iban = [NSString stringWithString:tempIban];
     
     if (self.bic == Nil || self.bic.length == 0) {
         
-        self.bic = @"";  // optinal
+        ;  // optinal
         
         return Nil;
     }
     
     if (self.bic.integerValue == 0) {
-        return CreateError(ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
     }
     
     if (self.bic.length < sepaBICNumberMinLength || self.bic.length > sepaBICNumberMaxLength) {
-        return CreateError(ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
+        addError(validationErrors,ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
     }
     
     return Nil;
@@ -444,17 +426,19 @@
 
 @implementation PLVPayInstrumentPAYPAL (Validation)
 
-- (NSError*)   validateOnCreation {
+- (NSArray*)   validateOnCreation {
+    
+    NSMutableArray* validationErrors = [NSMutableArray new];
     
     if (self.authToken == Nil || self.authToken.length == 0) {
-        return CreateError(ERROR_PAYPAL_TOKEN_EMPTY_CODE,ERROR_PAYPAL_TOKEN_EMPTY_MESSAGE);
+        addError(validationErrors,ERROR_PAYPAL_TOKEN_EMPTY_CODE,ERROR_PAYPAL_TOKEN_EMPTY_MESSAGE);
     }
     
     if (self.authToken.length < paypalAuthTokenNumberMinLength || self.authToken.length > paypalAuthTokenNumberMaxLength) {
-        return CreateError(ERROR_PAYPAL_TOKEN_INVALID_CODE,ERROR_PAYPAL_TOKEN_INVALID_MESSAGE);
+        addError(validationErrors,ERROR_PAYPAL_TOKEN_INVALID_CODE,ERROR_PAYPAL_TOKEN_INVALID_MESSAGE);
     }
     
-    return Nil;
+    return validationErrors;
 }
 
 @end

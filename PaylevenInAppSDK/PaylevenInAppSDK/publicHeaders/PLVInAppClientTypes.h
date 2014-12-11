@@ -8,7 +8,6 @@
 
 @import Foundation;
 
-#define     PLVPITypeUnknown    @"PLVPITypeUnknown"
 #define     PLVPITypeCC         @"CC"
 #define     PLVPITypeDD         @"DD"
 #define     PLVPITypeSEPA       @"SEPA"
@@ -25,9 +24,26 @@
  */
 @interface PLVPaymentInstrument : NSObject
 
-@property (strong) NSString* type;
-@property (strong, readonly) NSString* sortIndex;
-@property (strong, readonly) NSString* identifier;
++ (id)createCCWithPan:(NSString*)pan
+          expiryMonth:(NSString*)expiryMonth
+           expiryYear:(NSString*)expiryYear
+                  cvv:(NSString*)cvv
+        andCardHolder:(NSString*)cardHolder;
+
+
++ (id)createDDWithAccountNo:(NSString*)accountNo
+               andRoutingNo:(NSString*)routingNo;
+
+
++ (id)createSEPAWithIBAN:(NSString*)iban
+                  andBIC:(NSString*)bic;
+
++ (id)createPAYPALWithToken:(NSString*)token;
+
+
+@property (readonly,strong) NSString* type;
+@property (readonly,strong) NSString* sortIndex;
+@property (readonly,strong) NSString* identifier;
 
 @end
 
@@ -48,11 +64,12 @@
 
 @interface PLVPayInstrumentCC : PLVPaymentInstrument
 
-@property (strong) NSString* pan;
-@property (readonly,nonatomic) NSString* cardBrand;
-@property (strong) NSString* expiryMonth;
-@property (strong) NSString* expiryYear;
-@property (strong) NSString* cvv;
+@property (readonly,strong) NSString* pan;
+@property (readonly,strong) NSString* cardBrand;
+@property (readonly,strong) NSString* expiryMonth;
+@property (readonly,strong) NSString* expiryYear;
+@property (readonly,strong) NSString* cvv;
+@property (readonly,strong) NSString* cardHolder;
 
 @end
 
@@ -67,8 +84,9 @@
 
 @interface PLVPayInstrumentDD : PLVPaymentInstrument
 
-@property (strong) NSString* accountNo;
-@property (strong) NSString* routingNo;
+@property (readonly,strong) NSString* accountNo;
+@property (readonly,strong) NSString* routingNo;
+
 @end
 
 /**
@@ -82,8 +100,8 @@
 
 @interface PLVPayInstrumentSEPA : PLVPaymentInstrument
 
-@property (strong) NSString* iban;
-@property (strong) NSString* bic;
+@property (readonly,strong) NSString* iban;
+@property (readonly,strong) NSString* bic;
 
 @end
 
@@ -96,6 +114,6 @@
 
 @interface PLVPayInstrumentPAYPAL : PLVPaymentInstrument
 
-@property (strong) NSString* authToken;
+@property (readonly,strong) NSString* authToken;
 
 @end

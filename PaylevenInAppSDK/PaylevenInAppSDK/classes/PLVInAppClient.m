@@ -459,19 +459,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     // PI should already tested for class and Nil before
     
-    NSError* validationError;
+    NSMutableArray* validationErrors;
     
-    if (validateOnCreation) {
-        validationError = [pi validateOnCreation];
-    } else {
-        validationError = [pi validateOnUpdate];
+    validationErrors = [NSMutableArray arrayWithArray:[pi validateOnCreation]];
+    
+    if (!validateOnCreation) {
+        [validationErrors addObjectsFromArray:[pi validateOnUpdate]];
     }
     
-    if (validationError != Nil) {
+    if (validationErrors != Nil && validationErrors.count > 0) {
 
-        self.lastError = validationError;
+        self.lastError = [validationErrors firstObject];
         
-        completionHandler(nil,validationError);
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_INVALID_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        
+        completionHandler(nil,error);
         
         return FALSE;
     }

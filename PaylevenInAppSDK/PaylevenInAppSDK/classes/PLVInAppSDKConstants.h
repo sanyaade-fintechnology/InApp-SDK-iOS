@@ -33,6 +33,7 @@
 #define ccPanKey                @"pan"
 #define ccCVVKey                @"cvv"
 #define ccBrandKey              @"cardBrand"
+#define ccCardHolder            @"cardHolder"
 
 #define ddExpiryMonthKey        @"expiryMonth"
 #define ddExpiryYearKey         @"expiryYear"

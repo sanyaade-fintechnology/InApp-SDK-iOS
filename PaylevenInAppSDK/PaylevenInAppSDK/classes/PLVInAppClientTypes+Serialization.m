@@ -108,6 +108,11 @@
         [content setObject:self.identifier forKey:piIdentifierTypeKey];
     }
     
+    if (self.cardHolder != Nil) {
+        [content setObject:self.cardHolder forKey:ccCardHolder];
+    }
+    
+    
     if (self.pan != Nil) {
         [content setObject:self.pan forKey:ccPanKey];
     }

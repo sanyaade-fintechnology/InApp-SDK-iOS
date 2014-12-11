@@ -162,7 +162,22 @@
 
 - (IBAction)sendPI:(id)sender {
     
-    PLVPaymentInstrument* pi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    id creationResult = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    
+    
+    PLVPaymentInstrument* pi;
+    
+    
+    if (![creationResult isKindOfClass:[PLVPaymentInstrument class]]) {
+        
+        NSError* error = (NSError*)[creationResult firstObject];
+        
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+        
+        [alertView show];
+        
+        return;
+    }
     
     [self closeKeyboard];
     
@@ -209,9 +224,9 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
         
-        self.keyArray = @[@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
-        self.keyValueLengthArray = @[@21,@2,@2,@4];
-        self.keyboardTypeArray = @[@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
+        self.keyArray = @[@"cardHolder",@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
+        self.keyValueLengthArray = @[@26,@21,@2,@2,@4];
+        self.keyboardTypeArray = @[@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
         
         piType = @"CreditCard";
         
@@ -242,12 +257,12 @@
     
 }
 
-- (PLVPaymentInstrument*) fillPIWithType:(NSString*)pitype andContent:(NSDictionary*)content {
+- (id) fillPIWithType:(NSString*)pitype andContent:(NSDictionary*)content {
     
     PLVPaymentInstrument* pi;
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
-        pi = [[PLVPayInstrumentCC alloc] init];
+        pi = [PLVPaymentInstrument createCCWithPan:[content objectForKey:@"pan"] expiryMonth:[content objectForKey:@"expiryMonth"] expiryYear:[content objectForKey:@"expiryYear"] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
@@ -266,11 +281,10 @@
         [pi setValue:[content objectForKey:key] forKey:key];
     }
     
-////    NSError* validateResult = [pi validate];
-//    
-//    if (validateResult != Nil) {
-//        NSLog(@"error: %@",validateResult.localizedFailureReason);
-//    }
+    if ([pi isKindOfClass:[NSArray class]]) {
+        
+        
+    }
     
     return pi;
     
