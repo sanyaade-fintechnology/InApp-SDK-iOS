@@ -164,10 +164,7 @@
     
     id creationResult = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
     
-    
-    PLVPaymentInstrument* pi;
-    
-    
+
     if (![creationResult isKindOfClass:[PLVPaymentInstrument class]]) {
         
         NSError* error = (NSError*)[creationResult firstObject];
@@ -182,6 +179,9 @@
     [self closeKeyboard];
     
     self.currentTextField = Nil;
+    
+    
+    PLVPaymentInstrument* pi = (PLVPaymentInstrument*)creationResult;
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:pi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         

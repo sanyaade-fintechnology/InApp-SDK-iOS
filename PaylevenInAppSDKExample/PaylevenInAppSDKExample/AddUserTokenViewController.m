@@ -173,11 +173,24 @@
 
 - (IBAction)sendPI:(id)sender {
     
-    PLVPaymentInstrument* pi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    id creationResult = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    
+    if (![creationResult isKindOfClass:[PLVPaymentInstrument class]]) {
+        
+        NSError* error = (NSError*)[creationResult firstObject];
+        
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+        
+        [alertView show];
+        
+        return;
+    }
     
     [self closeKeyboard];
     
     self.currentTextField = Nil;
+    
+    PLVPaymentInstrument* pi = (PLVPaymentInstrument*)creationResult;
     
     [[PLVInAppClient sharedInstance] createUserToken:self.emailAddress withPaymentInstrument:pi useCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
@@ -251,7 +264,7 @@
     PLVPaymentInstrument* pi;
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
-        pi = [[PLVPayInstrumentCC alloc] init];
+        pi = [PLVPaymentInstrument createCCWithPan:[content objectForKey:@"pan"] expiryMonth:[content objectForKey:@"expiryMonth"] expiryYear:[content objectForKey:@"expiryYear"] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
