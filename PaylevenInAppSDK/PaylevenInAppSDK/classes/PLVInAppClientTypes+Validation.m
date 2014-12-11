@@ -47,11 +47,11 @@
 - (NSError*)validateOnUpdate {
     
     if (self.identifier == Nil || self.identifier.length == 0) {
-        return CreateError(ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
+        return CreateError(ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
     }
     
     if (self.sortIndex == Nil || self.sortIndex.length == 0) {
-        return CreateError(ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
+        return CreateError(ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
     }
     
     return Nil;
