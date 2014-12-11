@@ -58,7 +58,7 @@
                 
                 if (start != nil && end != Nil) {
                     
-                    if ((start.length == end.length) && start.length > 0) {
+                    if ((start.length == end.length) && (start.length > 0) && (start.length <= pan.length)) {
                         
                         long startValue = [[NSDecimalNumber decimalNumberWithString:start] longValue];
                         

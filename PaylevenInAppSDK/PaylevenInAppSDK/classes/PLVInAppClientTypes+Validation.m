@@ -283,12 +283,12 @@
         return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     }
     
-    if ([self.iban substringFromIndex:2].integerValue == 0) {
-        return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
-    }
-    
     if (self.iban.length < sepaIBANNumberMinLength || self.iban.length > sepaIBANNumberMaxLength) {
         return CreateError(ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
+    }
+    
+    if ([self.iban substringFromIndex:2].integerValue == 0) {
+        return CreateError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     }
     
     if (![self containsDigits:[self.iban substringToIndex:2]]) {
