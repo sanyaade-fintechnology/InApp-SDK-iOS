@@ -18,6 +18,7 @@
 #import "PLVRequestPersistManager.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "DevicePlatform.h"
+#import "PLVReachability.h"
 
 #define useLocalEndpoint 0
 #define usemacMiniEndpoint 1
@@ -91,12 +92,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 @property (nonatomic, strong) NSCondition *waitForRegisterFinishedCondition;
 
 /** The Base Service URL */
-@property (nonatomic, strong) NSString *tryToRegisterToAPIKey;
-
-
-
-
-/** The Base Service URL */
 @property (nonatomic, strong) NSString *registerBundleID;
 
 /** The URL session. */
@@ -112,6 +107,8 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 @property (nonatomic, readonly, strong) PLVServerTrustValidator *serverTrustValidator;
 
 @property (nonatomic,strong) NSDateFormatter *dateFormatter;
+
+@property (nonatomic, strong) PLVRequestPersistManager* requestPersistmanager;
 
 /** Stops the receiver invalidating all sessions. */
 - (void)stop;
@@ -156,24 +153,42 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         _serverCertificate = [[PLVServerCertificate alloc] init];
         _serverTrustValidator = [[PLVServerTrustValidator alloc] init];
         
-        _waitForRegisterFinishedCondition = [[NSCondition alloc] init];
+        _requestPersistmanager = [PLVRequestPersistManager sharedInstance];
         
-        [[PLVRequestPersistManager sharedInstance] registerAPIClient:self];
+        [_requestPersistmanager registerAPIClient:self];
+        
+        
         
         _dateFormatter = [[NSDateFormatter alloc] init];
         NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
         [_dateFormatter setTimeZone:timeZone];
         _dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss";
         
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kPLVReachabilityChangedNotification object:nil];
     }
     
     return self;
 }
 
 - (void)dealloc {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self stop];
 }
+
+- (void)reachabilityChanged:(NSNotification*) notif {
+    
+    PLVReachability* curReach = [notif object];
+    if ([curReach isKindOfClass:[PLVReachability class]]) {
+        
+        if (curReach.currentReachabilityStatus != NotReachable) {
+            
+            [self.requestPersistmanager fireImmediately];
+        }
+    }
+
+}
+
 
 - (void) setSpecificBaseServiceURL:(NSString*)serviceURLString {
     

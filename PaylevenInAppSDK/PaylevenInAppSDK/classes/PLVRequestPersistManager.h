@@ -47,4 +47,10 @@
  */
 - (void) removeRequestFromPersistStore:(NSString*)requestToken;
 
+
+/**
+ *  fireImmediately
+ */
+- (void) fireImmediately;
+
 @end

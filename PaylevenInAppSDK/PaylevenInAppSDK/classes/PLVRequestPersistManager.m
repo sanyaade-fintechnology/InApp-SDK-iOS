@@ -92,6 +92,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
 }
 
+- (void) fireImmediately {
+    
+    @synchronized(self) {
+    
+    NSMutableArray* runNowRequest = [NSMutableArray new];
+    
+    for (NSDictionary* request in self.requestArray) {
+        [runNowRequest addObject:request];
+    }
+    
+    for (NSDictionary* request in runNowRequest) {
+        [self retryRequest:request];
+    }
+        
+    }
+    
+}
+
 
 
 - (NSString*) addRequestToPersistStore:(NSDictionary*)params toEndpoint:(NSString*)endpoint httpMethod:(NSString*)method {

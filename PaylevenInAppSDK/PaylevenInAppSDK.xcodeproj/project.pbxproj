@@ -33,6 +33,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		9F00818E1A39A12F00EE402B /* PLVReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F00818C1A39A12F00EE402B /* PLVReachability.h */; };
+		9F00818F1A39A12F00EE402B /* PLVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F00818D1A39A12F00EE402B /* PLVReachability.m */; };
 		9F30869F1A2351E3000D2AD5 /* PLVInAppAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F30869D1A2351E3000D2AD5 /* PLVInAppAPIClient.m */; };
 		9F6552BE19F6876A003D07A5 /* PLVInAppAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F6552B619F6876A003D07A5 /* PLVInAppAPIClient.h */; };
 		9F6552C019F6876A003D07A5 /* PLVServerCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F6552B819F6876A003D07A5 /* PLVServerCertificate.h */; };
@@ -102,6 +104,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9F00818C1A39A12F00EE402B /* PLVReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLVReachability.h; sourceTree = "<group>"; };
+		9F00818D1A39A12F00EE402B /* PLVReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLVReachability.m; sourceTree = "<group>"; };
 		9F30869D1A2351E3000D2AD5 /* PLVInAppAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppAPIClient.m; path = PaylevenInAppSDK/classes/PLVInAppAPIClient.m; sourceTree = "<group>"; };
 		9F6552B619F6876A003D07A5 /* PLVInAppAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppAPIClient.h; path = PaylevenInAppSDK/classes/PLVInAppAPIClient.h; sourceTree = "<group>"; };
 		9F6552B819F6876A003D07A5 /* PLVServerCertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVServerCertificate.h; path = PaylevenInAppSDK/classes/PLVServerCertificate.h; sourceTree = "<group>"; };
@@ -282,6 +286,8 @@
 		9FBC2EFF1A1F4B79007D1341 /* Utilis */ = {
 			isa = PBXGroup;
 			children = (
+				9F00818C1A39A12F00EE402B /* PLVReachability.h */,
+				9F00818D1A39A12F00EE402B /* PLVReachability.m */,
 				9F71D6AF1A370BF4007AEBC4 /* PLVCardBrands.h */,
 				9F71D6B01A370BF4007AEBC4 /* PLVCardBrands.m */,
 				9FD7E7C81A2912CB00A5B166 /* DevicePlatform.h */,
@@ -308,6 +314,7 @@
 				9F71D6B11A370BF4007AEBC4 /* PLVCardBrands.h in Headers */,
 				9F71D6B51A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h in Headers */,
 				9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */,
+				9F00818E1A39A12F00EE402B /* PLVReachability.h in Headers */,
 				9FB3E6491A3079BD00FE9CAC /* PLVEventTransformer.h in Headers */,
 				9FB3E6451A30799900FE9CAC /* PLVEvent.h in Headers */,
 				9FD7E7CA1A2912CB00A5B166 /* DevicePlatform.h in Headers */,
@@ -490,6 +497,7 @@
 				9FC8B2981A1B978100DD3370 /* PLVInAppErrors.m in Sources */,
 				9FBC2EFE1A1F4400007D1341 /* KeychainItemWrapper.m in Sources */,
 				9F71D6B61A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m in Sources */,
+				9F00818F1A39A12F00EE402B /* PLVReachability.m in Sources */,
 				9FB3E6461A30799900FE9CAC /* PLVEvent.m in Sources */,
 				9F7CFC891A079A950047203A /* PLVInAppClientTypes+Serialization.m in Sources */,
 				9F71D6B21A370BF4007AEBC4 /* PLVCardBrands.m in Sources */,

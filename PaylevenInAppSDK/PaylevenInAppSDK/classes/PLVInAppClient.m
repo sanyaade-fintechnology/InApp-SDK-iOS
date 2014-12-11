@@ -81,6 +81,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     return self;
 }
 
+-(void)dealloc {
+    
+    [self.eventLogger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCloseInAPPClient parameters:Nil]];
+}
+
 - (void) registerWithAPIKey:(NSString*)apiKey {
     
     assert(apiKey);
