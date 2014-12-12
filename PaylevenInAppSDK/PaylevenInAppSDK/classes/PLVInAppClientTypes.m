@@ -33,9 +33,11 @@ typedef enum : NSUInteger {
 
 @end
 
+
 @interface PLVPayInstrumentCC ()
 
 - (id)initWithPan:(NSString*)pan expiryMonth:(NSString*)expiryMonth expiryYear:(NSString*)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder;
+
 @end
 
 
@@ -156,15 +158,15 @@ typedef enum : NSUInteger {
     return self;
 }
 
+- (NSArray*) validate {
+    
+    return [self validateOnCreation];
+    
+}
+
 + (id)createCCWithPan:(NSString*)pan expiryMonth:(NSString*)expiryMonth expiryYear:(NSString*)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
 {
     PLVPayInstrumentCC* cc = [[PLVPayInstrumentCC alloc] initWithPan:pan expiryMonth:expiryMonth expiryYear:expiryYear cvv:cvv andCardHolder:cardHolder];
-    
-    NSArray* validationErrors = [cc validateOnCreation];
-    
-    if (validationErrors.count > 0) {
-        return validationErrors;
-    }
     
     return cc;
 }
@@ -173,12 +175,6 @@ typedef enum : NSUInteger {
     
     PLVPayInstrumentDD* dd = [[PLVPayInstrumentDD alloc] initWithAccountNo:accountNo andRoutingNo:routingNo];
     
-    NSArray* validationErrors = [dd validateOnCreation];
-    
-    if (validationErrors.count > 0) {
-        return validationErrors;
-    }
-    
     return dd;
 }
 
@@ -186,25 +182,13 @@ typedef enum : NSUInteger {
     
     PLVPayInstrumentSEPA* sepa = [[PLVPayInstrumentSEPA alloc] initWithIBAN:iban andBIC:bic];
     
-    NSArray* validationErrors = [sepa validateOnCreation];
-    
-    if (validationErrors.count > 0) {
-        return validationErrors;
-    }
-    
     return sepa;
 }
 
 + (id) createPAYPALWithToken:(NSString*)token {
     
     PLVPayInstrumentPAYPAL* payPal = [[PLVPayInstrumentPAYPAL alloc] initWithToken:token];
-    
-    NSArray* validationErrors = [payPal validateOnCreation];
-    
-    if (validationErrors.count > 0) {
-        return validationErrors;
-    }
-    
+
     return payPal;
 }
 

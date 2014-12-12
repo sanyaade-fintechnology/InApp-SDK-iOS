@@ -162,14 +162,22 @@
 
 - (IBAction)sendPI:(id)sender {
     
-    id creationResult = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    PLVPaymentInstrument* newPi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
     
-
-    if (![creationResult isKindOfClass:[PLVPaymentInstrument class]]) {
+    NSArray* validationErrors = [newPi validate];
+    
+    if (validationErrors.count > 0) {
         
-        NSError* error = (NSError*)[creationResult firstObject];
+        // validation Errors
         
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+        NSMutableString* errorMessage = [NSMutableString new];
+        
+        for (NSError* error in validationErrors) {
+            [errorMessage appendString:error.localizedDescription];
+            [errorMessage appendString:@"\n"];
+        }
+        
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
         
         [alertView show];
         
@@ -180,10 +188,7 @@
     
     self.currentTextField = Nil;
     
-    
-    PLVPaymentInstrument* pi = (PLVPaymentInstrument*)creationResult;
-    
-    [[PLVInAppClient sharedInstance] addPaymentInstrument:pi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
+    [[PLVInAppClient sharedInstance] addPaymentInstrument:newPi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
         if (error != Nil) {
             
@@ -266,29 +271,24 @@
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
-        pi = [[PLVPayInstrumentPAYPAL alloc] init];
+        pi = [PLVPaymentInstrument createPAYPALWithToken:[content objectForKey:@"authToken"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        pi = [[PLVPayInstrumentSEPA alloc] init];
+        pi = [PLVPaymentInstrument createSEPAWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
-        pi = [[PLVPayInstrumentDD alloc] init];
+        pi = [PLVPaymentInstrument createDDWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
     }
     
     for (NSString* key in content.allKeys) {
         [pi setValue:[content objectForKey:key] forKey:key];
     }
     
-    if ([pi isKindOfClass:[NSArray class]]) {
-        
-        
-    }
-    
     return pi;
-    
 }
+
 
 - (void) createTextFieldsOnScrollView:(UIScrollView*)scrollView {
     

@@ -35,15 +35,6 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 - (void) registerWithAPIKey:(NSString*)apiKey ;
 
 /**
- *  getUsertoken
- *
- *  @param emailAddress    email Address to get the userToken for
- *  @param completionBlock completionBlock
- */
-
-- (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
-
-/**
  *  createUserToken:
  *
  *  @param emailAddress      email address for userToken

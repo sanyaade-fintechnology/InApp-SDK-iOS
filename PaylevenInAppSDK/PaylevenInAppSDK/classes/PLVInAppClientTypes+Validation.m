@@ -122,50 +122,52 @@
     
     NSMutableArray* validationErrors = [NSMutableArray new];
     
-    if (self.pan == Nil || self.pan.length == 0) {
-        addError(validationErrors,ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
-    }
-        
     PLVInAppClientTypPanValidator* validator = [[PLVInAppClientTypPanValidator alloc] init];
     
-    if (self.pan.length < [validator minLengthForPan:self.pan]) {
-        addError(validationErrors,ERROR_CC_TOO_SHORT_CODE,ERROR_CC_TOO_SHORT_MESSAGE);
-    }
-    
-    if (self.pan.length > [validator maxLengthForPan:self.pan]) {
-        addError(validationErrors,ERROR_CC_TOO_LONG_CODE,ERROR_CC_TOO_LONG_MESSAGE);
-    }
-    
-    if (self.pan.integerValue == 0) {
+    if (self.pan == Nil || self.pan.length == 0) {
         addError(validationErrors,ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
-    }
-    
-    if ([validator doLuhnCheckForPan:self.pan]) {
-        if (![self luhnCheck:self.pan]) {
-            addError(validationErrors,ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
-        }
-    }
-    
-    if (![self containsOnlyDigits:self.pan]) {
-        addError(validationErrors,ERROR_CC_INVALID_CHARS_CODE,ERROR_CC_INVALID_CHARS_MESSAGE);
+    } else {
+        
+            if (self.pan.length < [validator minLengthForPan:self.pan]) {
+                addError(validationErrors,ERROR_CC_TOO_SHORT_CODE,ERROR_CC_TOO_SHORT_MESSAGE);
+            }
+            
+            if (self.pan.length > [validator maxLengthForPan:self.pan]) {
+                addError(validationErrors,ERROR_CC_TOO_LONG_CODE,ERROR_CC_TOO_LONG_MESSAGE);
+            }
+            
+            if (self.pan.integerValue == 0) {
+                addError(validationErrors,ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
+            }
+            
+            if ([validator doLuhnCheckForPan:self.pan]) {
+                if (![self luhnCheck:self.pan]) {
+                    addError(validationErrors,ERROR_CC_LUM_FAILED_CODE,ERROR_CC_LUM_FAILED_MESSAGE);
+                }
+            }
+        
+            if (![self containsOnlyDigits:self.pan]) {
+                addError(validationErrors,ERROR_CC_INVALID_CHARS_CODE,ERROR_CC_INVALID_CHARS_MESSAGE);
+            }
     }
     
     if (self.expiryMonth == Nil || self.expiryMonth.length == 0 || self.expiryYear == Nil || self.expiryYear.length == 0) {
         addError(validationErrors,ERROR_DATE_EMPTY_CODE,ERROR_DATE_EMPTY_MESSAGE);
-    }
+    } else {
     
-    [validationErrors addObjectsFromArray:[self validExpiryDateForMonth:self.expiryMonth andYear:self.expiryYear]];
-    
-    if (self.cvv == Nil || self.cvv.length == 0) {
-        addError(validationErrors,ERROR_CVV_EMPTY_CODE,ERROR_CVV_EMPTY_MESSAGE);
-    }
-    
-    if (![self containsOnlyDigits:self.cvv]) {
-        addError(validationErrors,ERROR_CVV_INVALID_CHARS_CODE,ERROR_CVV_INVALID_CHARS_MESSAGE);
-    }
-    
-    if (self.cvv.length != [validator cvvlengthForPan:self.pan]) {
-        addError(validationErrors,ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
+        [validationErrors addObjectsFromArray:[self validExpiryDateForMonth:self.expiryMonth andYear:self.expiryYear]];
+        
+        if (self.cvv == Nil || self.cvv.length == 0) {
+            addError(validationErrors,ERROR_CVV_EMPTY_CODE,ERROR_CVV_EMPTY_MESSAGE);
+        }
+        
+        if (![self containsOnlyDigits:self.cvv]) {
+            addError(validationErrors,ERROR_CVV_INVALID_CHARS_CODE,ERROR_CVV_INVALID_CHARS_MESSAGE);
+        }
+        
+        if (self.cvv.length != [validator cvvlengthForPan:self.pan]) {
+            addError(validationErrors,ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
+        }
     }
 
     return validationErrors;
@@ -216,44 +218,44 @@
     
     if (self.accountNo == Nil || self.accountNo.length == 0) {
         addError(validationErrors,ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
-    }
+    } else {
     
-    if (![self containsOnlyDigits:self.accountNo]) {
-        addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_CHARS_CODE,ERROR_DD_ACCOUNT_INVALID_CHARS_MESSAGE);
-    }
-    
-    if (self.accountNo.length < ddaccountNoMinLength) {
-        addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
-    }
-    
-    if (self.accountNo.length > ddaccountNoMaxLength) {
-        addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
-    }
-    
-    if (self.accountNo.integerValue == 0) {
-        addError(validationErrors,ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
+            if (![self containsOnlyDigits:self.accountNo]) {
+                addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_CHARS_CODE,ERROR_DD_ACCOUNT_INVALID_CHARS_MESSAGE);
+            }
+            
+            if (self.accountNo.length < ddaccountNoMinLength) {
+                addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
+            }
+            
+            if (self.accountNo.length > ddaccountNoMaxLength) {
+                addError(validationErrors,ERROR_DD_ACCOUNT_INVALID_LENGTH_CODE,ERROR_DD_ACCOUNT_INVALID_LENGTH_MESSAGE);
+            }
+            
+            if (self.accountNo.integerValue == 0) {
+                addError(validationErrors,ERROR_DD_ACCOUNT_MISSING_CODE,ERROR_DD_ACCOUNT_MISSING_MESSAGE);
+            }
     }
     
     
     if (self.routingNo == Nil || self.routingNo.length == 0) {
         addError(validationErrors,ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
-    }
-
-    
-    if (self.routingNo.integerValue == 0) {
-        addError(validationErrors,ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
-    }
-    
-    if (![self containsOnlyDigits:self.routingNo]) {
-        addError(validationErrors,ERROR_DD_ROUTING_INVALID_CHARS_CODE,ERROR_DD_ROUTING_INVALID_CHARS_MESSAGE);
-    }
-    
-    if (self.routingNo.length < ddroutingNoMinLength) {
-        addError(validationErrors,ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
-    }
-    
-    if (self.routingNo.length > ddroutingNoMaxLength) {
-        addError(validationErrors,ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
+    } else {
+        if (self.routingNo.integerValue == 0) {
+            addError(validationErrors,ERROR_DD_ROUTING_MISSING_CODE,ERROR_DD_ROUTING_MISSING_MESSAGE);
+        }
+        
+        if (![self containsOnlyDigits:self.routingNo]) {
+            addError(validationErrors,ERROR_DD_ROUTING_INVALID_CHARS_CODE,ERROR_DD_ROUTING_INVALID_CHARS_MESSAGE);
+        }
+        
+        if (self.routingNo.length < ddroutingNoMinLength) {
+            addError(validationErrors,ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
+        }
+        
+        if (self.routingNo.length > ddroutingNoMaxLength) {
+            addError(validationErrors,ERROR_DD_ROUTING_INVALID_LENGTH_CODE,ERROR_DD_ROUTING_INVALID_LENGTH_MESSAGE);
+        }
     }
     
     return validationErrors;
@@ -271,27 +273,28 @@
     
     if (self.iban == Nil || self.iban.length == 0) {
         addError(validationErrors,ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
-    }
-    
-    if (self.iban.length < sepaIBANNumberMinLength || self.iban.length > sepaIBANNumberMaxLength) {
-        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
-    }
-    
-    if ([self.iban substringFromIndex:2].integerValue == 0) {
-        addError(validationErrors,ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
-    }
-    
-    if (![self containsDigits:[self.iban substringToIndex:2]]) {
-        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
-    }
-    
-    if (![self containsOnlyDigits:[self.iban substringWithRange:NSMakeRange(2, 2)]]) {
-        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
-    }
-    
-    if (![self checkIBAN:self.iban]) {
-        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CODE,ERROR_SEPA_IBAN_INVALID_MESSAGE);
-    }
+    } else {
+            if (self.iban.length < sepaIBANNumberMinLength || self.iban.length > sepaIBANNumberMaxLength) {
+                addError(validationErrors,ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
+            } else {
+            
+                    if ([self.iban substringFromIndex:2].integerValue == 0) {
+                        addError(validationErrors,ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
+                    }
+                    
+                    if (![self containsDigits:[self.iban substringToIndex:2]]) {
+                        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
+                    }
+                    
+                    if (![self containsOnlyDigits:[self.iban substringWithRange:NSMakeRange(2, 2)]]) {
+                        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
+                    }
+                    
+                    if (![self checkIBAN:self.iban]) {
+                        addError(validationErrors,ERROR_SEPA_IBAN_INVALID_CODE,ERROR_SEPA_IBAN_INVALID_MESSAGE);
+                    }
+            }
+        }
     
     if (self.bic == Nil || self.bic.length == 0) {
         
@@ -300,12 +303,12 @@
         return Nil;
     }
     
-    if (self.bic.integerValue == 0) {
-        addError(validationErrors,ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
-    }
-    
     if (self.bic.length < sepaBICNumberMinLength || self.bic.length > sepaBICNumberMaxLength) {
         addError(validationErrors,ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
+    } else {
+            if (self.bic.integerValue == 0) {
+                addError(validationErrors,ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
+            }
     }
     
     return Nil;
@@ -432,10 +435,10 @@
     
     if (self.authToken == Nil || self.authToken.length == 0) {
         addError(validationErrors,ERROR_PAYPAL_TOKEN_EMPTY_CODE,ERROR_PAYPAL_TOKEN_EMPTY_MESSAGE);
-    }
-    
-    if (self.authToken.length < paypalAuthTokenNumberMinLength || self.authToken.length > paypalAuthTokenNumberMaxLength) {
-        addError(validationErrors,ERROR_PAYPAL_TOKEN_INVALID_CODE,ERROR_PAYPAL_TOKEN_INVALID_MESSAGE);
+    } else {
+        if (self.authToken.length < paypalAuthTokenNumberMinLength || self.authToken.length > paypalAuthTokenNumberMaxLength) {
+            addError(validationErrors,ERROR_PAYPAL_TOKEN_INVALID_CODE,ERROR_PAYPAL_TOKEN_INVALID_MESSAGE);
+        }
     }
     
     return validationErrors;

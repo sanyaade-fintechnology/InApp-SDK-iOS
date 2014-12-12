@@ -173,13 +173,22 @@
 
 - (IBAction)sendPI:(id)sender {
     
-    id creationResult = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
+    PLVPaymentInstrument* newPi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
     
-    if (![creationResult isKindOfClass:[PLVPaymentInstrument class]]) {
+    NSArray* validationErrors = [newPi validate];
+    
+    if (validationErrors.count > 0) {
         
-        NSError* error = (NSError*)[creationResult firstObject];
+        // validation Errors
         
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+        NSMutableString* errorMessage = [NSMutableString new];
+        
+        for (NSError* error in validationErrors) {
+            [errorMessage appendString:error.localizedDescription];
+            [errorMessage appendString:@"\n"];
+        }
+        
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
         
         [alertView show];
         
@@ -190,9 +199,7 @@
     
     self.currentTextField = Nil;
     
-    PLVPaymentInstrument* pi = (PLVPaymentInstrument*)creationResult;
-    
-    [[PLVInAppClient sharedInstance] createUserToken:self.emailAddress withPaymentInstrument:pi useCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
+    [[PLVInAppClient sharedInstance] createUserToken:self.emailAddress withPaymentInstrument:newPi useCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
         
         if (error != Nil) {
             
@@ -226,9 +233,9 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
         
-        self.keyArray = @[@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
-        self.keyValueLengthArray = @[@21,@2,@2,@4];
-        self.keyboardTypeArray = @[@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
+        self.keyArray = @[@"cardHolder",@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
+        self.keyValueLengthArray = @[@26,@21,@2,@2,@4];
+        self.keyboardTypeArray = @[@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
         
         piType = @"CreditCard";
         
@@ -268,15 +275,15 @@
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
-        pi = [[PLVPayInstrumentPAYPAL alloc] init];
+        pi = [PLVPaymentInstrument createPAYPALWithToken:[content objectForKey:@"authToken"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        pi = [[PLVPayInstrumentSEPA alloc] init];
+        pi = [PLVPaymentInstrument createSEPAWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
-        pi = [[PLVPayInstrumentDD alloc] init];
+        pi = [PLVPaymentInstrument createDDWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
     }
     
     for (NSString* key in content.allKeys) {

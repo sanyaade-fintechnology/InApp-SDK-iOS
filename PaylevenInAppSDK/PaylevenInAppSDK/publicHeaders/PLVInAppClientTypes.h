@@ -40,6 +40,7 @@
 
 + (id)createPAYPALWithToken:(NSString*)token;
 
+- (NSArray*) validate;
 
 @property (readonly,strong) NSString* type;
 @property (readonly,strong) NSString* sortIndex;

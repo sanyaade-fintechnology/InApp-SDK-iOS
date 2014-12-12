@@ -141,6 +141,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     }];
 }
 
+/**
+ *  getUsertoken
+ *
+ *  @param emailAddress    email Address to get the userToken for
+ *  @param completionBlock completionBlock
+ */
+
 - (void) getUserToken:(NSString*)emailAddress withCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
     
     // run validation check
@@ -471,7 +478,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 
         self.lastError = [validationErrors firstObject];
         
-        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_INVALID_PAYMENTINSTRUMENTS_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        // validation Errors
+        
+        NSMutableString* errorMessage = [NSMutableString new];
+        
+        for (NSError* error in validationErrors) {
+            [errorMessage appendString:error.localizedDescription];
+            [errorMessage appendString:@"\n"];
+        }
+        
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_PAYMENTINSTRUMENT_VALIDATION_CODE userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]];
         
         completionHandler(nil,error);
         
