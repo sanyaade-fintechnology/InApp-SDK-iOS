@@ -16,6 +16,8 @@ $app->post('/status', 'setBackEndStatus');
 $app->get('/logs',	'listLogs');
 $app->get('/logs/:needle',	'filterLogs');
 
+$app->get('/useCases/repair', 'validateAllUseCases');
+
 $app->post('/users', 'getUserTokenForEmail');
 $app->post('/users/:userToken/payment-instruments',	'addPIToUserToken');
 $app->get('/users/:userToken/payment-instruments',	'listPiForUserToken');
@@ -746,6 +748,69 @@ function createMaskedPI($piDetails) {
 	
 	return $piDetails;
 }
+
+function validateAllUseCases() {
+	
+	$sql = "SELECT DISTINCT(piToken) AS piToken FROM USECASETABLE";
+	
+    try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);  
+            $stmt->execute();
+	        $allUseCaseTokens = $stmt->fetchAll();  
+	        $db = null;
+
+        } catch(PDOException $e) {
+            return false;
+        }
+		
+		
+	$sql = "SELECT piToken FROM PITABLE";
+
+    try {
+            $db = getConnection();
+            $stmt = $db->prepare($sql);  
+            $stmt->execute();
+	        $allPiTokens = $stmt->fetchAll();  
+	        $db = null;
+
+        } catch(PDOException $e) {
+            return false;
+        }	
+		
+	$allPiTokensTxt = json_encode($allPiTokens);
+	
+	$useCasesToRemove = array();
+	
+	foreach ($allUseCaseTokens as $currentUseCase) {
+		    
+		$piToken = $currentUseCase['piToken'];
+		
+		if(!strpos($allPiTokensTxt,$piToken)) {
+			array_push($useCasesToRemove,$piToken);
+		} 	
+	}
+	
+	// remove useCases without PI 
+	
+	$sql = "DELETE FROM USECASETABLE WHERE piToken=:piTokenValue";
+	
+	foreach ($useCasesToRemove as $invalidUseCaseForPI) {
+		
+		error_log('Remove useCase for piToken: ' . $invalidUseCaseForPI);
+		    
+	    try {
+	            $db = getConnection();
+	            $stmt = $db->prepare($sql);
+				$stmt->bindParam("piTokenValue", $invalidUseCaseForPI);
+	            $stmt->execute();
+
+	        } catch(PDOException $e) {
+	            return false;
+	        }		
+	}
+}
+
 
 function maskStringToLength($strToMask,$lengthToMask) {
 	

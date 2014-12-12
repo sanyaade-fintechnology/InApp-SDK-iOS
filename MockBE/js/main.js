@@ -15,6 +15,14 @@ $('#btnListEvents').click(function() {
 	return false;
 });
 
+
+$('#btnRepairUseCases').click(function() {
+	console.log('Fix UseCases');
+	repairUseCases();
+	return false;
+});
+
+
 // Trigger search when pressing 'Return' on search key input field
 $('#searchKey').keypress(function(e){
 	if(e.which == 13) {
@@ -60,7 +68,15 @@ $("img").error(function(){
 
 });
 
-
+function repairUseCases() {
+    $.ajax({
+        type: 'GET',
+        url: rootURL + '/useCases/repair',
+        dataType: "json", // data type of response
+        success: renderList
+    });
+	
+}
 function findAll() {
     $.ajax({
         type: 'GET',
@@ -68,6 +84,17 @@ function findAll() {
         dataType: "json", // data type of response
         success: renderList
     });
+}
+
+function applyFilter(needle) {
+    // console.log('Needle: ' + needle);
+    $.ajax({
+        type: 'GET',
+        url: rootURL + '/logs/' + needle,
+        dataType: "json", // data type of response
+        success: renderList
+    });
+	
 }
 
 function search(searchKey) {
@@ -101,6 +128,12 @@ function renderList(data) {
 	
 	eventsJSONString = data.events;
 	currentEvents = $.parseJSON(eventsJSONString);
+	
+	if(currentEvents.length == 0) {
+		alert('No events of this kind found :(');
+		return;
+	}
+	
 	$('.eventList li').remove();
 	
 	loadIndex = 0;

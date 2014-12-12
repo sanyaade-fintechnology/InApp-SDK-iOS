@@ -6,39 +6,73 @@
 </head>
 
 <body>
-
-<div class="header">
-	<button id="btnListEvents">List events</button>
-</div>
-
-
-<div class="leftArea">
-	<ul class="eventList"></ul>
-</div>
-
-<form id="wineForm">
-	
 <div class="mainArea">
-
-<label>Id:</label>
-<input id="eventId" name="id" type="text" disabled />
-
-<label>Time:</label>
-<input id="timeStamp" name="name" type="text" disabled/>
-
-
-		<label>Details:</label>
-		
-		<div class="detailTable">
-		
-			<ul class="detailKeyList"></ul>
-			<ul class="detailValueList"></ul>
-		
+	
+	<div class="header">
+		<div class="toLeftDiv">
+			<button id="btnListEvents">Lists last events</button>
 		</div>
+		<div class="toLeftDiv">
+			<button id="btnRepairUseCases">Repair UseCase List</button>
+		</div>
+		<div class="toRightDiv">
+		    <nav>
+		        <ul>
+				    <li class = "cat1" name="Filter" >
+				        <a href="#">Filter Events</a>
+				        <ul>
+					  	  <li value="InitInAPPClient" onclick="applyFilter('InitInAPPClient')"><a>Init InAppSDK</a></li>
+					  	  <li value="CloseInAPPClient" onclick="applyFilter('CloseInAPPClient')"><a>Close InAppSDK</a></li>
+					  	  <li value="CreateUserToken" onclick="applyFilter('CreateUserToken')"><a>Create UserToken</a></li>
+					  	  <li value="AddPaymentInstrument" onclick="applyFilter('AddPaymentInstrument')"><a>Add PI</a></li>
+					  	  <li value="DisablePaymentInstrument" onclick="applyFilter('DisablePaymentInstrument')"><a>Disable PI</a></li>
+					  	  <li value="RemovePaymentInstrument" onclick="applyFilter('RemovePaymentInstrument')"><a>Remove PI from UseCase</a></li>
+					  	  <li value="SetPaymentInstrumentsOrder" onclick="applyFilter('SetPaymentInstrumentsOrder')"><a>Set PI Order</a></li>
+					  	  <li value="ListPaymentInstrument" onclick="applyFilter('ListPaymentInstrument')"><a>List PIs</a></li>
+				        </ul>
+				    </li>
+				</ul>
+			</nav>
+		</div>
+		<div class="clearArea">
+		</diV>
+	</div>
+
+
+
+	<div class="leftArea">
+		<ul class="eventList"></ul>
+
+	</div>
+
+
+	<div class="rightArea">			
+		<form id="DetailArea">
+			
+			<label>Id:</label>
+				<input id="eventId" name="id" type="text" disabled />
+
+			<label>Time:</label>
+				<input id="timeStamp" name="name" type="text" disabled/>
+
+
+			<label>Details:</label>
+		
+			<div class="detailTable">
+		
+				<ul class="detailKeyList"></ul>
+				<ul class="detailValueList"></ul>
+		
+			</div>
+	
+		</form>
+
+	</div>
+	
+	<div class="clearArea">
+	</diV>
 	
 </div>
-
-</form>
 
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="js/main.js"></script>
