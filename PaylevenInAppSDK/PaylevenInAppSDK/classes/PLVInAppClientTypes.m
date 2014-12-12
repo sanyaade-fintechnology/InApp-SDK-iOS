@@ -11,6 +11,7 @@
 #import "PLVInAppClientTypes.h"
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppClientTypes+Validation.h"
+#import "PLVInAppErrors.h"
 
 typedef NSString PLVPIType;
 
@@ -142,8 +143,6 @@ typedef enum : NSUInteger {
 
 @end
 
-
-
 @implementation PLVPaymentInstrument
 
 @synthesize type = _type;
@@ -159,9 +158,31 @@ typedef enum : NSUInteger {
 }
 
 - (NSArray*) validate {
-    
     return [self validateOnCreation];
+}
+
+- (BOOL)validatePayInstrumentReturningError:(NSError **)outError {
     
+    NSArray* validationErrors = [self validate];
+    
+    if (validationErrors.count == 0) {
+        return TRUE;
+    } else if (outError != 0) {
+    
+        NSMutableString* errorMessage = [NSMutableString new];
+        
+        for (NSError* error in validationErrors) {
+            
+            if (error.localizedDescription != Nil) {
+                [errorMessage appendString:error.localizedDescription];
+                [errorMessage appendString:@"\n"];
+            }
+        }
+        
+        *outError = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_PAYMENTINSTRUMENT_VALIDATION_CODE userInfo:[NSDictionary dictionaryWithObject:errorMessage forKey:NSLocalizedDescriptionKey]];
+    }
+    
+    return FALSE;
 }
 
 + (id)createCCWithPan:(NSString*)pan expiryMonth:(NSString*)expiryMonth expiryYear:(NSString*)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder

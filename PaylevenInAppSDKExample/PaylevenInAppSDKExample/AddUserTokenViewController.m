@@ -175,20 +175,13 @@
     
     PLVPaymentInstrument* newPi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
     
-    NSArray* validationErrors = [newPi validate];
+    NSError* validationError;
     
-    if (validationErrors.count > 0) {
+    if (![newPi validatePayInstrumentReturningError:&validationError]) {
         
         // validation Errors
         
-        NSMutableString* errorMessage = [NSMutableString new];
-        
-        for (NSError* error in validationErrors) {
-            [errorMessage appendString:error.localizedDescription];
-            [errorMessage appendString:@"\n"];
-        }
-        
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:validationError.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
         
         [alertView show];
         

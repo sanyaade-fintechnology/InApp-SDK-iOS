@@ -466,12 +466,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     // PI should already tested for class and Nil before
     
-    NSMutableArray* validationErrors;
+    NSArray* validationErrors;
     
-    validationErrors = [NSMutableArray arrayWithArray:[pi validateOnCreation]];
-    
-    if (!validateOnCreation) {
-        [validationErrors addObjectsFromArray:[pi validateOnUpdate]];
+    if (validateOnCreation) {
+        validationErrors = [pi validateOnCreation];
+    } else {
+        validationErrors = [pi validateOnUpdate];
     }
     
     if (validationErrors != Nil && validationErrors.count > 0) {

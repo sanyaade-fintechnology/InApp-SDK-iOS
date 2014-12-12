@@ -40,7 +40,24 @@
 
 + (id)createPAYPALWithToken:(NSString*)token;
 
+
+
+/**
+ *  validate The PaymentInstrument
+ *
+ *  @return returns array containing a NSError objects for every single validation error
+ */
 - (NSArray*) validate;
+
+/**
+ *  validatePayInstrumentReturningError
+ *
+ *  @param outError error object
+ *
+ *  @return TRUE on passed validation and FALSE on missing validation
+ */
+- (BOOL) validatePayInstrumentReturningError:(NSError **)outError;
+
 
 @property (readonly,strong) NSString* type;
 @property (readonly,strong) NSString* sortIndex;

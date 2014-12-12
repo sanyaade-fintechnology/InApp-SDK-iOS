@@ -39,12 +39,12 @@
 
 @implementation PLVPaymentInstrument (Validation)
 
-- (NSError*)  validateOnCreation {
+- (NSArray*)  validateOnCreation {
     
     return Nil;
 }
 
-- (NSArray*)validateOnUpdate {
+- (NSArray*) validateOnUpdate {
     
     NSMutableArray* validationErrors = [NSMutableArray new];
     
@@ -267,7 +267,7 @@
 @implementation PLVPayInstrumentSEPA (Validation)
 
 
-- (NSError*)   validateOnCreation {
+- (NSArray*)   validateOnCreation {
     
     NSMutableArray* validationErrors = [NSMutableArray new];
     
@@ -311,7 +311,7 @@
             }
     }
     
-    return Nil;
+    return validationErrors;
 }
 
 
