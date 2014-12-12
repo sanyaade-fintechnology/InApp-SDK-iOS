@@ -396,7 +396,7 @@
         self.sendButton.alpha = 0.5;
     }
     
-    if (([self.addInfoDict objectForKey:@"iban"] != Nil ) && (self.addInfoDict.count == 1)) {
+    if (([self.addInfoDict objectForKey:@"iban"] != Nil ) && (self.addInfoDict.count == 1) && [self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
         // bic is optinal
         self.sendButton.enabled = TRUE;
         self.sendButton.alpha = 1.0;
@@ -433,6 +433,12 @@
         } else {
             self.sendButton.enabled = FALSE;
             self.sendButton.alpha = 0.5;
+        }
+        
+        if (([self.addInfoDict objectForKey:@"iban"] != Nil ) && (self.addInfoDict.count == 1) && [self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
+            // bic is optinal
+            self.sendButton.enabled = TRUE;
+            self.sendButton.alpha = 1.0;
         }
         
     }
