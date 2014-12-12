@@ -285,13 +285,17 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
         if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+            
             [[PLVRequestPersistManager sharedInstance] removeRequestFromPersistStore:requestIdentifierToken];
+            
+            [[PLVRequestPersistManager sharedInstance] fireImmediately];
+            
+            if (completionHandler != Nil) {
+                SDLog(@"addPaymentInstruments %@",response);
+                completionHandler(response, error);
+            }
         }
         
-        if (completionHandler != Nil) {
-            SDLog(@"addPaymentInstruments %@",response);
-            completionHandler(response, error);
-        }
     }];
     
 }
@@ -380,9 +384,21 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                 [updatedResponseDict setObject:serializedPI forKey:apiParameterKeyAddPIs];
             }
         
-            completionHandler((NSDictionary*)updatedResponseDict, error);
+            if (completionHandler != Nil) {
+                completionHandler((NSDictionary*)updatedResponseDict, error);
+            }
             
+            if (error == Nil ) {
+                [[PLVRequestPersistManager sharedInstance] fireImmediately];
+            } else {
+                if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+                    [[PLVRequestPersistManager sharedInstance] fireImmediately];
+                }
+            }
         }
+        
+        
+        
     }];
 }
 
@@ -441,6 +457,14 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             SDLog(@"setPaymentInstrumentsOrder: %@",response);
             completionHandler(response, error);
         }
+        
+        if (error == Nil ) {
+            [[PLVRequestPersistManager sharedInstance] fireImmediately];
+        } else {
+            if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+                [[PLVRequestPersistManager sharedInstance] fireImmediately];
+            }
+        }
     }];
     
 }
@@ -474,6 +498,14 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             SDLog(@"disablePaymentInstruments: %@",response);
             completionHandler(response, error);
         }
+        
+        if (error == Nil ) {
+            [[PLVRequestPersistManager sharedInstance] fireImmediately];
+        } else {
+            if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+                [[PLVRequestPersistManager sharedInstance] fireImmediately];
+            }
+        }
     }];
 }
 
@@ -504,6 +536,14 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         if (completionHandler != Nil) {
             SDLog(@"removePaymentInstrumentForUseCase: %@",response);
             completionHandler(response, error);
+        }
+        
+        if (error == Nil ) {
+            [[PLVRequestPersistManager sharedInstance] fireImmediately];
+        } else {
+            if (![error.domain isEqualToString:NSURLErrorDomain] ) {
+                [[PLVRequestPersistManager sharedInstance] fireImmediately];
+            }
         }
     }];
     

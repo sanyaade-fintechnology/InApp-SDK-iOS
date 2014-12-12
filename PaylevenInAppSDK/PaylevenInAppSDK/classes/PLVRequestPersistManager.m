@@ -49,7 +49,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
             _requestArray = [NSMutableArray new];
         }
         
-        _waitingSlotLenghtArray = @[@0.,@1.5,@2];
+        _waitingSlotLenghtArray = @[@15,@60,@180];
         
     }
     return self;

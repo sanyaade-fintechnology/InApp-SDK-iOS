@@ -189,27 +189,10 @@
             
             [alertView show];
             
-        } else {
-        
-                if (self.currentTextField == Nil) {
-                    // does not start an other textInput
-                    // so we clear the fields
-                    
-//                    for(UITextField* tField in self.scrollView.subviews) {
-//                        
-//                        if ([tField isKindOfClass:[UITextField class]]) {
-//                            tField.text = @"";
-//                        }
-//                    }
-                    
-                    [self backButton:self];
-                }
-            
-            
         }
     }];
 
-//    [self backButton:self];
+    [self backButton:self];
     
 }
 

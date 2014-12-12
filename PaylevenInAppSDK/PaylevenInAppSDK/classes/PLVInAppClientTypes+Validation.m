@@ -21,7 +21,7 @@
 #define ddaccountNoMinLength 8
 #define ddaccountNoMaxLength 10
 
-#define ddroutingNoMinLength 8
+#define ddroutingNoMinLength 5
 #define ddroutingNoMaxLength 9
 
 #define sepaIBANNumberMinLength 10
