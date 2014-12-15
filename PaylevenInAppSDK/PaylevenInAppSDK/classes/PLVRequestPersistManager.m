@@ -45,10 +45,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     self = [super init];
     if (self) {
 
-        if (_requestArray == Nil) {
-            _requestArray = [NSMutableArray new];
-        }
-        
+        _requestArray = [self loadPersisitRequests];
+
         _waitingSlotLenghtArray = @[@15,@60,@180];
         
     }
@@ -229,22 +227,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
 }
 
--(NSString*) encryptDecrypt:(NSString*)toEncrypt {
-    
-    char key = 'q'; //Any char will work
-    
-    const char* encryptChar = [toEncrypt UTF8String];
-    
-    char* output = (char*) [toEncrypt UTF8String];
-    
-    for (int i = 0; i < toEncrypt.length; i++)
-        output[i] = encryptChar[i] ^ key;
-    
-    return [NSString stringWithUTF8String:output];
-}
 
--(NSArray*) getPersisitRequests {
+-(NSArray*) loadPersisitRequests {
     
+    return [NSMutableArray new];
+    
+    // currently we don't save our request do disk
     
 #ifdef DEBUG
     
@@ -263,6 +251,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
 
 -(void) savePersisitRequests:(NSArray*)requests {
     
+    return;
+    
+    // currently we don't save our request do disk
     
 #ifdef DEBUG
     
