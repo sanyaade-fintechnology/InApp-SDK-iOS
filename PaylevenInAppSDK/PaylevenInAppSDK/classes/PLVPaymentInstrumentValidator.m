@@ -34,8 +34,8 @@
 #define sepaIBANNumberMinLength 10
 #define sepaIBANNumberMaxLength 34
 
-#define sepaBICNumberMinLength 8
-#define sepaBICNumberMaxLength 11
+#define sepaBICNumberLength1 8
+#define sepaBICNumberLength2 11
 
 #define paypalAuthTokenNumberMinLength 5
 #define paypalAuthTokenNumberMaxLength 30
@@ -466,7 +466,7 @@
 
 - (NSError*) validateBIC:(NSString*)bic {
     
-    if (bic.length < sepaBICNumberMinLength || bic.length > sepaBICNumberMaxLength) {
+    if (bic.length != sepaBICNumberLength1 || bic.length != sepaBICNumberLength2) {
         returnError(ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
     } else {
         if (bic.integerValue == 0) {

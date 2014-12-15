@@ -112,7 +112,7 @@ typedef enum : NSUInteger {
         _expiryMonth = expiryMonth;
         _cvv = cvv;
         _cardBrand = @"";
-        _cardHolder = cardHolder;
+        _cardHolder = [cardHolder uppercaseString];
     }
 
     return self;
@@ -224,8 +224,9 @@ typedef enum : NSUInteger {
         _iban = [tempIban uppercaseString];
         
         parts = [bic componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        _bic = [parts componentsJoinedByString:@""];
+        NSString* tempBic = [parts componentsJoinedByString:@""];
         
+        _bic = [tempBic uppercaseString];
     }
     
     return self;
