@@ -41,6 +41,8 @@
 @property (strong)  NSArray* keyValueLengthArray;
 @property (strong)  NSArray* keyboardTypeArray;
 @property (weak)  UITextField* currentTextField;
+@property (weak)  UITextField* expiryMonthTextField;
+@property (weak)  UITextField* expiryYearTextField;
 
 @end
 
@@ -510,6 +512,60 @@
     } else if ([key isEqualToString:@"authToken"]) {
         validationResult = [PLVPayInstrumentPAYPAL validateAuthToken:text withError:&validationError];
         findValidation = TRUE;
+    }  else if ([key isEqualToString:@"expiryMonth"]) {
+        
+        self.expiryMonthTextField = textField;
+        
+        if ([self.addInfoDict objectForKey:@"expiryYear"] != Nil) {
+            
+            int expMonth = text.integerValue;
+            
+            validationResult = [PLVPayInstrumentCC validateExpiryMonth:expMonth andYear:[[self.addInfoDict objectForKey:@"expiryYear"] integerValue] withError:&validationError];
+            
+            if (self.expiryYearTextField != Nil) {
+                
+                [self setTextField:self.expiryYearTextField valid:validationResult];
+                
+                if (validationError) {
+                    
+                    [self.validationErrors setObject:validationError forKey:@"expiryYear"];
+                    
+                } else {
+                    
+                    [self.validationErrors removeObjectForKey:@"expiryYear"];
+                }
+                
+                findValidation = TRUE;
+            }
+        }
+        
+    } else if ([key isEqualToString:@"expiryYear"]) {
+        
+        self.expiryYearTextField = textField;
+        
+        if ([self.addInfoDict objectForKey:@"expiryMonth"] != Nil) {
+            
+            int expYear = text.integerValue;
+            
+            validationResult = [PLVPayInstrumentCC validateExpiryMonth:[[self.addInfoDict objectForKey:@"expiryYear"] integerValue] andYear:expYear withError:&validationError];
+            
+            if (self.expiryMonthTextField != Nil) {
+                
+                [self setTextField:self.expiryMonthTextField valid:validationResult];
+                
+                if (validationError) {
+                    
+                    [self.validationErrors setObject:validationError forKey:@"expiryYear"];
+                    
+                } else {
+                    
+                    [self.validationErrors removeObjectForKey:@"expiryYear"];
+                }
+                
+                findValidation = TRUE;
+            }
+        }
+        
     }
     
     

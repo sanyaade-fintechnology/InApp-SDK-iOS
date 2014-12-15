@@ -107,6 +107,18 @@
     return validationErrors;
 }
 
+- (BOOL) containsOnlyValidCharctersAndDigits:(NSString*)valueToCheck {
+    
+    NSCharacterSet* nonDigits = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"] invertedSet];
+    
+    if ([valueToCheck rangeOfCharacterFromSet:nonDigits].location != NSNotFound)
+    {
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
 - (BOOL) containsOnlyDigits:(NSString*)valueToCheck {
 
     NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
@@ -235,6 +247,10 @@
             returnError(ERROR_CC_TOO_LONG_CODE,ERROR_CC_TOO_LONG_MESSAGE);
         }
         
+        if (![self containsOnlyValidCharctersAndDigits:pan]) {
+            returnError(ERROR_CC_INVALID_CHARS_CODE,ERROR_CC_INVALID_CHARS_MESSAGE);
+        }
+
         if (![self containsOnlyDigits:pan]) {
             returnError(ERROR_CC_INVALID_CHARS_CODE,ERROR_CC_INVALID_CHARS_MESSAGE);
         }
@@ -420,23 +436,26 @@
     if (iban == Nil || iban.length == 0) {
         returnError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
     } else {
-        if (iban.length < sepaIBANNumberMinLength || iban.length > sepaIBANNumberMaxLength) {
+        
+        NSString* ibanToValidate = [iban stringByReplacingOccurrencesOfString:@" " withString:@""];
+        
+        if (ibanToValidate.length < sepaIBANNumberMinLength || ibanToValidate.length > sepaIBANNumberMaxLength) {
             returnError(ERROR_SEPA_IBAN_INVALID_LENGTH_CODE,ERROR_SEPA_IBAN_INVALID_LENGTH_MESSAGE);
         } else {
             
-            if ([iban substringFromIndex:2].integerValue == 0) {
+            if ([ibanToValidate substringFromIndex:2].integerValue == 0) {
                 returnError(ERROR_SEPA_IBAN_EMPTY_CODE,ERROR_SEPA_IBAN_EMPTY_MESSAGE);
             }
             
-            if (![self containsDigits:[iban substringToIndex:2]]) {
+            if (![self containsDigits:[ibanToValidate substringToIndex:2]]) {
                 returnError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
             }
             
-            if (![self containsOnlyDigits:[iban substringWithRange:NSMakeRange(2, 2)]]) {
+            if (![self containsOnlyDigits:[ibanToValidate substringWithRange:NSMakeRange(2, 2)]]) {
                 returnError(ERROR_SEPA_IBAN_INVALID_CHARS_CODE,ERROR_SEPA_IBAN_INVALID_CHARS_MESSAGE);
             }
             
-            if (![self checkIBAN:iban]) {
+            if (![self checkIBAN:ibanToValidate]) {
                 returnError(ERROR_SEPA_IBAN_INVALID_CODE,ERROR_SEPA_IBAN_INVALID_MESSAGE);
             }
         }

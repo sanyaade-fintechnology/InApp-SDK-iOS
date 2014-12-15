@@ -131,7 +131,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validateAccountNo:(NSString*)accountNo withError:(NSError **)error {
     
-    PLVPayInstrumentDDValidator* validator;
+    PLVPayInstrumentDDValidator* validator = [[PLVPayInstrumentDDValidator alloc] init];
     
     NSError* accountError = [validator validateAccountNo:accountNo];
     
@@ -144,7 +144,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validateRoutingNo:(NSString*)routningNo withError:(NSError **)error {
     
-    PLVPayInstrumentDDValidator* validator;
+    PLVPayInstrumentDDValidator* validator = [[PLVPayInstrumentDDValidator alloc] init];
     
     NSError* routingError = [validator validateRoutingNo:routningNo];
     
@@ -186,7 +186,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validateIBAN:(NSString*)iban withError:(NSError **)error {
     
-    PLVPayInstrumentSEPAValidator* validator;
+    PLVPayInstrumentSEPAValidator* validator = [[PLVPayInstrumentSEPAValidator alloc] init];
     
     NSError* ibanError = [validator validateIBAN:iban];
     
@@ -199,7 +199,7 @@ typedef enum : NSUInteger {
 }
 + (BOOL) validateBIC:(NSString*)bic withError:(NSError **)error {
     
-    PLVPayInstrumentSEPAValidator* validator;
+    PLVPayInstrumentSEPAValidator* validator = [[PLVPayInstrumentSEPAValidator alloc] init];
     
     NSError* bicError = [validator validateBIC:bic];
     
@@ -243,7 +243,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validateAuthToken:(NSString*)authToken withError:(NSError **)error {
     
-    PLVPayInstrumentPAYPALValidator* validator;
+    PLVPayInstrumentPAYPALValidator* validator = [[PLVPayInstrumentPAYPALValidator alloc] init];
     
     NSError* tokenError = [validator validateAuthToken:authToken];
     
