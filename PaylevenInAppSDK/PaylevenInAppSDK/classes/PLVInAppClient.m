@@ -13,7 +13,7 @@
 #import "PLVInAppClientTypes.h"
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppErrors.h"
-#import "PLVInAppClientTypes+Validation.h"
+#import "PLVPaymentInstrumentValidator.h"
 #import "PLVInAppClientTypes+Serialization.h"
 #import "DevicePlatform.h"
 #import "PLVEventLoggingClient.h"
@@ -466,12 +466,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     // PI should already tested for class and Nil before
     
+    PLVPaymentInstrumentValidator* validator = [PLVPaymentInstrumentValidator validatorForPaymentInstrument:pi];
+    
     NSArray* validationErrors;
     
     if (validateOnCreation) {
-        validationErrors = [pi validateOnCreation];
+        validationErrors = [validator validateOnCreation];
     } else {
-        validationErrors = [pi validateOnUpdate];
+        validationErrors = [validator validateOnUpdate];
     }
     
     if (validationErrors != Nil && validationErrors.count > 0) {

@@ -25,8 +25,8 @@
 @interface PLVPaymentInstrument : NSObject
 
 + (id)createCCWithPan:(NSString*)pan
-          expiryMonth:(NSString*)expiryMonth
-           expiryYear:(NSString*)expiryYear
+          expiryMonth:(NSInteger)expiryMonth
+           expiryYear:(NSInteger)expiryYear
                   cvv:(NSString*)cvv
         andCardHolder:(NSString*)cardHolder;
 
@@ -40,14 +40,6 @@
 
 + (id)createPAYPALWithToken:(NSString*)token;
 
-
-
-/**
- *  validate The PaymentInstrument
- *
- *  @return returns array containing a NSError objects for every single validation error
- */
-- (NSArray*) validate;
 
 /**
  *  validatePayInstrumentReturningError
@@ -84,12 +76,20 @@
 
 @property (readonly,strong) NSString* pan;
 @property (readonly,strong) NSString* cardBrand;
-@property (readonly,strong) NSString* expiryMonth;
-@property (readonly,strong) NSString* expiryYear;
+@property (readonly,nonatomic) NSInteger expiryMonth;
+@property (readonly,nonatomic) NSInteger expiryYear;
 @property (readonly,strong) NSString* cvv;
 @property (readonly,strong) NSString* cardHolder;
 
++ (BOOL) validatePan:(NSString*)pan withError:(NSError **)error;
++ (BOOL) validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year withError:(NSError **)error;
++ (BOOL) validateCVV:(NSString*)cvv withError:(NSError **)error;
++ (BOOL) validateCardHolder:(NSString*)cardHolder withError:(NSError **)error;
+
 @end
+
+
+
 
 /**
  *  PLVPayInstrumentDD      Debit PaymentInstrument
@@ -104,6 +104,9 @@
 
 @property (readonly,strong) NSString* accountNo;
 @property (readonly,strong) NSString* routingNo;
+
++ (BOOL) validateAccountNo:(NSString*)accountNo withError:(NSError **)error;
++ (BOOL) validateRoutingNo:(NSString*)routningNo withError:(NSError **)error;
 
 @end
 
@@ -121,6 +124,9 @@
 @property (readonly,strong) NSString* iban;
 @property (readonly,strong) NSString* bic;
 
++ (BOOL) validateIBAN:(NSString*)iban withError:(NSError **)error;
++ (BOOL) validateBIC:(NSString*)bic withError:(NSError **)error;
+
 @end
 
 /**
@@ -133,5 +139,7 @@
 @interface PLVPayInstrumentPAYPAL : PLVPaymentInstrument
 
 @property (readonly,strong) NSString* authToken;
+
++ (BOOL) validateAuthToken:(NSString*)authToken withError:(NSError **)error;
 
 @end

@@ -10,7 +10,7 @@
 
 #import "PLVInAppClientTypes.h"
 #import "PLVInAppSDKConstants.h"
-#import "PLVInAppClientTypes+Validation.h"
+#import "PLVPaymentInstrumentValidator.h"
 #import "PLVInAppErrors.h"
 
 typedef NSString PLVPIType;
@@ -37,14 +37,68 @@ typedef enum : NSUInteger {
 
 @interface PLVPayInstrumentCC ()
 
-- (id)initWithPan:(NSString*)pan expiryMonth:(NSString*)expiryMonth expiryYear:(NSString*)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder;
+- (id)initWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder;
 
 @end
 
 
 @implementation PLVPayInstrumentCC
 
-- (id)initWithPan:(NSString*)pan expiryMonth:(NSString*)expiryMonth expiryYear:(NSString*)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
++ (BOOL) validatePan:(NSString*)pan withError:(NSError **)error{
+    
+    PLVPayInstrumentCCValidator* validator;
+    
+    NSError* panError = [validator validatePAN:pan];
+    
+    if (error != Nil) {
+        *error = panError;
+    }
+    
+    return (panError == Nil);
+}
+
+
++ (BOOL) validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year withError:(NSError **)error {
+    
+    PLVPayInstrumentCCValidator* validator;
+    
+    NSError* dateError = [validator validateExpiryMonth:month andYear:year];
+    
+    if (error != Nil) {
+        *error = dateError;
+    }
+    
+    return (dateError == Nil);
+}
+
++ (BOOL) validateCVV:(NSString*)cvv withError:(NSError **)error {
+    
+    PLVPayInstrumentCCValidator* validator;
+    
+    NSError* cvvError = [validator validateCVV:cvv];
+    
+    if (error != Nil) {
+        *error = cvvError;
+    }
+    
+    return (cvvError == Nil);
+}
+
++ (BOOL) validateCardHolder:(NSString*)cardHolder withError:(NSError **)error {
+    
+    PLVPayInstrumentCCValidator* validator;
+    
+    NSError* cardHolderError = [validator validateCardHolder:cardHolder];
+    
+    if (error != Nil) {
+        *error = cardHolderError;
+    }
+    
+    return (cardHolderError == Nil);
+}
+
+
+- (id)initWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
 {
     self = [super init];
     
@@ -75,6 +129,33 @@ typedef enum : NSUInteger {
 
 @implementation PLVPayInstrumentDD
 
++ (BOOL) validateAccountNo:(NSString*)accountNo withError:(NSError **)error {
+    
+    PLVPayInstrumentDDValidator* validator;
+    
+    NSError* accountError = [validator validateAccountNo:accountNo];
+    
+    if (error != Nil) {
+        *error = accountError;
+    }
+    
+    return (accountError == Nil);
+}
+
++ (BOOL) validateRoutingNo:(NSString*)routningNo withError:(NSError **)error {
+    
+    PLVPayInstrumentDDValidator* validator;
+    
+    NSError* routingError = [validator validateRoutingNo:routningNo];
+    
+    if (error != Nil) {
+        *error = routingError;
+    }
+    
+    return (routingError == Nil);
+}
+
+
 - (instancetype)initWithAccountNo:(NSString*)accountNo andRoutingNo:(NSString*)routingNo
 {
     self = [super init];
@@ -101,6 +182,35 @@ typedef enum : NSUInteger {
 
 
 @implementation PLVPayInstrumentSEPA
+
+
++ (BOOL) validateIBAN:(NSString*)iban withError:(NSError **)error {
+    
+    PLVPayInstrumentSEPAValidator* validator;
+    
+    NSError* ibanError = [validator validateIBAN:iban];
+    
+    if (error != Nil) {
+        *error = ibanError;
+    }
+    
+    return (ibanError == Nil);
+    
+}
++ (BOOL) validateBIC:(NSString*)bic withError:(NSError **)error {
+    
+    PLVPayInstrumentSEPAValidator* validator;
+    
+    NSError* bicError = [validator validateBIC:bic];
+    
+    if (error != Nil) {
+        *error = bicError;
+    }
+    
+    return (bicError == Nil);
+}
+
+
 
 - (instancetype)initWithIBAN:(NSString*)iban andBIC:(NSString*)bic
 {
@@ -131,6 +241,20 @@ typedef enum : NSUInteger {
 
 @implementation PLVPayInstrumentPAYPAL
 
++ (BOOL) validateAuthToken:(NSString*)authToken withError:(NSError **)error {
+    
+    PLVPayInstrumentPAYPALValidator* validator;
+    
+    NSError* tokenError = [validator validateAuthToken:authToken];
+    
+    if (error != Nil) {
+        *error = tokenError;
+    }
+    
+    return (tokenError == Nil);
+}
+
+
 - (instancetype)initWithToken:(NSString*)token
 {
     self = [super init];
@@ -157,13 +281,11 @@ typedef enum : NSUInteger {
     return self;
 }
 
-- (NSArray*) validate {
-    return [self validateOnCreation];
-}
-
 - (BOOL)validatePayInstrumentReturningError:(NSError **)outError {
     
-    NSArray* validationErrors = [self validate];
+    PLVPaymentInstrumentValidator* validator = [PLVPaymentInstrumentValidator validatorForPaymentInstrument:self];
+    
+    NSArray* validationErrors = [validator validateOnCreation];
     
     if (validationErrors.count == 0) {
         return TRUE;
@@ -185,7 +307,7 @@ typedef enum : NSUInteger {
     return FALSE;
 }
 
-+ (id)createCCWithPan:(NSString*)pan expiryMonth:(NSString*)expiryMonth expiryYear:(NSString*)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
++ (id)createCCWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
 {
     PLVPayInstrumentCC* cc = [[PLVPayInstrumentCC alloc] initWithPan:pan expiryMonth:expiryMonth expiryYear:expiryYear cvv:cvv andCardHolder:cardHolder];
     

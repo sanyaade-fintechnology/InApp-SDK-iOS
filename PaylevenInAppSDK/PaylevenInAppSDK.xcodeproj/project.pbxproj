@@ -68,8 +68,8 @@
 		9FB3E64E1A3079EF00FE9CAC /* PLVHTTPUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB3E64C1A3079EF00FE9CAC /* PLVHTTPUserAgent.m */; };
 		9FBC2EFD1A1F4400007D1341 /* KeychainItemWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FBC2EFB1A1F4400007D1341 /* KeychainItemWrapper.h */; };
 		9FBC2EFE1A1F4400007D1341 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBC2EFC1A1F4400007D1341 /* KeychainItemWrapper.m */; };
-		9FC8B2931A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2911A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h */; };
-		9FC8B2941A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */; };
+		9FC8B2931A1B96C600DD3370 /* PLVPaymentInstrumentValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2911A1B96C600DD3370 /* PLVPaymentInstrumentValidator.h */; };
+		9FC8B2941A1B96C600DD3370 /* PLVPaymentInstrumentValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC8B2921A1B96C600DD3370 /* PLVPaymentInstrumentValidator.m */; };
 		9FC8B2971A1B978100DD3370 /* PLVInAppErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FC8B2981A1B978100DD3370 /* PLVInAppErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */; };
 		9FD583FC1A14B6C000E9B83E /* OrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */; };
@@ -143,8 +143,8 @@
 		9FB3E64C1A3079EF00FE9CAC /* PLVHTTPUserAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVHTTPUserAgent.m; path = PaylevenInAppSDK/classes/PLVHTTPUserAgent.m; sourceTree = "<group>"; };
 		9FBC2EFB1A1F4400007D1341 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainItemWrapper.h; path = PaylevenInAppSDK/classes/KeychainItemWrapper.h; sourceTree = "<group>"; };
 		9FBC2EFC1A1F4400007D1341 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainItemWrapper.m; path = PaylevenInAppSDK/classes/KeychainItemWrapper.m; sourceTree = "<group>"; };
-		9FC8B2911A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "PLVInAppClientTypes+Validation.h"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Validation.h"; sourceTree = "<group>"; };
-		9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "PLVInAppClientTypes+Validation.m"; path = "PaylevenInAppSDK/classes/PLVInAppClientTypes+Validation.m"; sourceTree = "<group>"; };
+		9FC8B2911A1B96C600DD3370 /* PLVPaymentInstrumentValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVPaymentInstrumentValidator.h; path = PaylevenInAppSDK/classes/PLVPaymentInstrumentValidator.h; sourceTree = "<group>"; };
+		9FC8B2921A1B96C600DD3370 /* PLVPaymentInstrumentValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVPaymentInstrumentValidator.m; path = PaylevenInAppSDK/classes/PLVPaymentInstrumentValidator.m; sourceTree = "<group>"; };
 		9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PLVInAppErrors.h; path = PaylevenInAppSDK/publicHeaders/PLVInAppErrors.h; sourceTree = "<group>"; };
 		9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PLVInAppErrors.m; path = PaylevenInAppSDK/classes/PLVInAppErrors.m; sourceTree = "<group>"; };
 		9FD583FA1A14B6C000E9B83E /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrderedDictionary.h; path = PaylevenInAppSDK/classes/OrderedDictionary.h; sourceTree = "<group>"; };
@@ -246,8 +246,8 @@
 				9FF6E64C1A0239F300C12AAA /* PLVInAppClientTypes.m */,
 				9F7CFC861A079A950047203A /* PLVInAppClientTypes+Serialization.h */,
 				9F7CFC871A079A950047203A /* PLVInAppClientTypes+Serialization.m */,
-				9FC8B2911A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h */,
-				9FC8B2921A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m */,
+				9FC8B2911A1B96C600DD3370 /* PLVPaymentInstrumentValidator.h */,
+				9FC8B2921A1B96C600DD3370 /* PLVPaymentInstrumentValidator.m */,
 				9FC8B2951A1B978100DD3370 /* PLVInAppErrors.h */,
 				9FC8B2961A1B978100DD3370 /* PLVInAppErrors.m */,
 				9F71D6B31A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h */,
@@ -319,7 +319,7 @@
 				9FB3E6451A30799900FE9CAC /* PLVEvent.h in Headers */,
 				9FD7E7CA1A2912CB00A5B166 /* DevicePlatform.h in Headers */,
 				9FF6E64D1A0239F300C12AAA /* PLVInAppClientTypes.h in Headers */,
-				9FC8B2931A1B96C600DD3370 /* PLVInAppClientTypes+Validation.h in Headers */,
+				9FC8B2931A1B96C600DD3370 /* PLVPaymentInstrumentValidator.h in Headers */,
 				9FA6C7CB1A1E31CE0062326A /* PLVRequestPersistManager.h in Headers */,
 				9FB3E64D1A3079EF00FE9CAC /* PLVHTTPUserAgent.h in Headers */,
 				9F6552C319F6876A003D07A5 /* PLVServerTrustValidator.h in Headers */,
@@ -493,7 +493,7 @@
 				9FB3E6401A30790500FE9CAC /* PLVEventLogger.m in Sources */,
 				9F6552C119F6876A003D07A5 /* PLVServerCertificate.m in Sources */,
 				9F6552C419F6876A003D07A5 /* PLVServerTrustValidator.m in Sources */,
-				9FC8B2941A1B96C600DD3370 /* PLVInAppClientTypes+Validation.m in Sources */,
+				9FC8B2941A1B96C600DD3370 /* PLVPaymentInstrumentValidator.m in Sources */,
 				9FC8B2981A1B978100DD3370 /* PLVInAppErrors.m in Sources */,
 				9FBC2EFE1A1F4400007D1341 /* KeychainItemWrapper.m in Sources */,
 				9F71D6B61A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m in Sources */,

@@ -140,7 +140,7 @@
     if([shortType isEqualToString:@"CC"]) {
         PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
         
-        NSArray* details = @[@"  ",[NSString stringWithFormat:@"CardHolder: %@",cc.cardHolder], [NSString stringWithFormat:@"PAN: %@",cc.pan],[NSString stringWithFormat:@"EXPIRYDATE: %@/%@",cc.expiryMonth,cc.expiryYear],[NSString stringWithFormat:@"BRAND: %@",cc.cardBrand]];
+        NSArray* details = @[@"  ",[NSString stringWithFormat:@"CardHolder: %@",cc.cardHolder], [NSString stringWithFormat:@"PAN: %@",cc.pan],[NSString stringWithFormat:@"EXPIRYDATE: %u/%u",cc.expiryMonth,cc.expiryYear],[NSString stringWithFormat:@"BRAND: %@",cc.cardBrand]];
         
         return [details componentsJoinedByString:@"\n"];
 
@@ -177,7 +177,7 @@
     
     if([shortType isEqualToString:@"CC"]) {
         PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
-        return [NSString stringWithFormat:@"%@/%@",cc.expiryMonth,cc.expiryYear];
+        return [NSString stringWithFormat:@"%u/%u",cc.expiryMonth,cc.expiryYear];
     } else {
         return @"";
     }

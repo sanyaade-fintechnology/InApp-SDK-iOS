@@ -96,12 +96,12 @@
         [content setObject:self.cvv forKey:ccCVVKey];
     }
     
-    if (self.expiryMonth != Nil) {
-        [content setObject:self.expiryMonth forKey:ccExpiryMonthKey];
+    if (self.expiryMonth != 0) {
+        [content setObject:[NSNumber numberWithInteger:self.expiryMonth] forKey:ccExpiryMonthKey];
     }
     
-    if (self.expiryYear != Nil) {
-        [content setObject:self.expiryYear forKey:ccExpiryYearKey];
+    if (self.expiryYear != 0) {
+        [content setObject:[NSNumber numberWithInteger:self.expiryYear] forKey:ccExpiryYearKey];
     }
     
     if (self.identifier != Nil) {
