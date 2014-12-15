@@ -18,6 +18,13 @@
 #define ccPANNumberMinLength 12
 #define ccPANNumberMaxLength 21
 
+#define cardHolderMinLength 2
+#define cardHolderMaxLength 26
+
+#define cvvMinLength 3
+#define cvvMaxLength 4
+
+
 #define ddaccountNoMinLength 8
 #define ddaccountNoMaxLength 10
 
@@ -126,17 +133,15 @@
 
 - (NSError*) validExpiryDateForMonth:(NSInteger)month andYear:(NSInteger)year {
     
-    NSMutableArray* validationErrors = [NSMutableArray new];
-    
     int yearInt = 2000 + (int)year;
     int monthInt = (int)month;
     
     if (monthInt > 12 || monthInt < 1) {
-        addError(validationErrors,ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
+        returnError(ERROR_DATE_MONTH_CODE,ERROR_DATE_MONTH_MESSAGE);
     }
     
     if (yearInt > 2050 || yearInt < 2010) {
-        addError(validationErrors,ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
+        returnError(ERROR_DATE_YEAR_CODE,ERROR_DATE_YEAR_MESSAGE);
     }
     
     NSDate *currentDate = [NSDate date];
@@ -168,7 +173,6 @@
     self = [super init];
     if (self) {
         self.paymentInstrument = paymentInstrument;
-        _validator = [[PLVInAppClientTypPanValidator alloc] init];
     }
     return self;
 }
@@ -215,6 +219,10 @@
 
 - (NSError*)validatePAN:(NSString*)pan {
     
+    if (self.validator == nil) {
+        self.validator = [[PLVInAppClientTypPanValidator alloc] init];
+    }
+    
     if (pan == Nil || pan.length == 0 || pan.integerValue == 0) {
         returnError(ERROR_CC_EMPTY_CODE,ERROR_CC_EMPTY_MESSAGE);
     } else {
@@ -251,6 +259,10 @@
         returnError(ERROR_CVV_INVALID_CHARS_CODE,ERROR_CVV_INVALID_CHARS_MESSAGE);
     }
     
+    if ((cvv.length < cvvMinLength) || (cvv.length > cvvMaxLength)) {
+        returnError(ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
+    }
+    
     return Nil;
 }
 
@@ -260,11 +272,14 @@
         returnError(ERROR_CARDHOLDER_EMPTY_CODE,ERROR_CARDHOLDER_EMPTY_MESSAGE);
     }
     
+    if (cardHolder.length < cardHolderMinLength || cardHolder.length > cardHolderMaxLength) {
+        returnError(ERROR_CARDHOLDER_INVALID_LENGTH_CODE,ERROR_CARDHOLDER_INVALID_LENGTH_MESSAGE);
+    }
+    
     NSString* uppperCardHolder = [cardHolder uppercaseString];
     
-    if ([uppperCardHolder rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZ."]].location != NSNotFound) {
+    if ([uppperCardHolder rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZ. "] invertedSet]].location != NSNotFound) {
         returnError(ERROR_CARDHOLDER_INVALID_CHARS_CODE,ERROR_CARDHOLDER_INVALID_CHARS_MESSAGE);
-        
     }
 
     return Nil;

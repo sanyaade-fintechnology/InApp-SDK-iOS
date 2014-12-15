@@ -46,7 +46,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validatePan:(NSString*)pan withError:(NSError **)error{
     
-    PLVPayInstrumentCCValidator* validator;
+    PLVPayInstrumentCCValidator* validator = [[PLVPayInstrumentCCValidator alloc] init];
     
     NSError* panError = [validator validatePAN:pan];
     
@@ -60,7 +60,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year withError:(NSError **)error {
     
-    PLVPayInstrumentCCValidator* validator;
+    PLVPayInstrumentCCValidator* validator = [[PLVPayInstrumentCCValidator alloc] init];
     
     NSError* dateError = [validator validateExpiryMonth:month andYear:year];
     
@@ -73,7 +73,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validateCVV:(NSString*)cvv withError:(NSError **)error {
     
-    PLVPayInstrumentCCValidator* validator;
+    PLVPayInstrumentCCValidator* validator = [[PLVPayInstrumentCCValidator alloc] init];
     
     NSError* cvvError = [validator validateCVV:cvv];
     
@@ -86,7 +86,7 @@ typedef enum : NSUInteger {
 
 + (BOOL) validateCardHolder:(NSString*)cardHolder withError:(NSError **)error {
     
-    PLVPayInstrumentCCValidator* validator;
+    PLVPayInstrumentCCValidator* validator = [[PLVPayInstrumentCCValidator alloc] init];
     
     NSError* cardHolderError = [validator validateCardHolder:cardHolder];
     
