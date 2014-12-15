@@ -197,14 +197,14 @@
             
             [alertView show];
             
+        } else {
+        
+            [self backButton:self];
+            
         }
     }];
 
-    [self backButton:self];
-    
 }
-
-
 
 
 - (void) createContentKeyArray {
@@ -267,10 +267,6 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
         pi = [PLVPaymentInstrument createDDWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
-    }
-    
-    for (NSString* key in content.allKeys) {
-        [pi setValue:[content objectForKey:key] forKey:key];
     }
     
     return pi;
@@ -519,11 +515,13 @@
         
         self.expiryMonthTextField = textField;
         
-        if ([self.addInfoDict objectForKey:@"expiryYear"] != Nil) {
+        if (([self.addInfoDict objectForKey:@"expiryYear"] != Nil) && ([(NSString*)[self.addInfoDict objectForKey:@"expiryYear"] length] > 0)) {
             
             int expMonth = text.integerValue;
             
-            validationResult = [PLVPayInstrumentCC validateExpiryMonth:expMonth andYear:[[self.addInfoDict objectForKey:@"expiryYear"] integerValue] withError:&validationError];
+            int expYear = [[self.addInfoDict objectForKey:@"expiryYear"] integerValue];
+            
+            validationResult = [PLVPayInstrumentCC validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
             
             if (self.expiryYearTextField != Nil) {
                 
@@ -542,15 +540,17 @@
             }
         }
 
-    } else if ([key isEqualToString:@"expiryYear"]) {
+    } else if ([key isEqualToString:@"expiryYear"])  {
         
         self.expiryYearTextField = textField;
         
-        if ([self.addInfoDict objectForKey:@"expiryMonth"] != Nil) {
+        if (([self.addInfoDict objectForKey:@"expiryMonth"] != Nil)  && ([(NSString*)[self.addInfoDict objectForKey:@"expiryMonth"] length]  > 0) ) {
             
             int expYear = text.integerValue;
             
-            validationResult = [PLVPayInstrumentCC validateExpiryMonth:[[self.addInfoDict objectForKey:@"expiryYear"] integerValue] andYear:expYear withError:&validationError];
+            int expMonth = [[self.addInfoDict objectForKey:@"expiryMonth"] integerValue];
+            
+            validationResult = [PLVPayInstrumentCC validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
             
             if (self.expiryMonthTextField != Nil) {
                 

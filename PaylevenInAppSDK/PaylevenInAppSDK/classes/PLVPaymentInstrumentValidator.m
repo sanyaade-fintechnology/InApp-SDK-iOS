@@ -119,6 +119,18 @@
     return TRUE;
 }
 
+- (BOOL) containsOnlyCharacters:(NSString*)valueToCheck {
+    
+    NSCharacterSet* nonCharacters = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZ"] invertedSet];
+    
+    if ([valueToCheck rangeOfCharacterFromSet:nonCharacters].location != NSNotFound)
+    {
+        return FALSE;
+    }
+    
+    return TRUE;
+}
+
 - (BOOL) containsOnlyDigits:(NSString*)valueToCheck {
 
     NSCharacterSet* nonDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
@@ -466,11 +478,20 @@
 
 - (NSError*) validateBIC:(NSString*)bic {
     
-    if (bic.length != sepaBICNumberLength1 || bic.length != sepaBICNumberLength2) {
+    if ((bic.length != sepaBICNumberLength1) && (bic.length != sepaBICNumberLength2)) {
+        
         returnError(ERROR_SEPA_BIC_INVALID_LENGTH_CODE,ERROR_SEPA_BIC_INVALID_LENGTH_MESSAGE);
+    
     } else {
-        if (bic.integerValue == 0) {
-            returnError(ERROR_SEPA_BIC_EMPTY_CODE ,ERROR_SEPA_BIC_EMPTY_MESSAGE);
+        
+        NSString* bigBIC = [bic uppercaseString];
+        
+        if (![self containsOnlyCharacters:[bigBIC substringToIndex:6]]) {
+            returnError(ERROR_SEPA_BIC_INVALID_CHARS_CODE,ERROR_SEPA_BIC_INVALID_CHARS_MESSAGE);
+        }
+        
+        if (![self containsOnlyValidCharctersAndDigits:[bigBIC substringFromIndex:6]]) {
+            returnError(ERROR_SEPA_BIC_INVALID_CHARS_CODE,ERROR_SEPA_BIC_INVALID_CHARS_MESSAGE);
         }
     }
     

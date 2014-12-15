@@ -126,9 +126,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             
             [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenSuccess parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:kEmailKey]]];
             
-            [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:^(NSDictionary* response, NSError* error) {
-                
-            }];
+            [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:Nil];
+            
         } else {
             
             [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenFail parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:kEmailKey]]];
@@ -175,12 +174,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             
             [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
         }
-        
-        if (completionHandler != Nil) {
-            completionHandler(response,error);
-        }
-        
+
     }];
+    
+    if (completionHandler != Nil) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            // Fake Response for addPaymentInstrument
+            
+            NSDictionary* result = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"status",@"200",@"code", nil];
+            
+            completionHandler(result,Nil);
+        });
+        
+    }
 }
 
 - (void) getPaymentInstrumentsList:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler {
