@@ -282,7 +282,7 @@ typedef enum : NSUInteger {
     return self;
 }
 
-- (BOOL)validatePayInstrumentReturningError:(NSError **)outError {
+- (BOOL)validatePaymentInstrumentWithError:(NSError **)outError {
     
     PLVPaymentInstrumentValidator* validator = [PLVPaymentInstrumentValidator validatorForPaymentInstrument:self];
     
@@ -308,28 +308,28 @@ typedef enum : NSUInteger {
     return FALSE;
 }
 
-+ (id)createCCWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
++ (id)createCreditCardPayInstrumentWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
 {
     PLVPayInstrumentCC* cc = [[PLVPayInstrumentCC alloc] initWithPan:pan expiryMonth:expiryMonth expiryYear:expiryYear cvv:cvv andCardHolder:cardHolder];
     
     return cc;
 }
 
-+ (id)createDDWithAccountNo:(NSString*)accountNo andRoutingNo:(NSString*)routingNo {
++ (id)createDebitPayInstrumentWithAccountNo:(NSString*)accountNo andRoutingNo:(NSString*)routingNo {
     
     PLVPayInstrumentDD* dd = [[PLVPayInstrumentDD alloc] initWithAccountNo:accountNo andRoutingNo:routingNo];
     
     return dd;
 }
 
-+ (id)createSEPAWithIBAN:(NSString*)iban andBIC:(NSString*)bic {
++ (id)createSEPAPayInstrumentWithIBAN:(NSString*)iban andBIC:(NSString*)bic {
     
     PLVPayInstrumentSEPA* sepa = [[PLVPayInstrumentSEPA alloc] initWithIBAN:iban andBIC:bic];
     
     return sepa;
 }
 
-+ (id) createPAYPALWithToken:(NSString*)token {
++ (id) createPAYPALPayInstrumentWithToken:(NSString*)token {
     
     PLVPayInstrumentPAYPAL* payPal = [[PLVPayInstrumentPAYPAL alloc] initWithToken:token];
 

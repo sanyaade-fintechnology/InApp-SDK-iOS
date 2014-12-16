@@ -767,7 +767,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSData *keyData=[NSData dataWithBytes:s length:strlen(s)];
     
     uint8_t digest[CC_SHA256_DIGEST_LENGTH]={0};
-    CC_SHA256(keyData.bytes, keyData.length, digest);
+    CC_SHA256(keyData.bytes, (unsigned int) keyData.length, digest);
     NSData *out=[NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
     NSString *hash=[out description];
     hash = [hash stringByReplacingOccurrencesOfString:@"/" withString:@"_"];

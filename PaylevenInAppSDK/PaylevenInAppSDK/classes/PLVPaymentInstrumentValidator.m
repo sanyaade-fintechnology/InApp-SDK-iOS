@@ -67,10 +67,7 @@
         return [[PLVPayInstrumentSEPAValidator alloc] initWithPaymentInstrument:pi];
         
     }else if ([pi isKindOfClass:[PLVPayInstrumentPAYPAL class]]) {
-        if ([pi isKindOfClass:[PLVPayInstrumentCC class]]) {
-            
-            return [[PLVPayInstrumentCCValidator alloc] initWithPaymentInstrument:pi];
-        }
+        
         return [[PLVPayInstrumentPAYPALValidator alloc] initWithPaymentInstrument:pi];
     }
 
@@ -228,6 +225,12 @@
             addError(validationErrors,ERROR_CVV_INVALID_LENGTH_CODE,ERROR_CVV_INVALID_LENGTH_MESSAGE);
         }
     }
+    
+    NSError* cardHolderError = [self validateCardHolder:self.paymentInstrument.cardHolder];
+    
+    if (cardHolderError) {
+        [validationErrors addObject:cardHolderError];
+    }
 
     return validationErrors;
 }
@@ -353,9 +356,21 @@
 
 @implementation PLVPayInstrumentDDValidator
 
-- (NSArray*)   validateOnCreation {
+- (NSArray*) validateOnCreation {
     
     NSMutableArray* validationErrors = [NSMutableArray new];
+    
+    NSError* accountNoError = [self validateAccountNo:self.paymentInstrument.accountNo];
+    
+    if (accountNoError) {
+        [validationErrors addObject:accountNoError];
+    }
+    
+    NSError* routingNoError = [self validateRoutingNo:self.paymentInstrument.routingNo];
+    
+    if (routingNoError) {
+        [validationErrors addObject:routingNoError];
+    }
     
     return validationErrors;
 }
@@ -414,7 +429,7 @@
 @implementation PLVPayInstrumentSEPAValidator
 
 
-- (NSArray*)   validateOnCreation {
+- (NSArray*) validateOnCreation {
     
     NSMutableArray* validationErrors = [NSMutableArray new];
     
@@ -617,7 +632,11 @@
     
     NSMutableArray* validationErrors = [NSMutableArray new];
     
-
+    NSError* tokenError = [self validateAuthToken:self.paymentInstrument.authToken];
+    
+    if (tokenError) {
+        [validationErrors addObject:tokenError];
+    }
     
     return validationErrors;
 }
@@ -625,10 +644,10 @@
 - (NSError*) validateAuthToken:(NSString*)authToken {
     
     if (authToken == Nil || authToken.length == 0) {
-        returnError(ERROR_PAYPAL_TOKEN_EMPTY_CODE,ERROR_PAYPAL_TOKEN_EMPTY_MESSAGE);
+        returnError(ERROR_PAYPAL_AUTH_TOKEN_EMPTY_CODE,ERROR_PAYPAL_AUTH_TOKEN_EMPTY_MESSAGE);
     } else {
         if (authToken.length < paypalAuthTokenNumberMinLength || authToken.length > paypalAuthTokenNumberMaxLength) {
-            returnError(ERROR_PAYPAL_TOKEN_INVALID_CODE,ERROR_PAYPAL_TOKEN_INVALID_MESSAGE);
+            returnError(ERROR_PAYPAL_AUTH_TOKEN_INVALID_CODE,ERROR_PAYPAL_AUTH_TOKEN_INVALID_MESSAGE);
         }
     }
     

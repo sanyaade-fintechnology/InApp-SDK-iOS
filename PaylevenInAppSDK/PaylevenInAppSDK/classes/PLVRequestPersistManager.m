@@ -228,7 +228,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
 }
 
 
--(NSArray*) loadPersisitRequests {
+-(NSMutableArray*) loadPersisitRequests {
     
     return [NSMutableArray new];
     
@@ -236,7 +236,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
 #ifdef DEBUG
     
-    return [[NSUserDefaults standardUserDefaults] objectForKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    NSMutableArray* returnArray;
+    
+    NSArray* loadArray = [[NSUserDefaults standardUserDefaults] objectForKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
+    
+    if (loadArray == Nil) {
+        
+        returnArray =  [NSMutableArray new];
+    } else {
+        
+        returnArray = [NSMutableArray arrayWithArray:loadArray];
+    }
+    
+    return returnArray;
     
 #else
     

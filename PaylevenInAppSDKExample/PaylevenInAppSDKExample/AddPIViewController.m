@@ -174,7 +174,7 @@
     
     NSError* validationError;
     
-    if (![newPi validatePayInstrumentReturningError:&validationError]) {
+    if (![newPi validatePaymentInstrumentWithError:&validationError]) {
         
         // validation Errors
         
@@ -254,19 +254,19 @@
     PLVPaymentInstrument* pi;
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
-        pi = [PLVPaymentInstrument createCCWithPan:[content objectForKey:@"pan"] expiryMonth:[[content objectForKey:@"expiryMonth"] integerValue] expiryYear:[[content objectForKey:@"expiryYear"] integerValue] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
+        pi = [PLVPaymentInstrument createCreditCardPayInstrumentWithPan:[content objectForKey:@"pan"] expiryMonth:[[content objectForKey:@"expiryMonth"] integerValue] expiryYear:[[content objectForKey:@"expiryYear"] integerValue] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
-        pi = [PLVPaymentInstrument createPAYPALWithToken:[content objectForKey:@"authToken"]];
+        pi = [PLVPaymentInstrument createPAYPALPayInstrumentWithToken:[content objectForKey:@"authToken"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        pi = [PLVPaymentInstrument createSEPAWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
+        pi = [PLVPaymentInstrument createSEPAPayInstrumentWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
-        pi = [PLVPaymentInstrument createDDWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
+        pi = [PLVPaymentInstrument createDebitPayInstrumentWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
     }
     
     return pi;

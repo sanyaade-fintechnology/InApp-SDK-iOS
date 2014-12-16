@@ -46,7 +46,7 @@
         
         NSArray* ranges = [dict objectForKey:@"iin_ranges"];
         
-        int rangeHitLength = 0;
+        long rangeHitLength = 0;
         
         if (ranges != Nil) {
             
