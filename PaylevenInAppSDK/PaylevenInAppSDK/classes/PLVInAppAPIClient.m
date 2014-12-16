@@ -158,7 +158,6 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         [_requestPersistmanager registerAPIClient:self];
         
         
-        
         _dateFormatter = [[NSDateFormatter alloc] init];
         NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
         [_dateFormatter setTimeZone:timeZone];

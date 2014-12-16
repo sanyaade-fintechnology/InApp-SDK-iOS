@@ -20,6 +20,7 @@
 #import "PLVEventLogger.h"
 #import "PLVEvent.h"
 #import "OrderedDictionary.h"
+#import "PLVCardBrandManager.h"
 
 #define kUserTokenKey @"userToken"
 #define kRequestErrorKey @"requestError"
@@ -43,6 +44,11 @@
 
 /** Serial operation queue. */
 @property (nonatomic, strong) NSOperationQueue *queue;
+
+/** loging and cardBrand queue. */
+@property (nonatomic, strong) NSOperationQueue *loggingQueue;
+
+
 /** API client. */
 @property (nonatomic, strong) PLVInAppAPIClient *inAppAPIClient;
 /** Our event logger */
@@ -70,10 +76,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
         _queue.name = NSStringFromClass([self class]);
         _inAppAPIClient = [[PLVInAppAPIClient alloc] initWithQueue:_queue];
         
+        
+        _queue = [[NSOperationQueue alloc] init];
+        _queue.maxConcurrentOperationCount = 1;
+        _queue.name = NSStringFromClass([self class]);
+        
+        
         PLVEventLoggingClient *eventLoggingClient = [[PLVEventLoggingClient alloc] initWithQueue:_queue  andDelegate:_inAppAPIClient];
         _eventLogger = [[PLVEventLogger alloc] initWithQueue:_queue
                                           eventLoggingClient:eventLoggingClient
                                                 timeInterval:10.0];
+        
+        
+        _loggingQueue = [[NSOperationQueue alloc] init];
+        _loggingQueue.maxConcurrentOperationCount = 2;
+        _loggingQueue.name = @"loggingQueue";
+        
+        [[PLVCardBrandManager sharedInstance] setUpWithQueue:_loggingQueue];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             

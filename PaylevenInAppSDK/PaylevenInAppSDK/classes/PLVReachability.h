@@ -56,10 +56,6 @@ typedef enum : NSInteger {
 	ReachableViaWWAN
 } NetworkStatus;
 
-
-extern NSString *kPLVReachabilityChangedNotification;
-
-
 @interface PLVReachability : NSObject
 
 /*!

@@ -7,11 +7,10 @@
 //
 
 #import "PLVInAppClientTypPanValidator.h"
-#import "PLVCardBrands.h"
+#import "PLVCardBrandManager.h"
 
 @interface PLVInAppClientTypPanValidator ()
 
-@property (strong) NSArray* cardBrandInfos;
 @property (strong) NSDictionary* matchingInfoDict;
 @property (strong) NSString* matchedPan;
 
@@ -26,7 +25,6 @@
     
     if (self) {
         
-        _cardBrandInfos = [PLVCardBrands cardBrands];
         _matchingInfoDict = Nil;
         _matchedPan = Nil;
     }
@@ -42,7 +40,9 @@
     
     self.matchingInfoDict = Nil;
     
-    for (NSDictionary* dict in self.cardBrandInfos) {
+    NSArray* cardBrandInfos = [[PLVCardBrandManager sharedInstance] currentCardBrands];
+    
+    for (NSDictionary* dict in cardBrandInfos) {
         
         NSArray* ranges = [dict objectForKey:@"iin_ranges"];
         

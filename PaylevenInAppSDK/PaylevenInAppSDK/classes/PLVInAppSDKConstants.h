@@ -51,4 +51,6 @@
 #define PLVAPIClientErrorDomain @"PLVAPIClientErrorDomain"
 #define PLVAPIBackEndErrorDomain @"PLVAPIBackEndErrorDomain"
 
+#define kPLVReachabilityChangedNotification @"kPLVNetworkReachabilityChangedNotification"
+
 

@@ -54,9 +54,7 @@
 
 #import "PLVReachability.h"
 
-
-NSString *kPLVReachabilityChangedNotification = @"kPLVNetworkReachabilityChangedNotification";
-
+#import "PLVInAppSDKConstants.h"
 
 #pragma mark - Supporting functions
 
