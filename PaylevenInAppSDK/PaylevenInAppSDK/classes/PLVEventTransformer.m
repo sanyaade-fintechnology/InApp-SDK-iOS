@@ -90,6 +90,10 @@
         dict[PLVEventTransformerData] = event.eventData;
     }
     
+    if (event.responseTime != Nil) {
+        dict[PLVEventTransformerResponseTime] = event.responseTime;
+    }
+    
     return [dict copy];
 }
 
@@ -130,3 +134,4 @@ NSString * const PLVEventTransformerAmount = @"amount";
 NSString * const PLVEventTransformerCurrency = @"currency";
 NSString * const PLVEventTransformerCountry = @"paymentCountry";
 NSString * const PLVEventTransformerDeviceIdentifier = @"deviceId";
+NSString * const PLVEventTransformerResponseTime = @"responseTime";

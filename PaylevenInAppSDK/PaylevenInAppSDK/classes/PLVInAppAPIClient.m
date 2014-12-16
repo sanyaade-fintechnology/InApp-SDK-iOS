@@ -20,10 +20,6 @@
 #import "DevicePlatform.h"
 #import "PLVReachability.h"
 
-#define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
-#define useOtherEndpoint 0
-
 #define apiParameterKeyEmail @"email"
 #define apiParameterKeyUserToken @"userToken"
 #define apiParameterPIIdentifier @"identifier"
@@ -54,6 +50,10 @@
 #define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/payment-instruments/%@"
 #define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
 
+
+#define useLocalEndpoint 0
+#define usemacMiniEndpoint 1
+#define useOtherEndpoint 0
 
 #if useLocalEndpoint
 /** locahost endpoint. */
@@ -720,15 +720,13 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 
 -(void)addHmacWithBodyContent:(NSString*)bodyContent toRequest:(NSMutableURLRequest*)request {
+
+    //1. update headers
     
-    //1. create timestamp string
-
-    NSString *timestamp = [self.dateFormatter stringFromDate:[NSDate date]];
-
-    //2. update headers
+    NSString* timeStamp = [self getTimeStampAsString];
     
     [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:timestamp forHTTPHeaderField:apiHeaderKeyXHmacTimeStamp];
+    [request setValue:timeStamp forHTTPHeaderField:apiHeaderKeyXHmacTimeStamp];
     [request setValue:self.registerBundleID forHTTPHeaderField:apiHeaderKeyXBundleID];
     [request setValue:PLVInAppSDKVersion forHTTPHeaderField:apiHeaderKeyXSDKVersion];
 
@@ -744,10 +742,10 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     [request setValue:bodyHash forHTTPHeaderField:apiHeaderKeyXBodyHash];
     
-    //3. sort params alphabetically & generate query string
-    NSString* query = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@",request.HTTPMethod,request.URL.absoluteString,self.registerBundleID,bodyHash,timestamp];
+    //2. sort params to generate query string
+    NSString* query = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@",request.HTTPMethod,request.URL.absoluteString,self.registerBundleID,bodyHash,timeStamp];
     
-    //4. generate hash
+    //3. generate hash
     const char *cKey = [self.registerAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
 
     const char *cData = [query cStringUsingEncoding:NSUTF8StringEncoding];
@@ -761,6 +759,23 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [request setValue:hash forHTTPHeaderField:apiHeaderKeyXHmac];
 
 }
+
+- (NSString*) getTimeStampAsString {
+    
+    //1. create timestamp string
+    
+    return [self.dateFormatter stringFromDate:[NSDate date]];
+}
+
+- (double) getTimeStamp {
+    
+    //1. create timestamp string
+    
+    return [[NSDate date] timeIntervalSinceReferenceDate];
+    
+}
+
+
 
 -(NSString*) sha256:(NSString *)inputString{
     const char *s=[inputString cStringUsingEncoding:NSASCIIStringEncoding];

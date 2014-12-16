@@ -32,6 +32,9 @@ typedef NS_ENUM(NSInteger, PLVEventType) {
 /** Event timestamp. */
 @property(nonatomic, readonly, copy) NSDate *date;
 
+/** response time. */
+@property(nonatomic, readonly, copy) NSString *responseTime;
+
 /** Event type. */
 @property(nonatomic, readonly, assign) PLVEventType eventType;
 

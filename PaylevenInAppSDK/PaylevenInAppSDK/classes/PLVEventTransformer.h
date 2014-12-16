@@ -42,3 +42,6 @@ extern NSString * const PLVEventTransformerDeviceIdentifier;
 
 /** data. */
 extern NSString * const PLVEventTransformerData;
+
+//** response time */
+extern NSString * const PLVEventTransformerResponseTime;

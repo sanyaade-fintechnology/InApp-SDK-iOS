@@ -43,6 +43,13 @@
         
     }
     
+    if (parameters[@"responseTime"] == nil) {
+        _responseTime = @"0.0s";
+    } else {
+        _responseTime = parameters[@"responseTime"];
+        [_eventData removeObjectForKey:@"responseTime"];
+    }
+
     [_eventData removeObjectForKey:@"event"];
     
     return self;

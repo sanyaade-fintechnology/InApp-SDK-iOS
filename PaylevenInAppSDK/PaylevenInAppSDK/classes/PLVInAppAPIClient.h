@@ -66,5 +66,20 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  */
 - (void) startRequestWithBody:(NSDictionary*)bodyParameters addEndpoint:(NSString*)endpoint andHTTPMethod:(NSString*)httpMethod andRequestIdentifier:(NSString*)requestIdentifierToken;
 
+/**
+ *  getTimeStampAsString
+ *
+ *  @return timeStamp string in format like :
+ */
+
+- (NSString*) getTimeStampAsString;
+
+/**
+ *  getTimeStamp
+ *
+ *  @return return current time in seconds like refernce date
+ */
+- (double) getTimeStamp;
+
 @end
 

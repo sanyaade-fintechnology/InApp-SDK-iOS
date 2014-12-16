@@ -28,6 +28,9 @@
 #define kPaymentInstrumentTypeKey @"paymentInstrumentType"
 #define kPaymentInstrumentsKey @"paymentInstruments"
 
+#define kTimeStampKey @"timestamp"
+#define kResponseTimeKey @"responseTime"
+
 #define kPaymentInstrumentIdentifierKey @"paymentInstrumentIdentifier"
 #define kUseCaseKey @"usecase"
 #define kEmailKey @"email"
@@ -42,7 +45,7 @@
 @property (nonatomic, strong) NSOperationQueue *queue;
 /** API client. */
 @property (nonatomic, strong) PLVInAppAPIClient *inAppAPIClient;
-
+/** Our event logger */
 @property (nonatomic, strong) PLVEventLogger* eventLogger;
 
 @end
@@ -120,17 +123,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     __block PLVEventLogger* logger = self.eventLogger;
     
+    __block NSString* timeStamp = [self.inAppAPIClient getTimeStampAsString];
+    
+    __block double startTime = [self.inAppAPIClient getTimeStamp];
+    
     [self getUserToken:emailAddress withCompletion:^(NSDictionary* response, NSError* error) {
     
+        NSDictionary* logParams = [NSDictionary dictionaryWithObjectsAndKeys:emailAddress,kEmailKey,timeStamp,kTimeStampKey,[self getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil];
+        
         if ([response objectForKey:kUserTokenKey] && error == noErr) {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenSuccess parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:kEmailKey]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenSuccess parameters:logParams]];
             
             [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:Nil];
             
         } else {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenFail parameters:[NSDictionary dictionaryWithObject:emailAddress forKey:kEmailKey]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenFail parameters:logParams]];
         }
         
         if (completionHandler != Nil) {
@@ -164,15 +173,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     __block PLVEventLogger* logger = self.eventLogger;
     
+    __block NSString* timeStamp = [self.inAppAPIClient getTimeStampAsString];
+    
+    __block double startTime = [self.inAppAPIClient getTimeStamp];
+    
+    __block PLVInAppClient* selfBlock = self;
+    
     [self.inAppAPIClient addPaymentInstrument:payInstrument forUserToken:userToken withUseCase:useCaseChecked andCompletion:^(NSDictionary* response, NSError* error) {
         
         if (error == noErr) {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:payInstrument.type, kPaymentInstrumentTypeKey, useCase, kUseCaseKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:payInstrument.type, kPaymentInstrumentTypeKey, useCase, kUseCaseKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
 
         } else {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
         }
 
     }];
@@ -200,15 +215,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     __block PLVEventLogger* logger = self.eventLogger;
     
+    __block NSString* timeStamp = [self.inAppAPIClient getTimeStampAsString];
+    
+    __block double startTime = [self.inAppAPIClient getTimeStamp];
+    
+    __block PLVInAppClient* selfBlock = self;
+    
     [self.inAppAPIClient listPaymentInstrumentsForUserToken:userToken withUseCase:useCaseChecked andCompletion:^(NSDictionary* response, NSError* error) {
         
         if (error == noErr) {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeListPaymentInstrumentsSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeListPaymentInstrumentsSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey, Nil]]];
             
         } else {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeListPaymentInstrumentsFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeListPaymentInstrumentsFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey, Nil]]];
         }
         
         if (completionHandler != Nil) {
@@ -226,6 +247,12 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     if (![self checkUserToken:userToken withPIAsOrderedSet:piOrderedSet andCompletion:completionHandler]) { return; }
     
     __block PLVEventLogger* logger = self.eventLogger;
+    
+    __block NSString* timeStamp = [self.inAppAPIClient getTimeStampAsString];
+    
+    __block double startTime = [self.inAppAPIClient getTimeStamp];
+    
+    __block PLVInAppClient* selfBlock = self;
     
     [self.inAppAPIClient setPaymentInstrumentsOrder:piOrderedSet forUserToken:userToken withUseCase:useCaseChecked andCompletion:^(NSDictionary* response, NSError* error) {
         
@@ -253,11 +280,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
                 
             }];
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, orderedPIArray,kPaymentInstrumentsKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, orderedPIArray,kPaymentInstrumentsKey, timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
             
         } else {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeSetPaymentInstrumentsOrderFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
         }
         
         if (completionHandler != Nil) {
@@ -274,15 +301,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     __block PLVEventLogger* logger = self.eventLogger;
     
+    __block NSString* timeStamp = [self.inAppAPIClient getTimeStampAsString];
+    
+    __block double startTime = [self.inAppAPIClient getTimeStamp];
+    
+    __block PLVInAppClient* selfBlock = self;
+    
     [self.inAppAPIClient disablePaymentInstrument:payInstrument forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
         
         if (error == noErr) {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeDisablePaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, payInstrument.type, kPaymentInstrumentTypeKey, payInstrument.identifier, kPaymentInstrumentIdentifierKey,Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeDisablePaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, payInstrument.type, kPaymentInstrumentTypeKey, payInstrument.identifier, kPaymentInstrumentIdentifierKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
             
         } else {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeDisablePaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeDisablePaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
         }
         
         if (completionHandler != Nil) {
@@ -302,15 +335,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     __block PLVEventLogger* logger = self.eventLogger;
     
+    __block NSString* timeStamp = [self.inAppAPIClient getTimeStampAsString];
+    
+    __block double startTime = [self.inAppAPIClient getTimeStamp];
+    
+    __block PLVInAppClient* selfBlock = self;
+    
     [self.inAppAPIClient removePaymentInstrument:payInstrument fromUseCase:useCaseChecked forUserToken:userToken withCompletion:^(NSDictionary* response, NSError* error) {
         
         if (error == noErr) {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeRemovePaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, payInstrument.type, kPaymentInstrumentTypeKey, payInstrument.identifier, kPaymentInstrumentIdentifierKey,Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeRemovePaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, useCase, kUseCaseKey, payInstrument.type, kPaymentInstrumentTypeKey, payInstrument.identifier, kPaymentInstrumentIdentifierKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
             
         } else {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeRemovePaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey, Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeRemovePaymentInstrumentFail parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken, kUserTokenKey, error.localizedDescription, kRequestErrorKey, [NSNumber numberWithLong:error.code], kRequestErrorCodeKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey, Nil]]];
         }
         
         if (completionHandler != Nil) {
@@ -606,4 +645,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     return [emailTest evaluateWithObject:checkString];
 }
 
+-(NSString*) getDeltaTimeStringFromStartTimeStamp:(double)startTime {
+    
+    double now = [[NSDate date] timeIntervalSinceReferenceDate] - startTime;
+    
+    return [NSString stringWithFormat:@"%0.02lfs",now];
+    
+}
 @end
