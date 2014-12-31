@@ -534,6 +534,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     PLVPaymentInstrumentValidator* validator = [PLVPaymentInstrumentValidator validatorForPaymentInstrument:pi];
     
+    if (validator == Nil) {
+        
+        NSError* error = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_PAYMENTINSTRUMENT_VALIDATION_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_PAYMENTINSTRUMENT_VALIDATION_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        
+        completionHandler(nil,error);
+        
+        return FALSE;
+    }
+    
+    
     NSArray* validationErrors;
     
     if (validateOnCreation) {

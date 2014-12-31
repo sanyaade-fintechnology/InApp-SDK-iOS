@@ -286,6 +286,13 @@ typedef enum : NSUInteger {
     
     PLVPaymentInstrumentValidator* validator = [PLVPaymentInstrumentValidator validatorForPaymentInstrument:self];
     
+    if (validator == Nil) {
+        
+        *outError = [NSError errorWithDomain:PLVAPIClientErrorDomain code:ERROR_PAYMENTINSTRUMENT_VALIDATION_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_PAYMENTINSTRUMENT_VALIDATION_MESSAGE forKey:NSLocalizedDescriptionKey]];
+        
+        return FALSE;
+    }
+    
     NSArray* validationErrors = [validator validateOnCreation];
     
     if (validationErrors.count == 0) {
