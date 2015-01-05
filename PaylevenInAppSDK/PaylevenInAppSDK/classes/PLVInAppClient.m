@@ -154,7 +154,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
             
             [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeCreateUserTokenSuccess parameters:logParams]];
             
-            [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:Nil];
+            [self addPaymentInstrument:payInstrument forUserToken:[response objectForKey:kUserTokenKey] withUseCase:useCase andCompletion:^(NSDictionary* response, NSError* error){}];
             
         } else {
             
