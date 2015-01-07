@@ -52,29 +52,43 @@
 
 
 #define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
+#define usemacMiniEndpoint 0
 #define useOtherEndpoint 0
 
 #if useLocalEndpoint
 /** locahost endpoint. */
 
-static NSString * const PLVInAppClientAPIHost = @"http://localhost/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"localhost";
+
+static NSString * const PLVInAppClientAPIServiceURL = @"http://localhost/staging/api";
 
 #elif usemacMiniEndpoint
 
 /** macMini in office endpoint. */
 
-static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888";
+
+static NSString * const PLVInAppClientAPIServiceURL = @"http://10.15.100.130:8888/staging/api";
 
 #elif useOtherEndpoint
 
-static NSString * const PLVInAppClientAPIHost = @"http://192.168.32.51/staging/api";
+static NSString * const PLVInAppClientAPIHost = @"apiproxy-staging.payleven.de";
+
+static NSString * const PLVInAppClientAPIServiceURL = @"http://192.168.32.51/staging/api";
 
 #else
 
 /** staging endpoint */
 
-static NSString * const PLVInAppClientAPIHost = @"https://apiproxy-staging.payleven.de";
+static NSString * const PLVInAppClientAPIHost = @"apiproxy-staging.payleven.de";
+//apiproxy-staging.payleven.de
+static NSString * const PLVInAppClientAPIServiceURL = @"https://apiproxy-staging.payleven.de/api/";
+
+/** Staging username for Basic auth during login.*/
+static NSString * const PLVAPIClientStagingLoginUsername = @"hal9000";
+
+/** Staging password for Basic auth during login. */
+static NSString * const PLVAPIClientStagingLoginPassword = @"!$0penthep0dbayd00rs$!";
 
 #endif
 
@@ -148,6 +162,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         configuration.URLCache = nil;
         configuration.timeoutIntervalForRequest = 10.0;
         configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
+        
         _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:_queue];
         
         _serverCertificate = [[PLVServerCertificate alloc] init];
@@ -565,7 +580,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         return  [NSURL URLWithString:self.serviceBaseURL];
     }
     
-    return [NSURL URLWithString:PLVInAppClientAPIHost];
+    return [NSURL URLWithString:PLVInAppClientAPIServiceURL];
 }
 
 - (NSMutableURLRequest *)requestWithPath:(NSString *)path
@@ -707,16 +722,16 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     NSURLSessionAuthChallengeDisposition disposition = NSURLSessionAuthChallengePerformDefaultHandling;
     NSURLCredential *credential = nil;
     
-//    if (challenge.previousFailureCount == 0) {
-//        NSURLProtectionSpace *protectionSpace = challenge.protectionSpace;
-//        if ([protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodHTTPBasic] &&
-//            [protectionSpace.host isEqualToString:PLVInAppAPIClientRegisterHost]) {
-//            disposition = NSURLSessionAuthChallengeUseCredential;
-////            credential = [NSURLCredential credentialWithUser:PLVAPIClientStagingLoginUsername
-////                                                    password:PLVAPIClientStagingLoginPassword
-////                                                 persistence:NSURLCredentialPersistenceNone];
-//        }
-//    }
+    if (challenge.previousFailureCount == 0) {
+        NSURLProtectionSpace *protectionSpace = challenge.protectionSpace;
+        if ([protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodHTTPBasic] &&
+            [protectionSpace.host isEqualToString:PLVInAppClientAPIHost]) {
+            disposition = NSURLSessionAuthChallengeUseCredential;
+            credential = [NSURLCredential credentialWithUser:PLVAPIClientStagingLoginUsername
+                                                    password:PLVAPIClientStagingLoginPassword
+                                                 persistence:NSURLCredentialPersistenceNone];
+        }
+    }
     
     completionHandler(disposition, credential);
 }
@@ -801,14 +816,36 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         
         if ([dict objectForKey:plvInAppSDKResponseStatusKey]) {
             
-            if ([[dict objectForKey:plvInAppSDKResponseStatusKey] isEqualToString:plvInAppSDKStatusOK]) {
-                return Nil;
-            } else if ([[dict objectForKey:plvInAppSDKResponseStatusKey] isEqualToString:plvInAppSDKStatusKO]) {
+            id statusResult = [dict objectForKey:plvInAppSDKResponseStatusKey];
+            
+            if ([statusResult isKindOfClass:[NSDictionary class]]) {
                 
-                if ([dict objectForKey:plvInAppSDKResponseDescriptionKey] && [dict objectForKey:plvInAppSDKResponseCodeKey]) {
-                    return [NSError errorWithDomain:PLVAPIBackEndErrorDomain code:[[dict objectForKey:plvInAppSDKResponseCodeKey] intValue] userInfo:[NSDictionary dictionaryWithObject:[dict objectForKey:plvInAppSDKResponseDescriptionKey] forKey:NSLocalizedDescriptionKey]];
+                NSDictionary* resultDict = (NSDictionary*) statusResult;
+                
+                if ([[[resultDict objectForKey:plvInAppSDKResultKey] uppercaseString] isEqualToString:plvInAppSDKStatusOK]) {
+                    return Nil;
+                } else if ([[[resultDict objectForKey:plvInAppSDKResponseStatusKey] uppercaseString] isEqualToString:plvInAppSDKStatusKO]) {
+                    
+                    if ([resultDict objectForKey:plvInAppSDKResponseMessageKey] && [resultDict objectForKey:plvInAppSDKResponseCodeKey]) {
+                        
+                        return [NSError errorWithDomain:PLVAPIBackEndErrorDomain code:[[resultDict objectForKey:plvInAppSDKResponseCodeKey] intValue] userInfo:[NSDictionary dictionaryWithObject:[resultDict objectForKey:plvInAppSDKResponseMessageKey] forKey:NSLocalizedDescriptionKey]];
+                    }
+                }
+                
+            } else if ([statusResult isKindOfClass:[NSString class]]) {
+                
+                // legacy for old MockBE
+                
+                if ([[dict objectForKey:plvInAppSDKResponseStatusKey] isEqualToString:plvInAppSDKStatusOK]) {
+                    return Nil;
+                } else if ([[dict objectForKey:plvInAppSDKResponseStatusKey] isEqualToString:plvInAppSDKStatusKO]) {
+                    
+                    if ([dict objectForKey:plvInAppSDKResponseDescriptionKey] && [dict objectForKey:plvInAppSDKResponseCodeKey]) {
+                        return [NSError errorWithDomain:PLVAPIBackEndErrorDomain code:[[dict objectForKey:plvInAppSDKResponseCodeKey] intValue] userInfo:[NSDictionary dictionaryWithObject:[dict objectForKey:plvInAppSDKResponseDescriptionKey] forKey:NSLocalizedDescriptionKey]];
+                    }
                 }
             }
+        
         }
     }
 

@@ -18,7 +18,9 @@
 
 #define plvInAppSDKResponseStatusKey @"status"
 #define plvInAppSDKResponseResultKey @"response"
+#define plvInAppSDKResultKey @"result"
 
+#define plvInAppSDKResponseMessageKey @"message"
 #define plvInAppSDKResponseDescriptionKey @"description"
 #define plvInAppSDKResponseCodeKey @"code"
 
