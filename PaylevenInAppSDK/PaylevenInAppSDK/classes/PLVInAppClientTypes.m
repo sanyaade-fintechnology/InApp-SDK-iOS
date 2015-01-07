@@ -12,6 +12,7 @@
 #import "PLVInAppSDKConstants.h"
 #import "PLVPaymentInstrumentValidator.h"
 #import "PLVInAppErrors.h"
+#import "OrderedDictionary.h"
 
 typedef NSString PLVPIType;
 
@@ -31,6 +32,10 @@ typedef enum : NSUInteger {
 @property (readwrite) NSString* sortIndex;
 @property (readwrite) NSString* identifier;
 @property (readwrite) NSString* type;
+
++ (instancetype) serializeWithDict:(NSDictionary*)dict;
+
+- (NSMutableDictionary*) piDictDescription;
 
 @end
 
@@ -118,6 +123,42 @@ typedef enum : NSUInteger {
     return self;
 }
 
+- (NSDictionary*) piDictDescription {
+    
+    OrderedDictionary* content = [OrderedDictionary new];
+    
+    if (self.cvv != Nil) {
+        [content setObject:self.cvv forKey:ccCVVKey];
+    }
+    
+    if (self.expiryMonth != 0) {
+        [content setObject:[NSNumber numberWithInteger:self.expiryMonth] forKey:ccExpiryMonthKey];
+    }
+    
+    if (self.expiryYear != 0) {
+        [content setObject:[NSNumber numberWithInteger:self.expiryYear] forKey:ccExpiryYearKey];
+    }
+    
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
+    if (self.cardHolder != Nil) {
+        [content setObject:self.cardHolder forKey:ccCardHolder];
+    }
+    
+    if (self.pan != Nil) {
+        [content setObject:self.pan forKey:ccPanKey];
+    }
+    
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
+    }
+    
+    return content;
+}
+
+
 @end
 
 
@@ -173,6 +214,31 @@ typedef enum : NSUInteger {
     return self;
 }
 
+- (NSDictionary*) piDictDescription {
+    
+    OrderedDictionary* content = [OrderedDictionary new];
+    
+    
+    if (self.accountNo != Nil) {
+        [content setObject:self.accountNo forKey:ddAccountNoKey];
+    }
+    
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
+    if (self.routingNo != Nil) {
+        [content setObject:self.routingNo forKey:ddRoutingNoKey];
+    }
+    
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
+    }
+    
+    return content;
+}
+
+
 @end
 
 @interface PLVPayInstrumentSEPA ()
@@ -211,8 +277,6 @@ typedef enum : NSUInteger {
     return (bicError == Nil);
 }
 
-
-
 - (instancetype)initWithIBAN:(NSString*)iban andBIC:(NSString*)bic
 {
     self = [super init];
@@ -232,6 +296,30 @@ typedef enum : NSUInteger {
     
     return self;
 }
+
+- (NSDictionary*) piDictDescription {
+    
+    OrderedDictionary* content = [OrderedDictionary new];
+    
+    if (self.bic != Nil) {
+        [content setObject:self.bic forKey:sepaBICNumberKey];
+    }
+    
+    if (self.iban != Nil) {
+        [content setObject:self.iban forKey:sepaIBANNumberKey];
+    }
+    
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
+    }
+    
+    return content;
+}
+
 
 @end
 
@@ -265,6 +353,25 @@ typedef enum : NSUInteger {
         _authToken = token;
     }
     return self;
+}
+
+- (NSDictionary*) piDictDescription {
+    
+    OrderedDictionary* content = [OrderedDictionary new];
+    
+    if (self.authToken != Nil) {
+        [content setObject:self.authToken forKey:paypalAuthTokenKey];
+    }
+    
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
+    if (self.type != Nil) {
+        [content setObject:self.type forKey:piTypeKey];
+    }
+    
+    return content;
 }
 
 @end
@@ -315,6 +422,61 @@ typedef enum : NSUInteger {
     
     return FALSE;
 }
+
++ (instancetype) serializeWithDict:(NSDictionary*)dict {
+    
+    if ([dict objectForKey:piTypeKey]) {
+        
+        NSString* piType = [dict objectForKey:piTypeKey];
+        
+        PLVPaymentInstrument* newPI;
+        
+        if ([piType isEqualToString:PLVPITypeCC]) {
+            newPI = [[PLVPayInstrumentCC alloc] init];
+        } else if ([piType isEqualToString:PLVPITypeDD]) {
+            newPI = [[PLVPayInstrumentDD alloc] init];
+        } else if ([piType isEqualToString:PLVPITypeSEPA]) {
+            newPI = [[PLVPayInstrumentSEPA alloc] init];
+        } else if ([piType isEqualToString:PLVPITypePAYPAL]) {
+            newPI = [[PLVPayInstrumentPAYPAL alloc] init];
+        }
+        
+        SDLog(@"Serialze with Dict:%@",dict);
+        
+        [newPI initValuesWithDict:dict];
+        
+        return newPI;
+    }
+    
+    return Nil;
+    
+}
+
+- (NSMutableDictionary*) piDictDescription {
+    
+    OrderedDictionary* content = [OrderedDictionary new];
+    
+    if (self.identifier != Nil) {
+        [content setObject:self.identifier forKey:piIdentifierTypeKey];
+    }
+    
+    [content setObject:self.type forKey:piTypeKey];
+    
+    return content;
+    
+}
+
+- (void) initValuesWithDict:(NSDictionary*)contentDict {
+    
+    [self setValuesForKeysWithDictionary:contentDict];
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+    
+    SDLog(@"Serialze %@: try to set undefinedKey:%@",[[self class] description],key);
+    
+}
+
 
 + (id)createCreditCardPayInstrumentWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
 {

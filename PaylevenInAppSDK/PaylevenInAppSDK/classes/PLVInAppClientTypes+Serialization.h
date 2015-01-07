@@ -14,9 +14,7 @@
 
 @interface PLVPaymentInstrument (Serialization)
 
-+ (instancetype) serializeWithDict:(NSDictionary*)dict;
 
-- (NSMutableDictionary*) piDictDescription;
 
 @end
 

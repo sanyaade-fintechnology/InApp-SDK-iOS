@@ -48,7 +48,6 @@
 		9F71D6B51A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F71D6B31A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.h */; };
 		9F71D6B61A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F71D6B41A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m */; };
 		9F7CFC881A079A950047203A /* PLVInAppClientTypes+Serialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F7CFC861A079A950047203A /* PLVInAppClientTypes+Serialization.h */; };
-		9F7CFC891A079A950047203A /* PLVInAppClientTypes+Serialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F7CFC871A079A950047203A /* PLVInAppClientTypes+Serialization.m */; };
 		9FA5CAAD19F5189C00FCB314 /* PLVInAppSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FA5CAAC19F5189C00FCB314 /* PLVInAppSDK.h */; };
 		9FA5CBC719F527C600FCB314 /* PLVInAppClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CBC319F527C600FCB314 /* PLVInAppClient.m */; };
 		9FA5CBC819F527C600FCB314 /* PLVInAppSDKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CBC519F527C600FCB314 /* PLVInAppSDKConstants.m */; };
@@ -499,7 +498,6 @@
 				9F71D6B61A370DF7007AEBC4 /* PLVInAppClientTypPanValidator.m in Sources */,
 				9F00818F1A39A12F00EE402B /* PLVReachability.m in Sources */,
 				9FB3E6461A30799900FE9CAC /* PLVEvent.m in Sources */,
-				9F7CFC891A079A950047203A /* PLVInAppClientTypes+Serialization.m in Sources */,
 				9F71D6B21A370BF4007AEBC4 /* PLVCardBrandManager.m in Sources */,
 				9FB3E64E1A3079EF00FE9CAC /* PLVHTTPUserAgent.m in Sources */,
 				9F30869F1A2351E3000D2AD5 /* PLVInAppAPIClient.m in Sources */,

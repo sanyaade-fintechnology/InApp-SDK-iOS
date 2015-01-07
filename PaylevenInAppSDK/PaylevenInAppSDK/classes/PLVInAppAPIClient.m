@@ -13,7 +13,7 @@
 #import "PLVServerTrustValidator.h"
 #import "PLVInAppSDKConstants.h"
 #import "PLVInAppErrors.h"
-#import "PLVInAppClientTypes+Serialization.h"
+#import "PLVInAppClientTypes.h"
 #import "OrderedDictionary.h"
 #import "PLVRequestPersistManager.h"
 #import <CommonCrypto/CommonCrypto.h>
@@ -254,11 +254,16 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     if(payInstrument != Nil) {
 
-            NSDictionary* desc = [payInstrument piDictDescription];
-            
-            if (desc != Nil) {
-                    [bodyParameters setObject:desc forKey:apiParameterKeyPI];
-            }
+        // Hook around to expose method 'piDictDescription' to customers
+    
+        SEL selector = NSSelectorFromString(@"piDictDescription");
+        IMP imp = [payInstrument methodForSelector:selector];
+        NSDictionary* (*func)(id, SEL) = (void *)imp;
+        NSDictionary* desc  = func(payInstrument, selector);
+
+        if (desc != Nil) {
+            [bodyParameters setObject:desc forKey:apiParameterKeyPI];
+        }
     }
     
     NSURL *URL = [self getBaseServiceURL];
@@ -366,7 +371,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                     
                     if ([piDict isKindOfClass:[NSDictionary class]]) {
                     
-                        PLVPaymentInstrument* pi = [PLVPaymentInstrument serializeWithDict:piDict];
+                        PLVPaymentInstrument* pi = [PLVPaymentInstrument performSelector:NSSelectorFromString(@"serializeWithDict:") withObject:piDict];
                         
                         if (pi != Nil) {
                             [serializedPI addObject:pi];
