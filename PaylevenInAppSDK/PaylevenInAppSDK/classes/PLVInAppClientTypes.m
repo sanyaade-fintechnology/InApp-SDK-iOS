@@ -159,13 +159,14 @@ typedef enum : NSUInteger {
 - (instancetype)initWithAccountNo:(NSString*)accountNo andRoutingNo:(NSString*)routingNo
 {
     self = [super init];
+    
     if (self) {
         self.type = PLVPITypeDD;
         
-        NSArray* accountNoParts = [self.accountNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSArray* accountNoParts = [accountNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         _accountNo = [accountNoParts componentsJoinedByString:@""];
     
-        NSArray* routingNoParts = [self.routingNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSArray* routingNoParts = [routingNo componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         _routingNo = [routingNoParts componentsJoinedByString:@""];
         
     }
