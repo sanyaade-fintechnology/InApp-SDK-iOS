@@ -21,7 +21,8 @@ $app->get('/cardBrands','cardBrands');
 
 $app->post('/users', 'getUserTokenForEmail');
 $app->post('/users/:userToken/payment-instruments',	'addPIToUserToken');
-$app->get('/users/:userToken/payment-instruments',	'listPiForUserToken');
+$app->get('/users/:userToken/payment-instruments/use-case/:useCase',	'listPiForUserToken');
+
 $app->post('/users/:userToken/payment-instruments/sort-index',	'sortPIForUserToken');
 
 $app->delete('/users/:userToken/payment-instruments/:piID',	'deletePIForUserToken');
@@ -100,9 +101,9 @@ function setBackEndStatus ($userToken) {
 
 }
 
-function listPiForUserToken ($userToken) {
+function listPiForUserToken ($userToken,$useCase) {
 	
-	listPaymentInstrumentsForUserToken($userToken);
+	listPaymentInstrumentsForUserToken($userToken,$useCase);
 
 }
 
@@ -260,7 +261,7 @@ function returnOKStatus($result) {
         echo json_encode($responseArray);
 }
 
-function listPaymentInstrumentsForUserToken($userToken) {
+function listPaymentInstrumentsForUserToken($userToken,$reqUseCase) {
 
     $request = Slim::getInstance()->request();
     $details = json_decode($request->getBody());
@@ -269,12 +270,10 @@ function listPaymentInstrumentsForUserToken($userToken) {
 		return;
 	}
 	
-	$get = $request->get();
-	
 	$useCase = DEFAULTUSECASE;
 	
-	if (isset($get['use-case'])) {
-		$useCase = $get['use-case'];
+	if (isset($reqUseCase)) {
+		$useCase = $reqUseCase;
 	}
 	
 	$useCase = checkUseCase($useCase);

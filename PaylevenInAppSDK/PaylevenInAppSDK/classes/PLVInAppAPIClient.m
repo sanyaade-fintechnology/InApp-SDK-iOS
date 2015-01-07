@@ -45,7 +45,7 @@
 
 #define PLVInAppClientAPIUsersEndPoint @"/users"
 #define PLVInAppClientAPIUsersAddPiEndPoint @"/users/%@/payment-instruments"
-#define PLVInAppClientAPIListPisEndPoint @"%@/users/%@/payment-instruments?use-case=%@"
+#define PLVInAppClientAPIListPisEndPoint @"%@/users/%@/payment-instruments/use-case/%@"
 #define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments/sort-index"
 #define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/payment-instruments/%@"
 #define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
