@@ -52,7 +52,7 @@
 
 
 #define useLocalEndpoint 0
-#define usemacMiniEndpoint 0
+#define usemacMiniEndpoint 1
 #define useOtherEndpoint 0
 
 #if useLocalEndpoint
@@ -62,6 +62,13 @@ static NSString * const PLVInAppClientAPIHost = @"localhost";
 
 static NSString * const PLVInAppClientAPIServiceURL = @"http://localhost/staging/api";
 
+/** Staging username for Basic auth during login.*/
+static NSString * const PLVAPIClientStagingLoginUsername = @"without";
+
+/** Staging password for Basic auth during login. */
+static NSString * const PLVAPIClientStagingLoginPassword = @"nopassword";
+
+
 #elif usemacMiniEndpoint
 
 /** macMini in office endpoint. */
@@ -70,11 +77,23 @@ static NSString * const PLVInAppClientAPIHost = @"http://10.15.100.130:8888";
 
 static NSString * const PLVInAppClientAPIServiceURL = @"http://10.15.100.130:8888/staging/api";
 
+/** Staging username for Basic auth during login.*/
+static NSString * const PLVAPIClientStagingLoginUsername = @"without";
+
+/** Staging password for Basic auth during login. */
+static NSString * const PLVAPIClientStagingLoginPassword = @"nopassword";
+
 #elif useOtherEndpoint
 
 static NSString * const PLVInAppClientAPIHost = @"apiproxy-staging.payleven.de";
 
 static NSString * const PLVInAppClientAPIServiceURL = @"http://192.168.32.51/staging/api";
+
+/** Staging username for Basic auth during login.*/
+static NSString * const PLVAPIClientStagingLoginUsername = @"without";
+
+/** Staging password for Basic auth during login. */
+static NSString * const PLVAPIClientStagingLoginPassword = @"nopassword";
 
 #else
 
@@ -82,7 +101,7 @@ static NSString * const PLVInAppClientAPIServiceURL = @"http://192.168.32.51/sta
 
 static NSString * const PLVInAppClientAPIHost = @"apiproxy-staging.payleven.de";
 //apiproxy-staging.payleven.de
-static NSString * const PLVInAppClientAPIServiceURL = @"https://apiproxy-staging.payleven.de/api/";
+static NSString * const PLVInAppClientAPIServiceURL = @"https://apiproxy-staging.payleven.de/api/v1";
 
 /** Staging username for Basic auth during login.*/
 static NSString * const PLVAPIClientStagingLoginUsername = @"hal9000";
