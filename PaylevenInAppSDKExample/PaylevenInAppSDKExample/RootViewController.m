@@ -71,7 +71,7 @@
     self.resetAPIClientButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     self.resetAPIClientButton.layer.borderWidth = 1.f;
     
-    self.apiKeyLabel.text = @"API Key: 4840bbc6429dacd56bfa98390ddf43";
+    self.apiKeyLabel.text = @"API Key: bf40a8085d6a491396ea5e83e28632b9";
     
     BOOL stricterFilter = NO;
     NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
@@ -132,7 +132,10 @@
 
 - (IBAction) startRegisterUserToken:(id)sender {
     
-    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"4840bbc6429dacd56bfa98390ddf43"];
+//    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"4840bbc6429dacd56bfa98390ddf43"];
+    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"bf40a8085d6a491396ea5e83e28632b9"];
+    
+    
     
     if (self.userToken != Nil) {
         

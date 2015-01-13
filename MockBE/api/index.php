@@ -23,7 +23,7 @@ $app->post('/users', 'getUserTokenForEmail');
 $app->post('/users/:userToken/payment-instruments',	'addPIToUserToken');
 $app->get('/users/:userToken/payment-instruments/use-case/:useCase',	'listPiForUserToken');
 
-$app->post('/users/:userToken/payment-instruments/sort-index',	'sortPIForUserToken');
+$app->post('/users/:userToken/payment-instruments/use-case/:useCase/sort-index',	'sortPIForUserToken');
 
 $app->delete('/users/:userToken/payment-instruments/:piID',	'deletePIForUserToken');
 $app->delete('/users/:userToken/payment-instruments/:piID/use-case/:useCaseValue',	'removeUseCaseForPiAndUserToken');
@@ -107,9 +107,9 @@ function listPiForUserToken ($userToken,$useCase) {
 
 }
 
-function sortPIForUserToken ($userToken) {
+function sortPIForUserToken ($userToken,$useCase) {
 	
-	setPIOrderForUserToken($userToken);
+	setPIOrderForUserToken($userToken,$useCase);
 }
 
 
@@ -465,7 +465,7 @@ function reorderUseCaseUpFromIndex($sortIndex,$useCase,$userToken) {
 	return true;
 }
 
-function setPIOrderForUserToken($userToken) {
+function setPIOrderForUserToken($userToken,$requestetUseCase) {
 
     $request = Slim::getInstance()->request();
 	
@@ -477,10 +477,10 @@ function setPIOrderForUserToken($userToken) {
 
     $piArray = $details->paymentInstruments;
 	
-	$useCase = DEFAULTUSECASE;
-	
-	if (isset($details->useCase)) {
-		$useCase = $details->useCase;
+	if (isset($requestetUseCase)) {
+		$useCase = $requestetUseCase;
+	} else {
+		$useCase = DEFAULTUSECASE;
 	}
 	
 	$useCase = checkUseCase($useCase);

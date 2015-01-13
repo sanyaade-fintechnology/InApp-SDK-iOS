@@ -634,6 +634,10 @@
 		9FA5CABB19F5189C00FCB314 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
 				COPY_PHASE_STRIP = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -650,6 +654,10 @@
 		9FA5CABC19F5189C00FCB314 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",

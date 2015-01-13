@@ -46,14 +46,15 @@
 #define PLVInAppClientAPIUsersEndPoint @"/users"
 #define PLVInAppClientAPIUsersAddPiEndPoint @"/users/%@/payment-instruments"
 #define PLVInAppClientAPIListPisEndPoint @"%@/users/%@/payment-instruments/use-case/%@"
-#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments/sort-index"
+#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments/use-case/%@/sort-index"
 #define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/payment-instruments/%@"
 #define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
 
 
 #define useLocalEndpoint 0
-#define usemacMiniEndpoint 1
 #define useOtherEndpoint 0
+#define usemacMiniEndpoint 0
+#define usePHPStagingEndpoint 1
 
 #if useLocalEndpoint
 /** locahost endpoint. */
@@ -83,31 +84,46 @@ static NSString * const PLVAPIClientStagingLoginUsername = @"without";
 /** Staging password for Basic auth during login. */
 static NSString * const PLVAPIClientStagingLoginPassword = @"nopassword";
 
-#elif useOtherEndpoint
+#elif usePHPStagingEndpoint
 
-static NSString * const PLVInAppClientAPIHost = @"apiproxy-staging.payleven.de";
+static NSString * const PLVInAppClientAPIHost = @"mockbe.payleven.de";
 
-static NSString * const PLVInAppClientAPIServiceURL = @"http://192.168.32.51/staging/api";
+static NSString * const PLVInAppClientAPIServiceURL = @"https://mockbe.payleven.de/api";
 
 /** Staging username for Basic auth during login.*/
-static NSString * const PLVAPIClientStagingLoginUsername = @"without";
+static NSString * const PLVAPIClientStagingLoginUsername = @"mockbe";
 
 /** Staging password for Basic auth during login. */
-static NSString * const PLVAPIClientStagingLoginPassword = @"nopassword";
+static NSString * const PLVAPIClientStagingLoginPassword = @"aekoc9biep8L";
+
+#elif useOtherEndpoint
+
+static NSString * const PLVInAppClientAPIHost = @"10.15.100.77";
+
+static NSString * const PLVInAppClientAPIServiceURL = @"http://10.15.100.77/staging/api";
+
+/** Staging username for Basic auth during login.*/
+static NSString * const PLVAPIClientStagingLoginUsername = @"mockbe";
+
+/** Staging password for Basic auth during login. */
+static NSString * const PLVAPIClientStagingLoginPassword = @"aekoc9biep8L";
 
 #else
 
 /** staging endpoint */
 
-static NSString * const PLVInAppClientAPIHost = @"apiproxy-staging.payleven.de";
+static NSString * const PLVInAppClientAPIHost = @"backend-staging.payleven.de";
 //apiproxy-staging.payleven.de
-static NSString * const PLVInAppClientAPIServiceURL = @"https://apiproxy-staging.payleven.de/api/v1";
+static NSString * const PLVInAppClientAPIServiceURL = @"https://backend-staging.payleven.de/api/v1/payer";
 
 /** Staging username for Basic auth during login.*/
-static NSString * const PLVAPIClientStagingLoginUsername = @"hal9000";
+//static NSString * const PLVAPIClientStagingLoginUsername = @"hal9000";
+static NSString * const PLVAPIClientStagingLoginUsername = @"payerinappuser";
+
 
 /** Staging password for Basic auth during login. */
-static NSString * const PLVAPIClientStagingLoginPassword = @"!$0penthep0dbayd00rs$!";
+//static NSString * const PLVAPIClientStagingLoginPassword = @"!$0penthep0dbayd00rs$!";
+static NSString * const PLVAPIClientStagingLoginPassword = @"4BKgvnHXTGR5wrJpnSpNqxwS";
 
 #endif
 
@@ -473,10 +489,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSURL *URL = [self getBaseServiceURL];
     
-    URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPISetPiListOrderEndPoint,userToken]];
+    URL = [URL URLByAppendingPathComponent:[NSString stringWithFormat:PLVInAppClientAPISetPiListOrderEndPoint,userToken,useCase]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    
     request.HTTPMethod = httpMethodePOST;
+    
     NSError *JSONError;
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:bodyParameters
@@ -629,6 +647,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
                completionHandler:(void (^)(NSDictionary *response, NSError *error))completionHandler {
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
+        
+        //TODO CHeck for valid NSHTTPURLResponse
+        
+        SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
         
         if (error != nil) {
             
