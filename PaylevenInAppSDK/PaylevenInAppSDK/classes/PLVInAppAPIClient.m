@@ -51,10 +51,16 @@
 #define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
 
 
+
+
 #define useLocalEndpoint 0
 #define useOtherEndpoint 0
 #define usemacMiniEndpoint 0
 #define usePHPStagingEndpoint 1
+#define useJBEStagingEndpoint 0
+
+
+
 
 #if useLocalEndpoint
 /** locahost endpoint. */
@@ -108,7 +114,7 @@ static NSString * const PLVAPIClientStagingLoginUsername = @"mockbe";
 /** Staging password for Basic auth during login. */
 static NSString * const PLVAPIClientStagingLoginPassword = @"aekoc9biep8L";
 
-#else
+#elif useJBEStagingEndpoint
 
 /** staging endpoint */
 
@@ -646,13 +652,16 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 - (void)resumeTaskWithURLRequest:(NSURLRequest *)request
                completionHandler:(void (^)(NSDictionary *response, NSError *error))completionHandler {
     
+    SDLog(@"Start Request to url: %@ and Body: %@",request.URL.absoluteString,[[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding] );
+    
+    
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
         NSHTTPURLResponse* httpURLResponse = (NSHTTPURLResponse*)response;
         
-        //TODO CHeck for valid NSHTTPURLResponse
+        //TODO Check for valid NSHTTPURLResponse
         
-        SDLog(@"statusCode %lu: %@",(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
+        SDLog(@"url: %@\n statusCode %lu: %@",httpURLResponse.URL.absoluteString,(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
         
         if (error != nil) {
             
