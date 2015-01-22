@@ -44,11 +44,11 @@
 
 
 #define PLVInAppClientAPIUsersEndPoint @"/users"
-#define PLVInAppClientAPIUsersAddPiEndPoint @"/users/%@/payment-instruments"
-#define PLVInAppClientAPIListPisEndPoint @"%@/users/%@/payment-instruments/use-case/%@"
-#define PLVInAppClientAPISetPiListOrderEndPoint @"/users/%@/payment-instruments/use-case/%@/sort-index"
-#define PLVInAppClientAPIUsersDisablePiEndPoint @"/users/%@/payment-instruments/%@"
-#define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/users/%@/payment-instruments/%@/use-case/%@"
+#define PLVInAppClientAPIUsersAddPiEndPoint @"/%@/payment-instruments"
+#define PLVInAppClientAPIListPisEndPoint @"%@/%@/payment-instruments/use-case/%@"
+#define PLVInAppClientAPISetPiListOrderEndPoint @"/%@/payment-instruments/use-case/%@/sort-index"
+#define PLVInAppClientAPIUsersDisablePiEndPoint @"/%@/payment-instruments/%@"
+#define PLVInAppClientAPIRemovePiForUseCaseEndPoint @"/%@/payment-instruments/%@/use-case/%@"
 
 
 
@@ -56,8 +56,8 @@
 #define useLocalEndpoint 0
 #define useOtherEndpoint 0
 #define usemacMiniEndpoint 0
-#define usePHPStagingEndpoint 1
-#define useJBEStagingEndpoint 0
+#define usePHPStagingEndpoint 0
+#define useJBEStagingEndpoint 1
 
 
 
@@ -120,7 +120,7 @@ static NSString * const PLVAPIClientStagingLoginPassword = @"aekoc9biep8L";
 
 static NSString * const PLVInAppClientAPIHost = @"backend-staging.payleven.de";
 //apiproxy-staging.payleven.de
-static NSString * const PLVInAppClientAPIServiceURL = @"https://backend-staging.payleven.de/api/v1/payer";
+static NSString * const PLVInAppClientAPIServiceURL = @"https://backend-staging.payleven.de/api/v1/payers";
 
 /** Staging username for Basic auth during login.*/
 //static NSString * const PLVAPIClientStagingLoginUsername = @"hal9000";
