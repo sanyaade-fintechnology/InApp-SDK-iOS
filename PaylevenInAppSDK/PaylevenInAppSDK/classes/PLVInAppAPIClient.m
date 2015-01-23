@@ -56,8 +56,8 @@
 #define useLocalEndpoint 0
 #define useOtherEndpoint 0
 #define usemacMiniEndpoint 0
-#define usePHPStagingEndpoint 0
-#define useJBEStagingEndpoint 1
+#define usePHPStagingEndpoint 1
+#define useJBEStagingEndpoint 0
 
 
 
