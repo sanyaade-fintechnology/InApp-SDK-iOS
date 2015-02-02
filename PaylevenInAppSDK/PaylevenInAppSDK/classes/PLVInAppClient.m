@@ -150,7 +150,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
         NSString *userToken = [response objectForKey:kUserTokenKey];
 
-        NSDictionary* logParams = [NSDictionary dictionaryWithObjectsAndKeys:emailAddress,kEmailKey,timeStamp,kTimeStampKey,[self getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey, (userToken!=nil ? userToken : @"userToken nil"), kUserTokenKey, Nil];
+        NSDictionary* logParams = [NSDictionary dictionaryWithObjectsAndKeys:emailAddress,kEmailKey,timeStamp,kTimeStampKey,[self getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey, (userToken!=nil ? userToken : @""), kUserTokenKey, Nil];
         
         if ([response objectForKey:kUserTokenKey] && error == noErr) {
             

@@ -94,6 +94,10 @@
         dict[PLVEventTransformerResponseTime] = event.responseTime;
     }
     
+    if (event.userToken != nil) {
+        dict[PLVEventTransformerUserToken] = event.userToken;
+    }
+    
     return [dict copy];
 }
 
@@ -135,3 +139,4 @@ NSString * const PLVEventTransformerCurrency = @"currency";
 NSString * const PLVEventTransformerCountry = @"paymentCountry";
 NSString * const PLVEventTransformerDeviceIdentifier = @"deviceId";
 NSString * const PLVEventTransformerResponseTime = @"responseTime";
+NSString * const PLVEventTransformerUserToken = @"userToken";

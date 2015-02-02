@@ -45,3 +45,6 @@ extern NSString * const PLVEventTransformerData;
 
 //** response time */
 extern NSString * const PLVEventTransformerResponseTime;
+
+//** user token */
+extern NSString * const PLVEventTransformerUserToken;

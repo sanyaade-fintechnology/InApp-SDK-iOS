@@ -50,7 +50,19 @@
         [_eventData removeObjectForKey:@"responseTime"];
     }
 
+    if (parameters[@"userToken"] == nil ||
+        ((NSString *)parameters[@"userToken"]).length == 0 ) {
+        _userToken = nil;
+            [_eventData removeObjectForKey:@"userToken"];
+    } else {
+        _userToken = parameters[@"userToken"];
+        [_eventData removeObjectForKey:@"userToken"];
+    }
+    
+    
     [_eventData removeObjectForKey:@"event"];
+    
+    
     
     return self;
 }

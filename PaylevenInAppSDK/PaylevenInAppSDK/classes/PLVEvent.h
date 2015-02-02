@@ -41,6 +41,9 @@ typedef NS_ENUM(NSInteger, PLVEventType) {
 /** Event data. */
 @property(nonatomic, readonly) NSMutableDictionary* eventData;
 
+/** User token. */
+@property(nonatomic, readonly, copy) NSString *userToken;
+
 ///** Merchant identifier. */
 //@property(nonatomic, readonly, copy) NSString *merchantIdentifier;
 //
