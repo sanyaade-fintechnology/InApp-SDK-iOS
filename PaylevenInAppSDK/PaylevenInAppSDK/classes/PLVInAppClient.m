@@ -148,7 +148,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
     
     [self getUserToken:emailAddress withCompletion:^(NSDictionary* response, NSError* error) {
     
-        NSDictionary* logParams = [NSDictionary dictionaryWithObjectsAndKeys:emailAddress,kEmailKey,timeStamp,kTimeStampKey,[self getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil];
+        NSString *userToken = [response objectForKey:kUserTokenKey];
+
+        NSDictionary* logParams = [NSDictionary dictionaryWithObjectsAndKeys:emailAddress,kEmailKey,timeStamp,kTimeStampKey,[self getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey, (userToken!=nil ? userToken : @"userToken nil"), kUserTokenKey, Nil];
         
         if ([response objectForKey:kUserTokenKey] && error == noErr) {
             
@@ -202,7 +204,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
         
         if (error == noErr) {
             
-            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:payInstrument.type, kPaymentInstrumentTypeKey, useCase, kUseCaseKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey,Nil]]];
+            [logger logEvent:[PLVEvent eventForNowWithType:PLVEventTypeAddPaymentInstrumentSuccess parameters:[NSDictionary dictionaryWithObjectsAndKeys:userToken!=nil ? userToken : @"", kUserTokenKey, payInstrument.type, kPaymentInstrumentTypeKey, useCase, kUseCaseKey,timeStamp,kTimeStampKey,[selfBlock getDeltaTimeStringFromStartTimeStamp:startTime],kResponseTimeKey, Nil]]];
 
         } else {
             
