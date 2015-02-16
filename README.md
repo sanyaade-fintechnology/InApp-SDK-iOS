@@ -17,7 +17,7 @@ This project provides an iOS API to communicate with the payleven Chip & PIN car
 
 2. Open the *Build Settings* of your target and add `-ObjC` flag to Other Linker Flags.
 
-3. Import PaylevenSDK into your files:
+3. Import PaylevenSDK into your files:1
 
         #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
@@ -26,14 +26,15 @@ This project provides an iOS API to communicate with the payleven Chip & PIN car
 ##### Setup API-Key
 Set up PLVClient in order to register your unique API key
 
-	 [[PLVInAppClient sharedInstance] registerWithAPIKey:@”aaaAnAPIKeyaaaaa”];
+	 [[PLVInAppClient sharedInstance] registerWithAPIKey:@”anAPIKey”];
 
 ### Create Payment Instrument (PI)
 <p align="center"><img src="/Customer_PI_Add.gif" height="400" alt="Sublime's custom image"/></p>
 
 Any payment request via In-App SDK requires a unique user token provided by payleven. To create and retrieve a user token you must provide one first payment instrument (PI) (e.g Credit Card) together with the email address of your client. For this reason create payment instrument (PI) by using PLVPaymentInstrument’s class Methods (e.g. CreateSEPAPayINstuments….)
 
-	PLVPayInstrumentDD  * tempDebitPi = [PLVPaymentInstrument createDebitPayInstrumentWithAccountNo:@"123123" andRoutingNo:@"123123"]; 
+	PLVPayInstrumentDD* tempDebitPi = [PLVPaymentInstrument createDebitPayInstrumentWithAccountNo:@"123123" 
+												                                      andRoutingNo:@"123123"]; 
 
 ##### Create User Token
 
