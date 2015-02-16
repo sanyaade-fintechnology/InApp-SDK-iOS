@@ -25,6 +25,17 @@
 		9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */; };
 		9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */; };
 		9FBE52A91A0D058F0030E165 /* PayInstrumentsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A81A0D058F0030E165 /* PayInstrumentsTableCell.xib */; };
+		F3EA98CA1A9237C8004CC50F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98C91A9237C8004CC50F /* HockeySDK.framework */; };
+		F3EA98CC1A92381E004CC50F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CB1A92381E004CC50F /* AssetsLibrary.framework */; };
+		F3EA98CE1A923828004CC50F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CD1A923828004CC50F /* CoreGraphics.framework */; };
+		F3EA98D01A92382E004CC50F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CF1A92382E004CC50F /* CoreText.framework */; };
+		F3EA98D21A923836004CC50F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D11A923836004CC50F /* Foundation.framework */; };
+		F3EA98D41A923843004CC50F /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D31A923843004CC50F /* MobileCoreServices.framework */; };
+		F3EA98D61A92384B004CC50F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D51A92384B004CC50F /* QuartzCore.framework */; };
+		F3EA98D81A923854004CC50F /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D71A923854004CC50F /* QuickLook.framework */; };
+		F3EA98DA1A92388F004CC50F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D91A92388F004CC50F /* Security.framework */; };
+		F3EA98DC1A923898004CC50F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98DB1A923898004CC50F /* SystemConfiguration.framework */; };
+		F3EA98DE1A9238A1004CC50F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98DD1A9238A1004CC50F /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +67,17 @@
 		9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayInstTableViewController.m; sourceTree = "<group>"; };
 		9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayInstTableViewController.xib; sourceTree = "<group>"; };
 		9FBE52A81A0D058F0030E165 /* PayInstrumentsTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayInstrumentsTableCell.xib; sourceTree = "<group>"; };
+		F3EA98C91A9237C8004CC50F /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		F3EA98CB1A92381E004CC50F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		F3EA98CD1A923828004CC50F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F3EA98CF1A92382E004CC50F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		F3EA98D11A923836004CC50F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F3EA98D31A923843004CC50F /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		F3EA98D51A92384B004CC50F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F3EA98D71A923854004CC50F /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		F3EA98D91A92388F004CC50F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F3EA98DB1A923898004CC50F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		F3EA98DD1A9238A1004CC50F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +85,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3EA98DE1A9238A1004CC50F /* UIKit.framework in Frameworks */,
+				F3EA98DC1A923898004CC50F /* SystemConfiguration.framework in Frameworks */,
+				F3EA98DA1A92388F004CC50F /* Security.framework in Frameworks */,
+				F3EA98D81A923854004CC50F /* QuickLook.framework in Frameworks */,
+				F3EA98D61A92384B004CC50F /* QuartzCore.framework in Frameworks */,
+				F3EA98D41A923843004CC50F /* MobileCoreServices.framework in Frameworks */,
+				F3EA98D21A923836004CC50F /* Foundation.framework in Frameworks */,
+				F3EA98D01A92382E004CC50F /* CoreText.framework in Frameworks */,
+				F3EA98CE1A923828004CC50F /* CoreGraphics.framework in Frameworks */,
+				F3EA98CC1A92381E004CC50F /* AssetsLibrary.framework in Frameworks */,
+				F3EA98CA1A9237C8004CC50F /* HockeySDK.framework in Frameworks */,
 				9F6552B219F5AB0A003D07A5 /* PaylevenInAppSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,6 +126,17 @@
 		9F4F807A19F536CC0008CBBE /* framework */ = {
 			isa = PBXGroup;
 			children = (
+				F3EA98DD1A9238A1004CC50F /* UIKit.framework */,
+				F3EA98DB1A923898004CC50F /* SystemConfiguration.framework */,
+				F3EA98D91A92388F004CC50F /* Security.framework */,
+				F3EA98D71A923854004CC50F /* QuickLook.framework */,
+				F3EA98D51A92384B004CC50F /* QuartzCore.framework */,
+				F3EA98D31A923843004CC50F /* MobileCoreServices.framework */,
+				F3EA98D11A923836004CC50F /* Foundation.framework */,
+				F3EA98CF1A92382E004CC50F /* CoreText.framework */,
+				F3EA98CD1A923828004CC50F /* CoreGraphics.framework */,
+				F3EA98CB1A92381E004CC50F /* AssetsLibrary.framework */,
+				F3EA98C91A9237C8004CC50F /* HockeySDK.framework */,
 				9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */,
 			);
 			name = framework;
@@ -385,6 +429,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
+					"$(PROJECT_DIR)/PaylevenInAppSDKExample",
 				);
 				INFOPLIST_FILE = PaylevenInAppSDKExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -407,6 +452,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
+					"$(PROJECT_DIR)/PaylevenInAppSDKExample",
 				);
 				INFOPLIST_FILE = PaylevenInAppSDKExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

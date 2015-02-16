@@ -21,6 +21,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // Override point for customization after application launch.
+    
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"16d449e6ba59f70742291254e51bf90f"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
     return YES;
 }

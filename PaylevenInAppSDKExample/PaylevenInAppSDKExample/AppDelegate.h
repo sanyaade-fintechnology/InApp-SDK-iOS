@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <HockeySDK/HockeySDK.h>
+
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 
