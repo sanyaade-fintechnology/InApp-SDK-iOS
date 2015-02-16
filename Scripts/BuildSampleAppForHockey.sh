@@ -25,7 +25,7 @@ xcodebuild -exportArchive -exportFormat IPA -archivePath $BUILD_ROOT/$PRODUCT_NA
 
 # Upload to HockeyApp
 cd "$BUILD_ROOT/$PRODUCT_NAME.xcarchive/dSYMs"
-zip -r ${PRODUCT_NAME}.app.dSYM.zip ${PRODUCT_NAME}.app.dSYM
+zip -r ${PRODUCT_NAME}.app.dSYM.zip InAppSDKExample.app.dSYM
 mv ${PRODUCT_NAME}.app.dSYM.zip "$BUILD_ROOT"
 cd "$BUILD_ROOT"
 curl \
