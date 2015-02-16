@@ -4,7 +4,7 @@ if [ -z "$1" ]
 then
 echo "No Hockey App Token supplied"
 else
-echo "Provided Hockey App Token"$1
+echo "Provided Hockey App Token "$1
 fi
 
 PROJECT_ROOT="`pwd`"
