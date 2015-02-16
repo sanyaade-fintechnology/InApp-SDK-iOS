@@ -33,9 +33,8 @@
 #define apiHeaderKeyXBundleID @"X-ApplicationID"
 #define apiHeaderKeyXBodyHash @"X-Body-Hash"
 #define apiHeaderKeyXSDKVersion @"X-Sdk-Version"
-#define apiHeaderKeyXOSVersion @"X-OS-Version"
-#define apiHeaderKeyXDeviceType @"X-Device-Model"
-#define apiHeaderKeyXAuthType @"X-Authorization"
+#define apiHeaderKeyUserAgentType @"User-Agent"
+#define apiHeaderKeyAuthorizationType @"Authorization"
 
 
 #define httpMethodePOST @"POST"
@@ -279,9 +278,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSString* bodyString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody = jsonData;
     
     [self addHmacWithBodyContent:bodyString toRequest:request];
+    
+    DLog(@"Headers: %@",request.allHTTPHeaderFields);
+    DLog(@"Body: %@",[[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
     
     [self resumeTaskWithURLRequest:request completionHandler:^(NSDictionary *response, NSError *error) {
         
@@ -509,7 +511,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSString* bodyString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody = jsonData; //[bodyString dataUsingEncoding:NSUTF8StringEncoding];
     
     [self addHmacWithBodyContent:bodyString toRequest:request];
 
@@ -800,9 +802,13 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     [request setValue:timeStamp forHTTPHeaderField:apiHeaderKeyXHmacTimeStamp];
     [request setValue:self.registerBundleID forHTTPHeaderField:apiHeaderKeyXBundleID];
     [request setValue:PLVInAppSDKVersion forHTTPHeaderField:apiHeaderKeyXSDKVersion];
+    
+    NSString *basicAuthCredentials = [NSString stringWithFormat:@"%@:%@", PLVAPIClientStagingLoginUsername, PLVAPIClientStagingLoginPassword];
+    NSString *authValue = [NSString stringWithFormat:@"Basic %@", [[basicAuthCredentials dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+    [request setValue:authValue forHTTPHeaderField:apiHeaderKeyAuthorizationType];
 
-    [request setValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:apiHeaderKeyXOSVersion];
-    [request setValue:[DevicePlatform platformString] forHTTPHeaderField:apiHeaderKeyXDeviceType];
+    NSString* userAgent = [NSString stringWithFormat:@"Payleven-InApp-SDK/%@ iOS/%@ (%@)",PLVInAppSDKVersion,[[UIDevice currentDevice] systemVersion],[DevicePlatform platformString]];
+    [request setValue:userAgent forHTTPHeaderField:apiHeaderKeyUserAgentType];
     
     if (bodyContent == Nil) {
         
@@ -816,14 +822,17 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     //2. sort params to generate query string
     NSString* query = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@",request.HTTPMethod,request.URL.absoluteString,self.registerBundleID,bodyHash,timeStamp];
     
+    DLog(@"hMac:\n%@",query);
+    
+    NSData *apiKeyData = [[NSData alloc] initWithBase64EncodedString:self.registerAPIKey options:0];
+ 
     //3. generate hash
-    const char *cKey = [self.registerAPIKey cStringUsingEncoding:NSUTF8StringEncoding];
-
     const char *cData = [query cStringUsingEncoding:NSUTF8StringEncoding];
-    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
+    
+    CCHmac(kCCHmacAlgSHA256, (const void*) apiKeyData.bytes, apiKeyData.length, cData, strlen(cData), cHMAC);
     NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-    NSString *hash = [[HMAC base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    NSString *hash = [[HMAC base64EncodedStringWithOptions:0] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
     hash = [hash stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
     HMAC = nil;
     
@@ -833,9 +842,9 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (NSString*) getTimeStampAsString {
     
-    //1. create timestamp string
-    
-    return [self.dateFormatter stringFromDate:[NSDate date]];
+    long long miliseconds = (long long)[[NSDate date] timeIntervalSince1970];
+    return [NSString stringWithFormat:@"%llu",miliseconds];
+
 }
 
 - (double) getTimeStamp {
@@ -854,11 +863,12 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     uint8_t digest[CC_SHA256_DIGEST_LENGTH]={0};
     CC_SHA256(keyData.bytes, (unsigned int) keyData.length, digest);
-    NSData *out=[NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
-    NSString *hash=[out description];
-    hash = [hash stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
-    hash = [hash stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
-    return hash;
+    NSData *hashOut = [NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    NSString *hashString = [[hashOut base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+
+    hashString = [hashString stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
+    
+    return hashString;
 }
 
 

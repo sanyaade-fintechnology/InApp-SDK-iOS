@@ -133,8 +133,8 @@
 - (IBAction) startRegisterUserToken:(id)sender {
     
 //    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"4840bbc6429dacd56bfa98390ddf43"];
-    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"2c66f5fd510740ec83606bfe65bbdd26"];
-
+//    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"2c66f5fd510740ec83606bfe65bbdd26"];
+    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"a7e26c4b874c4359bc3e72efe2b8320c"];
     
     
     if (self.userToken != Nil) {

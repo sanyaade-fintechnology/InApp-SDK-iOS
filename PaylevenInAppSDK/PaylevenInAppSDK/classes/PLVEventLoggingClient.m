@@ -103,7 +103,7 @@ static NSString * const PLVEventLoggingEndpoint = @"http://10.15.100.130:8888/st
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:eventsDict options:0 error:&error];
     if (data == nil) {
-        NSLog(@"Error creating JSON data: %@", error);
+        DLog(@"Error creating JSON data: %@", error);
     }
     
     return data;
