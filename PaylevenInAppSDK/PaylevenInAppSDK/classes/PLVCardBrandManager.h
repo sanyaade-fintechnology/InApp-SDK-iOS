@@ -15,7 +15,7 @@
 /**
  *  sharedInstance
  *
- *  @return Singleton PaylevenInAppCLient
+ *  @return Singleton PLVCardBrandManager
  */
 
 + (instancetype) sharedInstance;
