@@ -97,7 +97,7 @@
         addError(validationErrors,ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
     }
     
-    if (self.paymentInstrument.sortIndex == Nil || self.paymentInstrument.sortIndex.length == 0) {
+    if (self.paymentInstrument.sortIndex == Nil ) {
         addError(validationErrors,ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
     }
     

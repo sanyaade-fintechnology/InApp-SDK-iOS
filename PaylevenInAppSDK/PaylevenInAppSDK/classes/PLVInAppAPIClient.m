@@ -278,7 +278,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     NSString* bodyString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    request.HTTPBody = jsonData;
+    request.HTTPBody = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
     
     [self addHmacWithBodyContent:bodyString toRequest:request];
     
@@ -365,7 +365,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 
 - (void) startRequestWithBody:(NSDictionary*)bodyParameters addEndpoint:(NSString*)endpoint andHTTPMethod:(NSString*)httpMethod andRequestIdentifier:(NSString*)requestIdentifierToken {
     
-    SDLog(@"Retray Request with Identifier: %@",requestIdentifierToken);
+    SDLog(@"Retry Request with Identifier: %@",requestIdentifierToken);
     
     NSURL *URL = [self getBaseServiceURL];
     
@@ -841,10 +841,9 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
 }
 
 - (NSString*) getTimeStampAsString {
-    
+
     long long miliseconds = (long long)[[NSDate date] timeIntervalSince1970];
     return [NSString stringWithFormat:@"%llu",miliseconds];
-
 }
 
 - (double) getTimeStamp {
