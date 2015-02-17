@@ -15,11 +15,11 @@ rm -rf "$BUILD_ROOT"
 
 security unlock-keychain -p "builderpayleven" ~/Library/Keychains/login.keychain
 
-xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme PaylevenInAppSDK -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
+xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme ExampleApp -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
 
-xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme BundleFramework -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
+# xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme BundleFramework -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
 
-xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme InAppSDKExample -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
+# xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme InAppSDKExample -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
 
 xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme BuildDocs -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
 
