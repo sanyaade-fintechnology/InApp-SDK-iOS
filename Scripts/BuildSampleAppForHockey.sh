@@ -21,7 +21,7 @@ xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme ExampleApp -configura
 
 # xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme InAppSDKExample -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
 
-xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme BuildDocs -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' archive -archivePath $BUILD_ROOT/$PRODUCT_NAME
+xcodebuild -workspace PaylevenInAppSDK.xcworkspace -scheme BuildDocs -configuration Release -sdk iphoneos -destination 'generic/platform=iOS'
 
 xcodebuild -exportArchive -exportFormat IPA -archivePath $BUILD_ROOT/$PRODUCT_NAME.xcarchive -exportPath $BUILD_ROOT/$PRODUCT_NAME -exportProvisioningProfile "InApp SDK ExampleApp InHouse Profile"
 
