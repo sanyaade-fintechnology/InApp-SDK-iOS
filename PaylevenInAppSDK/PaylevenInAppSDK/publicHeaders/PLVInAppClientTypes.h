@@ -117,7 +117,7 @@
  *
  *  @property expiryMonth   the expiry month of this creditcard
  *
- *  @property expiryYear    the expiry year of this creditcard
+ *  @property expiryYear    the expiry year of this creditcard 4 digits (f.e. 2015 or 2018)
  *
  *  @property cvv           Card verification value
  *

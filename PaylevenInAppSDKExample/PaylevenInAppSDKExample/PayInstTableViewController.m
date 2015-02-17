@@ -178,6 +178,9 @@
     if([shortType isEqualToString:@"CC"]) {
         PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
         return [NSString stringWithFormat:@"%u/%u",cc.expiryMonth,cc.expiryYear];
+    } else if([shortType isEqualToString:@"SEPA"]) {
+        PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
+        return [NSString stringWithFormat:@"BIC: %@",cc.bic];
     } else {
         return @"";
     }
