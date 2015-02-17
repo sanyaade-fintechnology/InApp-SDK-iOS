@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -50,7 +50,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ODH-Nx-KvW" userLabel="validLabel">
-                                <rect key="frame" x="489" y="5" width="106" height="16"/>
+                                <rect key="frame" x="489" y="0.0" width="106" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="4mq-LO-MMl"/>
                                     <constraint firstAttribute="width" constant="170" id="R5o-EB-sHq"/>
@@ -76,7 +76,7 @@
                             <constraint firstAttribute="trailing" secondItem="ODH-Nx-KvW" secondAttribute="trailing" constant="5" id="HtR-l4-8SJ"/>
                             <constraint firstAttribute="trailing" secondItem="2wM-HS-5Aq" secondAttribute="trailing" constant="16" id="Pbv-jt-SyW"/>
                             <constraint firstItem="oaJ-RJ-sK9" firstAttribute="top" secondItem="DFD-qt-KTt" secondAttribute="top" id="WHi-e8-Q8N"/>
-                            <constraint firstItem="ODH-Nx-KvW" firstAttribute="top" secondItem="DFD-qt-KTt" secondAttribute="top" constant="5" id="YYv-3V-BP5"/>
+                            <constraint firstItem="ODH-Nx-KvW" firstAttribute="top" secondItem="DFD-qt-KTt" secondAttribute="top" id="YYv-3V-BP5"/>
                             <constraint firstItem="Xue-2F-FLE" firstAttribute="top" secondItem="DFD-qt-KTt" secondAttribute="top" id="pNG-hl-fph"/>
                             <constraint firstAttribute="centerY" secondItem="2wM-HS-5Aq" secondAttribute="centerY" constant="-4" id="qnM-2F-eFp"/>
                             <constraint firstItem="2wM-HS-5Aq" firstAttribute="leading" secondItem="DFD-qt-KTt" secondAttribute="leading" constant="16" id="qwV-NR-VSF"/>

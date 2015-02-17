@@ -154,7 +154,7 @@
 
 - (NSError*) validExpiryDateForMonth:(NSInteger)month andYear:(NSInteger)year {
     
-    int yearInt = 2000 + (int)year;
+    int yearInt = (int)year;
     int monthInt = (int)month;
     
     if (monthInt > 12 || monthInt < 1) {
