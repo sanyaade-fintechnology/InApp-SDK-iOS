@@ -663,7 +663,7 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
         
         //TODO Check for valid NSHTTPURLResponse
         
-        SDLog(@"url: %@\n statusCode %lu: %@",httpURLResponse.URL.absoluteString,(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
+        SDLog(@"Headers: %@ url: %@\n statusCode %lu: %@",httpURLResponse.allHeaderFields,httpURLResponse.URL.absoluteString,(long)httpURLResponse.statusCode, [NSHTTPURLResponse localizedStringForStatusCode:httpURLResponse.statusCode]);
         
         if (error != nil) {
             
@@ -677,6 +677,23 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
             });
             
             return;
+        }
+        
+        if(![self checkHmacOnBody:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] forResponse:httpURLResponse]) {
+            
+            // Hmac check on response failed
+            
+            SDLog(@"Cant confirm valid hmac on response");
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                NSError* error = [NSError errorWithDomain:PLVAPIBackEndErrorDomain code:ERROR_INVALID_BACKEND_RESPONSE_CHECK_CODE userInfo:[NSDictionary dictionaryWithObject:ERROR_INVALID_BACKEND_RESPONSE_CHECK_MESSAGE forKey:NSLocalizedDescriptionKey]];
+                
+                completionHandler(Nil, error);
+            });
+            
+            return;
+            
         }
         
         NSDictionary *responseDict = nil;
@@ -824,20 +841,49 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     
     DLog(@"hMac:\n%@",query);
     
-    NSData *apiKeyData = [[NSData alloc] initWithBase64EncodedString:self.registerAPIKey options:0];
- 
-    //3. generate hash
-    const char *cData = [query cStringUsingEncoding:NSUTF8StringEncoding];
-    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
-    
-    CCHmac(kCCHmacAlgSHA256, (const void*) apiKeyData.bytes, apiKeyData.length, cData, strlen(cData), cHMAC);
-    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-    NSString *hash = [[HMAC base64EncodedStringWithOptions:0] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
-    hash = [hash stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
-    HMAC = nil;
-    
-    [request setValue:hash forHTTPHeaderField:apiHeaderKeyXHmac];
+    [request setValue:[self hmacSha256:query] forHTTPHeaderField:apiHeaderKeyXHmac];
 
+}
+
+-(BOOL) checkHmacOnBody:(NSString*)bodyContent forResponse:(NSHTTPURLResponse*)response {
+    
+   if (response != Nil) {
+       
+       NSDictionary* responseHeaders = response.allHeaderFields;
+       
+       if (responseHeaders != Nil) {
+           
+           NSString* responseHmac = [responseHeaders objectForKey:apiHeaderKeyXHmac];
+           
+           if (responseHmac != Nil) {
+               
+               if ([responseHeaders objectForKey:apiHeaderKeyXBodyHash] != Nil) {
+                   
+                   NSString* bodyHash = [responseHeaders objectForKey:apiHeaderKeyXBodyHash];
+                   
+                   if ([bodyHash isEqualToString:[self sha256:bodyContent]]) {
+                       
+                       NSString* timeStamp = [responseHeaders objectForKey:apiHeaderKeyXHmacTimeStamp];
+                       
+                       if (timeStamp != Nil) {
+                           
+                           NSString* statusCode = [NSString stringWithFormat:@"%lu",(long)response.statusCode];
+                           
+                           if (statusCode != Nil && statusCode.length != 0) {
+                               
+                               NSString* query = [NSString stringWithFormat:@"%@\n%@\n%@",statusCode,bodyHash,timeStamp];
+                               
+                               return [responseHmac isEqualToString:[self hmacSha256:query]];
+                               
+                           }
+                       }
+                   }
+               }
+           }
+       }
+    }
+    
+    return FALSE;
 }
 
 - (NSString*) getTimeStampAsString {
@@ -868,6 +914,23 @@ NSInteger alphabeticKeySort(id string1, id string2, void *reverse);
     hashString = [hashString stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
     
     return hashString;
+}
+
+-(NSString*) hmacSha256:(NSString *)inputString {
+    
+    NSData *apiKeyData = [[NSData alloc] initWithBase64EncodedString:self.registerAPIKey options:0];
+    
+    //3. generate hash
+    const char *cData = [inputString cStringUsingEncoding:NSUTF8StringEncoding];
+    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
+    
+    CCHmac(kCCHmacAlgSHA256, (const void*) apiKeyData.bytes, apiKeyData.length, cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    NSString *hash = [[HMAC base64EncodedStringWithOptions:0] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    hash = [hash stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
+    HMAC = nil;
+    
+    return hash;
 }
 
 

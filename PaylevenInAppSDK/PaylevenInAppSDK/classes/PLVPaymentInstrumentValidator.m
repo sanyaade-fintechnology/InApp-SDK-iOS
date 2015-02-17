@@ -646,9 +646,17 @@
     if (authToken == Nil || authToken.length == 0) {
         returnError(ERROR_PAYPAL_AUTH_TOKEN_EMPTY_CODE,ERROR_PAYPAL_AUTH_TOKEN_EMPTY_MESSAGE);
     } else {
+        
         if (authToken.length < paypalAuthTokenNumberMinLength || authToken.length > paypalAuthTokenNumberMaxLength) {
             returnError(ERROR_PAYPAL_AUTH_TOKEN_INVALID_CODE,ERROR_PAYPAL_AUTH_TOKEN_INVALID_MESSAGE);
         }
+        
+        NSString* uppperAuthToken = [authToken uppercaseString];
+        
+        if ([uppperAuthToken rangeOfCharacterFromSet:[[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZ.0123456789 "] invertedSet]].location != NSNotFound) {
+            returnError(ERROR_PAYPAL_AUTH_TOKEN_INVALID_CHARS_CODE,ERROR_PAYPAL_AUTH_TOKEN_INVALID_CHARS_MESSAGE);
+        }
+        
     }
     
     return Nil;
