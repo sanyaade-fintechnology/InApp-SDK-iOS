@@ -115,9 +115,9 @@
  *
  *  @property cardBrand     the cardbrand of this card (will be present on polling payment instruments)
  *
- *  @property expiryMonth   the expiry month of this creditcard
+ *  @property expiryMonth   the expiry month of this creditcard 2 digits    (valid Range from 01 ... 12)
  *
- *  @property expiryYear    the expiry year of this creditcard 4 digits (f.e. 2015 or 2018)
+ *  @property expiryYear    the expiry year of this creditcard 4 digits     (valid Range from 2010 ... 2050)
  *
  *  @property cvv           Card verification value
  *
