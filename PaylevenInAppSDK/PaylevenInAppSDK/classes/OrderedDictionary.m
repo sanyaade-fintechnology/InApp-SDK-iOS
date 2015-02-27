@@ -50,12 +50,20 @@ NSString *DescriptionForObject(NSObject *object, id locale, NSUInteger indent)
 
 - (id)init
 {
-    return [self initWithCapacity:0];
+    self = [super init];
+    
+    if (self != nil)
+    {
+        dictionary = [[NSMutableDictionary alloc] initWithCapacity:1];
+        array = [[NSMutableArray alloc] initWithCapacity:1];
+    }
+    return self;
 }
 
 - (id)initWithCapacity:(NSUInteger)capacity
 {
 	self = [super init];
+    
 	if (self != nil)
 	{
 		dictionary = [[NSMutableDictionary alloc] initWithCapacity:capacity];
@@ -68,7 +76,6 @@ NSString *DescriptionForObject(NSObject *object, id locale, NSUInteger indent)
 {
 	return [self mutableCopy];
 }
-
 - (void)setObject:(id)anObject forKey:(id)aKey
 {
 	if (![dictionary objectForKey:aKey])

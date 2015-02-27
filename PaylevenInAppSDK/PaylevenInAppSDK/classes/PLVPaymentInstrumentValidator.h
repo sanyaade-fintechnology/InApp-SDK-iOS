@@ -10,7 +10,6 @@
 @import Foundation;
 
 #import "PLVInAppClientTypes.h"
-#import "PLVInAppClientTypes.h"
 
 
 @interface PLVPaymentInstrumentValidator : NSObject
@@ -27,7 +26,7 @@
 
 @interface PLVPayInstrumentCCValidator : PLVPaymentInstrumentValidator
 
-@property (strong) PLVPayInstrumentCC* paymentInstrument;
+@property (strong) PLVCreditCardPaymentInstrument* paymentInstrument;
 
 - (NSError*)validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year;
 - (NSError*)validatePAN:(NSString*)pan;
@@ -39,7 +38,7 @@
 
 @interface PLVPayInstrumentDDValidator  : PLVPaymentInstrumentValidator
 
-@property (strong) PLVPayInstrumentDD* paymentInstrument;
+@property (strong) PLVDebitCardPaymentInstrument* paymentInstrument;
 
 - (NSError*) validateAccountNo:(NSString*)accountNo;
 - (NSError*) validateRoutingNo:(NSString*)routingNo;
@@ -49,7 +48,7 @@
 
 @interface PLVPayInstrumentSEPAValidator  : PLVPaymentInstrumentValidator
 
-@property (strong) PLVPayInstrumentSEPA* paymentInstrument;
+@property (strong) PLVSEPAPaymentInstrument* paymentInstrument;
 
 - (NSError*) validateIBAN:(NSString*)iban;
 - (NSError*) validateBIC:(NSString*)bic;
@@ -59,7 +58,7 @@
 
 @interface PLVPayInstrumentPAYPALValidator  : PLVPaymentInstrumentValidator
 
-@property (strong) PLVPayInstrumentPAYPAL* paymentInstrument;
+@property (strong) PLVPAYPALPaymentInstrument* paymentInstrument;
 
 - (NSError*) validateAuthToken:(NSString*)authToken;
 

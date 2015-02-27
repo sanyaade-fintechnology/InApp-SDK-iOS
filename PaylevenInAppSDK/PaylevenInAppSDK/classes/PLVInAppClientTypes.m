@@ -40,14 +40,14 @@ typedef enum : NSUInteger {
 @end
 
 
-@interface PLVPayInstrumentCC ()
+@interface PLVCreditCardPaymentInstrument ()
 
 - (id)initWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder;
 
 @end
 
 
-@implementation PLVPayInstrumentCC
+@implementation PLVCreditCardPaymentInstrument
 
 + (BOOL) validatePan:(NSString*)pan withError:(NSError **)error{
     
@@ -162,13 +162,13 @@ typedef enum : NSUInteger {
 @end
 
 
-@interface PLVPayInstrumentDD ()
+@interface PLVDebitCardPaymentInstrument ()
 
 - (instancetype)initWithAccountNo:(NSString*)accountNo andRoutingNo:(NSString*)routingNo;
 
 @end
 
-@implementation PLVPayInstrumentDD
+@implementation PLVDebitCardPaymentInstrument
 
 + (BOOL) validateAccountNo:(NSString*)accountNo withError:(NSError **)error {
     
@@ -241,14 +241,14 @@ typedef enum : NSUInteger {
 
 @end
 
-@interface PLVPayInstrumentSEPA ()
+@interface PLVSEPAPaymentInstrument ()
 
 - (instancetype)initWithIBAN:(NSString*)iban andBIC:(NSString*)bic;
 
 @end
 
 
-@implementation PLVPayInstrumentSEPA
+@implementation PLVSEPAPaymentInstrument
 
 
 + (BOOL) validateIBAN:(NSString*)iban withError:(NSError **)error {
@@ -323,13 +323,13 @@ typedef enum : NSUInteger {
 
 @end
 
-@interface PLVPayInstrumentPAYPAL ()
+@interface PLVPAYPALPaymentInstrument ()
 
 - (instancetype)initWithToken:(NSString*)token;
 
 @end
 
-@implementation PLVPayInstrumentPAYPAL
+@implementation PLVPAYPALPaymentInstrument
 
 + (BOOL) validateAuthToken:(NSString*)authToken withError:(NSError **)error {
     
@@ -432,13 +432,13 @@ typedef enum : NSUInteger {
         PLVPaymentInstrument* newPI;
         
         if ([piType isEqualToString:PLVPITypeCC]) {
-            newPI = [[PLVPayInstrumentCC alloc] init];
+            newPI = [[PLVCreditCardPaymentInstrument alloc] init];
         } else if ([piType isEqualToString:PLVPITypeDD]) {
-            newPI = [[PLVPayInstrumentDD alloc] init];
+            newPI = [[PLVDebitCardPaymentInstrument alloc] init];
         } else if ([piType isEqualToString:PLVPITypeSEPA]) {
-            newPI = [[PLVPayInstrumentSEPA alloc] init];
+            newPI = [[PLVSEPAPaymentInstrument alloc] init];
         } else if ([piType isEqualToString:PLVPITypePAYPAL]) {
-            newPI = [[PLVPayInstrumentPAYPAL alloc] init];
+            newPI = [[PLVPAYPALPaymentInstrument alloc] init];
         }
         
         SDLog(@"Serialze with Dict:%@",dict);
@@ -478,30 +478,30 @@ typedef enum : NSUInteger {
 }
 
 
-+ (id)createCreditCardPayInstrumentWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
++ (id)createCreditCardPaymentInstrumentWithPan:(NSString*)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString*)cvv andCardHolder:(NSString*)cardHolder
 {
-    PLVPayInstrumentCC* cc = [[PLVPayInstrumentCC alloc] initWithPan:pan expiryMonth:expiryMonth expiryYear:expiryYear cvv:cvv andCardHolder:cardHolder];
+    PLVCreditCardPaymentInstrument* cc = [[PLVCreditCardPaymentInstrument alloc] initWithPan:pan expiryMonth:expiryMonth expiryYear:expiryYear cvv:cvv andCardHolder:cardHolder];
     
     return cc;
 }
 
-+ (id)createDebitPayInstrumentWithAccountNo:(NSString*)accountNo andRoutingNo:(NSString*)routingNo {
++ (id)createDebitCardPaymentInstrumentWithAccountNo:(NSString*)accountNo andRoutingNo:(NSString*)routingNo {
     
-    PLVPayInstrumentDD* dd = [[PLVPayInstrumentDD alloc] initWithAccountNo:accountNo andRoutingNo:routingNo];
+    PLVDebitCardPaymentInstrument* dd = [[PLVDebitCardPaymentInstrument alloc] initWithAccountNo:accountNo andRoutingNo:routingNo];
     
     return dd;
 }
 
-+ (id)createSEPAPayInstrumentWithIBAN:(NSString*)iban andBIC:(NSString*)bic {
++ (id)createSEPAPaymentInstrumentWithIBAN:(NSString*)iban andBIC:(NSString*)bic {
     
-    PLVPayInstrumentSEPA* sepa = [[PLVPayInstrumentSEPA alloc] initWithIBAN:iban andBIC:bic];
+    PLVSEPAPaymentInstrument* sepa = [[PLVSEPAPaymentInstrument alloc] initWithIBAN:iban andBIC:bic];
     
     return sepa;
 }
 
-+ (id) createPAYPALPayInstrumentWithToken:(NSString*)token {
++ (id) createPAYPALPaymentInstrumentWithToken:(NSString*)token {
     
-    PLVPayInstrumentPAYPAL* payPal = [[PLVPayInstrumentPAYPAL alloc] initWithToken:token];
+    PLVPAYPALPaymentInstrument* payPal = [[PLVPAYPALPaymentInstrument alloc] initWithToken:token];
 
     return payPal;
 }

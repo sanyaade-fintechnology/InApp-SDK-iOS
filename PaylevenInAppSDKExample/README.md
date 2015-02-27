@@ -29,7 +29,6 @@ Set up PLVClient in order to register your unique API key
 	 [[PLVInAppClient sharedInstance] registerWithAPIKey:@”anAPIKey”];
 
 ### Create Payment Instrument (PI)
-<p align="center"><img src="/Customer_PI_Add.gif" height="400" alt="Sublime's custom image"/></p>
 
 Any payment request via In-App SDK requires a unique user token provided by payleven. To create and retrieve a user token you must provide one first payment instrument (PI) (e.g Credit Card) together with the email address of your client. For this reason create payment instrument (PI) by using PLVPaymentInstrument’s class Methods (e.g. CreateSEPAPayINstuments….)
 
@@ -60,4 +59,4 @@ Any payment request via In-App SDK requires a unique user token provided by payl
 
 
 #### Documentation
-[API Reference](https://github.com/payleven/mpos-android/javadoc)
+[API Reference](./docs/html/index.html)

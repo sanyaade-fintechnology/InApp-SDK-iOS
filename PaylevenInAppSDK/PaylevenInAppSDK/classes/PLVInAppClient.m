@@ -61,6 +61,11 @@
 
 SYNTHESIZE_SINGLETON_FOR_CLASS(PLVInAppClient)
 
++ (NSString*) PLVSDKVersion {
+    return @"1.0";
+}
+
+
 - (instancetype)init
 {
     self = [super init];

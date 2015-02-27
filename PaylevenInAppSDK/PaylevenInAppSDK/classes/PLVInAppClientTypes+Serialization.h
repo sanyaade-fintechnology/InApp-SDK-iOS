@@ -18,25 +18,25 @@
 
 @end
 
-@interface PLVPayInstrumentCC (Serialization)
+@interface PLVCreditCardPaymentInstrument (Serialization)
 
 
 
 @end
 
-@interface PLVPayInstrumentDD (Serialization)
+@interface PLVDebitCardPaymentInstrument (Serialization)
 
 
 
 @end
 
-@interface PLVPayInstrumentSEPA (Serialization)
+@interface PLVSEPAPaymentInstrument (Serialization)
 
 
 
 @end
 
-@interface PLVPayInstrumentPAYPAL (Serialization)
+@interface PLVPAYPALPaymentInstrument (Serialization)
 
 
 

@@ -107,7 +107,7 @@
 		9F4F808119F53C650008CBBE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0610;
 				TargetAttributes = {
 					9F4F808719F53CA50008CBBE = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -198,6 +198,7 @@
 		9F4F808519F53C650008CBBE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos8.0;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 			};
