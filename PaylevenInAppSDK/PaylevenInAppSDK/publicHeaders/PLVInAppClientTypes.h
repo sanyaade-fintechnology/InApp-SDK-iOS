@@ -15,18 +15,14 @@
 
 
 /**
- *  PLVPaymentInstrument    Base class of PLVPaymentInstrument
- *
- *  @property sortIndex     index the payment instrument in a certain usecase (readonly)
- *
- *  @property identifier    identifier of this payment instrument (readonly
+ *  PLVPaymentInstrument Baseclass of PaymentInstruments
  *
  */
 
 @interface PLVPaymentInstrument : NSObject
 
 /**
- *  createCreditCardPayInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:
+ *  createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:
  *
  *  Creates a CreditCard payment Instrument
  *
@@ -39,16 +35,16 @@
  *  @return a PaymentInstrument of class PLVPayInstrumentCC presenting this creditcard
  */
 
-+ (id)createCreditCardPayInstrumentWithPan:(NSString*)pan
-                               expiryMonth:(NSInteger)expiryMonth
-                                expiryYear:(NSInteger)expiryYear
-                                       cvv:(NSString*)cvv
-                             andCardHolder:(NSString*)cardHolder;
++ (id)createCreditCardPaymentInstrumentWithPan:(NSString*)pan
+                                   expiryMonth:(NSInteger)expiryMonth
+                                    expiryYear:(NSInteger)expiryYear
+                                           cvv:(NSString*)cvv
+                                 andCardHolder:(NSString*)cardHolder;
 
 
 
 /**
- *  createDebitPayInstrumentWithAccountNo:andRoutingNo:
+ *  createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:
  *
  *  Creates a paymentinstrument presenting a debit account
  *
@@ -57,13 +53,13 @@
  *
  *  @return  a PaymentInstrument of class PLVPayInstrumentDD presenting this debit account
  */
-+ (id)createDebitPayInstrumentWithAccountNo:(NSString*)accountNo
-                               andRoutingNo:(NSString*)routingNo;
++ (id)createDebitCardPaymentInstrumentWithAccountNo:(NSString*)accountNo
+                                       andRoutingNo:(NSString*)routingNo;
 
 
 
 /**
- *  createSEPAPayInstrumentWithIBAN:andBIC:
+ *  createSEPAPaymentInstrumentWithIBAN:andBIC:
  *
  *  Creates a paymentinstrument presenting a SEPA account
  *
@@ -73,13 +69,13 @@
  *  @return  a PaymentInstrument of class PLVPayInstrumentSEPA presenting this SEPA account
  */
 
-+ (id)createSEPAPayInstrumentWithIBAN:(NSString*)iban
-                               andBIC:(NSString*)bic;
++ (id)createSEPAPaymentInstrumentWithIBAN:(NSString*)iban
+                                   andBIC:(NSString*)bic;
 
 
 
 /**
- *  createPAYPALPayInstrumentWithToken:
+ *  createPAYPALPaymentInstrumentWithToken:
  *
  *  Creates a paymentinstrument presenting a PayPal account
  *
@@ -88,7 +84,7 @@
  *  @return   a PaymentInstrument of class PLVPayInstrumentPAYPAL presenting this paypal account
  */
 
-+ (id)createPAYPALPayInstrumentWithToken:(NSString*)token;
++ (id)createPAYPALPaymentInstrumentWithToken:(NSString*)token;
 
 
 
@@ -101,29 +97,36 @@
  */
 - (BOOL) validatePaymentInstrumentWithError:(NSError **)outError;
 
+/**
+ *  PLVPaymentInstrument    Baseclass of PaymentInstruments
+ *
+ *  @property sortIndex     index the payment instrument in a certain usecase (readonly)
+ *
+ *  @property identifier    identifier of this payment instrument (readonly
+ *
+ */
 
 @property (readonly,strong) NSString* type;
-@property (readonly,strong) NSString* sortIndex;
 @property (readonly,strong) NSString* identifier;
 
 @end
 
 /**
- *  PLVPayInstrumentCC      CrediCard PaymentInstrument
+ *  PLVCreditCardPaymentInstrument      CrediCard PaymentInstrument
  *
- *  @property pan           pan of the Creditcard
+ *  @property pan                       pan of the Creditcard
  *
- *  @property cardBrand     the cardbrand of this card (will be present on polling payment instruments)
+ *  @property cardBrand                 the cardbrand of this card (will be present on polling payment instruments)
  *
- *  @property expiryMonth   the expiry month of this creditcard 2 digits    (valid Range from 01 ... 12)
+ *  @property expiryMonth               the expiry month of this creditcard 2 digits    (valid Range from 01 ... 12)
  *
- *  @property expiryYear    the expiry year of this creditcard 4 digits     (valid Range from 2010 ... 2050)
+ *  @property expiryYear                the expiry year of this creditcard 4 digits     (valid Range from 2010 ... 2050)
  *
- *  @property cvv           Card verification value
+ *  @property cvv                       Card verification value
  *
  */
 
-@interface PLVPayInstrumentCC : PLVPaymentInstrument
+@interface PLVCreditCardPaymentInstrument : PLVPaymentInstrument
 
 @property (readonly,strong) NSString* pan;
 @property (readonly,strong) NSString* cardBrand;
@@ -198,7 +201,7 @@
 
 
 /**
- *  PLVPayInstrumentDD      Debit PaymentInstrument
+ *  PLVDebitCardPaymentInstrument      Debitcard PaymentInstrument
  *
  *  @property accountNo accountNumber for this debit account
  *
@@ -206,7 +209,7 @@
  *
  */
 
-@interface PLVPayInstrumentDD : PLVPaymentInstrument
+@interface PLVDebitCardPaymentInstrument : PLVPaymentInstrument
 
 @property (readonly,strong) NSString* accountNo;
 @property (readonly,strong) NSString* routingNo;
@@ -240,15 +243,15 @@
 @end
 
 /**
- *  PLVPayInstrumentSEPA    SEPA Account PaymentInstrument
+ *  PLVSEPAPaymentInstrument    SEPA Account PaymentInstrument
  *
- *  @property iban          IBAN for this SEPA account
+ *  @property iban              IBAN for this SEPA account
  *
- *  @property bic           BIC Number for this SEPA account
+ *  @property bic               BIC Number for this SEPA account
  *
  */
 
-@interface PLVPayInstrumentSEPA : PLVPaymentInstrument
+@interface PLVSEPAPaymentInstrument : PLVPaymentInstrument
 
 @property (readonly,strong) NSString* iban;
 @property (readonly,strong) NSString* bic;
@@ -282,13 +285,13 @@
 @end
 
 /**
- *  PLVPayInstrumentPAYPAL  PayPal Account PaymentInstrument
+ *  PLVPAYPALPaymentInstrument  PayPal Account PaymentInstrument
  *
- *  @property authToken     authToken for this PayPal Account
+ *  @property authToken         authToken for this PayPal Account
  *
  */
 
-@interface PLVPayInstrumentPAYPAL : PLVPaymentInstrument
+@interface PLVPAYPALPaymentInstrument : PLVPaymentInstrument
 
 @property (readonly,strong) NSString* authToken;
 

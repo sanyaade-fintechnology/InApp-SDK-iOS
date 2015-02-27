@@ -234,6 +234,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
     // currently we don't save our request do disk
     
+#pragma clang diagnostic push
+    
+#pragma clang diagnostic ignored "-Wunreachable-code"
+
+    
 #ifdef DEBUG
     
     NSMutableArray* returnArray;
@@ -258,6 +263,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     
 #endif
     
+    
+#pragma clang diagnostic pop
+    
 }
 
 
@@ -266,6 +274,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     return;
     
     // currently we don't save our request do disk
+    
+#pragma clang diagnostic push
+    
+#pragma clang diagnostic ignored "-Wunreachable-code"
+    
     
 #ifdef DEBUG
     
@@ -278,6 +291,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(PLVRequestPersistManager);
     [self.keychainPersistRequests setObject:self.requestArray forKey:PLVInAPPSDKKeyChainPersistRequestArrayKey];
     
 #endif
+    
+    
+#pragma clang diagnostic pop
     
 }
 

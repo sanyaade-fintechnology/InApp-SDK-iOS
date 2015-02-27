@@ -51,7 +51,6 @@
 		9FA5CAAD19F5189C00FCB314 /* PLVInAppSDK.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FA5CAAC19F5189C00FCB314 /* PLVInAppSDK.h */; };
 		9FA5CBC719F527C600FCB314 /* PLVInAppClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CBC319F527C600FCB314 /* PLVInAppClient.m */; };
 		9FA5CBC819F527C600FCB314 /* PLVInAppSDKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CBC519F527C600FCB314 /* PLVInAppSDKConstants.m */; };
-		9FA5CBCE19F52B2D00FCB314 /* PLVInAppSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA5CAAC19F5189C00FCB314 /* PLVInAppSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FA5CBDB19F52E2300FCB314 /* PLVInAppClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA5CBC219F527C600FCB314 /* PLVInAppClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FA6C7CB1A1E31CE0062326A /* PLVRequestPersistManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FA6C7C91A1E31CE0062326A /* PLVRequestPersistManager.h */; };
 		9FA6C7CC1A1E31CE0062326A /* PLVRequestPersistManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA6C7CA1A1E31CE0062326A /* PLVRequestPersistManager.m */; };
@@ -325,7 +324,6 @@
 				9FD583FC1A14B6C000E9B83E /* OrderedDictionary.h in Headers */,
 				9F6552BE19F6876A003D07A5 /* PLVInAppAPIClient.h in Headers */,
 				9FB3E6411A30790500FE9CAC /* PLVEventLoggingClient.h in Headers */,
-				9FA5CBCE19F52B2D00FCB314 /* PLVInAppSDK.h in Headers */,
 				9FA5CBDB19F52E2300FCB314 /* PLVInAppClient.h in Headers */,
 				9FBC2EFD1A1F4400007D1341 /* KeychainItemWrapper.h in Headers */,
 			);
@@ -377,7 +375,7 @@
 		9FA5CAA119F5189C00FCB314 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = payleven;
 				TargetAttributes = {
 					9F4F806F19F5348A0008CBBE = {
@@ -634,10 +632,6 @@
 		9FA5CABB19F5189C00FCB314 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					armv7s,
-				);
 				COPY_PHASE_STRIP = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -654,10 +648,6 @@
 		9FA5CABC19F5189C00FCB314 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					"$(ARCHS_STANDARD)",
-					armv7s,
-				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",

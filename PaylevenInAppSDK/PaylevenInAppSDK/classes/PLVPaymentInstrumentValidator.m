@@ -54,19 +54,19 @@
         return Nil;
     }
     
-    if ([pi isKindOfClass:[PLVPayInstrumentCC class]]) {
+    if ([pi isKindOfClass:[PLVCreditCardPaymentInstrument class]]) {
         
         return [[PLVPayInstrumentCCValidator alloc] initWithPaymentInstrument:pi];
         
-    } else if ([pi isKindOfClass:[PLVPayInstrumentDD class]]) {
+    } else if ([pi isKindOfClass:[PLVDebitCardPaymentInstrument class]]) {
         
         return [[PLVPayInstrumentDDValidator alloc] initWithPaymentInstrument:pi];
         
-    } else if ([pi isKindOfClass:[PLVPayInstrumentSEPA class]]) {
+    } else if ([pi isKindOfClass:[PLVSEPAPaymentInstrument class]]) {
         
         return [[PLVPayInstrumentSEPAValidator alloc] initWithPaymentInstrument:pi];
         
-    }else if ([pi isKindOfClass:[PLVPayInstrumentPAYPAL class]]) {
+    }else if ([pi isKindOfClass:[PLVPAYPALPaymentInstrument class]]) {
         
         return [[PLVPayInstrumentPAYPALValidator alloc] initWithPaymentInstrument:pi];
     }
@@ -97,9 +97,9 @@
         addError(validationErrors,ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
     }
     
-    if (self.paymentInstrument.sortIndex == Nil ) {
-        addError(validationErrors,ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
-    }
+//    if (self.paymentInstrument.sortIndex == Nil ) {
+//        addError(validationErrors,ERROR_INVALID_PAYMENTINSTRUMENTS_CODE,ERROR_INVALID_PAYMENTINSTRUMENTS_MESSAGE);
+//    }
     
     return validationErrors;
 }
@@ -189,7 +189,7 @@
 
 @implementation PLVPayInstrumentCCValidator
 
-- (instancetype)initWithPaymentInstrument:(PLVPayInstrumentCC*)paymentInstrument
+- (instancetype)initWithPaymentInstrument:(PLVCreditCardPaymentInstrument*)paymentInstrument
 {
     self = [super init];
     if (self) {
