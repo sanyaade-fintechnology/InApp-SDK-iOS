@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/PLVPAYPALPaymentInstrument.html">
+	<File path="Classes/PLVPayInstrumentPAYPAL.html">
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/PLVPAYPALPaymentInstrument</TokenIdentifier>
-			<Abstract type="html">PLVPAYPALPaymentInstrument  PayPal Account PaymentInstrument</Abstract>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVPayInstrumentPAYPAL</TokenIdentifier>
+			<Abstract type="html">PLVPayInstrumentPAYPAL  PayPal Account PaymentInstrument</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
             
 			
@@ -13,7 +13,7 @@
 		
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPAYPALPaymentInstrument/validateAuthToken:withError:</TokenIdentifier>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentPAYPAL/validateAuthToken:withError:</TokenIdentifier>
 			<Abstract type="html">validateAuthToken:withError:</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/PLVCreditCardPaymentInstrument.html">
+	<File path="Classes/PLVInAppClient.html">
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/PLVCreditCardPaymentInstrument</TokenIdentifier>
-			<Abstract type="html">PLVCreditCardPaymentInstrument      CrediCard PaymentInstrument</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVInAppClient</TokenIdentifier>
+			<Abstract type="html">PLVInAppClient</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
             
 			
 			<NodeRef refid="1"/>
@@ -13,89 +13,181 @@
 		
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVCreditCardPaymentInstrument/validatePan:withError:</TokenIdentifier>
-			<Abstract type="html">validatePan:withError:</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVInAppClient/sharedInstance</TokenIdentifier>
+			<Abstract type="html">sharedInstance</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validatePan:(NSString *)pan withError:(NSError **)error</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>pan</Name>
-					<Abstract type="html">the pan value to validate</Abstract>
-				</Parameter><Parameter>
-					<Name>error</Name>
-					<Abstract type="html">resulting validation error, will not be set if string passed the validation</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid pan string ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validatePan:withError:</Anchor>
+			<Declaration>+ (instancetype)sharedInstance</Declaration>
+			
+			<ReturnValue><Abstract type="html">Singleton PaylevenInAppCLient</Abstract></ReturnValue>
+			<Anchor>//api/name/sharedInstance</Anchor>
             <NodeRef refid="1"/>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVCreditCardPaymentInstrument/validateExpiryMonth:andYear:withError:</TokenIdentifier>
-			<Abstract type="html">validateExpiryMonth:andYear:withError:</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/registerWithAPIKey:</TokenIdentifier>
+			<Abstract type="html">registerWithAPIKey:</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year withError:(NSError **)error</Declaration>
+			<Declaration>- (void)registerWithAPIKey:(NSString *)apiKey</Declaration>
 			<Parameters>
 				<Parameter>
-					<Name>month</Name>
-					<Abstract type="html">the month value to validate</Abstract>
-				</Parameter><Parameter>
-					<Name>year</Name>
-					<Abstract type="html">the year value to validate</Abstract>
-				</Parameter><Parameter>
-					<Name>error</Name>
-					<Abstract type="html">resulting validation error, will not be set if string passed the validation</Abstract>
+					<Name>apiKey</Name>
+					<Abstract type="html">your API Key</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid month/year combination  ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validateExpiryMonth:andYear:withError:</Anchor>
+			
+			<Anchor>//api/name/registerWithAPIKey:</Anchor>
             <NodeRef refid="1"/>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVCreditCardPaymentInstrument/validateCVV:withError:</TokenIdentifier>
-			<Abstract type="html">validateCVV:withError:</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/createUserToken:withPaymentInstrument:useCase:andCompletion:</TokenIdentifier>
+			<Abstract type="html">createUserToken:</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateCVV:(NSString *)cvv withError:(NSError **)error</Declaration>
+			<Declaration>- (void)createUserToken:(NSString *)emailAddress withPaymentInstrument:(PLVPaymentInstrument *)payInstrument useCase:(PLVInAppUseCase *)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>
 			<Parameters>
 				<Parameter>
-					<Name>cvv</Name>
-					<Abstract type="html">the cvv value to validate</Abstract>
+					<Name>emailAddress</Name>
+					<Abstract type="html">email address for userToken</Abstract>
 				</Parameter><Parameter>
-					<Name>error</Name>
-					<Abstract type="html">resulting validation error, will not be set if string passed the validation</Abstract>
+					<Name>payInstrument</Name>
+					<Abstract type="html">payment instrument to add</Abstract>
+				</Parameter><Parameter>
+					<Name>useCase</Name>
+					<Abstract type="html">useCase</Abstract>
+				</Parameter><Parameter>
+					<Name>completionHandler</Name>
+					<Abstract type="html">completionHandler</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid cvv string ... otherwise FALSE
-
-attention: final cvv validation needs a attached pan ...
-so it can possible a value pass validation on this function and fail on validation on try to add a paymentinstrument
-refer to the resulting error</Abstract></ReturnValue>
-			<Anchor>//api/name/validateCVV:withError:</Anchor>
+			
+			<Anchor>//api/name/createUserToken:withPaymentInstrument:useCase:andCompletion:</Anchor>
             <NodeRef refid="1"/>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVCreditCardPaymentInstrument/validateCardHolder:withError:</TokenIdentifier>
-			<Abstract type="html">validateCardHolder:withError:</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/addPaymentInstrument:forUserToken:withUseCase:andCompletion:</TokenIdentifier>
+			<Abstract type="html">addPaymentInstrument:</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateCardHolder:(NSString *)cardHolder withError:(NSError **)error</Declaration>
+			<Declaration>- (void)addPaymentInstrument:(PLVPaymentInstrument *)payInstrument forUserToken:(PLVInAppUserToken *)userToken withUseCase:(PLVInAppUseCase *)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>
 			<Parameters>
 				<Parameter>
-					<Name>cardHolder</Name>
-					<Abstract type="html">the cardHolder value to validate</Abstract>
+					<Name>payInstrument</Name>
+					<Abstract type="html">the payment instruments to add</Abstract>
 				</Parameter><Parameter>
-					<Name>error</Name>
-					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
+					<Name>userToken</Name>
+					<Abstract type="html">userToken</Abstract>
+				</Parameter><Parameter>
+					<Name>useCase</Name>
+					<Abstract type="html">the useCase to add this payment instrument (optional, if empty a default usecase will be used)</Abstract>
+				</Parameter><Parameter>
+					<Name>completionHandler</Name>
+					<Abstract type="html">completion block</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid cardHolder string ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validateCardHolder:withError:</Anchor>
+			
+			<Anchor>//api/name/addPaymentInstrument:forUserToken:withUseCase:andCompletion:</Anchor>
+            <NodeRef refid="1"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/getPaymentInstrumentsList:withUseCase:andCompletion:</TokenIdentifier>
+			<Abstract type="html">listPaymentInstrumentsForUserToken:</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
+			
+			<Declaration>- (void)getPaymentInstrumentsList:(PLVInAppUserToken *)userToken withUseCase:(PLVInAppUseCase *)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>userToken</Name>
+					<Abstract type="html">userToken</Abstract>
+				</Parameter><Parameter>
+					<Name>useCase</Name>
+					<Abstract type="html">the useCase to list this payment instruments (optional, if empty a default usecase will be used)</Abstract>
+				</Parameter><Parameter>
+					<Name>completionHandler</Name>
+					<Abstract type="html">completion block</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/getPaymentInstrumentsList:withUseCase:andCompletion:</Anchor>
+            <NodeRef refid="1"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:</TokenIdentifier>
+			<Abstract type="html">updatePaymentInstrumentsOrder:</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
+			
+			<Declaration>- (void)setPaymentInstrumentsOrder:(NSOrderedSet *)piOrder forUserToken:(PLVInAppUserToken *)userToken withUseCase:(PLVInAppUseCase *)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>piOrder</Name>
+					<Abstract type="html">NSOrderedSet with PaymentInstruments token hashes</Abstract>
+				</Parameter><Parameter>
+					<Name>userToken</Name>
+					<Abstract type="html">userToken</Abstract>
+				</Parameter><Parameter>
+					<Name>useCase</Name>
+					<Abstract type="html">the useCase to set the order for this payment instruments (optional, if empty a default usecase will be used)</Abstract>
+				</Parameter><Parameter>
+					<Name>completionHandler</Name>
+					<Abstract type="html">completion block</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:</Anchor>
+            <NodeRef refid="1"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/disablePaymentInstrument:forUserToken:andCompletion:</TokenIdentifier>
+			<Abstract type="html">disablePaymentInstruments</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
+			
+			<Declaration>- (void)disablePaymentInstrument:(PLVPaymentInstrument *)payInstrument forUserToken:(PLVInAppUserToken *)userToken andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>payInstrument</Name>
+					<Abstract type="html">the paymentInstruments to disable</Abstract>
+				</Parameter><Parameter>
+					<Name>userToken</Name>
+					<Abstract type="html">userToken</Abstract>
+				</Parameter><Parameter>
+					<Name>completionHandler</Name>
+					<Abstract type="html">completionHandler</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/disablePaymentInstrument:forUserToken:andCompletion:</Anchor>
+            <NodeRef refid="1"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</TokenIdentifier>
+			<Abstract type="html">removePaymentInstrument</Abstract>
+			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
+			
+			<Declaration>- (void)removePaymentInstrument:(PLVPaymentInstrument *)payInstrument fromUseCase:(NSString *)useCase forUserToken:(NSString *)userToken andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>payInstrument</Name>
+					<Abstract type="html">the paymentInstrument</Abstract>
+				</Parameter><Parameter>
+					<Name>useCase</Name>
+					<Abstract type="html">useCase to remove from</Abstract>
+				</Parameter><Parameter>
+					<Name>userToken</Name>
+					<Abstract type="html">userToken</Abstract>
+				</Parameter><Parameter>
+					<Name>completionHandler</Name>
+					<Abstract type="html">completionHandler</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</Anchor>
             <NodeRef refid="1"/>
 		</Token>
 		

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/PLVDebitCardPaymentInstrument.html">
+	<File path="Classes/PLVPayInstrumentCC.html">
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/PLVDebitCardPaymentInstrument</TokenIdentifier>
-			<Abstract type="html">PLVDebitCardPaymentInstrument      Debitcard PaymentInstrument</Abstract>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVPayInstrumentCC</TokenIdentifier>
+			<Abstract type="html">PLVPayInstrumentCC      CrediCard PaymentInstrument</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
             
 			
@@ -13,42 +13,89 @@
 		
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVDebitCardPaymentInstrument/validateAccountNo:withError:</TokenIdentifier>
-			<Abstract type="html">validateAccountNo:withError:</Abstract>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentCC/validatePan:withError:</TokenIdentifier>
+			<Abstract type="html">validatePan:withError:</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateAccountNo:(NSString *)accountNo withError:(NSError **)error</Declaration>
+			<Declaration>+ (BOOL)validatePan:(NSString *)pan withError:(NSError **)error</Declaration>
 			<Parameters>
 				<Parameter>
-					<Name>accountNo</Name>
-					<Abstract type="html">the accountNo value to validate</Abstract>
+					<Name>pan</Name>
+					<Abstract type="html">the pan value to validate</Abstract>
 				</Parameter><Parameter>
 					<Name>error</Name>
-					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
+					<Abstract type="html">resulting validation error, will not be set if string passed the validation</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid accountNumber string ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validateAccountNo:withError:</Anchor>
+			<ReturnValue><Abstract type="html">TRUE for a valid pan string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validatePan:withError:</Anchor>
             <NodeRef refid="2"/>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVDebitCardPaymentInstrument/validateRoutingNo:withError:</TokenIdentifier>
-			<Abstract type="html">validateRoutingNo:withError:</Abstract>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentCC/validateExpiryMonth:andYear:withError:</TokenIdentifier>
+			<Abstract type="html">validateExpiryMonth:andYear:withError:</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateRoutingNo:(NSString *)routingNo withError:(NSError **)error</Declaration>
+			<Declaration>+ (BOOL)validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year withError:(NSError **)error</Declaration>
 			<Parameters>
 				<Parameter>
-					<Name>routingNo</Name>
-					<Abstract type="html">the routingNo value to validate</Abstract>
+					<Name>month</Name>
+					<Abstract type="html">the month value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>year</Name>
+					<Abstract type="html">the year value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting validation error, will not be set if string passed the validation</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">TRUE for a valid month/year combination  ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateExpiryMonth:andYear:withError:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentCC/validateCVV:withError:</TokenIdentifier>
+			<Abstract type="html">validateCVV:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateCVV:(NSString *)cvv withError:(NSError **)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>cvv</Name>
+					<Abstract type="html">the cvv value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting validation error, will not be set if string passed the validation</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">TRUE for a valid cvv string ... otherwise FALSE
+
+attention: final cvv validation needs a attached pan ...
+so it can possible a value pass validation on this function and fail on validation on try to add a paymentinstrument
+refer to the resulting error</Abstract></ReturnValue>
+			<Anchor>//api/name/validateCVV:withError:</Anchor>
+            <NodeRef refid="2"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentCC/validateCardHolder:withError:</TokenIdentifier>
+			<Abstract type="html">validateCardHolder:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateCardHolder:(NSString *)cardHolder withError:(NSError **)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>cardHolder</Name>
+					<Abstract type="html">the cardHolder value to validate</Abstract>
 				</Parameter><Parameter>
 					<Name>error</Name>
 					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid routingNumber string ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validateRoutingNo:withError:</Anchor>
+			<ReturnValue><Abstract type="html">TRUE for a valid cardHolder string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateCardHolder:withError:</Anchor>
             <NodeRef refid="2"/>
 		</Token>
 		

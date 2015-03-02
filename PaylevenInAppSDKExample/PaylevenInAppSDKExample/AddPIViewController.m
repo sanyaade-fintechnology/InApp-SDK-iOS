@@ -254,19 +254,19 @@
     PLVPaymentInstrument* pi;
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
-        pi = [PLVPaymentInstrument createCreditCardPaymentInstrumentWithPan:[content objectForKey:@"pan"] expiryMonth:[[content objectForKey:@"expiryMonth"] integerValue] expiryYear:[[content objectForKey:@"expiryYear"] integerValue] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
+        pi = [PLVPaymentInstrument createCreditCardPayInstrumentWithPan:[content objectForKey:@"pan"] expiryMonth:[[content objectForKey:@"expiryMonth"] integerValue] expiryYear:[[content objectForKey:@"expiryYear"] integerValue] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
-        pi = [PLVPaymentInstrument createPAYPALPaymentInstrumentWithToken:[content objectForKey:@"authToken"]];
+        pi = [PLVPaymentInstrument createPAYPALPayInstrumentWithToken:[content objectForKey:@"authToken"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        pi = [PLVPaymentInstrument createSEPAPaymentInstrumentWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
+        pi = [PLVPaymentInstrument createSEPAPayInstrumentWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
-        pi = [PLVPaymentInstrument createDebitCardPaymentInstrumentWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
+        pi = [PLVPaymentInstrument createDebitPayInstrumentWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
     }
     
     return pi;
@@ -358,7 +358,7 @@
         return;
     }
     
-    long index = button.tag - buttonTagOffSet;
+    int index = button.tag - buttonTagOffSet;
     
     if (index >= self.keyArray.count) {
         return;
@@ -488,28 +488,28 @@
     BOOL findValidation = FALSE;
     
     if ([key isEqualToString:@"pan"]) {
-        validationResult = [PLVCreditCardPaymentInstrument validatePan:text withError:&validationError];
+        validationResult = [PLVPayInstrumentCC validatePan:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"cardHolder"]) {
-        validationResult = [PLVCreditCardPaymentInstrument validateCardHolder:text withError:&validationError];
+        validationResult = [PLVPayInstrumentCC validateCardHolder:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"cvv"]) {
-        validationResult = [PLVCreditCardPaymentInstrument validateCVV:text withError:&validationError];
+        validationResult = [PLVPayInstrumentCC validateCVV:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"iban"]) {
-        validationResult = [PLVSEPAPaymentInstrument validateIBAN:text withError:&validationError];
+        validationResult = [PLVPayInstrumentSEPA validateIBAN:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"bic"]) {
-        validationResult = [PLVSEPAPaymentInstrument validateBIC:text withError:&validationError];
+        validationResult = [PLVPayInstrumentSEPA validateBIC:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"accountNo"]) {
-        validationResult = [PLVDebitCardPaymentInstrument validateAccountNo:text withError:&validationError];
+        validationResult = [PLVPayInstrumentDD validateAccountNo:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"routingNo"]) {
-        validationResult = [PLVDebitCardPaymentInstrument validateRoutingNo:text withError:&validationError];
+        validationResult = [PLVPayInstrumentDD validateRoutingNo:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"authToken"]) {
-        validationResult = [PLVPAYPALPaymentInstrument validateAuthToken:text withError:&validationError];
+        validationResult = [PLVPayInstrumentPAYPAL validateAuthToken:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"expiryMonth"]) {
         
@@ -517,11 +517,11 @@
         
         if (([self.addInfoDict objectForKey:@"expiryYear"] != Nil) && ([(NSString*)[self.addInfoDict objectForKey:@"expiryYear"] length] > 0)) {
             
-            long expMonth = text.integerValue;
+            int expMonth = text.integerValue;
             
-            long expYear = [[self.addInfoDict objectForKey:@"expiryYear"] integerValue];
+            int expYear = [[self.addInfoDict objectForKey:@"expiryYear"] integerValue];
             
-            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
+            validationResult = [PLVPayInstrumentCC validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
             
             if (self.expiryYearTextField != Nil) {
                 
@@ -546,11 +546,11 @@
         
         if (([self.addInfoDict objectForKey:@"expiryMonth"] != Nil)  && ([(NSString*)[self.addInfoDict objectForKey:@"expiryMonth"] length]  > 0) ) {
             
-            long expYear = text.integerValue;
+            int expYear = text.integerValue;
             
-            long expMonth = [[self.addInfoDict objectForKey:@"expiryMonth"] integerValue];
+            int expMonth = [[self.addInfoDict objectForKey:@"expiryMonth"] integerValue];
             
-            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
+            validationResult = [PLVPayInstrumentCC validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
             
             if (self.expiryMonthTextField != Nil) {
                 
