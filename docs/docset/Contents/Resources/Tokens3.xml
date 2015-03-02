@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/PLVPayInstrumentDD.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVPayInstrumentDD</TokenIdentifier>
+			<Abstract type="html">PLVPayInstrumentDD      Debit PaymentInstrument</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+            
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentDD/validateAccountNo:withError:</TokenIdentifier>
+			<Abstract type="html">validateAccountNo:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateAccountNo:(NSString *)accountNo withError:(NSError **)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>accountNo</Name>
+					<Abstract type="html">the accountNo value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">TRUE for a valid accountNumber string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateAccountNo:withError:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentDD/validateRoutingNo:withError:</TokenIdentifier>
+			<Abstract type="html">validateRoutingNo:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateRoutingNo:(NSString *)routingNo withError:(NSError **)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>routingNo</Name>
+					<Abstract type="html">the routingNo value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">TRUE for a valid routingNumber string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateRoutingNo:withError:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+        
+        
+	</File>
+</Tokens>

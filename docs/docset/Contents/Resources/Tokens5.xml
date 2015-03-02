@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/PLVPayInstrumentSEPA.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVPayInstrumentSEPA</TokenIdentifier>
+			<Abstract type="html">PLVPayInstrumentSEPA    SEPA Account PaymentInstrument</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+            
+			
+			<NodeRef refid="5"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentSEPA/validateIBAN:withError:</TokenIdentifier>
+			<Abstract type="html">validateIBAN:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateIBAN:(NSString *)iban withError:(NSError **)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>iban</Name>
+					<Abstract type="html">the IBAN value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">TRUE for a valid IBAN string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateIBAN:withError:</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentSEPA/validateBIC:withError:</TokenIdentifier>
+			<Abstract type="html">validateBIC:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateBIC:(NSString *)bic withError:(NSError **)error</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>bic</Name>
+					<Abstract type="html">the bic value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">TRUE for a valid BIC string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateBIC:withError:</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+        
+        
+	</File>
+</Tokens>
