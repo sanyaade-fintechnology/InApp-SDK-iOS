@@ -1,7 +1,6 @@
 # payleven InApp SDK 1.0.0
 
-(EDIT!! @KONRAD)
-This project provides an iOS API to communicate with the payleven Chip & PIN card reader in order to accept debit and credit card payments. Learn more about the Chip & PIN card reader and payment options on one of payleven's regional [websites](https://payleven.com/).
+This project provides an iOS API that allows creating user tokens and payment instruments, retrieving and sorting payment instruments, based on the user token. Learn more about the InApp API on our [website](https://payleven.com/).
 
 ### Prerequisites
 1. Register with [payleven](http://payleven.com) in order to get personal merchant credentials and a card reader.
@@ -11,13 +10,15 @@ This project provides an iOS API to communicate with the payleven Chip & PIN car
 
 ##### CocoaPods
 
+	...available very soon.
+
 ##### Manual Set-Up
 
 1. Drag *PaylevenInAppSDK.framework* into your Xcode project.
 
 2. Open the *Build Settings* of your target and add `-ObjC` flag to Other Linker Flags.
 
-3. Import PaylevenSDK into your files:1
+3. Import PaylevenSDK into your files:
 
         #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
@@ -60,4 +61,4 @@ Any payment request via In-App SDK requires a unique user token provided by payl
 
 
 #### Documentation
-[API Reference](https://github.com/payleven/mpos-android/javadoc)
+[API Reference](https://github.com/payleven/InApp-SDK-iOS/docs/html/index.html)
