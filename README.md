@@ -1,8 +1,13 @@
 # payleven InApp SDK 1.0.0
 
+[![CocoaPods](https://img.shields.io/badge/Licence-MIT-brightgreen.svg?style=flat-square)]()
+[![CocoaPods](https://img.shields.io/payleven/v/Stripe.svg?style=flat)]()
+[![CocoaPods](https://img.shields.io/badge/Made%20in-Berlin-red.svg?style=flat-square)]()
+
 This project provides an iOS API that allows creating user tokens and payment instruments, retrieving and sorting payment instruments, based on the user token. Learn more about the InApp API on our [website](https://payleven.com/).
 
 ### Prerequisites
+
 1. Register with [payleven](http://payleven.com) in order to get personal merchant credentials and a card reader.
 2. Get API key on payleven [developer portal](https://payleven.de/developers/).
 
@@ -25,12 +30,12 @@ This project provides an iOS API that allows creating user tokens and payment in
 #### Code    
 
 ##### Setup API-Key
+
 Set up PLVClient in order to register your unique API key
 
 	 [[PLVInAppClient sharedInstance] registerWithAPIKey:@”anAPIKey”];
 
 ### Create Payment Instrument (PI)
-<p align="center"><img src="/Customer_PI_Add.gif" height="400" alt="Sublime's custom image"/></p>
 
 Any payment request via In-App SDK requires a unique user token provided by payleven. To create and retrieve a user token you must provide one first payment instrument (PI) (e.g Credit Card) together with the email address of your client. For this reason create payment instrument (PI) by using PLVPaymentInstrument’s class Methods (e.g. CreateSEPAPayINstuments….)
 
