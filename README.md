@@ -2,7 +2,7 @@
 
 [![CocoaPods](https://img.shields.io/badge/Licence-MIT-brightgreen.svg?style=flat-square)]()
 [![CocoaPods](https://img.shields.io/badge/Platform-iOS-yellow.svg?style=flat-square)]()
-[![CocoaPods](https://img.shields.io/github/tag/Payleven/InApp-SDK-iOS.svg?style=flat)]()
+[![CocoaPods](https://img.shields.io/github/tag/Payleven/InApp-SDK-iOS.svg?style=flat-square)]()
 [![CocoaPods](https://img.shields.io/badge/Made%20in-Berlin-red.svg?style=flat-square)]()
 
 This project provides an iOS API that allows creating user tokens and payment instruments, retrieving and sorting payment instruments, based on the user token. Learn more about the InApp API on our [website](https://payleven.com/).
