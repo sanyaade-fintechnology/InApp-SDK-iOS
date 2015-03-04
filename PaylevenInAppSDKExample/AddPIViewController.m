@@ -178,7 +178,7 @@
         
         // validation Errors
         
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:validationError.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:validationError.localizedDescription delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         
         [alertView show];
         
@@ -193,7 +193,7 @@
         
         if (error != Nil) {
             
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             
             [alertView show];
             
@@ -239,7 +239,7 @@
         self.keyValueLengthArray = @[@21];
         self.keyboardTypeArray = @[@TypeDefault];
         
-        piType = @"Paypay Account";
+        piType = @"PayPal Account";
     }
     
     [self.piTypeButton setTitle:piType forState:UIControlStateNormal];
@@ -370,7 +370,7 @@
     
     if (validationError != Nil) {
         
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:validationError.localizedDescription delegate:Nil cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:validationError.localizedDescription delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         
         [alertView show];
         

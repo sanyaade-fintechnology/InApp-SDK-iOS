@@ -158,7 +158,7 @@
 
 - (void) displayAlertViewWithMessage:(NSString*)message {
 
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:self cancelButtonTitle:@"Damm" otherButtonTitles:nil];
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     
     [alertView show];
 }
