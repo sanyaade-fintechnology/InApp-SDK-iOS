@@ -14,9 +14,8 @@ typedef NSString PLVInAppUserToken;
 typedef NSString PLVInAppUseCase;
 
 /**
- *  PLVInAppAPIClientCompletionHandler
  *
- *  the common completion block to habdle repsones of the api client
+ *  commonly used completion block to handle repsones of PLVInAppClient
  *
  *  @param response             incoming response from the api
  *  @param error                error in case of failed api call
@@ -24,15 +23,15 @@ typedef NSString PLVInAppUseCase;
 
 typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSError* error);
 
-/**
- *  PLVInAppClient
- *
- *  main class to handle all actions against payleven InApp API
- *
- */
+/** Main class to handle all actions against payleven InApp API
+
+ Set up PLVClient in order to register your unique API key
+    
+ [[PLVInAppClient sharedInstance] registerWithAPIKey:@”anAPIKey”];
+*/
+
 
 @interface PLVInAppClient : NSObject
-
 
 /**
  *  sharedInstance
@@ -42,79 +41,111 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 + (instancetype) sharedInstance;
 
+
+/**
+ * PLVSDKVersion
+ *
+ * @return String with the version of the SDK (i.e. '1.0')
+ *
+ */
++ (NSString*) PLVSDKVersion;
+
+
 /**
  *  registerWithAPIKey:
  *
  *  @param apiKey your API Key
  */
+
 - (void) registerWithAPIKey:(NSString*)apiKey ;
 
 /**
- *  createUserToken:
+ *  createUserToken:withPaymentInstrument:useCase:andCompletion:
  *
- *  @param emailAddress      email address for userToken
- *  @param payInstrument     payment instrument to add
- *  @param useCase           useCase
- *  @param completionHandler completionHandler
+ *  @param emailAddress         email address for userToken
+ *  @param paymentInstrument    Payment Instrument to add
+ *  @param useCase              useCase
+ *  @param completionHandler    completionHandler
  */
-- (void) createUserToken:(NSString*)emailAddress withPaymentInstrument:(PLVPaymentInstrument*)payInstrument useCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+- (void) createUserToken:(NSString*)emailAddress 
+   withPaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
+                 useCase:(PLVInAppUseCase*)useCase 
+           andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 /**
- *  addPaymentInstrument:
+ *  addPaymentInstrument:forUserToken:withUseCase:andCompletion:
  *
  *  add a array of payment instruments to a userToken
  *
- *  @param payInstrument     the payment instruments to add
- *  @param userToken         userToken
- *  @param useCase           the useCase to add this payment instrument (optional, if empty a default usecase will be used)
- *  @param completionHandler completion block
+ *  @param paymentInstrument    payment instruments to add
+ *  @param userToken            userToken
+ *  @param useCase              use case to add this payment instrument (optional, if empty a default usecase will be used)
+ *  @param completionHandler    completion block
  */
-- (void) addPaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+- (void) addPaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
+                 forUserToken:(PLVInAppUserToken*)userToken 
+                  withUseCase:(PLVInAppUseCase*)useCase 
+                andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 /**
- *  listPaymentInstrumentsForUserToken:
+ *  getPaymentInstrumentsList:withUseCase:andCompletion:
  *
  *  list the existing payment instruments for a userToken
  *
- *  @param userToken         userToken
- *  @param useCase           the useCase to list this payment instruments (optional, if empty a default usecase will be used)
- *  @param completionHandler completion block
+ *  @param userToken            userToken
+ *  @param useCase              the useCase to list this payment instruments (optional, if empty a default usecase will be used)
+ *  @param completionHandler    completion block
  */
-- (void) getPaymentInstrumentsList:(PLVInAppUserToken*)userToken withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+- (void) getPaymentInstrumentsList:(PLVInAppUserToken*)userToken 
+                       withUseCase:(PLVInAppUseCase*)useCase 
+                     andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 
 /**
- *  updatePaymentInstrumentsOrder:
+ *  setPaymentInstrumentsOrder:forUserToken:withUseCase:
  *
- *  add a array of payment instruments to a userToken
+ *  add a array of paymentinstruments to a userToken
  *
- *  @param piOrder           NSOrderedSet with PaymentInstruments token hashes
- *  @param userToken         userToken
- *  @param useCase           the useCase to set the order for this payment instruments (optional, if empty a default usecase will be used)
- *  @param completionHandler completion block
+ *  @param piOrder              NSOrderedSet with PaymentInstruments token hashes
+ *  @param userToken            userToken
+ *  @param useCase              the useCase to set the order for this payment instruments (optional, if empty a default usecase will be used)
+ *  @param completionHandler    completion block
  */
-- (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrder forUserToken:(PLVInAppUserToken*)userToken  withUseCase:(PLVInAppUseCase*)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+- (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrder 
+                       forUserToken:(PLVInAppUserToken*)userToken 
+                        withUseCase:(PLVInAppUseCase*)useCase 
+                      andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 /**
- *  disablePaymentInstruments
+ *  disablePaymentInstrument:forUserToken:andCompletion:
  *
- *  @param payInstrument     the paymentInstruments to disable
- *  @param userToken         userToken
- *  @param completionHandler completionHandler
+ *  @param paymentInstrument    the paymentInstruments to disable
+ *  @param userToken            userToken
+ *  @param completionHandler    completionHandler
  */
-- (void) disablePaymentInstrument:(PLVPaymentInstrument*)payInstrument forUserToken:(PLVInAppUserToken*)userToken andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+
+- (void) disablePaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
+                     forUserToken:(PLVInAppUserToken*)userToken 
+                    andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 /**
- *  removePaymentInstrument
+ *  removePaymentInstrument:forUserToken:andCompletion:
  *
- *  @param payInstrument     the paymentInstrument
- *  @param userToken         userToken
- *  @param useCase           useCase to remove from
- *  @param completionHandler completionHandler
+ *  @param paymentInstrument    the paymentInstrument
+ *  @param userToken            userToken
+ *  @param useCase              useCase to remove from
+ *  @param completionHandler    completionHandler
  */
 
-- (void) removePaymentInstrument:(PLVPaymentInstrument*)payInstrument fromUseCase:(NSString*)useCase forUserToken:(NSString*)userToken  andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+- (void) removePaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
+                     fromUseCase:(NSString*)useCase 
+                    forUserToken:(NSString*)userToken 
+                   andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
 
 @end
 

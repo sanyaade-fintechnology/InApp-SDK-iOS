@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/PLVPayInstrumentSEPA.html">
+	<File path="Classes/PLVPAYPALPaymentInstrument.html">
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/PLVPayInstrumentSEPA</TokenIdentifier>
-			<Abstract type="html">PLVPayInstrumentSEPA    SEPA Account PaymentInstrument</Abstract>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVPAYPALPaymentInstrument</TokenIdentifier>
+			<Abstract type="html">PayPal Account PaymentInstrument</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
             
 			
@@ -13,42 +13,58 @@
 		
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentSEPA/validateIBAN:withError:</TokenIdentifier>
-			<Abstract type="html">validateIBAN:withError:</Abstract>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVPAYPALPaymentInstrument/setAuthToken:</TokenIdentifier>
+			<Abstract type="html">Authentication Token for this PayPal Account</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateIBAN:(NSString *)iban withError:(NSError **)error</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>iban</Name>
-					<Abstract type="html">the IBAN value to validate</Abstract>
-				</Parameter><Parameter>
-					<Name>error</Name>
-					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid IBAN string ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validateIBAN:withError:</Anchor>
+			<Declaration>@property (readonly, strong) NSString *authToken</Declaration>
+			
+			
+			<Anchor>//api/name/authToken</Anchor>
             <NodeRef refid="5"/>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPayInstrumentSEPA/validateBIC:withError:</TokenIdentifier>
-			<Abstract type="html">validateBIC:withError:</Abstract>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVPAYPALPaymentInstrument/authToken</TokenIdentifier>
+			<Abstract type="html">Authentication Token for this PayPal Account</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateBIC:(NSString *)bic withError:(NSError **)error</Declaration>
+			<Declaration>@property (readonly, strong) NSString *authToken</Declaration>
+			
+			
+			<Anchor>//api/name/authToken</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/PLVPAYPALPaymentInstrument/authToken</TokenIdentifier>
+			<Abstract type="html">Authentication Token for this PayPal Account</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *authToken</Declaration>
+			
+			
+			<Anchor>//api/name/authToken</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPAYPALPaymentInstrument/validateAuthToken:withError:</TokenIdentifier>
+			<Abstract type="html">validateAuthToken:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateAuthToken:(NSString *)authToken withError:(NSError **)error</Declaration>
 			<Parameters>
 				<Parameter>
-					<Name>bic</Name>
-					<Abstract type="html">the bic value to validate</Abstract>
+					<Name>authToken</Name>
+					<Abstract type="html">authToken value to validate</Abstract>
 				</Parameter><Parameter>
 					<Name>error</Name>
-					<Abstract type="html">resulting      validation error, will not be set if string passed the validation</Abstract>
+					<Abstract type="html">resulting validation error, will be nil if Auth Token passes the validation</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid BIC string ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validateBIC:withError:</Anchor>
+			<ReturnValue><Abstract type="html">TRUE for a valid authToken string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateAuthToken:withError:</Anchor>
             <NodeRef refid="5"/>
 		</Token>
 		

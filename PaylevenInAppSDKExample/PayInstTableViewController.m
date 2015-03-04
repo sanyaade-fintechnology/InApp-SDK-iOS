@@ -117,16 +117,16 @@
     NSString* shortType = pi.type;
     
     if([shortType isEqualToString:@"CC"]) {
-        PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
+        PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
         return cc.pan;
     } else if([shortType isEqualToString:@"DD"]) {
-        PLVPayInstrumentDD* cc = (PLVPayInstrumentDD*)pi;
+        PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
         return [NSString stringWithFormat:@"Account: %@",cc.accountNo];
     } else if([shortType isEqualToString:@"SEPA"]) {
-        PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
+        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
         return [NSString stringWithFormat:@"IBAN: %@",cc.iban];
     } else if([shortType isEqualToString:@"PAYPAL"]) {
-        PLVPayInstrumentPAYPAL* cc = (PLVPayInstrumentPAYPAL*)pi;
+        PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
         return [NSString stringWithFormat:@"Auth: %@",cc.authToken];
     }  else {
         return @"unknown";
@@ -138,27 +138,27 @@
     NSString* shortType = pi.type;
     
     if([shortType isEqualToString:@"CC"]) {
-        PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
+        PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
         
-        NSArray* details = @[@"  ",[NSString stringWithFormat:@"CardHolder: %@",cc.cardHolder], [NSString stringWithFormat:@"PAN: %@",cc.pan],[NSString stringWithFormat:@"EXPIRYDATE: %u/%u",cc.expiryMonth,cc.expiryYear],[NSString stringWithFormat:@"BRAND: %@",cc.cardBrand]];
+        NSArray* details = @[@"  ",[NSString stringWithFormat:@"CardHolder: %@",cc.cardHolder], [NSString stringWithFormat:@"PAN: %@",cc.pan],[NSString stringWithFormat:@"EXPIRYDATE: %ld/%ld",(long)cc.expiryMonth,(long)cc.expiryYear],[NSString stringWithFormat:@"BRAND: %@",cc.cardBrand]];
         
         return [details componentsJoinedByString:@"\n"];
 
     } else if([shortType isEqualToString:@"DD"]) {
-        PLVPayInstrumentDD* cc = (PLVPayInstrumentDD*)pi;
+        PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
         
         NSArray* details = @[@"  ",[NSString stringWithFormat:@"Account: %@",cc.accountNo],[NSString stringWithFormat:@"Routing: %@",cc.routingNo]];
         
         return [details componentsJoinedByString:@"\n"];
     } else if([shortType isEqualToString:@"SEPA"]) {
-        PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
+        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
         
         NSArray* details = @[@"  ",[NSString stringWithFormat:@"IBAN: %@",cc.iban],[NSString stringWithFormat:@"BIC: %@",cc.bic]];
         
         return [details componentsJoinedByString:@"\n"];
     } else if([shortType isEqualToString:@"PAYPAL"]) {
         
-        PLVPayInstrumentPAYPAL* cc = (PLVPayInstrumentPAYPAL*)pi;
+        PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
         
         NSArray* details = @[@"  ",[NSString stringWithFormat:@"AuthToken: %@",cc.authToken]];
         
@@ -176,10 +176,10 @@
     NSString* shortType = pi.type;
     
     if([shortType isEqualToString:@"CC"]) {
-        PLVPayInstrumentCC* cc = (PLVPayInstrumentCC*)pi;
-        return [NSString stringWithFormat:@"%u/%u",cc.expiryMonth,cc.expiryYear];
+        PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
+        return [NSString stringWithFormat:@"%ld/%ld",(long)cc.expiryMonth,(long)cc.expiryYear];
     } else if([shortType isEqualToString:@"SEPA"]) {
-        PLVPayInstrumentSEPA* cc = (PLVPayInstrumentSEPA*)pi;
+        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
         return [NSString stringWithFormat:@"BIC: %@",cc.bic];
     } else {
         return @"";

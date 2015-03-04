@@ -17,6 +17,7 @@
 						<NodeRef refid="4"/>
 						<NodeRef refid="5"/>
 						<NodeRef refid="6"/>
+						<NodeRef refid="7"/>
 						
 					</Subnodes>
 				</Node>
@@ -29,7 +30,7 @@
                     <Name>Blocks</Name>
                     <Path>index.html</Path>
                     <Subnodes>
-                        <NodeRef refid="7"/>
+                        <NodeRef refid="8"/>
                         
                     </Subnodes>
                 </Node>
@@ -40,6 +41,72 @@
 	<Library>
 		
 		<Node id="1" type="file" documentType="reference">
+            <Name>PLVCreditCardPaymentInstrument</Name>
+            <Path>Classes/PLVCreditCardPaymentInstrument.html</Path>
+            
+                <Subnodes>
+                <Node type="section">
+                    <Path>Classes/PLVCreditCardPaymentInstrument.html</Path>
+                    <Name>Overview</Name>
+                    <Anchor>overview</Anchor>
+                </Node>
+                <Node type="section">
+                    <Path>Classes/PLVCreditCardPaymentInstrument.html</Path>
+                    <Name>Tasks</Name>
+                    <Anchor>tasks</Anchor>
+                </Node>
+                
+                <Node type="section">
+                    <Path>Classes/PLVCreditCardPaymentInstrument.html</Path>
+                    <Name>Properties</Name>
+                    <Anchor>properties</Anchor>
+                </Node>
+                
+                
+                <Node type="section">
+                    <Path>Classes/PLVCreditCardPaymentInstrument.html</Path>
+                    <Name>Class Methods</Name>
+                    <Anchor>class_methods</Anchor>
+                </Node>
+                
+                
+            </Subnodes>
+            
+        </Node>
+		<Node id="2" type="file" documentType="reference">
+            <Name>PLVDebitCardPaymentInstrument</Name>
+            <Path>Classes/PLVDebitCardPaymentInstrument.html</Path>
+            
+                <Subnodes>
+                <Node type="section">
+                    <Path>Classes/PLVDebitCardPaymentInstrument.html</Path>
+                    <Name>Overview</Name>
+                    <Anchor>overview</Anchor>
+                </Node>
+                <Node type="section">
+                    <Path>Classes/PLVDebitCardPaymentInstrument.html</Path>
+                    <Name>Tasks</Name>
+                    <Anchor>tasks</Anchor>
+                </Node>
+                
+                <Node type="section">
+                    <Path>Classes/PLVDebitCardPaymentInstrument.html</Path>
+                    <Name>Properties</Name>
+                    <Anchor>properties</Anchor>
+                </Node>
+                
+                
+                <Node type="section">
+                    <Path>Classes/PLVDebitCardPaymentInstrument.html</Path>
+                    <Name>Class Methods</Name>
+                    <Anchor>class_methods</Anchor>
+                </Node>
+                
+                
+            </Subnodes>
+            
+        </Node>
+		<Node id="3" type="file" documentType="reference">
             <Name>PLVInAppClient</Name>
             <Path>Classes/PLVInAppClient.html</Path>
             
@@ -72,106 +139,36 @@
             </Subnodes>
             
         </Node>
-		<Node id="2" type="file" documentType="reference">
-            <Name>PLVPayInstrumentCC</Name>
-            <Path>Classes/PLVPayInstrumentCC.html</Path>
-            
-                <Subnodes>
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentCC.html</Path>
-                    <Name>Overview</Name>
-                    <Anchor>overview</Anchor>
-                </Node>
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentCC.html</Path>
-                    <Name>Tasks</Name>
-                    <Anchor>tasks</Anchor>
-                </Node>
-                
-                
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentCC.html</Path>
-                    <Name>Class Methods</Name>
-                    <Anchor>class_methods</Anchor>
-                </Node>
-                
-                
-            </Subnodes>
-            
-        </Node>
-		<Node id="3" type="file" documentType="reference">
-            <Name>PLVPayInstrumentDD</Name>
-            <Path>Classes/PLVPayInstrumentDD.html</Path>
-            
-                <Subnodes>
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentDD.html</Path>
-                    <Name>Overview</Name>
-                    <Anchor>overview</Anchor>
-                </Node>
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentDD.html</Path>
-                    <Name>Tasks</Name>
-                    <Anchor>tasks</Anchor>
-                </Node>
-                
-                
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentDD.html</Path>
-                    <Name>Class Methods</Name>
-                    <Anchor>class_methods</Anchor>
-                </Node>
-                
-                
-            </Subnodes>
-            
-        </Node>
 		<Node id="4" type="file" documentType="reference">
-            <Name>PLVPayInstrumentPAYPAL</Name>
-            <Path>Classes/PLVPayInstrumentPAYPAL.html</Path>
-            
-                <Subnodes>
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentPAYPAL.html</Path>
-                    <Name>Overview</Name>
-                    <Anchor>overview</Anchor>
-                </Node>
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentPAYPAL.html</Path>
-                    <Name>Tasks</Name>
-                    <Anchor>tasks</Anchor>
-                </Node>
-                
-                
-                <Node type="section">
-                    <Path>Classes/PLVPayInstrumentPAYPAL.html</Path>
-                    <Name>Class Methods</Name>
-                    <Anchor>class_methods</Anchor>
-                </Node>
-                
-                
-            </Subnodes>
+            <Name>PLVInAppClientErrors</Name>
+            <Path>Classes/PLVInAppClientErrors.html</Path>
             
         </Node>
 		<Node id="5" type="file" documentType="reference">
-            <Name>PLVPayInstrumentSEPA</Name>
-            <Path>Classes/PLVPayInstrumentSEPA.html</Path>
+            <Name>PLVPAYPALPaymentInstrument</Name>
+            <Path>Classes/PLVPAYPALPaymentInstrument.html</Path>
             
                 <Subnodes>
                 <Node type="section">
-                    <Path>Classes/PLVPayInstrumentSEPA.html</Path>
+                    <Path>Classes/PLVPAYPALPaymentInstrument.html</Path>
                     <Name>Overview</Name>
                     <Anchor>overview</Anchor>
                 </Node>
                 <Node type="section">
-                    <Path>Classes/PLVPayInstrumentSEPA.html</Path>
+                    <Path>Classes/PLVPAYPALPaymentInstrument.html</Path>
                     <Name>Tasks</Name>
                     <Anchor>tasks</Anchor>
                 </Node>
                 
+                <Node type="section">
+                    <Path>Classes/PLVPAYPALPaymentInstrument.html</Path>
+                    <Name>Properties</Name>
+                    <Anchor>properties</Anchor>
+                </Node>
+                
                 
                 <Node type="section">
-                    <Path>Classes/PLVPayInstrumentSEPA.html</Path>
+                    <Path>Classes/PLVPAYPALPaymentInstrument.html</Path>
                     <Name>Class Methods</Name>
                     <Anchor>class_methods</Anchor>
                 </Node>
@@ -196,6 +193,12 @@
                     <Anchor>tasks</Anchor>
                 </Node>
                 
+                <Node type="section">
+                    <Path>Classes/PLVPaymentInstrument.html</Path>
+                    <Name>Properties</Name>
+                    <Anchor>properties</Anchor>
+                </Node>
+                
                 
                 <Node type="section">
                     <Path>Classes/PLVPaymentInstrument.html</Path>
@@ -213,11 +216,44 @@
             </Subnodes>
             
         </Node>
+		<Node id="7" type="file" documentType="reference">
+            <Name>PLVSEPAPaymentInstrument</Name>
+            <Path>Classes/PLVSEPAPaymentInstrument.html</Path>
+            
+                <Subnodes>
+                <Node type="section">
+                    <Path>Classes/PLVSEPAPaymentInstrument.html</Path>
+                    <Name>Overview</Name>
+                    <Anchor>overview</Anchor>
+                </Node>
+                <Node type="section">
+                    <Path>Classes/PLVSEPAPaymentInstrument.html</Path>
+                    <Name>Tasks</Name>
+                    <Anchor>tasks</Anchor>
+                </Node>
+                
+                <Node type="section">
+                    <Path>Classes/PLVSEPAPaymentInstrument.html</Path>
+                    <Name>Properties</Name>
+                    <Anchor>properties</Anchor>
+                </Node>
+                
+                
+                <Node type="section">
+                    <Path>Classes/PLVSEPAPaymentInstrument.html</Path>
+                    <Name>Class Methods</Name>
+                    <Anchor>class_methods</Anchor>
+                </Node>
+                
+                
+            </Subnodes>
+            
+        </Node>
 		
 		
         
         
-        <Node id="7" type="file" documentType="reference">
+        <Node id="8" type="file" documentType="reference">
             <Name>PLVInAppAPIClientCompletionHandler</Name>
             <Path>Blocks/PLVInAppAPIClientCompletionHandler.html</Path>
             

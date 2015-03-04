@@ -15,80 +15,76 @@
 
 
 /**
- *  PLVPaymentInstrument    Base class of PLVPaymentInstrument
- *
- *  @property sortIndex     index the payment instrument in a certain usecase (readonly)
- *
- *  @property identifier    identifier of this payment instrument (readonly
+ *  Base class of PaymentInstruments
  *
  */
 
 @interface PLVPaymentInstrument : NSObject
 
 /**
- *  createCreditCardPayInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:
+ *  createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:
  *
- *  Creates a CreditCard payment Instrument
+ *  Creates a PaymentInstrument representing a Credit Card
  *
- *  @param pan         the PAN for this creditcard
- *  @param expiryMonth the expiry month for this creditcard payment instrument
- *  @param expiryYear  the expiry year for this creditcard payment instrument
- *  @param cvv         the cvv for this creditcard payment instrument
- *  @param cardHolder  the name of the cardholder for this creditcard payment instrument as writen on the credit card
+ *  @param pan         PAN of this credit card
+ *  @param expiryMonth expiry month for this creditcard payment instrument
+ *  @param expiryYear  expiry year for this creditcard payment instrument
+ *  @param cvv         CVV for this creditcard payment instrument
+ *  @param cardHolder  Name of the card holder of this credit card payment instrument as visible on the card
  *
- *  @return a PaymentInstrument of class PLVPayInstrumentCC presenting this creditcard
+ *  @return a PaymentInstrument of class PLVPayInstrumentCC representing this Credit card
  */
 
-+ (id)createCreditCardPayInstrumentWithPan:(NSString*)pan
-                               expiryMonth:(NSInteger)expiryMonth
-                                expiryYear:(NSInteger)expiryYear
-                                       cvv:(NSString*)cvv
-                             andCardHolder:(NSString*)cardHolder;
++ (id)createCreditCardPaymentInstrumentWithPan:(NSString*)pan
+                                   expiryMonth:(NSInteger)expiryMonth
+                                    expiryYear:(NSInteger)expiryYear
+                                           cvv:(NSString*)cvv
+                                 andCardHolder:(NSString*)cardHolder;
 
 
 
 /**
- *  createDebitPayInstrumentWithAccountNo:andRoutingNo:
+ *  createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:
  *
- *  Creates a paymentinstrument presenting a debit account
+ *  Creates a PaymentInstrument representing a Debit account
  *
- *  @param accountNo The account number of this debit account
- *  @param routingNo The routing number of this debit account
+ *  @param accountNo Account number of this debit account
+ *  @param routingNo Routing number of this debit account
  *
- *  @return  a PaymentInstrument of class PLVPayInstrumentDD presenting this debit account
+ *  @return  a PaymentInstrument of class PLVPayInstrumentDD presenting this Debit account
  */
-+ (id)createDebitPayInstrumentWithAccountNo:(NSString*)accountNo
-                               andRoutingNo:(NSString*)routingNo;
++ (id)createDebitCardPaymentInstrumentWithAccountNo:(NSString*)accountNo
+                                       andRoutingNo:(NSString*)routingNo;
 
 
 
 /**
- *  createSEPAPayInstrumentWithIBAN:andBIC:
+ *  createSEPAPaymentInstrumentWithIBAN:andBIC:
  *
- *  Creates a paymentinstrument presenting a SEPA account
+ *  Creates a PaymentInstrument representing a SEPA account
  *
- *  @param iban       the iban for this SEPA account
- *  @param bic        the BIC for this SEPA account (optional)
+ *  @param iban       IBAN of this SEPA account
+ *  @param bic        BIC of this SEPA account (optional)
  *
- *  @return  a PaymentInstrument of class PLVPayInstrumentSEPA presenting this SEPA account
+ *  @return  a PaymentInstrument of class PLVPayInstrumentSEPA representing this SEPA account
  */
 
-+ (id)createSEPAPayInstrumentWithIBAN:(NSString*)iban
-                               andBIC:(NSString*)bic;
++ (id)createSEPAPaymentInstrumentWithIBAN:(NSString*)iban
+                                   andBIC:(NSString*)bic;
 
 
 
 /**
- *  createPAYPALPayInstrumentWithToken:
+ *  createPAYPALPaymentInstrumentWithToken:
  *
- *  Creates a paymentinstrument presenting a PayPal account
+ *  Creates a PaymentInstrument representing a PayPal account
  *
- *  @param token       the token to get access to the paypal account
+ *  @param token       Token to get access to the PayPal account
  *
- *  @return   a PaymentInstrument of class PLVPayInstrumentPAYPAL presenting this paypal account
+ *  @return   a PaymentInstrument of class PLVPayInstrumentPAYPAL representing this PayPal account
  */
 
-+ (id)createPAYPALPayInstrumentWithToken:(NSString*)token;
++ (id)createPAYPALPaymentInstrumentWithToken:(NSString*)token;
 
 
 
@@ -97,51 +93,52 @@
  *
  *  @param outError error object
  *
- *  @return TRUE on passed validation and FALSE on missing validation
+ *  @return TRUE on passed validation and FALSE on unsuccessful validation
  */
 - (BOOL) validatePaymentInstrumentWithError:(NSError **)outError;
 
+/**
+ *  Base class of PaymentInstruments
+ *
+ *
+ */
 
 @property (readonly,strong) NSString* type;
-@property (readonly,strong) NSString* sortIndex;
+/** Identifier of PaymentInstrument (readonly) */
 @property (readonly,strong) NSString* identifier;
 
 @end
 
 /**
- *  PLVPayInstrumentCC      CrediCard PaymentInstrument
+ *  Credit Card PaymentInstrument
  *
- *  @property pan           pan of the Creditcard
- *
- *  @property cardBrand     the cardbrand of this card (will be present on polling payment instruments)
- *
- *  @property expiryMonth   the expiry month of this creditcard 2 digits    (valid Range from 01 ... 12)
- *
- *  @property expiryYear    the expiry year of this creditcard 4 digits     (valid Range from 2010 ... 2050)
- *
- *  @property cvv           Card verification value
  *
  */
+@interface PLVCreditCardPaymentInstrument : PLVPaymentInstrument
 
-@interface PLVPayInstrumentCC : PLVPaymentInstrument
-
+/** PAN of Credit card */
 @property (readonly,strong) NSString* pan;
+/** Card Brand of Credit card */
 @property (readonly,strong) NSString* cardBrand;
+/** Expiry month of Credit card, Format MM (valid Range from 01 ... 12) */
 @property (readonly,nonatomic) NSInteger expiryMonth;
+/** Expiry year of Credit card, Format YYYY (valid Range from 2010 ... 2050) */
 @property (readonly,nonatomic) NSInteger expiryYear;
+/** Card Verification Value of Credit card */
 @property (readonly,strong) NSString* cvv;
+/** Card holder name of Credit card as visible on card*/
 @property (readonly,strong) NSString* cardHolder;
 
 /**
  *  validatePan:withError:
  *
- *  function to validate a string for matching certain criteria
+ *  function to validate PAN
  *
- *  @param pan   the pan value to validate
+ *  @param pan   PAN value to validate
  *
- *  @param error resulting validation error, will not be set if string passed the validation
+ *  @param error            resulting validation error, will be nil if PAN passes the validation
  *
- *  @return TRUE for a valid pan string ... otherwise FALSE
+ *  @return TRUE for a valid PAN string ... otherwise FALSE
  */
 
 + (BOOL) validatePan:(NSString*)pan withError:(NSError **)error;
@@ -149,14 +146,14 @@
 /**
  *  validateExpiryMonth:andYear:withError:
  *
- *  function to validates ExpiryMonth and ExpiryYear for matching certain criteria
+ *  function to validate ExpiryMonth and ExpiryYear
  *
- *  @param month                the month value to validate
- *  @param year                 the year value to validate
+ *  @param month                Month value to validate
+ *  @param year                 Year value to validate
  *
- *  @param error resulting validation error, will not be set if string passed the validation
+ *  @param error                resulting validation error, will be nil if values pass the validation
  *
- *  @return TRUE for a valid month/year combination  ... otherwise FALSE
+ *  @return TRUE for a valid Month/Year combination  ... otherwise FALSE
  */
 
 + (BOOL) validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year withError:(NSError **)error;
@@ -164,17 +161,15 @@
 /**
  *  validateCVV:withError:
  *
- *  function to validate a string for matching certain criteria
+ *  function to validate CVV
  *
- *  @param cvv                  the cvv value to validate
+ *  @param cvv                  CVV value to validate
  *
- *  @param error                resulting validation error, will not be set if string passed the validation
+ *  @param error                resulting validation error, will be nil if CVV passes the validation
  *
- *  @return                     TRUE for a valid cvv string ... otherwise FALSE
+ *  @return                     TRUE for a valid CVV string ... otherwise FALSE
  *
- *  attention: final cvv validation needs a attached pan ...
- *  so it can possible a value pass validation on this function and fail on validation on try to add a paymentinstrument
- *  refer to the resulting error
+ *  Attention: Final CVV validation will also take PAN into consideration. Even though validation returns TRUE here it might get rejected later on in addPaymentInstrument Method, please refer to the method's Error in this case.
  */
 
 + (BOOL) validateCVV:(NSString*)cvv withError:(NSError **)error;
@@ -182,10 +177,10 @@
 /**
  *  validateCardHolder:withError:
  *
- *  function to validate a string for matching certain criteria
+ *  function to validate Card holder
  *
- *  @param cardHolder           the cardHolder value to validate
- *  @param error resulting      validation error, will not be set if string passed the validation
+ *  @param cardHolder           cardHolder value to validate
+ *  @param error                resulting validation error, will be nil if Card holder passes the validation
  *
  *  @return                     TRUE for a valid cardHolder string ... otherwise FALSE
  */
@@ -198,17 +193,15 @@
 
 
 /**
- *  PLVPayInstrumentDD      Debit PaymentInstrument
+ *  Debit Card PaymentInstrument
  *
- *  @property accountNo accountNumber for this debit account
- *
- *  @property routingNo routingNumber for this debit account
  *
  */
 
-@interface PLVPayInstrumentDD : PLVPaymentInstrument
-
+@interface PLVDebitCardPaymentInstrument : PLVPaymentInstrument
+/** Account number for this debit account */
 @property (readonly,strong) NSString* accountNo;
+/** Routing number for this debit account */
 @property (readonly,strong) NSString* routingNo;
 
 /**
@@ -217,7 +210,7 @@
  *  function to validate a string for matching certain criteria
  *
  *  @param accountNo            the accountNo value to validate
- *  @param error resulting      validation error, will not be set if string passed the validation
+ *  @param error                resulting validation error, will be nil if Account number passes the validation
  *
  *  @return                     TRUE for a valid accountNumber string ... otherwise FALSE
  */
@@ -230,7 +223,7 @@
  *  function to validate a string for matching certain criteria
  *
  *  @param routingNo            the routingNo value to validate
- *  @param error resulting      validation error, will not be set if string passed the validation
+ *  @param error                resulting validation error, will be nil if Routing number passes the validation
  *
  *  @return                     TRUE for a valid routingNumber string ... otherwise FALSE
  */
@@ -240,17 +233,16 @@
 @end
 
 /**
- *  PLVPayInstrumentSEPA    SEPA Account PaymentInstrument
+ *  SEPA Account PaymentInstrument
  *
- *  @property iban          IBAN for this SEPA account
- *
- *  @property bic           BIC Number for this SEPA account
  *
  */
 
-@interface PLVPayInstrumentSEPA : PLVPaymentInstrument
+@interface PLVSEPAPaymentInstrument : PLVPaymentInstrument
 
+/** IBAN for this SEPA account */
 @property (readonly,strong) NSString* iban;
+/** BIC for this SEPA account */
 @property (readonly,strong) NSString* bic;
 
 /**
@@ -258,8 +250,8 @@
  *
  *  function to validate a string for matching certain criteria
  *
- *  @param iban                 the IBAN value to validate
- *  @param error resulting      validation error, will not be set if string passed the validation
+ *  @param iban                 IBAN value to validate
+ *  @param error                resulting validation error, will be nil if IBAN passes the validation
  *
  *  @return                     TRUE for a valid IBAN string ... otherwise FALSE
  */
@@ -271,8 +263,8 @@
  *
  *  function to validate a string for matching certain criteria
  *
- *  @param bic                  the bic value to validate
- *  @param error resulting      validation error, will not be set if string passed the validation
+ *  @param bic                  BIC value to validate
+ *  @param error                resulting validation error, will be nil if BIC passes the validation
  *
  *  @return                     TRUE for a valid BIC string ... otherwise FALSE
  */
@@ -282,14 +274,14 @@
 @end
 
 /**
- *  PLVPayInstrumentPAYPAL  PayPal Account PaymentInstrument
+ *  PayPal Account PaymentInstrument
  *
- *  @property authToken     authToken for this PayPal Account
  *
  */
 
-@interface PLVPayInstrumentPAYPAL : PLVPaymentInstrument
+@interface PLVPAYPALPaymentInstrument : PLVPaymentInstrument
 
+/** Authentication Token for this PayPal Account */
 @property (readonly,strong) NSString* authToken;
 
 /**
@@ -297,8 +289,8 @@
  *
  *  function to validate a string for matching certain criteria
  *
- *  @param authToken            the authToken value to validate
- *  @param error resulting      validation error, will not be set if string passed the validation
+ *  @param authToken            authToken value to validate
+ *  @param error                resulting validation error, will be nil if Auth Token passes the validation
  *
  *  @return                     TRUE for a valid authToken string ... otherwise FALSE
  */
