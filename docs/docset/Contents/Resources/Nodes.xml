@@ -17,7 +17,6 @@
 						<NodeRef refid="4"/>
 						<NodeRef refid="5"/>
 						<NodeRef refid="6"/>
-						<NodeRef refid="7"/>
 						
 					</Subnodes>
 				</Node>
@@ -30,7 +29,7 @@
                     <Name>Blocks</Name>
                     <Path>index.html</Path>
                     <Subnodes>
-                        <NodeRef refid="8"/>
+                        <NodeRef refid="7"/>
                         
                     </Subnodes>
                 </Node>
@@ -140,11 +139,6 @@
             
         </Node>
 		<Node id="4" type="file" documentType="reference">
-            <Name>PLVInAppClientErrors</Name>
-            <Path>Classes/PLVInAppClientErrors.html</Path>
-            
-        </Node>
-		<Node id="5" type="file" documentType="reference">
             <Name>PLVPAYPALPaymentInstrument</Name>
             <Path>Classes/PLVPAYPALPaymentInstrument.html</Path>
             
@@ -177,7 +171,7 @@
             </Subnodes>
             
         </Node>
-		<Node id="6" type="file" documentType="reference">
+		<Node id="5" type="file" documentType="reference">
             <Name>PLVPaymentInstrument</Name>
             <Path>Classes/PLVPaymentInstrument.html</Path>
             
@@ -216,7 +210,7 @@
             </Subnodes>
             
         </Node>
-		<Node id="7" type="file" documentType="reference">
+		<Node id="6" type="file" documentType="reference">
             <Name>PLVSEPAPaymentInstrument</Name>
             <Path>Classes/PLVSEPAPaymentInstrument.html</Path>
             
@@ -253,7 +247,7 @@
 		
         
         
-        <Node id="8" type="file" documentType="reference">
+        <Node id="7" type="file" documentType="reference">
             <Name>PLVInAppAPIClientCompletionHandler</Name>
             <Path>Blocks/PLVInAppAPIClientCompletionHandler.html</Path>
             

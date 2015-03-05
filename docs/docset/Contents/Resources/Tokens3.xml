@@ -19,7 +19,7 @@
 			
 			<Declaration>+ (instancetype)sharedInstance</Declaration>
 			
-			<ReturnValue><Abstract type="html">Singleton PaylevenInAppCLient</Abstract></ReturnValue>
+			<ReturnValue><Abstract type="html">Singleton PaylevenInAppClient</Abstract></ReturnValue>
 			<Anchor>//api/name/sharedInstance</Anchor>
             <NodeRef refid="3"/>
 		</Token>
@@ -55,7 +55,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/createUserToken:withPaymentInstrument:useCase:andCompletion:</TokenIdentifier>
-			<Abstract type="html">createUserToken:withPaymentInstrument:useCase:andCompletion:</Abstract>
+			<Abstract type="html">Creates a user token based on the email address provided and adds the payment instrument to the user token previously created, for the use case specified.</Abstract>
 			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
 			<Declaration>- (void)createUserToken:(NSString *)emailAddress withPaymentInstrument:(PLVPaymentInstrument *)paymentInstrument useCase:(PLVInAppUseCase *)useCase andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>
@@ -179,7 +179,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</TokenIdentifier>
-			<Abstract type="html">removePaymentInstrument:forUserToken:andCompletion:</Abstract>
+			<Abstract type="html">removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</Abstract>
 			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
 			<Declaration>- (void)removePaymentInstrument:(PLVPaymentInstrument *)paymentInstrument fromUseCase:(NSString *)useCase forUserToken:(NSString *)userToken andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler</Declaration>

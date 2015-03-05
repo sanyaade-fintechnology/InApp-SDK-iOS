@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/PLVPaymentInstrument.html">
+	<File path="Classes/PLVSEPAPaymentInstrument.html">
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/PLVPaymentInstrument</TokenIdentifier>
-			<Abstract type="html">Base class of PaymentInstruments</Abstract>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVSEPAPaymentInstrument</TokenIdentifier>
+			<Abstract type="html">SEPA Account Payment Instrument</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
             
 			
@@ -13,177 +13,114 @@
 		
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</TokenIdentifier>
-			<Abstract type="html">createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</Abstract>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVSEPAPaymentInstrument/setIban:</TokenIdentifier>
+			<Abstract type="html">IBAN for this SEPA account</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (id)createCreditCardPaymentInstrumentWithPan:(NSString *)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString *)cvv andCardHolder:(NSString *)cardHolder</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>pan</Name>
-					<Abstract type="html">PAN of this credit card</Abstract>
-				</Parameter><Parameter>
-					<Name>expiryMonth</Name>
-					<Abstract type="html">expiry month for this creditcard payment instrument</Abstract>
-				</Parameter><Parameter>
-					<Name>expiryYear</Name>
-					<Abstract type="html">expiry year for this creditcard payment instrument</Abstract>
-				</Parameter><Parameter>
-					<Name>cvv</Name>
-					<Abstract type="html">CVV for this creditcard payment instrument</Abstract>
-				</Parameter><Parameter>
-					<Name>cardHolder</Name>
-					<Abstract type="html">Name of the card holder of this credit card payment instrument as visible on the card</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">a PaymentInstrument of class PLVPayInstrumentCC representing this Credit card</Abstract></ReturnValue>
-			<Anchor>//api/name/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</Anchor>
+			<Declaration>@property (readonly, strong) NSString *iban</Declaration>
+			
+			
+			<Anchor>//api/name/iban</Anchor>
             <NodeRef refid="6"/>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</TokenIdentifier>
-			<Abstract type="html">createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</Abstract>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVSEPAPaymentInstrument/iban</TokenIdentifier>
+			<Abstract type="html">IBAN for this SEPA account</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (id)createDebitCardPaymentInstrumentWithAccountNo:(NSString *)accountNo andRoutingNo:(NSString *)routingNo</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>accountNo</Name>
-					<Abstract type="html">Account number of this debit account</Abstract>
-				</Parameter><Parameter>
-					<Name>routingNo</Name>
-					<Abstract type="html">Routing number of this debit account</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">a PaymentInstrument of class PLVPayInstrumentDD presenting this Debit account</Abstract></ReturnValue>
-			<Anchor>//api/name/createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</Anchor>
+			<Declaration>@property (readonly, strong) NSString *iban</Declaration>
+			
+			
+			<Anchor>//api/name/iban</Anchor>
             <NodeRef refid="6"/>
 		</Token>
 		
 		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createSEPAPaymentInstrumentWithIBAN:andBIC:</TokenIdentifier>
-			<Abstract type="html">createSEPAPaymentInstrumentWithIBAN:andBIC:</Abstract>
+			<TokenIdentifier>//apple_ref/occ/instp/PLVSEPAPaymentInstrument/iban</TokenIdentifier>
+			<Abstract type="html">IBAN for this SEPA account</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (id)createSEPAPaymentInstrumentWithIBAN:(NSString *)iban andBIC:(NSString *)bic</Declaration>
+			<Declaration>@property (readonly, strong) NSString *iban</Declaration>
+			
+			
+			<Anchor>//api/name/iban</Anchor>
+            <NodeRef refid="6"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVSEPAPaymentInstrument/setBic:</TokenIdentifier>
+			<Abstract type="html">BIC for this SEPA account</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *bic</Declaration>
+			
+			
+			<Anchor>//api/name/bic</Anchor>
+            <NodeRef refid="6"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVSEPAPaymentInstrument/bic</TokenIdentifier>
+			<Abstract type="html">BIC for this SEPA account</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *bic</Declaration>
+			
+			
+			<Anchor>//api/name/bic</Anchor>
+            <NodeRef refid="6"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/PLVSEPAPaymentInstrument/bic</TokenIdentifier>
+			<Abstract type="html">BIC for this SEPA account</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *bic</Declaration>
+			
+			
+			<Anchor>//api/name/bic</Anchor>
+            <NodeRef refid="6"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVSEPAPaymentInstrument/validateIBAN:withError:</TokenIdentifier>
+			<Abstract type="html">validateIBAN:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateIBAN:(NSString *)iban withError:(NSError **)error</Declaration>
 			<Parameters>
 				<Parameter>
 					<Name>iban</Name>
-					<Abstract type="html">IBAN of this SEPA account</Abstract>
+					<Abstract type="html">IBAN value to validate</Abstract>
 				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting validation error, will be nil if IBAN passes the validation</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">TRUE for a valid IBAN string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateIBAN:withError:</Anchor>
+            <NodeRef refid="6"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVSEPAPaymentInstrument/validateBIC:withError:</TokenIdentifier>
+			<Abstract type="html">validateBIC:withError:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (BOOL)validateBIC:(NSString *)bic withError:(NSError **)error</Declaration>
+			<Parameters>
+				<Parameter>
 					<Name>bic</Name>
-					<Abstract type="html">BIC of this SEPA account (optional)</Abstract>
+					<Abstract type="html">BIC value to validate</Abstract>
+				</Parameter><Parameter>
+					<Name>error</Name>
+					<Abstract type="html">resulting validation error, will be nil if BIC passes the validation</Abstract>
 				</Parameter>
 			</Parameters>
-			<ReturnValue><Abstract type="html">a PaymentInstrument of class PLVPayInstrumentSEPA representing this SEPA account</Abstract></ReturnValue>
-			<Anchor>//api/name/createSEPAPaymentInstrumentWithIBAN:andBIC:</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createPAYPALPaymentInstrumentWithToken:</TokenIdentifier>
-			<Abstract type="html">createPAYPALPaymentInstrumentWithToken:</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>+ (id)createPAYPALPaymentInstrumentWithToken:(NSString *)token</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>token</Name>
-					<Abstract type="html">Token to get access to the PayPal account</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">a PaymentInstrument of class PLVPayInstrumentPAYPAL representing this PayPal account</Abstract></ReturnValue>
-			<Anchor>//api/name/createPAYPALPaymentInstrumentWithToken:</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/validatePaymentInstrumentWithError:</TokenIdentifier>
-			<Abstract type="html">validatePayInstrumentReturningError:</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>- (BOOL)validatePaymentInstrumentWithError:(NSError **)outError</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>outError</Name>
-					<Abstract type="html">error object</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE on passed validation and FALSE on unsuccessful validation</Abstract></ReturnValue>
-			<Anchor>//api/name/validatePaymentInstrumentWithError:</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/setType:</TokenIdentifier>
-			<Abstract type="html">Base class of PaymentInstruments</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *type</Declaration>
-			
-			
-			<Anchor>//api/name/type</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/type</TokenIdentifier>
-			<Abstract type="html">Base class of PaymentInstruments</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *type</Declaration>
-			
-			
-			<Anchor>//api/name/type</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instp/PLVPaymentInstrument/type</TokenIdentifier>
-			<Abstract type="html">Base class of PaymentInstruments</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *type</Declaration>
-			
-			
-			<Anchor>//api/name/type</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/setIdentifier:</TokenIdentifier>
-			<Abstract type="html">Identifier of PaymentInstrument (readonly)</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
-			
-			
-			<Anchor>//api/name/identifier</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/identifier</TokenIdentifier>
-			<Abstract type="html">Identifier of PaymentInstrument (readonly)</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
-			
-			
-			<Anchor>//api/name/identifier</Anchor>
-            <NodeRef refid="6"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instp/PLVPaymentInstrument/identifier</TokenIdentifier>
-			<Abstract type="html">Identifier of PaymentInstrument (readonly)</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
-			
-			
-			<Anchor>//api/name/identifier</Anchor>
+			<ReturnValue><Abstract type="html">TRUE for a valid BIC string ... otherwise FALSE</Abstract></ReturnValue>
+			<Anchor>//api/name/validateBIC:withError:</Anchor>
             <NodeRef refid="6"/>
 		</Token>
 		

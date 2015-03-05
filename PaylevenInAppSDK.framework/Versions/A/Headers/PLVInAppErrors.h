@@ -9,16 +9,8 @@
 
 @import Foundation;
 
-/**
- *  PLVInAppClientErrors
- *
- *  
- *  Error codes returned in case the payleven InApp SDK was called with invalid parameters, when network or general errors occurre
- *
- */
 @interface PLVInAppClientErrors : NSObject
 
-/**ERROR_INVALID_BACKEND_RESPONSE_CODE*/
 extern NSInteger const ERROR_INVALID_BACKEND_RESPONSE_CODE;
 extern NSString* const ERROR_INVALID_BACKEND_RESPONSE_MESSAGE;
 

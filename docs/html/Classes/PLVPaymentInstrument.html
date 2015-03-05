@@ -58,8 +58,6 @@
 		
 		<option value="//api/name/identifier">identifier</option>
 		
-		<option value="//api/name/type">type</option>
-		
 	</optgroup>
 	
 
@@ -116,7 +114,7 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p>Base class of PaymentInstruments</p>
+						<p>Base class of Payment Instruments</p>
 					</div>
 					
 					
@@ -132,6 +130,47 @@
 
 						<div class="task-list">
 							<div class="section-method">
+	<a name="//api/name/identifier" title="identifier"></a>
+	<h3 class="method-title"><code><a href="#//api/name/identifier">&nbsp;&nbsp;identifier</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Identifier of Payment Instrument (readonly)</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (readonly, strong) NSString *identifier</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">PLVInAppClientTypes.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:" title="createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:">+&nbsp;createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</a></code>
 </h3>
@@ -188,7 +227,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>a PaymentInstrument of class PLVPayInstrumentCC representing this Credit card</p>
+				<p>a Payment Instrument of class PLVPayInstrumentCC representing this Credit card</p>
 			</div>
 			
 
@@ -197,7 +236,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Creates a PaymentInstrument representing a Credit Card</p>
+				<p>Creates a Payment Instrument representing a Credit Card</p>
 			</div>
 			
 
@@ -256,7 +295,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>a PaymentInstrument of class PLVPayInstrumentDD presenting this Debit account</p>
+				<p>a Payment Instrument of class PLVPayInstrumentDD presenting this Debit account</p>
 			</div>
 			
 
@@ -265,7 +304,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Creates a PaymentInstrument representing a Debit account</p>
+				<p>Creates a Payment Instrument representing a Debit account</p>
 			</div>
 			
 
@@ -324,7 +363,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>a PaymentInstrument of class PLVPayInstrumentSEPA representing this SEPA account</p>
+				<p>a Payment Instrument of class PLVPayInstrumentSEPA representing this SEPA account</p>
 			</div>
 			
 
@@ -387,7 +426,7 @@
 			
 			<div class="method-subsection return">
 				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>a PaymentInstrument of class PLVPayInstrumentPAYPAL representing this PayPal account</p>
+				<p>a Payment Instrument of class PLVPayInstrumentPAYPAL representing this PayPal account</p>
 			</div>
 			
 
@@ -396,7 +435,7 @@
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Creates a PaymentInstrument representing a PayPal account</p>
+				<p>Creates a Payment Instrument representing a PayPal account</p>
 			</div>
 			
 
@@ -471,88 +510,6 @@
 			
 		</div>
 	</div>
-</div><div class="section-method">
-	<a name="//api/name/type" title="type"></a>
-	<h3 class="method-title"><code><a href="#//api/name/type">&nbsp;&nbsp;type</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Base class of PaymentInstruments</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>@property (readonly, strong) NSString *type</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">PLVInAppClientTypes.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/identifier" title="identifier"></a>
-	<h3 class="method-title"><code><a href="#//api/name/identifier">&nbsp;&nbsp;identifier</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Identifier of PaymentInstrument (readonly)</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>@property (readonly, strong) NSString *identifier</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">PLVInAppClientTypes.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
 </div>
 						</div>
 						
@@ -566,7 +523,7 @@
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-03-04</p>
+						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-03-05</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>

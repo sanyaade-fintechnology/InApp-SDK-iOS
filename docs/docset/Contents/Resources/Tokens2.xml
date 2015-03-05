@@ -4,7 +4,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/cl/PLVDebitCardPaymentInstrument</TokenIdentifier>
-			<Abstract type="html">Debit Card PaymentInstrument</Abstract>
+			<Abstract type="html">Debit Card Payment Instrument</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
             
 			

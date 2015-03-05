@@ -233,7 +233,7 @@
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
         
         self.keyArray = @[@"cardHolder",@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
-        self.keyValueLengthArray = @[@26,@21,@2,@2,@4];
+        self.keyValueLengthArray = @[@26,@21,@2,@4,@4];
         self.keyboardTypeArray = @[@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
         
         piType = @"CreditCard";
@@ -521,7 +521,7 @@
             long expMonth = text.integerValue;
             
             validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:expMonth andYear:[[self.addInfoDict objectForKey:@"expiryYear"] integerValue] withError:&validationError];
-            
+
             if (self.expiryYearTextField != Nil) {
                 
                 [self setTextField:self.expiryYearTextField valid:validationResult];

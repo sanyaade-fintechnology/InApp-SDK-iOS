@@ -4,7 +4,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/cl/PLVCreditCardPaymentInstrument</TokenIdentifier>
-			<Abstract type="html">Credit Card PaymentInstrument</Abstract>
+			<Abstract type="html">Credit Card Payment Instrument</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
             
 			
@@ -86,7 +86,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVCreditCardPaymentInstrument/setExpiryMonth:</TokenIdentifier>
-			<Abstract type="html">Expiry month of Credit card, Format MM (valid Range from 01 ... 12)</Abstract>
+			<Abstract type="html">Expiry month of Credit card, Format M or MM (valid Range from 01, 2, ... 12)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
 			<Declaration>@property (readonly, nonatomic) NSInteger expiryMonth</Declaration>
@@ -98,7 +98,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVCreditCardPaymentInstrument/expiryMonth</TokenIdentifier>
-			<Abstract type="html">Expiry month of Credit card, Format MM (valid Range from 01 ... 12)</Abstract>
+			<Abstract type="html">Expiry month of Credit card, Format M or MM (valid Range from 01, 2, ... 12)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
 			<Declaration>@property (readonly, nonatomic) NSInteger expiryMonth</Declaration>
@@ -110,7 +110,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instp/PLVCreditCardPaymentInstrument/expiryMonth</TokenIdentifier>
-			<Abstract type="html">Expiry month of Credit card, Format MM (valid Range from 01 ... 12)</Abstract>
+			<Abstract type="html">Expiry month of Credit card, Format M or MM (valid Range from 01, 2, ... 12)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
 			<Declaration>@property (readonly, nonatomic) NSInteger expiryMonth</Declaration>
@@ -288,7 +288,7 @@
 			</Parameters>
 			<ReturnValue><Abstract type="html">TRUE for a valid CVV string ... otherwise FALSE
 
-Attention: Final CVV validation will also take PAN into consideration. Even though validation returns TRUE here it might get rejected later on in addPaymentInstrument Method, please refer to the method&apos;s Error in this case.</Abstract></ReturnValue>
+Attention: Final CVV validation will also take PAN into consideration. Even though validation returns TRUE here it might get rejected later during addPaymentInstrument method, please refer to it&apos;s Error in this case.</Abstract></ReturnValue>
 			<Anchor>//api/name/validateCVV:withError:</Anchor>
             <NodeRef refid="1"/>
 		</Token>

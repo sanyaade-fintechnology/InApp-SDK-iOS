@@ -2,6 +2,7 @@
 
 [![CocoaPods](https://img.shields.io/badge/Licence-MIT-brightgreen.svg?style=flat-square)]()
 [![CocoaPods](https://img.shields.io/badge/Platform-iOS-yellow.svg?style=flat-square)]()
+[![CocoaPods](https://img.shields.io/badge/Requires-iOS%207+-blue.svg?style=flat-square)]()
 [![CocoaPods](https://img.shields.io/github/tag/Payleven/InApp-SDK-iOS.svg?style=flat-square)]()
 [![CocoaPods](https://img.shields.io/badge/Made%20in-Berlin-red.svg?style=flat-square)]()
 
