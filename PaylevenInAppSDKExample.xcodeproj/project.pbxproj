@@ -24,8 +24,8 @@
 		9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */; };
 		9FBE52A71A0CFCF70030E165 /* PayInstTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A51A0CFCF70030E165 /* PayInstTableViewController.xib */; };
 		9FBE52A91A0D058F0030E165 /* PayInstrumentsTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FBE52A81A0D058F0030E165 /* PayInstrumentsTableCell.xib */; };
+		F30B6CE81AADEC3F00534C98 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F39137931AADAF6F00E7DDC3 /* HockeySDK.framework */; };
 		F383FF281AAA1A4E007EEF91 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F383FF271AAA1A4E007EEF91 /* Media.xcassets */; };
-		F39137941AADAF6F00E7DDC3 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F39137931AADAF6F00E7DDC3 /* HockeySDK.framework */; };
 		F391379D1AADE00B00E7DDC3 /* EditUseCaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F71D6BB1A374D6E007AEBC4 /* EditUseCaseViewController.m */; };
 		F391379E1AADE00B00E7DDC3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB8E19F5270700FCB314 /* AppDelegate.m */; };
 		F391379F1AADE00B00E7DDC3 /* PayInstTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */; };
@@ -43,7 +43,6 @@
 		F39137AD1AADE00B00E7DDC3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D31A923843004CC50F /* MobileCoreServices.framework */; };
 		F39137AE1AADE00B00E7DDC3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D11A923836004CC50F /* Foundation.framework */; };
 		F39137AF1AADE00B00E7DDC3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CF1A92382E004CC50F /* CoreText.framework */; };
-		F39137B01AADE00B00E7DDC3 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F39137931AADAF6F00E7DDC3 /* HockeySDK.framework */; };
 		F39137B11AADE00B00E7DDC3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CD1A923828004CC50F /* CoreGraphics.framework */; };
 		F39137B21AADE00B00E7DDC3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CB1A92381E004CC50F /* AssetsLibrary.framework */; };
 		F39137B31AADE00B00E7DDC3 /* PaylevenInAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */; };
@@ -127,7 +126,6 @@
 				F3EA98D41A923843004CC50F /* MobileCoreServices.framework in Frameworks */,
 				F3EA98D21A923836004CC50F /* Foundation.framework in Frameworks */,
 				F3EA98D01A92382E004CC50F /* CoreText.framework in Frameworks */,
-				F39137941AADAF6F00E7DDC3 /* HockeySDK.framework in Frameworks */,
 				F3EA98CE1A923828004CC50F /* CoreGraphics.framework in Frameworks */,
 				F3EA98CC1A92381E004CC50F /* AssetsLibrary.framework in Frameworks */,
 				9F6552B219F5AB0A003D07A5 /* PaylevenInAppSDK.framework in Frameworks */,
@@ -138,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F30B6CE81AADEC3F00534C98 /* HockeySDK.framework in Frameworks */,
 				F39137A81AADE00B00E7DDC3 /* UIKit.framework in Frameworks */,
 				F39137A91AADE00B00E7DDC3 /* SystemConfiguration.framework in Frameworks */,
 				F39137AA1AADE00B00E7DDC3 /* Security.framework in Frameworks */,
@@ -146,7 +145,6 @@
 				F39137AD1AADE00B00E7DDC3 /* MobileCoreServices.framework in Frameworks */,
 				F39137AE1AADE00B00E7DDC3 /* Foundation.framework in Frameworks */,
 				F39137AF1AADE00B00E7DDC3 /* CoreText.framework in Frameworks */,
-				F39137B01AADE00B00E7DDC3 /* HockeySDK.framework in Frameworks */,
 				F39137B11AADE00B00E7DDC3 /* CoreGraphics.framework in Frameworks */,
 				F39137B21AADE00B00E7DDC3 /* AssetsLibrary.framework in Frameworks */,
 				F39137B31AADE00B00E7DDC3 /* PaylevenInAppSDK.framework in Frameworks */,
