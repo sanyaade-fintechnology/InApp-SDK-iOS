@@ -21,6 +21,7 @@
     if (crashReportHockeyId) {
         [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:crashReportHockeyId];
         [[BITHockeyManager sharedHockeyManager] startManager];
+        [[BITHockeyManager sharedHockeyManager] testIdentifier];
     }
     
     return YES;
