@@ -13,6 +13,7 @@
 #import "EditUseCaseViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 
+
 #define selectPItoAddActionSheet 666
 
 #define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
@@ -40,11 +41,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self updateFrameDesign:self.getUserTokenButton];
-    [self updateFrameDesign:self.addPIButton];
-    [self updateFrameDesign:self.listPIButton];
-    [self updateFrameDesign:self.useCaseButton];
-    
     self.userTokenTextField.text = self.userToken;
     self.emailTextField.text = self.emailAddress;
     
@@ -68,12 +64,6 @@
     
     [self.useCaseButton setTitle:self.useCase forState:UIControlStateNormal];
     
-}
-
-- (void) updateFrameDesign:(UIView*)button {
-    button.layer.cornerRadius = 5.f;
-    button.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    button.layer.borderWidth = 1.f;
 }
 
 

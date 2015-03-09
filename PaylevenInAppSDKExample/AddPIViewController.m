@@ -91,23 +91,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-
 - (void) updateButtonDesign:(UIButton*)button {
-    
-    button.layer.cornerRadius = 5.f;
-    button.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    button.layer.borderWidth = 1.f;
     
     [self.piTypeButton setTitle:self.useCase forState:UIControlStateNormal];
 }
@@ -200,9 +184,9 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
         
-        self.keyArray = @[@"cardHolder",@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
-        self.keyValueLengthArray = @[@26,@21,@2,@4,@4];
-        self.keyboardTypeArray = @[@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
+        self.keyArray = @[@"pan",@"cardHolder",@"expiryMonth",@"expiryYear",@"cvv"];
+        self.keyValueLengthArray = @[@21,@26,@2,@4,@4];
+        self.keyboardTypeArray = @[@TypeNumberPad,@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
         
         piType = @"CreditCard";
         
@@ -462,7 +446,6 @@
     }
     
 }
-
 
 - (void) validateTextField:(UITextField*)textField comingText:(NSString*)text forKey:(NSString*)key {
     

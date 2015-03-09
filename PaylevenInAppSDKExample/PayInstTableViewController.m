@@ -181,6 +181,9 @@
     } else if([shortType isEqualToString:@"SEPA"]) {
         PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
         return [NSString stringWithFormat:@"BIC: %@",cc.bic];
+    } else if([shortType isEqualToString:@"DD"]){
+        PLVDebitCardPaymentInstrument* dd = (PLVDebitCardPaymentInstrument*)pi;
+        return dd.routingNo;
     } else {
         return @"";
     }
@@ -317,9 +320,9 @@
 
 - (void) deletePaymentInstrument {
     
-    NSString* message = [NSString stringWithFormat:@"Disable PI or\nremove from %@ useCase?", self.useCase];
+    NSString* message = [NSString stringWithFormat:@"Disable PI or\nremove from %@ Use Case?", self.useCase];
     
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable or Remove" message:message delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"Disable",@"Remove UseCsae",nil];
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable or Remove" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Disable",[NSString stringWithFormat:@"Remove from %@", self.useCase],nil];
     
     [alertView show];
 }

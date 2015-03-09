@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ylc-rp-EGO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ylc-rp-EGO">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -117,22 +117,6 @@
                                     </mask>
                                 </variation>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="900" text="API Key:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ML-wP-ndI">
-                                <rect key="frame" x="21" y="496" width="558" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="9vK-Fz-tio"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="fBB-pK-N7u"/>
-                                    <constraint firstAttribute="width" priority="600" constant="42" id="oA4-WL-qQ8"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="fBB-pK-N7u"/>
-                                        <exclude reference="oA4-WL-qQ8"/>
-                                    </mask>
-                                </variation>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4tn-Ry-xW2" userLabel="EmailText Field">
                                 <rect key="frame" x="99" y="50" width="480" height="30"/>
                                 <constraints>
@@ -174,7 +158,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4w1-jN-8Qm">
                                 <rect key="frame" x="16" y="271" width="568" height="80"/>
-                                <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.062745098040000002" green="0.57254901960000004" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="4T7-2x-vnI"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="RCF-DC-yAr"/>
@@ -183,7 +167,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Reset API Client">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
@@ -210,7 +194,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YsI-Jr-MNj">
                                 <rect key="frame" x="16" y="171" width="568" height="80"/>
-                                <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.062745098040000002" green="0.57254901960000004" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="Zow-sZ-KQ3"/>
                                     <constraint firstAttribute="width" constant="568" id="ivJ-Ga-GEU"/>
@@ -218,7 +202,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Register User">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
@@ -235,7 +219,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.99563515189999996" blue="0.9825405478" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="YsI-Jr-MNj" firstAttribute="leading" secondItem="502-Ir-ELC" secondAttribute="leadingMargin" id="0zv-Pl-fA1"/>
                             <constraint firstItem="4tn-Ry-xW2" firstAttribute="top" secondItem="I7W-xW-C47" secondAttribute="bottom" constant="30" id="B2W-lT-7gB"/>
@@ -243,7 +227,6 @@
                             <constraint firstAttribute="trailingMargin" secondItem="YsI-Jr-MNj" secondAttribute="trailing" constant="5" id="C71-JH-BVq"/>
                             <constraint firstItem="tGd-YN-BiQ" firstAttribute="top" secondItem="YsI-Jr-MNj" secondAttribute="bottom" constant="50" id="DfN-nj-jsT"/>
                             <constraint firstItem="IfR-02-kHw" firstAttribute="top" secondItem="bcB-s2-jXS" secondAttribute="bottom" constant="43" id="Ecn-gK-lsh"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="0ML-wP-ndI" secondAttribute="trailing" constant="5" id="I2j-PK-wZO"/>
                             <constraint firstItem="bcB-s2-jXS" firstAttribute="leading" secondItem="502-Ir-ELC" secondAttribute="leadingMargin" constant="5" id="It2-3Y-LbV"/>
                             <constraint firstAttribute="trailingMargin" secondItem="YsI-Jr-MNj" secondAttribute="trailing" id="Obh-iX-BCa"/>
                             <constraint firstItem="bcB-s2-jXS" firstAttribute="top" secondItem="I7W-xW-C47" secondAttribute="bottom" id="PSU-dd-giJ"/>
@@ -257,8 +240,6 @@
                             <constraint firstAttribute="trailingMargin" secondItem="4tn-Ry-xW2" secondAttribute="trailing" constant="5" id="d1f-Wm-YI8"/>
                             <constraint firstItem="LG2-Wh-z6z" firstAttribute="leading" secondItem="502-Ir-ELC" secondAttribute="leadingMargin" id="d6a-yR-Xl0"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tGd-YN-BiQ" secondAttribute="trailing" constant="-16" id="gWe-Xm-2fW"/>
-                            <constraint firstItem="LG2-Wh-z6z" firstAttribute="top" secondItem="0ML-wP-ndI" secondAttribute="bottom" constant="31" id="i00-EP-KVD"/>
-                            <constraint firstItem="0ML-wP-ndI" firstAttribute="leading" secondItem="502-Ir-ELC" secondAttribute="leadingMargin" constant="5" id="iRq-vP-9Ye"/>
                             <constraint firstItem="zAg-ps-tXL" firstAttribute="leading" secondItem="502-Ir-ELC" secondAttribute="leadingMargin" constant="83" id="ifd-9q-Hyn"/>
                             <constraint firstItem="bcB-s2-jXS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="502-Ir-ELC" secondAttribute="leadingMargin" priority="900" constant="5" id="iuE-xU-FMq"/>
                             <constraint firstItem="LG2-Wh-z6z" firstAttribute="trailing" secondItem="502-Ir-ELC" secondAttribute="trailingMargin" id="n1T-gg-nWM"/>
@@ -290,7 +271,6 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>
-                        <outlet property="apiKeyLabel" destination="0ML-wP-ndI" id="MXp-ca-rAI"/>
                         <outlet property="backEndIPTextField" destination="ioQ-l6-Ijy" id="gFs-Ju-bwi"/>
                         <outlet property="bundleIDLabel" destination="bcB-s2-jXS" id="t3V-7R-8Dz"/>
                         <outlet property="emailTextField" destination="4tn-Ry-xW2" id="1Eq-FN-2K0"/>
@@ -408,14 +388,14 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lg4-Aq-n5u" userLabel="listUseCase Button DEFAULT">
                                         <rect key="frame" x="32" y="20" width="536" height="55"/>
-                                        <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.062745098040000002" green="0.57254901960000004" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="55" id="7MY-gs-eFO"/>
                                             <constraint firstAttribute="height" constant="30" id="ERd-D0-hfv"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="DEFAULT">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <variation key="default">
@@ -436,7 +416,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         <state key="normal" title="EDIT">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -445,7 +425,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzL-97-pre">
                                         <rect key="frame" x="32" y="97" width="536" height="55"/>
-                                        <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.062745098040000002" green="0.57254901960000004" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="DGB-Sh-nqU"/>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="N5r-Il-ZUa"/>
@@ -454,8 +434,8 @@
                                             <constraint firstAttribute="height" constant="55" id="muP-a7-bKa"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <state key="normal" title="addPaymentInstruments">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Add Payment Instruments">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <state key="highlighted">
@@ -475,7 +455,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4c-CG-s8h">
                                         <rect key="frame" x="32" y="172" width="536" height="55"/>
-                                        <color key="backgroundColor" red="0.10980392160000001" green="0.59607843140000005" blue="0.72941176470000002" alpha="0.25" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.062745098040000002" green="0.57254901960000004" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="40" id="TEu-xs-75g"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="ZxJ-u3-ejQ"/>
@@ -483,8 +463,8 @@
                                             <constraint firstAttribute="width" constant="568" id="z42-il-EaD"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <state key="normal" title="listPaymentInstruments">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Show Payment Instruments">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <state key="highlighted">

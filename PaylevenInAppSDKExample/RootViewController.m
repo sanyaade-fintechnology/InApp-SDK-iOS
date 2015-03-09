@@ -38,7 +38,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bundleIDLabel;
-@property (weak, nonatomic) IBOutlet UILabel *apiKeyLabel;
 @property (strong) NSPredicate *emailTest;
 
 @property (strong) NSString *userToken;
@@ -62,17 +61,7 @@
     self.bundleIDLabel.text = [NSString stringWithFormat:@"%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey]];
     
     self.versionLabel.text = [NSString stringWithFormat:@"Version: %@ (Build: %@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    
-    self.registerAPIClientButton.layer.cornerRadius = 5.f;
-    self.registerAPIClientButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    self.registerAPIClientButton.layer.borderWidth = 1.f;
-    
-    self.resetAPIClientButton.layer.cornerRadius = 5.f;
-    self.resetAPIClientButton.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    self.resetAPIClientButton.layer.borderWidth = 1.f;
-    
-    self.apiKeyLabel.text = @"API Key: 2c66f5fd510740ec83606bfe65bbdd26";
-    
+        
     BOOL stricterFilter = NO;
     NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
     NSString *laxString = @".+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*";

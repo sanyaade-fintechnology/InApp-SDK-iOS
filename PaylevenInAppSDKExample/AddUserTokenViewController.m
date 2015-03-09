@@ -111,10 +111,6 @@
 
 - (void) updateButtonDesign:(UIButton*)button {
     
-    button.layer.cornerRadius = 5.f;
-    button.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-    button.layer.borderWidth = 1.f;
-    
     [self.piTypeButton setTitle:self.useCase forState:UIControlStateNormal];
     
 }
@@ -219,9 +215,9 @@
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
         
-        self.keyArray = @[@"cardHolder",@"pan",@"expiryMonth",@"expiryYear",@"cvv"];
+        self.keyArray = @[@"pan",@"cardHolder",@"expiryMonth",@"expiryYear",@"cvv"];
         self.keyValueLengthArray = @[@26,@21,@2,@4,@4];
-        self.keyboardTypeArray = @[@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
+        self.keyboardTypeArray = @[@TypeNumberPad,@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
         
         piType = @"CreditCard";
         
