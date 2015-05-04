@@ -1,72 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Tokens version="1.0">
-	<File path="Classes/PLVPAYPALPaymentInstrument.html">
+	<File path="">
 		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/cl/PLVPAYPALPaymentInstrument</TokenIdentifier>
-			<Abstract type="html">PayPal Account Payment Instrument</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-            
-			
-			<NodeRef refid="4"/>
-		</Token>
-		
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instm/PLVPAYPALPaymentInstrument/setAuthToken:</TokenIdentifier>
-			<Abstract type="html">Authentication Token for this PayPal Account</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *authToken</Declaration>
-			
-			
-			<Anchor>//api/name/authToken</Anchor>
-            <NodeRef refid="4"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instm/PLVPAYPALPaymentInstrument/authToken</TokenIdentifier>
-			<Abstract type="html">Authentication Token for this PayPal Account</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *authToken</Declaration>
-			
-			
-			<Anchor>//api/name/authToken</Anchor>
-            <NodeRef refid="4"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/instp/PLVPAYPALPaymentInstrument/authToken</TokenIdentifier>
-			<Abstract type="html">Authentication Token for this PayPal Account</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>@property (readonly, strong) NSString *authToken</Declaration>
-			
-			
-			<Anchor>//api/name/authToken</Anchor>
-            <NodeRef refid="4"/>
-		</Token>
-		
-		<Token>
-			<TokenIdentifier>//apple_ref/occ/clm/PLVPAYPALPaymentInstrument/validateAuthToken:withError:</TokenIdentifier>
-			<Abstract type="html">validateAuthToken:withError:</Abstract>
-			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
-			
-			<Declaration>+ (BOOL)validateAuthToken:(NSString *)authToken withError:(NSError **)error</Declaration>
-			<Parameters>
-				<Parameter>
-					<Name>authToken</Name>
-					<Abstract type="html">authToken value to validate</Abstract>
-				</Parameter><Parameter>
-					<Name>error</Name>
-					<Abstract type="html">resulting validation error, will be nil if Auth Token passes the validation</Abstract>
-				</Parameter>
-			</Parameters>
-			<ReturnValue><Abstract type="html">TRUE for a valid authToken string ... otherwise FALSE</Abstract></ReturnValue>
-			<Anchor>//api/name/validateAuthToken:withError:</Anchor>
-            <NodeRef refid="4"/>
-		</Token>
 		
         
         

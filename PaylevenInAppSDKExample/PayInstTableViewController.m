@@ -120,17 +120,18 @@
         PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
         return cc.pan;
     } else if([shortType isEqualToString:@"DD"]) {
-        PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
-        return [NSString stringWithFormat:@"Account: %@",cc.accountNo];
+        //PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
+        //return [NSString stringWithFormat:@"Account: %@",cc.accountNo];
     } else if([shortType isEqualToString:@"SEPA"]) {
-        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
-        return [NSString stringWithFormat:@"IBAN: %@",cc.iban];
+       // PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
+        //return [NSString stringWithFormat:@"IBAN: %@",cc.iban];
     } else if([shortType isEqualToString:@"PAYPAL"]) {
-        PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
-        return [NSString stringWithFormat:@"Auth: %@",cc.authToken];
+        //PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
+        //return [NSString stringWithFormat:@"Auth: %@",cc.authToken];
     }  else {
         return @"unknown";
     }
+    return @"";
 }
 
 - (NSString*) humanDetailsForPI:(PLVPaymentInstrument*)pi {
@@ -145,28 +146,29 @@
         return [details componentsJoinedByString:@"\n"];
 
     } else if([shortType isEqualToString:@"DD"]) {
-        PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
+        //PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
         
-        NSArray* details = @[@"  ",[NSString stringWithFormat:@"Account: %@",cc.accountNo],[NSString stringWithFormat:@"Routing: %@",cc.routingNo]];
+        //NSArray* details = @[@"  ",[NSString stringWithFormat:@"Account: %@",cc.accountNo],[NSString stringWithFormat:@"Routing: %@",cc.routingNo]];
         
-        return [details componentsJoinedByString:@"\n"];
+        //return [details componentsJoinedByString:@"\n"];
     } else if([shortType isEqualToString:@"SEPA"]) {
-        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
+       // PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
         
-        NSArray* details = @[@"  ",[NSString stringWithFormat:@"IBAN: %@",cc.iban],[NSString stringWithFormat:@"BIC: %@",cc.bic]];
+        //NSArray* details = @[@"  ",[NSString stringWithFormat:@"IBAN: %@",cc.iban],[NSString stringWithFormat:@"BIC: %@",cc.bic]];
         
-        return [details componentsJoinedByString:@"\n"];
+        //return [details componentsJoinedByString:@"\n"];
     } else if([shortType isEqualToString:@"PAYPAL"]) {
         
-        PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
+        //PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
         
-        NSArray* details = @[@"  ",[NSString stringWithFormat:@"AuthToken: %@",cc.authToken]];
+        //NSArray* details = @[@"  ",[NSString stringWithFormat:@"AuthToken: %@",cc.authToken]];
         
-        return [details componentsJoinedByString:@"\n"];
+        //return [details componentsJoinedByString:@"\n"];
                              
     }  else {
         return @"unknown";
     }
+    return @"";
 }
 
 
@@ -177,16 +179,17 @@
     
     if([shortType isEqualToString:@"CC"]) {
         PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
-        return [NSString stringWithFormat:@"%ld/%ld",(long)cc.expiryMonth,(long)cc.expiryYear];
+        return [NSString stringWithFormat:@"%@/%@",cc.expiryMonth,cc.expiryYear];
     } else if([shortType isEqualToString:@"SEPA"]) {
-        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
-        return [NSString stringWithFormat:@"BIC: %@",cc.bic];
+//        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
+//        return [NSString stringWithFormat:@"BIC: %@",cc.bic];
     } else if([shortType isEqualToString:@"DD"]){
-        PLVDebitCardPaymentInstrument* dd = (PLVDebitCardPaymentInstrument*)pi;
-        return dd.routingNo;
+//        PLVDebitCardPaymentInstrument* dd = (PLVDebitCardPaymentInstrument*)pi;
+//        return dd.routingNo;
     } else {
         return @"";
     }
+    return @"";
 }
 
 

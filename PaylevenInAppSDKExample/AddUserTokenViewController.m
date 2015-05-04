@@ -253,19 +253,19 @@
     PLVPaymentInstrument* pi;
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
-        pi = [PLVPaymentInstrument createCreditCardPaymentInstrumentWithPan:[content objectForKey:@"pan"] expiryMonth:[[content objectForKey:@"expiryMonth"] integerValue] expiryYear:[[content objectForKey:@"expiryYear"] integerValue] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
+        pi = [PLVPaymentInstrument createCreditCardPaymentInstrumentWithPan:[content objectForKey:@"pan"] expiryMonth:[content objectForKey:@"expiryMonth"] expiryYear:[content objectForKey:@"expiryYear"] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
-        pi = [PLVPaymentInstrument createPAYPALPaymentInstrumentWithToken:[content objectForKey:@"authToken"]];
+        //pi = [PLVPaymentInstrument createPAYPALPaymentInstrumentWithToken:[content objectForKey:@"authToken"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        pi = [PLVPaymentInstrument createSEPAPaymentInstrumentWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
+        //pi = [PLVPaymentInstrument createSEPAPaymentInstrumentWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
     }
     
     if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
-        pi = [PLVPaymentInstrument createDebitCardPaymentInstrumentWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
+        //pi = [PLVPaymentInstrument createDebitCardPaymentInstrumentWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
     }
     
     for (NSString* key in content.allKeys) {
@@ -481,19 +481,19 @@
         validationResult = [PLVCreditCardPaymentInstrument validateCVV:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"iban"]) {
-        validationResult = [PLVSEPAPaymentInstrument validateIBAN:text withError:&validationError];
+        //validationResult = [PLVSEPAPaymentInstrument validateIBAN:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"bic"]) {
-        validationResult = [PLVSEPAPaymentInstrument validateBIC:text withError:&validationError];
+        //validationResult = [PLVSEPAPaymentInstrument validateBIC:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"accountNo"]) {
-        validationResult = [PLVDebitCardPaymentInstrument validateAccountNo:text withError:&validationError];
+        //validationResult = [PLVDebitCardPaymentInstrument validateAccountNo:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"routingNo"]) {
-        validationResult = [PLVDebitCardPaymentInstrument validateRoutingNo:text withError:&validationError];
+        //validationResult = [PLVDebitCardPaymentInstrument validateRoutingNo:text withError:&validationError];
         findValidation = TRUE;
     } else if ([key isEqualToString:@"authToken"]) {
-        validationResult = [PLVPAYPALPaymentInstrument validateAuthToken:text withError:&validationError];
+        //validationResult = [PLVPAYPALPaymentInstrument validateAuthToken:text withError:&validationError];
         findValidation = TRUE;
     }  else if ([key isEqualToString:@"expiryMonth"]) {
         
@@ -501,9 +501,9 @@
         
         if ([self.addInfoDict objectForKey:@"expiryYear"] != Nil) {
             
-            long expMonth = text.integerValue;
+            NSString * expMonth = text;
             
-            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:expMonth andYear:[[self.addInfoDict objectForKey:@"expiryYear"] integerValue] withError:&validationError];
+            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:expMonth andYear:[self.addInfoDict objectForKey:@"expiryYear"] withError:&validationError];
 
             if (self.expiryYearTextField != Nil) {
                 
@@ -528,9 +528,9 @@
         
         if ([self.addInfoDict objectForKey:@"expiryMonth"] != Nil) {
             
-            long expYear = text.integerValue;
+            NSString * expYear = text;
             
-            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:[[self.addInfoDict objectForKey:@"expiryYear"] integerValue] andYear:expYear withError:&validationError];
+            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:[self.addInfoDict objectForKey:@"expiryYear"] andYear:expYear withError:&validationError];
             
             if (self.expiryMonthTextField != Nil) {
                 
