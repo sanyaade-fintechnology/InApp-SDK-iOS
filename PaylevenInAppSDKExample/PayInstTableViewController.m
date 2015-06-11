@@ -8,8 +8,9 @@
 
 #import "PayInstTableViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
+#import "MBProgressHUD.h"
 
-#define piLiastTableViewCell @"piLiastTableViewCell"
+#define piListTableViewCell @"piListTableViewCell"
 
 @interface PayInstrumentsTableCell : UITableViewCell
 
@@ -21,42 +22,59 @@
 
 @implementation PayInstrumentsTableCell
 
-
-
 @end
+
+
 
 @interface PayInstTableViewController ()
 
 @property (weak) IBOutlet UITableView* tableView;
-@property (weak) IBOutlet UIView* activityPlane;
-@property (weak) IBOutlet UIButton* editTableButton;
 @property (weak) IBOutlet UILabel* useCaseLabel;
 @property (strong) NSMutableArray* payInstruments;
-@property (strong) NSString* userToken;
-@property (strong) NSString* useCase;
 @property (strong) NSIndexPath* indexPathToDelete;
 @property (strong) NSIndexPath* indexPathFromOrder;
 @property (strong) NSIndexPath* indexPathToOrder;
-@property (nonatomic) BOOL automaticReOrder;
 
 
 @end
 
 @implementation PayInstTableViewController
 
+#pragma mark Lifecycle Methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    UINib* cellNib = [UINib nibWithNibName:@"PayInstrumentsTableCell" bundle:Nil];
+}
 
-    [self.tableView registerNib:cellNib forCellReuseIdentifier:piLiastTableViewCell];
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    [self.tableView reloadData];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = [NSString stringWithFormat:@"Loading: %@", self.useCase];
+
+    [[PLVInAppClient sharedInstance] getPaymentInstrumentsList:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error){
+        
+        if (!error) {
+            
+            NSArray* piListArray = [result objectForKey:@"paymentInstruments"];
+            self.payInstruments = [NSMutableArray arrayWithArray:piListArray];
+            hud.labelText = [NSString stringWithFormat:@"Found: %ld PIs", self.payInstruments.count];
+            
+        } else {
+            //[self displayAlertViewWithMessage:error.localizedDescription];
+            self.payInstruments = [NSMutableArray arrayWithArray:@[]];
+            hud.labelText = error.localizedDescription;
+        }
+        [self.tableView reloadData];
+        [hud hide:YES afterDelay:1.0];
+        
+    }];
     
     self.useCaseLabel.text = [NSString stringWithFormat:@"useCase: %@",self.useCase];
 }
+
+#pragma mark UI Interaction Methods
 
 - (IBAction)backButton:(id)sender {
     
@@ -64,31 +82,81 @@
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void) setPIArray:(NSArray*)piArray forUserToken:(NSString*)userToken andUseCase:(NSString*)useCase {
+- (IBAction)enterEditMode:(id)sender {
     
-    self.userToken = userToken;
-    self.payInstruments = [NSMutableArray arrayWithArray:piArray];
-    self.useCase = useCase;
-    self.useCaseLabel.text = self.useCase;
+    if ([self.tableView isEditing]) {
+        [self.tableView setEditing:NO animated:YES];
+        [sender setTitle:@"Edit" forState:UIControlStateNormal];
+    }
+    else {
+        [sender setTitle:@"Done" forState:UIControlStateNormal];
+        [self.tableView setEditing:YES animated:YES];
+    }
 }
 
+#pragma mark Table View Delegate and Data Source Methods
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    PayInstrumentsTableCell* cell = (PayInstrumentsTableCell*)[tableView dequeueReusableCellWithIdentifier:piLiastTableViewCell forIndexPath:indexPath];
+    PayInstrumentsTableCell* cell = (PayInstrumentsTableCell*)[tableView dequeueReusableCellWithIdentifier:piListTableViewCell];
     
-    PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:indexPath.row];
+    PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:indexPath.row];
     
-    cell.mainLabel.text = [self humanIdentifierForPI:pi];
-    cell.typeLabel.text = [self humanTypeForShort:pi.type];
-    cell.validLabel.text = [self humandValidForPI:pi];
+    cell.mainLabel.text = pi.pan;
+    cell.typeLabel.text = pi.type;
+    cell.validLabel.text = [NSString stringWithFormat:@"%@/%@",pi.expiryMonth,pi.expiryYear];
     
     return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        self.indexPathToDelete = [indexPath copy];
+        [self deletePaymentInstrument];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+    
+    if (fromIndexPath.row == toIndexPath.row) {
+        return;
+    }
+    
+    //Reorder
+    self.indexPathFromOrder = [fromIndexPath copy];
+    self.indexPathToOrder = [toIndexPath copy];
+    
+    PLVPaymentInstrument *piReOrderItem = [self.payInstruments objectAtIndex:fromIndexPath.row];
+    
+    NSMutableArray* tempOrder = [NSMutableArray arrayWithArray:self.payInstruments];
+    [tempOrder  removeObject:piReOrderItem];
+    [tempOrder  insertObject:piReOrderItem atIndex:toIndexPath.row];
+    
+    NSOrderedSet* ordedSet = [[NSOrderedSet alloc] initWithArray:tempOrder];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Reordering...";
+    
+    [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet
+                                                   forUserToken:self.userToken
+                                                    withUseCase:self.useCase
+                                                  andCompletion:^(NSDictionary* result, NSError* error){
+        
+        if (error) {
+            hud.labelText = error.localizedDescription;
+        } else if ([result isKindOfClass:[NSDictionary class]]) {
+            if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+                //New Order confirmed
+                self.payInstruments = tempOrder;
+                hud.labelText = @"Success";
+            }
+            
+            [self.tableView reloadData];
+        }
+        [hud hide:YES afterDelay:1.0];
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -96,231 +164,9 @@
     return self.payInstruments.count;
 }
 
-- (NSString*) humanTypeForShort:(NSString*)shortType {
-    
-    if([shortType isEqualToString:@"CC"]) {
-        return @"CreditCard";
-    } else if([shortType isEqualToString:@"DD"]) {
-        return @"DebitCard";
-    } else if([shortType isEqualToString:@"SEPA"]) {
-        return @"SEPA Account";
-    } else if([shortType isEqualToString:@"PAYPAL"]) {
-        return @"PaylPal";
-    }  else {
-        return @"unknown";
-    }
-    
-}
+#pragma mark AlertView Methods
 
-- (NSString*) humanIdentifierForPI:(PLVPaymentInstrument*)pi {
-    
-    NSString* shortType = pi.type;
-    
-    if([shortType isEqualToString:@"CC"]) {
-        PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
-        return cc.pan;
-    } else if([shortType isEqualToString:@"DD"]) {
-        //PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
-        //return [NSString stringWithFormat:@"Account: %@",cc.accountNo];
-    } else if([shortType isEqualToString:@"SEPA"]) {
-       // PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
-        //return [NSString stringWithFormat:@"IBAN: %@",cc.iban];
-    } else if([shortType isEqualToString:@"PAYPAL"]) {
-        //PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
-        //return [NSString stringWithFormat:@"Auth: %@",cc.authToken];
-    }  else {
-        return @"unknown";
-    }
-    return @"";
-}
-
-- (NSString*) humanDetailsForPI:(PLVPaymentInstrument*)pi {
-    
-    NSString* shortType = pi.type;
-    
-    if([shortType isEqualToString:@"CC"]) {
-        PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
-        
-        NSArray* details = @[@"  ",[NSString stringWithFormat:@"CardHolder: %@",cc.cardHolder], [NSString stringWithFormat:@"PAN: %@",cc.pan],[NSString stringWithFormat:@"EXPIRYDATE: %ld/%ld",(long)cc.expiryMonth,(long)cc.expiryYear],[NSString stringWithFormat:@"BRAND: %@",cc.cardBrand]];
-        
-        return [details componentsJoinedByString:@"\n"];
-
-    } else if([shortType isEqualToString:@"DD"]) {
-        //PLVDebitCardPaymentInstrument* cc = (PLVDebitCardPaymentInstrument*)pi;
-        
-        //NSArray* details = @[@"  ",[NSString stringWithFormat:@"Account: %@",cc.accountNo],[NSString stringWithFormat:@"Routing: %@",cc.routingNo]];
-        
-        //return [details componentsJoinedByString:@"\n"];
-    } else if([shortType isEqualToString:@"SEPA"]) {
-       // PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
-        
-        //NSArray* details = @[@"  ",[NSString stringWithFormat:@"IBAN: %@",cc.iban],[NSString stringWithFormat:@"BIC: %@",cc.bic]];
-        
-        //return [details componentsJoinedByString:@"\n"];
-    } else if([shortType isEqualToString:@"PAYPAL"]) {
-        
-        //PLVPAYPALPaymentInstrument* cc = (PLVPAYPALPaymentInstrument*)pi;
-        
-        //NSArray* details = @[@"  ",[NSString stringWithFormat:@"AuthToken: %@",cc.authToken]];
-        
-        //return [details componentsJoinedByString:@"\n"];
-                             
-    }  else {
-        return @"unknown";
-    }
-    return @"";
-}
-
-
-
-- (NSString*) humandValidForPI:(PLVPaymentInstrument*)pi {
-    
-    NSString* shortType = pi.type;
-    
-    if([shortType isEqualToString:@"CC"]) {
-        PLVCreditCardPaymentInstrument* cc = (PLVCreditCardPaymentInstrument*)pi;
-        return [NSString stringWithFormat:@"%@/%@",cc.expiryMonth,cc.expiryYear];
-    } else if([shortType isEqualToString:@"SEPA"]) {
-//        PLVSEPAPaymentInstrument* cc = (PLVSEPAPaymentInstrument*)pi;
-//        return [NSString stringWithFormat:@"BIC: %@",cc.bic];
-    } else if([shortType isEqualToString:@"DD"]){
-//        PLVDebitCardPaymentInstrument* dd = (PLVDebitCardPaymentInstrument*)pi;
-//        return dd.routingNo;
-    } else {
-        return @"";
-    }
-    return @"";
-}
-
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return TRUE;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return TRUE;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-        self.indexPathToDelete = [indexPath copy];
-
-        [self deletePaymentInstrument];
-
-    }
-}
-
-
-- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
-    
-    PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:indexPath.row];
-
-    UIAlertController* detailsAlertController = [UIAlertController alertControllerWithTitle:[self humanTypeForShort:pi.type] message:[self humanDetailsForPI:pi] preferredStyle:UIAlertControllerStyleAlert];
-    
-    if (detailsAlertController != Nil) {
-
-        UIAlertAction* destroyAction = [UIAlertAction actionWithTitle:@"OK"
-                                                 style:UIAlertActionStyleCancel
-                                               handler:^(UIAlertAction *hideDetails) {
-                                                   // do destructive stuff here
-                                                   
-                                                   [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                                               }];
-
-        [detailsAlertController addAction:destroyAction];
-        
-        [detailsAlertController setModalPresentationStyle:UIModalPresentationPopover];
-
-        [self presentViewController:detailsAlertController animated:YES completion:Nil];
-        
-    } else {
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-        });
-    }
-}
-
-
-- (IBAction)enterEditMode:(id)sender {
-    
-    if ([self.tableView isEditing]) {
-        // If the tableView is already in edit mode, turn it off. Also change the title of the button to reflect the intended verb (‘Edit’, in this case).
-        [self.tableView setEditing:NO animated:YES];
-        [self.editTableButton setTitle:@"Edit" forState:UIControlStateNormal];
-    }
-    else {
-        [self.editTableButton setTitle:@"Done" forState:UIControlStateNormal];
-        
-        // Turn on edit mode
-        
-        [self.tableView setEditing:YES animated:YES];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-    
-    
-    if (self.automaticReOrder) {
-        self.automaticReOrder = FALSE;
-        return;
-    }
-    
-    if (fromIndexPath.row == toIndexPath.row) {
-        return;
-    }
-    
-    self.indexPathFromOrder = [fromIndexPath copy];
-    self.indexPathToOrder = [toIndexPath copy];
-    
-    PLVPaymentInstrument *piReOrderItem = [self.payInstruments objectAtIndex:fromIndexPath.row];
-    
-    NSMutableArray* tempOrder = [NSMutableArray arrayWithArray:self.payInstruments];
-    
-    [tempOrder  removeObject:piReOrderItem];
-
-    [tempOrder  insertObject:piReOrderItem atIndex:toIndexPath.row];
-    
-    self.activityPlane.hidden = FALSE;
-    
-    NSOrderedSet* ordedSet = [[NSOrderedSet alloc] initWithArray:tempOrder];
-    
-    [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error){
-        
-        if (error != Nil ) {
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
-            
-            [alertView show];
-            
-        } else if ([result isKindOfClass:[NSDictionary class]]) {
-            
-            if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
-                
-                self.payInstruments = tempOrder;
-            } else {
-                
-                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"ReOrder" message:[NSString stringWithFormat:@"Error: %@", [result objectForKey:@"description"]] delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
-                
-                [alertView show];
-
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToOrder]
-                                 withRowAnimation:UITableViewRowAnimationLeft];
-                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathFromOrder] withRowAnimation:UITableViewRowAnimationLeft];
-                // update your dataSource as well.
-                [self.tableView endUpdates];
-            }
-        }
-        
-        self.activityPlane.hidden = TRUE;
-        
-    }];
-}
-
+//Ask user if she/he wants to DISABLE (meaning deleting PI from all Use Cases) or REMOVE (meaning remove PI from specific Use Case) Payment Instrument
 - (void) deletePaymentInstrument {
     
     NSString* message = [NSString stringWithFormat:@"Disable PI or\nremove from %@ Use Case?", self.useCase];
@@ -332,109 +178,64 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     if (buttonIndex == 1) {
+        //DISABLE PI
+        PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
+
+        hud.labelText = [NSString stringWithFormat:@"Disabling %@ from %@",pi.pan, self.useCase];
         
-        // disable PI
-        
-        if (self.indexPathToDelete == Nil   ) {
-            return;
-        }
-        
-        self.activityPlane.hidden = FALSE;
-        
-        PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
-        
-        [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi forUserToken:self.userToken andCompletion:^(NSDictionary* result, NSError* error){
+        [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi
+                                                     forUserToken:self.userToken
+                                                    andCompletion:^(NSDictionary* result, NSError* error){
             
-            if (error != Nil ) {
-                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
+            if (error) {
+                hud.labelText = error.localizedDescription;
+            } else {
+                hud.labelText = @"Success";
                 
-                [alertView show];
+                //Delete PI from Array
+                NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
+                [newArray removeObjectAtIndex:self.indexPathToDelete.row];
+                self.payInstruments = newArray;
                 
-            } else if ([result isKindOfClass:[NSDictionary class]]) {
-                
-                if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
-                    
-                    NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
-                    
-                    [newArray removeObjectAtIndex:self.indexPathToDelete.row];
-                    
-                    self.payInstruments = newArray;
-                    // Animate the deletion
-                    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
-                    
-                    // Additional code to configure the Edit Button, if any
-                    if (self.payInstruments.count == 0) {
-                        self.editTableButton.enabled = NO;
-                        self.editTableButton.titleLabel.text = @"Edit";
-                    }
-                    
-                }
+                // Animate the deletion
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
             }
-        
-            self.activityPlane.hidden = TRUE;
+                                                        
+            [hud hide:YES afterDelay:1.0];
             self.indexPathToDelete = Nil;
-        
         }];
     } else if (buttonIndex == 2) {
+    // REMOVE PI from UseCase
+        PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
         
-        // remove useCase for PI
+        hud.labelText = [NSString stringWithFormat:@"Removing %@",pi.pan];
         
-        if (self.indexPathToDelete == Nil   ) {
-            return;
-        }
-        
-        self.activityPlane.hidden = FALSE;
-        
-        PLVPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
-        
-        [[PLVInAppClient sharedInstance] removePaymentInstrument:pi fromUseCase:self.useCase forUserToken:self.userToken andCompletion:^(NSDictionary* result, NSError* error){
+        [[PLVInAppClient sharedInstance] removePaymentInstrument:pi
+                                                     fromUseCase:self.useCase
+                                                    forUserToken:self.userToken
+                                                   andCompletion:^(NSDictionary* result, NSError* error){
             
-            if (error != Nil ) {
-                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Oh NO" otherButtonTitles:nil];
+            if (error) {
+                hud.labelText = error.localizedDescription;
+            } else {
+                hud.labelText = @"Success";
+
+                //Delete PI from Array
+                NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
+                [newArray removeObjectAtIndex:self.indexPathToDelete.row];
+                self.payInstruments = newArray;
                 
-                [alertView show];
-                
-            } else if ([result isKindOfClass:[NSDictionary class]]) {
-                
-                if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
-                    
-                    NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
-                    
-                    [newArray removeObjectAtIndex:self.indexPathToDelete.row];
-                    
-                    self.payInstruments = newArray;
-                    // Animate the deletion
-                    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
-                    
-                    // Additional code to configure the Edit Button, if any
-                    if (self.payInstruments.count == 0) {
-                        self.editTableButton.enabled = NO;
-                        self.editTableButton.titleLabel.text = @"Edit";
-                    }
-                    
-                }
+                // Animate the deletion
+                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
             }
-            
-            self.activityPlane.hidden = TRUE;
+            [hud hide:YES afterDelay:1.0];
             self.indexPathToDelete = Nil;
-            
         }];
     } else if (buttonIndex == 0){
-        
-        // cancel edit
-        
-        if (self.indexPathToDelete == Nil   ) {
-            return;
-        }
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            [self.tableView reloadData];
-            
-        });
-        
-
+    // CANCEL Alert
     }
 }
 

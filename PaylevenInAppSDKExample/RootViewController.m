@@ -13,7 +13,7 @@
 #include <arpa/inet.h>
 
 #import "RootViewController.h"
-#import "AddUserTokenViewController.h"
+#import "AddPIViewController.h"
 #import "DetailViewController.h"
 
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
@@ -24,44 +24,39 @@
 #define kUserDefaultsCurrentUseCaseKey @"currentUseCase"
 #define kUserDefaultsAllUseCasesKey @"allUseCase"
 
-#define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-
-@interface RootViewController()
-
-@property (weak) IBOutlet UITextField* backEndIPTextField;
-@property (weak) IBOutlet UIButton* resetAPIClientButton;
-@property (weak) IBOutlet UIButton* registerAPIClientButton;
-@property (weak) IBOutlet UIView* setBEipPanel;
+@interface RootViewController() <UIActionSheetDelegate>
 
 @property (weak) IBOutlet UITextField* userTokenTextField;
 @property (weak) IBOutlet UITextField* emailTextField;
 
+@property (weak) IBOutlet UIButton* resetAPIClientButton;
+@property (weak) IBOutlet UIButton* registerAPIClientButton;
+
 @property (weak, nonatomic) IBOutlet UILabel *versionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bundleIDLabel;
-@property (strong) NSPredicate *emailTest;
 
 @property (strong) NSString *userToken;
 @property (strong) NSString *emailAddress;
 @property (strong) NSString *useCase;
 
-@property (weak) IBOutlet DetailViewController* detailVC;
+@property (strong) NSPredicate *emailTest;
 
 @end
 
 
 @implementation RootViewController
 
+#pragma mark Lifecycle methods
 
 - (void) viewDidLoad {
     
     [super viewDidLoad];
     
-    self.doNotWind = FALSE;
-    
+    //Build + Version Label
     self.bundleIDLabel.text = [NSString stringWithFormat:@"%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey]];
-    
     self.versionLabel.text = [NSString stringWithFormat:@"Version: %@ (Build: %@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-        
+    
+    //SetUp Email Regex Logic
     BOOL stricterFilter = NO;
     NSString *stricterFilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
     NSString *laxString = @".+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*";
@@ -85,15 +80,32 @@
 {
     if ([[segue identifier] isEqualToString:@"showDetails"])
     {
-        self.detailVC = (DetailViewController*)[segue destinationViewController] ;
+        DetailViewController * detailVC = (DetailViewController*)[segue destinationViewController] ;
         
-        self.detailVC.userToken = self.userToken;
-        self.detailVC.emailAddress = self.emailAddress;
-        self.detailVC.useCase = self.useCase;
-        self.detailVC.rootVC = self;
+        detailVC.userToken = self.userToken;
+        detailVC.emailAddress = self.emailAddress;
+        detailVC.useCase = self.useCase;
+        
+    }else if ([[segue identifier] isEqualToString:@"RegisterUserTokenSegue"]){
+        
+        AddPIViewController* addPiForUserTokenVC =  (AddPIViewController*) [segue destinationViewController];
+        
+        addPiForUserTokenVC.piTypeToCreate = @"CC";
+        addPiForUserTokenVC.useCase = @"DEFAULT";
+        addPiForUserTokenVC.emailAddress = self.emailTextField.text;
+        
+        addPiForUserTokenVC.paymentInstrumentIsMandatory = true;
+        
     }
 }
 
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.userTokenTextField resignFirstResponder];
+    [self.emailTextField resignFirstResponder];
+}
+
+#pragma mark IBAction Methods
 - (IBAction)restPress:(id)sender {
 
     self.userTokenTextField.text = @"";
@@ -111,6 +123,9 @@
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsUserTokenPKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsMailAddressKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsAllUseCasesKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsCurrentUseCaseKey];
+
 
     self.useCase = @"DEFAULT";
     
@@ -123,21 +138,17 @@
     [[PLVInAppClient sharedInstance] registerWithAPIKey:@"2c66f5fd510740ec83606bfe65bbdd26"];
     
     if (self.userToken != Nil) {
-        
         [self performSegueWithIdentifier:@"showDetails" sender:self];
         
     } else {
-    
-        AddUserTokenViewController* addPiForUserTokenVC = [[AddUserTokenViewController alloc] initWithNibName:@"AddUserTokenViewController" bundle:Nil];
-        
-        addPiForUserTokenVC.piTypeToCreate = @"CC";
-        addPiForUserTokenVC.useCase = @"DEFAULT";
-        addPiForUserTokenVC.emailAddress = self.emailTextField.text;
-        
-        [self.navigationController pushViewController:addPiForUserTokenVC animated:YES];
+        [self performSegueWithIdentifier:@"RegisterUserTokenSegue" sender:self];
     }
+    
 }
 
+#pragma mark Private Methods
+
+//Checks for User Token, sets Up UI for Register new User Token or Edit PaymentInstruments of existing
 - (void) loadSettings {
     
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsUserTokenPKey] isKindOfClass:[NSString class]]) {
@@ -171,10 +182,11 @@
         
         [self.registerAPIClientButton setTitle:@"Register User"  forState:UIControlStateNormal];
     }
-    
 }
 
+#pragma mark TextField Delegate Methods
 
+//Validate if valid Email was entered
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     NSString* replacedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
@@ -203,13 +215,5 @@
     
     return TRUE;
 }
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self.userTokenTextField resignFirstResponder];
-    [self.emailTextField resignFirstResponder];
-}
-
-
 
 @end

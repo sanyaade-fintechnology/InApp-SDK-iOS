@@ -8,576 +8,214 @@
 
 #import "AddPIViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
+#import "MBProgressHUD.h"
 
-#define isIPAD     ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-
-#define selectPItoAddActionSheet 666
-
-#define textFieldTagOffSet 1000
-#define buttonTagOffSet 2000
-#define textFieldHeight 40.
-#define textFieldPad 10.
-#define textFieldMargin 10.
-
-#define TypeDefault 0
-#define TypeNumberPad 4
+#define kUserDefaultsUserTokenPKey @"userToken"
+#define kUserDefaultsMailAddressKey @"mailAddress"
+#define kUserDefaultsCurrentUseCaseKey @"currentUseCase"
+#define kUserDefaultsAllUseCasesKey @"allUseCase"
 
 
-@interface AddPIViewController ()
+@interface AddPIViewController () <UITextFieldDelegate>
 
-@property (weak) IBOutlet UIButton* piTypeButton;
-@property (weak) IBOutlet UIButton* sendButton;
-@property (weak) IBOutlet UIScrollView* scrollView;
-@property (weak) IBOutlet UILabel* useCaseLabel;
-@property (strong)  NSMutableDictionary* addInfoDict;
-@property (strong)  NSMutableDictionary* validationErrors;
-@property (strong)  NSArray* keyArray;
-@property (strong)  NSArray* keyValueLengthArray;
-@property (strong)  NSArray* keyboardTypeArray;
-@property (weak)  UITextField* currentTextField;
+@property (weak) IBOutlet UIButton* addButton;
+@property (weak, nonatomic) IBOutlet UIButton *dontAddButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *useCaseLabel;
 
-@property (weak)  UITextField* expiryMonthTextField;
-@property (weak)  UITextField* expiryYearTextField;
+@property (weak) IBOutlet  UITextField* panTextField;
+@property (weak) IBOutlet  UITextField* cardholderTextField;
+@property (weak) IBOutlet  UITextField* expiryYearTextField;
+@property (weak) IBOutlet  UITextField* expiryMonthTextField;
+@property (weak) IBOutlet  UITextField* cvvTextField;
 
 @end
 
 @implementation AddPIViewController
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _piTypeToCreate = PLVPITypeCC;
-    }
-    return self;
-}
+#pragma mark VC Lifecycle Methods
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view from its nib.
-    
-    [self updateButtonDesign:self.piTypeButton];
-    
-    [self updateButtonDesign:self.sendButton];
-    
-    [self createContentKeyArray];
-    
-    self.addInfoDict = [NSMutableDictionary new];
-    
-    self.validationErrors = [NSMutableDictionary new];
-    
     self.useCaseLabel.text = [NSString stringWithFormat:@"add PI to useCase: %@",self.useCase];
-
+    
+    [self.panTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.cardholderTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.expiryMonthTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.expiryYearTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [self.cvvTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
-    if (self.keyArray != Nil) {
-        [self createTextFieldsOnScrollView:self.scrollView];
+    if (self.paymentInstrumentIsMandatory) {
+        self.dontAddButton.enabled = false;
+        self.dontAddButton.alpha = 0.0;
+    }else{
+        self.dontAddButton.enabled = true;
+        self.dontAddButton.alpha = 1.0;
     }
 }
 
-- (IBAction)backButton:(id)sender {
-    
-    [self.navigationController popViewControllerAnimated:true];
-    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void) updateButtonDesign:(UIButton*)button {
-    
-    [self.piTypeButton setTitle:self.useCase forState:UIControlStateNormal];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    
-    if (actionSheet.tag == selectUseCaseActionSheet) {
-        
-        [super actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
-        
-        self.useCaseLabel.text = [NSString stringWithFormat:@"add PI to useCase: %@",self.useCase];
-        
-        return;
-    }
-    
-    NSString* currentType = self.piTypeToCreate;
-    
-    switch (buttonIndex) {
-        case 0:
-            self.piTypeToCreate  = PLVPITypeCC;
-            break;
-        case 1:
-            self.piTypeToCreate = PLVPITypeDD;
-            break;
-        case 2:
-            self.piTypeToCreate = PLVPITypeSEPA;
-            break;
-        case 3:
-            self.piTypeToCreate = PLVPITypePAYPAL;
-            break;
-        default:
-            break;
-    }
-    
-    if (![currentType isEqualToString:self.piTypeToCreate]) {
-        
-        [self createContentKeyArray];
-        
-        [self createTextFieldsOnScrollView:self.scrollView];
-        
-    }
-    
-}
-
-- (IBAction)setCreatePIType:(id)sender {
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select type:"
-                                                             delegate:self
-                                                    cancelButtonTitle:(isIPAD ? Nil : @"Cancel")
-                                               destructiveButtonTitle:Nil
-                                                    otherButtonTitles:@"CreditCard", @"DebitCard", @"SEPA", @"PayPal", nil];
-    
-    actionSheet.tag = selectPItoAddActionSheet;
-    
-    [actionSheet showFromRect:[(UIButton *)sender frame] inView:self.view animated:YES];
-    
-}
-
+#pragma mark UI Interaction Methods
 
 - (IBAction)sendPI:(id)sender {
     
-    PLVPaymentInstrument* newPi = [self fillPIWithType:self.piTypeToCreate andContent:self.addInfoDict];
-            
     [self closeKeyboard];
     
-    self.currentTextField = Nil;
-    
-    [[PLVInAppClient sharedInstance] addPaymentInstrument:newPi forUserToken:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error) {
+    //Create Payment Instument
+    PLVPaymentInstrument* newCreditCardPi = [PLVPaymentInstrument createCreditCardPaymentInstrumentWithPan:self.panTextField.text
+                                                                                               expiryMonth:self.expiryMonthTextField.text
+                                                                                                expiryYear:self.expiryYearTextField.text
+                                                                                                       cvv:self.cvvTextField.text
+                                                                                             andCardHolder:self.cardholderTextField.text];
+    if (self.userToken) {
+        //Already have a User Token, simply add it
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Adding PI";
         
-        if (error != Nil) {
+        [[PLVInAppClient sharedInstance] addPaymentInstrument:newCreditCardPi
+                                                 forUserToken:self.userToken
+                                                  withUseCase:self.useCase
+                                                andCompletion:^(NSDictionary* result, NSError* error) {
             
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            
-            [alertView show];
-            
-        } else {
+            if (error) {
+                hud.labelText = error.localizedDescription;
+            } else {
+                hud.labelText = @"Success";
+                [self.navigationController performSelector:@selector(popViewControllerAnimated:) withObject:nil afterDelay:1.0];
+            }
+                                                    
+           [hud hide:YES afterDelay:1.5];
+        }];
         
-            [self backButton:self];
+    }else{
+        //Don't have a User Token yet, Create it with PI
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Create Token & \nAdd PI";
+        
+        [[PLVInAppClient sharedInstance] createUserToken:self.emailAddress
+                                   withPaymentInstrument:newCreditCardPi
+                                                 useCase:self.useCase
+                                           andCompletion:^(NSDictionary* result, NSError* error) {
             
-        }
-    }];
-
+            if (error) {
+                hud.labelText = error.localizedDescription;
+                [hud hide:YES afterDelay:1.0];
+            } else {
+                if ([result objectForKey:@"userToken"]) {
+                    
+                    hud.labelText = @"Success";
+                    [self.navigationController performSelector:@selector(popViewControllerAnimated:) withObject:nil afterDelay:1.0];
+                    
+                    //Store User Token in NSUserDefaults, in a Production Environment you want to store this in your Backend
+                    [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"userToken"] forKey:kUserDefaultsUserTokenPKey];
+                    [[NSUserDefaults standardUserDefaults] setObject:self.emailAddress forKey:kUserDefaultsMailAddressKey];
+                    [[NSUserDefaults standardUserDefaults] setObject:self.useCase forKey:kUserDefaultsCurrentUseCaseKey];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                }
+                
+            }
+        }];
+        
+    }
 }
 
-
-- (void) createContentKeyArray {
-    
-    NSString* piType;
-    
-    if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
-        
-        self.keyArray = @[@"pan",@"cardHolder",@"expiryMonth",@"expiryYear",@"cvv"];
-        self.keyValueLengthArray = @[@21,@26,@2,@4,@4];
-        self.keyboardTypeArray = @[@TypeNumberPad,@TypeDefault,@TypeNumberPad,@TypeNumberPad,@TypeNumberPad];
-        
-        piType = @"CreditCard";
-        
-    } else if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
-        
-        self.keyArray = @[@"accountNo",@"routingNo"];
-        self.keyValueLengthArray = @[@11,@10];
-        self.keyboardTypeArray = @[@TypeDefault,@TypeDefault];
-        
-        piType = @"Debit Account";
-    } else if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        
-        self.keyArray = @[@"iban",@"bic"];
-        self.keyValueLengthArray = @[@45,@45];
-        self.keyboardTypeArray = @[@TypeDefault,@TypeDefault];
-        
-        piType = @"SEPA Account";
-    } else if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
-        
-        self.keyArray = @[@"authToken"];
-        self.keyValueLengthArray = @[@21];
-        self.keyboardTypeArray = @[@TypeDefault];
-        
-        piType = @"PayPal Account";
-    }
-    
-    [self.piTypeButton setTitle:piType forState:UIControlStateNormal];
-    
-    self.expiryMonthTextField = Nil;
-    self.expiryYearTextField = Nil;
-    
+- (IBAction)dismissAddPiButtonPressed:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma mark Private Methods
 
-- (id) fillPIWithType:(NSString*)pitype andContent:(NSDictionary*)content {
-    
-    PLVPaymentInstrument* pi;
-    
-    if ([self.piTypeToCreate isEqualToString:PLVPITypeCC]) {
-        pi = [PLVPaymentInstrument createCreditCardPaymentInstrumentWithPan:[content objectForKey:@"pan"] expiryMonth:[content objectForKey:@"expiryMonth"] expiryYear:[content objectForKey:@"expiryYear"] cvv:[content objectForKey:@"cvv"] andCardHolder:[content objectForKey:@"cardHolder"]];
-    }
-    
-    if ([self.piTypeToCreate isEqualToString:PLVPITypePAYPAL]) {
-        //pi = [PLVPaymentInstrument createPAYPALPaymentInstrumentWithToken:[content objectForKey:@"authToken"]];
-    }
-    
-    if ([self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        //pi = [PLVPaymentInstrument createSEPAPaymentInstrumentWithIBAN:[content objectForKey:@"iban"] andBIC:[content objectForKey:@"bic"]];
-    }
-    
-    if ([self.piTypeToCreate isEqualToString:PLVPITypeDD]) {
-       // pi = [PLVPaymentInstrument createDebitCardPaymentInstrumentWithAccountNo:[content objectForKey:@"accountNo"] andRoutingNo:[content objectForKey:@"routingNo"]];
-    }
-    
-    return pi;
-}
-
-
-- (void) createTextFieldsOnScrollView:(UIScrollView*)scrollView {
-    
-    NSArray* subViews = scrollView.subviews;
-    
-    for (UIView* subView in subViews) {
-        [subView removeFromSuperview];
-    }
-    
-    NSUInteger textFieldIndex = 0;
-    
-    for (NSString* key in self.keyArray) {
-        
-        UIView* newTextFieldFrame = [[UIView alloc] initWithFrame:CGRectMake(textFieldMargin,textFieldIndex * (textFieldPad + textFieldHeight), self.view.frame.size.width - (4 * textFieldMargin), textFieldHeight)];
-        
-        newTextFieldFrame.layer.cornerRadius = 5.f;
-        newTextFieldFrame.layer.borderColor = [[UIColor lightGrayColor] CGColor];
-        newTextFieldFrame.layer.borderWidth = 1.f;
-        
-        UITextField* newTextField = [[UITextField alloc] initWithFrame:CGRectMake(textFieldMargin * 2 ,textFieldIndex * (textFieldPad + textFieldHeight), self.view.frame.size.width - (4 * textFieldMargin), textFieldHeight)];
-        
-        newTextField.tag = textFieldIndex + textFieldTagOffSet;
-        
-        newTextField.placeholder = key;
-        
-        NSNumber* keyboardType = [self.keyboardTypeArray objectAtIndex:textFieldIndex];
-        
-        newTextField.keyboardType = keyboardType.intValue;
-        
-        newTextField.enablesReturnKeyAutomatically = TRUE;
-        
-        newTextField.delegate = (id<UITextFieldDelegate>)self;
-        
-        newTextField.textColor = [UIColor darkGrayColor];
-        
-        [scrollView addSubview:newTextFieldFrame];
-        
-        UIButton* validationButton = [[UIButton alloc] initWithFrame:CGRectMake(newTextField.frame.origin.x + newTextField.frame.size.width, newTextField.frame.origin.y, textFieldMargin * 2, newTextField.frame.size.height)];
-        
-        [validationButton setTitle:@"" forState:UIControlStateNormal];
-        
-        validationButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.];
-        
-        [validationButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
-        validationButton.tag = textFieldIndex + buttonTagOffSet;
-        
-        [validationButton addTarget:self action:@selector(checkValidation:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [scrollView addSubview:validationButton];
-        
-        [scrollView addSubview:newTextField];
-        
-        textFieldIndex++;
-    }
-    
-    UIButton* newTextFieldButton = [[UIButton alloc] initWithFrame:CGRectMake(textFieldMargin,textFieldIndex * (textFieldPad + textFieldHeight), self.view.frame.size.width - (2 * textFieldMargin), textFieldHeight * 5)];
-    
-    [newTextFieldButton addTarget:self action:@selector(closeKeyboard) forControlEvents:UIControlEventTouchDown];
-    
-    [scrollView addSubview:newTextFieldButton];
-    
-    
-    [scrollView setNeedsDisplay];
-    
-    if (textFieldIndex > 2) {
-        self.scrollView.scrollEnabled = TRUE;
-        [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, (textFieldIndex * (textFieldPad + textFieldHeight)) + textFieldHeight * 5)];
-    }
-    
-    [self.scrollView setContentOffset:CGPointMake(0., 0.) animated:TRUE];
-    
-    self.sendButton.enabled = FALSE;
-    self.sendButton.alpha = 0.5;
-}
-
-- (void) checkValidation:(id)sender {
-    
-    NSLog(@"get Validation Result");
-    
-    UIButton* button = (UIButton*)sender;
-    
-    if ([[button titleForState:UIControlStateNormal] isEqualToString:@"✔︎"]) {
-        return;
-    }
-    
-    long index = button.tag - buttonTagOffSet;
-    
-    if (index >= self.keyArray.count) {
-        return;
-    }
-    
-    NSString* key = [self.keyArray objectAtIndex:index];
-    
-    NSError* validationError = [self.validationErrors objectForKey:key];
-    
-    if (validationError != Nil) {
-        
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:validationError.localizedDescription delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        
-        [alertView show];
-        
-        return;
-    }
-    
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self closeKeyboard];
 }
 
 - (void)closeKeyboard {
-    
-    [self.currentTextField resignFirstResponder];
-    
-    self.currentTextField = Nil;
-    
-    [self.scrollView setContentOffset:CGPointMake(0., 0.) animated:TRUE];
+    [self.panTextField resignFirstResponder];
+    [self.cardholderTextField resignFirstResponder];
+    [self.expiryYearTextField resignFirstResponder];
+    [self.expiryMonthTextField resignFirstResponder];
+    [self.cvvTextField resignFirstResponder];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+#pragma mark Text Input Validation Methods
+
+//Check Field Values when Values Change
+-(void)textFieldDidChange:(UITextField*) sender {
     
-    // scroll View
+    UIColor * okColor = [UIColor greenColor];
+    UIColor * errorColor = [UIColor colorWithRed:0xFF/255.0 green:0x42/255.0 blue:0x3E/255.0 alpha:0xFF/255.0];
     
-    NSUInteger tfTag = textField.tag - textFieldTagOffSet;
+    //Contains all Errors, for UI Purposes
+    NSMutableArray * errorArray = [NSMutableArray new];
     
-    [self.scrollView setContentOffset:CGPointMake(0., (tfTag * (textFieldPad + textFieldHeight)) - 25.) animated:TRUE];
+    //Pan Validation
+    NSError * panError;
+    BOOL validPan = [PLVCreditCardPaymentInstrument validatePan:self.panTextField.text withError:&panError];
     
-    self.currentTextField = textField;
+    if (validPan) {
+        self.panTextField.backgroundColor = okColor;
+    }else{
+        self.panTextField.backgroundColor = errorColor;
+        [errorArray addObject:panError];
+    }
     
-    return TRUE;
+    //Cardholder Validation
+    NSError * cardHolderError;
+    BOOL validCardHolder = [PLVCreditCardPaymentInstrument validateCardHolder:self.cardholderTextField.text withError:&cardHolderError];
+        
+    if (validCardHolder) {
+        self.cardholderTextField.backgroundColor = okColor;
+    }else{
+        self.cardholderTextField.backgroundColor = errorColor;
+        [errorArray addObject:cardHolderError];
+    }
+    
+    //Expiry Month Validation
+    NSError * expMonthError;
+    BOOL validExpMonth = [PLVCreditCardPaymentInstrument validateExpiryMonth:self.expiryMonthTextField.text withError:&expMonthError];
+        
+    if (validExpMonth) {
+        self.expiryMonthTextField.backgroundColor = okColor;
+    }else{
+        self.expiryMonthTextField.backgroundColor = errorColor;
+        [errorArray addObject:expMonthError];
+    }
+    
+    //Expiry Year Validation
+    NSError * expYearError;
+    BOOL validExpYear = [PLVCreditCardPaymentInstrument validateExpiryYear:self.expiryYearTextField.text withError:&expYearError];
+        
+    if (validExpYear) {
+        self.expiryYearTextField.backgroundColor = okColor;
+    }else{
+        self.expiryYearTextField.backgroundColor = errorColor;
+        [errorArray addObject:expYearError];
+    }
+    
+    //CVV Validation
+    NSError * cvvError;
+    BOOL validCvv = [PLVCreditCardPaymentInstrument validateCVV:self.cvvTextField.text withError:&cvvError];
+        
+    if (validCvv) {
+        self.cvvTextField.backgroundColor = okColor;
+    }else{
+        self.cvvTextField.backgroundColor = errorColor;
+        [errorArray addObject:cvvError];
+    }
+    
+    //Disable/Enable Add Button
+    if (errorArray.count == 0) {
+        self.addButton.enabled = true;
+        self.addButton.alpha = 1.0;
+    }else{
+        self.addButton.enabled = false;
+        self.addButton.alpha = 0.5;
+    }
 }
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    
-    NSString* replacedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    
-    NSUInteger tfTag = textField.tag - textFieldTagOffSet;
-    
-    NSNumber* maxLength = [self.keyValueLengthArray objectAtIndex:tfTag];
-    
-    if (replacedString.length > maxLength.intValue) {
-        return FALSE;
-    }
-    
-    NSString* key = [self.keyArray objectAtIndex:tfTag];
-    
-    // validate Input
-    
-    [self validateTextField:textField comingText:replacedString forKey:key];
-
-    
-    [self.addInfoDict setObject:replacedString forKey:key];
-    
-    if (self.addInfoDict.count == self.keyArray.count) {
-        self.sendButton.enabled = TRUE;
-        self.sendButton.alpha = 1.0;
-    } else {
-        self.sendButton.enabled = FALSE;
-        self.sendButton.alpha = 0.5;
-    }
-    
-    if (([self.addInfoDict objectForKey:@"iban"] != Nil ) && (self.addInfoDict.count == 1) && [self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-        // bic is optinal
-        self.sendButton.enabled = TRUE;
-        self.sendButton.alpha = 1.0;
-    }
-    
-    return TRUE;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    
-    [textField resignFirstResponder];
-    
-    return TRUE;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    
-    [textField resignFirstResponder];
-    
-    NSUInteger tfTag = textField.tag - textFieldTagOffSet;
-    
-    if (tfTag < self.keyArray.count) {
-        
-        NSString* key = [self.keyArray objectAtIndex:tfTag];
-        
-        [self.addInfoDict setObject:textField.text forKey:key];
-        
-        if (self.addInfoDict.count == self.keyArray.count) {
-            self.sendButton.enabled = TRUE;
-            self.sendButton.alpha = 1.0;
-        } else {
-            self.sendButton.enabled = FALSE;
-            self.sendButton.alpha = 0.5;
-        }
-        
-        if (([self.addInfoDict objectForKey:@"iban"] != Nil ) && (self.addInfoDict.count == 1) && [self.piTypeToCreate isEqualToString:PLVPITypeSEPA]) {
-            // bic is optinal
-            self.sendButton.enabled = TRUE;
-            self.sendButton.alpha = 1.0;
-        }
-        
-    }
-    
-}
-
-- (void) validateTextField:(UITextField*)textField comingText:(NSString*)text forKey:(NSString*)key {
-    
-    if (text == Nil || text.length == 0) {
-        return;
-    }
-    
-    NSError* validationError;
-    BOOL validationResult = TRUE;
-    BOOL findValidation = FALSE;
-    
-    if ([key isEqualToString:@"pan"]) {
-        validationResult = [PLVCreditCardPaymentInstrument validatePan:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"cardHolder"]) {
-        validationResult = [PLVCreditCardPaymentInstrument validateCardHolder:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"cvv"]) {
-        validationResult = [PLVCreditCardPaymentInstrument validateCVV:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"iban"]) {
-        //validationResult = [PLVSEPAPaymentInstrument validateIBAN:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"bic"]) {
-        //validationResult = [PLVSEPAPaymentInstrument validateBIC:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"accountNo"]) {
-       // validationResult = [PLVDebitCardPaymentInstrument validateAccountNo:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"routingNo"]) {
-       // validationResult = [PLVDebitCardPaymentInstrument validateRoutingNo:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"authToken"]) {
-       // validationResult = [PLVPAYPALPaymentInstrument validateAuthToken:text withError:&validationError];
-        findValidation = TRUE;
-    } else if ([key isEqualToString:@"expiryMonth"]) {
-        
-        self.expiryMonthTextField = textField;
-        
-        if (([self.addInfoDict objectForKey:@"expiryYear"] != Nil) && ([(NSString*)[self.addInfoDict objectForKey:@"expiryYear"] length] > 0)) {
-            
-            NSString * expMonth = text;
-            
-            NSString * expYear = [self.addInfoDict objectForKey:@"expiryYear"];
-            
-            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
-            
-            if (self.expiryYearTextField != Nil) {
-                
-                [self setTextField:self.expiryYearTextField valid:validationResult];
-                
-                if (validationError) {
-                    
-                    [self.validationErrors setObject:validationError forKey:@"expiryYear"];
-                    
-                } else {
-                    
-                    [self.validationErrors removeObjectForKey:@"expiryYear"];
-                }
-                
-                findValidation = TRUE;
-            }
-        }
-
-    } else if ([key isEqualToString:@"expiryYear"])  {
-        
-        self.expiryYearTextField = textField;
-        
-        if (([self.addInfoDict objectForKey:@"expiryMonth"] != Nil)  && ([(NSString*)[self.addInfoDict objectForKey:@"expiryMonth"] length]  > 0) ) {
-            
-            NSString * expYear = text;
-            
-            NSString * expMonth = [self.addInfoDict objectForKey:@"expiryMonth"];
-            
-            validationResult = [PLVCreditCardPaymentInstrument validateExpiryMonth:expMonth andYear:expYear withError:&validationError];
-            
-            if (self.expiryMonthTextField != Nil) {
-                
-                [self setTextField:self.expiryMonthTextField valid:validationResult];
-                
-                if (validationError) {
-                    
-                    [self.validationErrors setObject:validationError forKey:@"expiryYear"];
-                    
-                } else {
-                    
-                    [self.validationErrors removeObjectForKey:@"expiryYear"];
-                }
-                
-                findValidation = TRUE;
-            }
-        }
-        
-    }
-    
-    if (findValidation) {
-
-        [self setTextField:textField valid:validationResult];
-        
-        if (validationError) {
-            
-            [self.validationErrors setObject:validationError forKey:key];
-            
-        } else {
-            
-            [self.validationErrors removeObjectForKey:key];
-        }
-    }
-    
-}
-
-- (void) setTextField:(UITextField*)textField valid:(BOOL)valid {
-    
-    
-    if (valid) {
-        
-        [textField setTextColor:[UIColor blackColor]];
-        
-        UIButton* button = (UIButton*)[textField.superview viewWithTag:textField.tag + (buttonTagOffSet - textFieldTagOffSet)];
-        
-        [button setTitle:@"✔︎" forState:UIControlStateNormal];
-    
-    } else {
-        
-        [textField setTextColor:[UIColor darkGrayColor]];
-        
-        UIButton* button = (UIButton*)[textField.superview viewWithTag:textField.tag + (buttonTagOffSet - textFieldTagOffSet)];
-        
-        [button setTitle:@"✘" forState:UIControlStateNormal];
-    }
-    
-}
-
 
 @end

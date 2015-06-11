@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define selectUseCaseActionSheet 6768
 
 @interface UseCaseViewController : UIViewController <UIActionSheetDelegate>
-
 
 @property (strong) NSString* useCase;
 @property (strong) NSArray* useCases;

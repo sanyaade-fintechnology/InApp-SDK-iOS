@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "UseCaseViewController.h"
 
-@interface AddPIViewController : UseCaseViewController
+@interface AddPIViewController : UIViewController
 
 @property (strong) NSString* piTypeToCreate;
 @property (strong) NSString* userToken;
 @property (strong) NSString* useCase;
+@property (strong) NSString* emailAddress;
+
+@property BOOL paymentInstrumentIsMandatory;
 
 @end

@@ -10,7 +10,6 @@
 
 #define useCaseTableViewCell @"useCaseTableViewCell"
 
-
 @interface EditUseCaseViewController ()
 
 @property (strong) IBOutlet UITableView* useCaseTable;
@@ -22,21 +21,56 @@
 
 @implementation EditUseCaseViewController
 
+#pragma mark Lifecycle Methods
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    
-    [self.useCaseTable registerClass:[UITableViewCell class] forCellReuseIdentifier:useCaseTableViewCell];
     
     [self loadUseCases];
     
     [self.useCaseTable reloadData];
-    
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark UI Interaction Methods
+
+- (IBAction)enterEditMode:(id)sender {
+    
+    if (self.useCases.count < 2) {
+        return;
+    }
+    
+    if ([self.useCaseTable isEditing]) {
+        [self.useCaseTable setEditing:NO animated:YES];
+        [self.editTableButton setTitle:@"Edit" forState:UIControlStateNormal];
+    }
+    else {
+        [self.editTableButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.useCaseTable setEditing:YES animated:YES];
+    }
+}
+
+
+- (IBAction)addUseCase:(id)sender {
+    
+    NSMutableArray* newUseCases = [NSMutableArray arrayWithArray:self.useCases];
+    
+    [newUseCases addObject:self.addUseCaseTextField.text];
+    
+    self.useCases = newUseCases;
+    
+    [[NSUserDefaults standardUserDefaults] setObject:self.useCases forKey:@"allUseCase"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSIndexPath* newPath = [NSIndexPath indexPathForRow:self.useCases.count -1 inSection:0];
+    
+    [self.useCaseTable insertRowsAtIndexPaths:[NSArray arrayWithObject:newPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+    self.addUseCaseButton.enabled = FALSE;
+    self.addUseCaseButton.alpha = .5;
+    self.addUseCaseTextField.text = @"";
+    
+    [self.addUseCaseTextField resignFirstResponder];
+    
 }
 
 - (IBAction)backButton:(id)sender {
@@ -45,16 +79,37 @@
     
 }
 
+#pragma mark UITableView related
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *useCase = [self.useCases objectAtIndex:indexPath.row];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:useCase forKey:@"selectedUseCase"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.navigationController popViewControllerAnimated:true];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:useCaseTableViewCell forIndexPath:indexPath];
     
     cell.textLabel.text = [self.useCases objectAtIndex:indexPath.row];
     
+    NSString * selectedUseCase = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectedUseCase"];
+    
+    if ([cell.textLabel.text isEqualToString:selectedUseCase]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
+    
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
 
     return cell;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
@@ -63,16 +118,12 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self.useCases objectAtIndex:indexPath.row] isEqualToString:@"DEFAULT"]) {
-        return FALSE;
-    }
-    
-    return TRUE;
+    return true;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    return TRUE;
+    return false;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
@@ -92,8 +143,6 @@
     
     
 }
-
-
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -118,26 +167,7 @@
     }
 }
 
-- (IBAction)enterEditMode:(id)sender {
-    
-    if (self.useCases.count < 2) {
-        return;
-    }
-    
-    if ([self.useCaseTable isEditing]) {
-        // If the tableView is already in edit mode, turn it off. Also change the title of the button to reflect the intended verb (‘Edit’, in this case).
-        [self.useCaseTable setEditing:NO animated:YES];
-        [self.editTableButton setTitle:@"Edit" forState:UIControlStateNormal];
-    }
-    else {
-        [self.editTableButton setTitle:@"Done" forState:UIControlStateNormal];
-        
-        // Turn on edit mode
-        
-        [self.useCaseTable setEditing:YES animated:YES];
-    }
-}
-
+#pragma mark UITextField Delegate Methods
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     NSString* replacedString = [[textField.text stringByReplacingCharactersInRange:range withString:string] uppercaseString];
@@ -174,29 +204,6 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
     [textField resignFirstResponder];
-}
-
-- (IBAction)addUseCase:(id)sender {
-    
-    NSMutableArray* newUseCases = [NSMutableArray arrayWithArray:self.useCases];
-    
-    [newUseCases addObject:self.addUseCaseTextField.text];
-    
-    self.useCases = newUseCases;
-    
-    [[NSUserDefaults standardUserDefaults] setObject:self.useCases forKey:@"allUseCase"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    NSIndexPath* newPath = [NSIndexPath indexPathForRow:self.useCases.count -1 inSection:0];
-    
-    [self.useCaseTable insertRowsAtIndexPaths:[NSArray arrayWithObject:newPath] withRowAnimation:UITableViewRowAnimationFade];
-    
-    self.addUseCaseButton.enabled = FALSE;
-    self.addUseCaseButton.alpha = .5;
-    self.addUseCaseTextField.text = @"";
-    
-    [self.addUseCaseTextField resignFirstResponder];
-    
 }
 
 @end

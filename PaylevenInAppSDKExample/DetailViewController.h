@@ -11,7 +11,6 @@
 
 @interface DetailViewController : UseCaseViewController
 
-@property (strong) RootViewController* rootVC;
 @property (strong) NSString* userToken;
 @property (strong) NSString* emailAddress;
 

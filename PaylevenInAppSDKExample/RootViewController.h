@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootViewController : UIViewController <UIActionSheetDelegate>
-
-@property (nonatomic) BOOL doNotWind;
+@interface RootViewController : UIViewController
 
 
 @end
