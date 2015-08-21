@@ -49,22 +49,20 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = [NSString stringWithFormat:@"Loading: %@", self.useCase];
 
-    [[PLVInAppClient sharedInstance] getPaymentInstrumentsList:self.userToken withUseCase:self.useCase andCompletion:^(NSDictionary* result, NSError* error){
+    
+    //Integration-Task-4: List available Payment Instruments associated with User Token
+    [[PLVInAppClient sharedInstance] getPaymentInstrumentsList:self.userToken andCompletion:^(NSArray *paymentInstrumentsArray, NSError *error) {
         
         if (!error) {
-            
-            NSArray* piListArray = [result objectForKey:@"paymentInstruments"];
-            self.payInstruments = [NSMutableArray arrayWithArray:piListArray];
-            hud.labelText = [NSString stringWithFormat:@"Found: %ld PIs", self.payInstruments.count];
-            
+            self.payInstruments = [NSMutableArray arrayWithArray:paymentInstrumentsArray];
+            hud.labelText = [NSString stringWithFormat:@"Found: %ld PIs", (unsigned long)self.payInstruments.count];
         } else {
-            //[self displayAlertViewWithMessage:error.localizedDescription];
             self.payInstruments = [NSMutableArray arrayWithArray:@[]];
-            hud.labelText = error.localizedDescription;
+            NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
+            hud.labelText = errorMessage;
         }
         [self.tableView reloadData];
         [hud hide:YES afterDelay:1.0];
@@ -118,6 +116,7 @@
     }
 }
 
+//Integration-Task-6: Allow user to reorder available Payment Instruments associated with User Token for a specific use case
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     
     if (fromIndexPath.row == toIndexPath.row) {
@@ -141,18 +140,15 @@
     
     [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet
                                                    forUserToken:self.userToken
-                                                    withUseCase:self.useCase
-                                                  andCompletion:^(NSDictionary* result, NSError* error){
-        
+                                                  andCompletion:^(NSError *error) {
+                                                      
         if (error) {
-            hud.labelText = error.localizedDescription;
-        } else if ([result isKindOfClass:[NSDictionary class]]) {
-            if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
-                //New Order confirmed
-                self.payInstruments = tempOrder;
-                hud.labelText = @"Success";
-            }
-            
+            NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
+            hud.labelText = errorMessage;
+        } else {
+            //New Order confirmed
+            self.payInstruments = tempOrder;
+            hud.labelText = @"Success";
             [self.tableView reloadData];
         }
         [hud hide:YES afterDelay:1.0];
@@ -164,14 +160,35 @@
     return self.payInstruments.count;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    PLVPaymentInstrument * selectedPi = (PLVPaymentInstrument*) [self.payInstruments objectAtIndex:indexPath.row];
+    NSString * selectedPiInfoMessage;
+    
+    if ([selectedPi.type isEqualToString:PLVPITypeCC]) {
+        PLVCreditCardPaymentInstrument * selectedCreditCardPi = (PLVCreditCardPaymentInstrument *) selectedPi;
+        selectedPiInfoMessage = [NSString stringWithFormat:@"PAN: %@,\n Brand: %@ ,\n Name: %@,\n expiry: %@/%@",selectedCreditCardPi.pan, selectedCreditCardPi.cardBrand, selectedCreditCardPi.cardHolder,selectedCreditCardPi.expiryMonth,selectedCreditCardPi.expiryYear];
+    }
+    
+    if (selectedPiInfoMessage) {
+        UIAlertView * piInfoAlertView = [[UIAlertView alloc] initWithTitle:@"Info" message:selectedPiInfoMessage delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+        [piInfoAlertView show];
+    }
+}
+
 #pragma mark AlertView Methods
 
-//Ask user if she/he wants to DISABLE (meaning deleting PI from all Use Cases) or REMOVE (meaning remove PI from specific Use Case) Payment Instrument
+//Ask user if she/he wants to
+//DISABLE, meaning deleting Payment Instrument from all Use Cases or
+//REMOVE, meaning remove Payment Instrument from specific Use Case
 - (void) deletePaymentInstrument {
     
     NSString* message = [NSString stringWithFormat:@"Disable PI or\nremove from %@ Use Case?", self.useCase];
     
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable or Remove" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Disable",[NSString stringWithFormat:@"Remove from %@", self.useCase],nil];
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable or Remove"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Disable",[NSString stringWithFormat:@"Remove from %@", self.useCase],nil];
     
     [alertView show];
 }
@@ -181,17 +198,18 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     if (buttonIndex == 1) {
-        //DISABLE PI
+        //DISABLE Payment Instrument
         PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
 
         hud.labelText = [NSString stringWithFormat:@"Disabling %@ from %@",pi.pan, self.useCase];
         
         [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi
                                                      forUserToken:self.userToken
-                                                    andCompletion:^(NSDictionary* result, NSError* error){
+                                                    andCompletion:^(NSError *error){
             
             if (error) {
-                hud.labelText = error.localizedDescription;
+                NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
+                hud.labelText = errorMessage;
             } else {
                 hud.labelText = @"Success";
                 
@@ -200,7 +218,7 @@
                 [newArray removeObjectAtIndex:self.indexPathToDelete.row];
                 self.payInstruments = newArray;
                 
-                // Animate the deletion
+                // Animate deletion
                 [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
             }
                                                         
@@ -208,32 +226,32 @@
             self.indexPathToDelete = Nil;
         }];
     } else if (buttonIndex == 2) {
-    // REMOVE PI from UseCase
+        // REMOVE Payment Instrument from Use Case
         PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
         
         hud.labelText = [NSString stringWithFormat:@"Removing %@",pi.pan];
         
-        [[PLVInAppClient sharedInstance] removePaymentInstrument:pi
-                                                     fromUseCase:self.useCase
-                                                    forUserToken:self.userToken
-                                                   andCompletion:^(NSDictionary* result, NSError* error){
-            
-            if (error) {
-                hud.labelText = error.localizedDescription;
-            } else {
-                hud.labelText = @"Success";
-
-                //Delete PI from Array
-                NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
-                [newArray removeObjectAtIndex:self.indexPathToDelete.row];
-                self.payInstruments = newArray;
-                
-                // Animate the deletion
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
-            }
-            [hud hide:YES afterDelay:1.0];
-            self.indexPathToDelete = Nil;
-        }];
+//        [[PLVInAppClient sharedInstance] removePaymentInstrument:pi
+//                                                     fromUseCase:self.useCase
+//                                                    forUserToken:self.userToken
+//                                                   andCompletion:^(NSError *error){
+//            if (error) {
+//                NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
+//                hud.labelText = errorMessage;
+//            } else {
+//                hud.labelText = @"Success";
+//
+//                //Delete PI from Array
+//                NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
+//                [newArray removeObjectAtIndex:self.indexPathToDelete.row];
+//                self.payInstruments = newArray;
+//                
+//                // Animate deletion
+//                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
+//            }
+//            [hud hide:YES afterDelay:1.0];
+//            self.indexPathToDelete = Nil;
+//        }];
     } else if (buttonIndex == 0){
     // CANCEL Alert
     }

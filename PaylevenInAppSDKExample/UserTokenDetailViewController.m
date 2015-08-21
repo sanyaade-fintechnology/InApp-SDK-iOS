@@ -6,15 +6,14 @@
 //  Copyright (c) 2014 payleven. All rights reserved.
 //
 
-#import "RootViewController.h"
-#import "DetailViewController.h"
+#import "RegisterViewController.h"
+#import "UserTokenDetailViewController.h"
 #import "PayInstTableViewController.h"
 #import "AddPIViewController.h"
-#import "EditUseCaseViewController.h"
 #import <PaylevenInAppSDK/PLVInAppSDK.h>
 #import "MBProgressHUD.h"
 
-@interface DetailViewController ()
+@interface UserTokenDetailViewController ()
 
 @property (weak) IBOutlet UITextField* userTokenTextField;
 @property (weak) IBOutlet UITextField* emailTextField;
@@ -27,7 +26,7 @@
 
 @end
 
-@implementation DetailViewController
+@implementation UserTokenDetailViewController
 
 #pragma mark Lifecycle methods
 
@@ -62,7 +61,6 @@
     if ([segueIdentifier isEqualToString:@"AddPISegue"]) {
         
         AddPIViewController* addPiVC = [segue destinationViewController];
-        addPiVC.piTypeToCreate = @"CC";
         addPiVC.useCase = self.useCaseButton.titleLabel.text;
         addPiVC.userToken = self.userTokenTextField.text;
         
@@ -83,10 +81,8 @@
 
 #pragma mark UITextField Delegate methods
 
--(BOOL) textFieldShouldReturn: (UITextField *) textField
-{
+-(BOOL) textFieldShouldReturn: (UITextField *) textField {
     [textField resignFirstResponder];
-    
     return YES;
 }
 
@@ -95,9 +91,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
     [super actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
-    
     [self.useCaseButton setTitle:self.useCase forState:UIControlStateNormal];
-    
 }
 
 

@@ -29,6 +29,8 @@
 @property (weak) IBOutlet  UITextField* expiryMonthTextField;
 @property (weak) IBOutlet  UITextField* cvvTextField;
 
+@property (weak, nonatomic) IBOutlet UITextView *errorTextView;
+
 @end
 
 @implementation AddPIViewController
@@ -60,12 +62,12 @@
 }
 
 #pragma mark UI Interaction Methods
-
 - (IBAction)sendPI:(id)sender {
     
     [self closeKeyboard];
     
-    //Create Payment Instument
+    //Integration-Task-5: Create first Payment Instrument to create user token
+    //Integration-Task-X: Create another Payment Instrument to add to user token
     PLVPaymentInstrument* newCreditCardPi = [PLVPaymentInstrument createCreditCardPaymentInstrumentWithPan:self.panTextField.text
                                                                                                expiryMonth:self.expiryMonthTextField.text
                                                                                                 expiryYear:self.expiryYearTextField.text
@@ -76,13 +78,14 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"Adding PI";
         
+        //Integration-Task-6: Add another Payment Instrument to a specific use case
         [[PLVInAppClient sharedInstance] addPaymentInstrument:newCreditCardPi
                                                  forUserToken:self.userToken
-                                                  withUseCase:self.useCase
-                                                andCompletion:^(NSDictionary* result, NSError* error) {
+                                                andCompletion:^(NSError *error){
             
             if (error) {
-                hud.labelText = error.localizedDescription;
+                NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
+                hud.labelText = errorMessage;
             } else {
                 hud.labelText = @"Success";
                 [self.navigationController performSelector:@selector(popViewControllerAnimated:) withObject:nil afterDelay:1.0];
@@ -96,25 +99,27 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"Create Token & \nAdd PI";
         
+        //Integration-Task-5: Create a Payment Instrument
         [[PLVInAppClient sharedInstance] createUserToken:self.emailAddress
                                    withPaymentInstrument:newCreditCardPi
-                                                 useCase:self.useCase
-                                           andCompletion:^(NSDictionary* result, NSError* error) {
+                                           andCompletion:^(NSString *userToken, NSError *error){
             
             if (error) {
-                hud.labelText = error.localizedDescription;
+                NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
+                hud.labelText = errorMessage;
                 [hud hide:YES afterDelay:1.0];
             } else {
-                if ([result objectForKey:@"userToken"]) {
-                    
+                if (userToken) {
                     hud.labelText = @"Success";
-                    [self.navigationController performSelector:@selector(popViewControllerAnimated:) withObject:nil afterDelay:1.0];
                     
                     //Store User Token in NSUserDefaults, in a Production Environment you want to store this in your Backend
-                    [[NSUserDefaults standardUserDefaults] setObject:[result objectForKey:@"userToken"] forKey:kUserDefaultsUserTokenPKey];
+                    [[NSUserDefaults standardUserDefaults] setObject:userToken forKey:kUserDefaultsUserTokenPKey];
                     [[NSUserDefaults standardUserDefaults] setObject:self.emailAddress forKey:kUserDefaultsMailAddressKey];
                     [[NSUserDefaults standardUserDefaults] setObject:self.useCase forKey:kUserDefaultsCurrentUseCaseKey];
                     [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    //Pop View Controller
+                    [self.navigationController performSelector:@selector(popViewControllerAnimated:) withObject:nil afterDelay:1.0];
                     
                 }
                 
@@ -127,10 +132,9 @@
 - (IBAction)dismissAddPiButtonPressed:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-#pragma mark Private Methods
 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+#pragma mark Private Methods
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [self closeKeyboard];
 }
 
@@ -142,9 +146,9 @@
     [self.cvvTextField resignFirstResponder];
 }
 
-#pragma mark Text Input Validation Methods
+#pragma mark Text Field Input Validation Methods
 
-//Check Field Values when Values Change
+//validate field values using In-App SDK
 -(void)textFieldDidChange:(UITextField*) sender {
     
     UIColor * okColor = [UIColor greenColor];
@@ -208,7 +212,7 @@
         [errorArray addObject:cvvError];
     }
     
-    //Disable/Enable Add Button
+    //Enable/Disable "Add Button", only show button if Credit Card data passes validation
     if (errorArray.count == 0) {
         self.addButton.enabled = true;
         self.addButton.alpha = 1.0;
@@ -216,6 +220,15 @@
         self.addButton.enabled = false;
         self.addButton.alpha = 0.5;
     }
+    
+    //Print out Error Description
+    NSMutableString * totalErrorString = [NSMutableString new];
+    for (int i = 0; i < errorArray.count; i++) {
+        NSError * tempError = [errorArray objectAtIndex:i];
+        NSString * errorString = [NSString stringWithFormat:@"%ld - %@ \n", (long)tempError.code, tempError.localizedDescription];
+        [totalErrorString appendString:errorString];
+    }
+    self.errorTextView.text = totalErrorString;
 }
 
 @end

@@ -68,19 +68,17 @@
 	
 	<optgroup label="Instance Methods">
 		
-		<option value="//api/name/addPaymentInstrument:forUserToken:withUseCase:andCompletion:">- addPaymentInstrument:forUserToken:withUseCase:andCompletion:</option>
+		<option value="//api/name/addPaymentInstrument:forUserToken:andCompletion:">- addPaymentInstrument:forUserToken:andCompletion:</option>
 		
-		<option value="//api/name/createUserToken:withPaymentInstrument:useCase:andCompletion:">- createUserToken:withPaymentInstrument:useCase:andCompletion:</option>
+		<option value="//api/name/createUserToken:withPaymentInstrument:andCompletion:">- createUserToken:withPaymentInstrument:andCompletion:</option>
 		
 		<option value="//api/name/disablePaymentInstrument:forUserToken:andCompletion:">- disablePaymentInstrument:forUserToken:andCompletion:</option>
 		
-		<option value="//api/name/getPaymentInstrumentsList:withUseCase:andCompletion:">- getPaymentInstrumentsList:withUseCase:andCompletion:</option>
+		<option value="//api/name/getPaymentInstrumentsList:andCompletion:">- getPaymentInstrumentsList:andCompletion:</option>
 		
 		<option value="//api/name/registerWithAPIKey:">- registerWithAPIKey:</option>
 		
-		<option value="//api/name/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:">- removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</option>
-		
-		<option value="//api/name/setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:">- setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:</option>
+		<option value="//api/name/setPaymentInstrumentsOrder:forUserToken:andCompletion:">- setPaymentInstrumentsOrder:forUserToken:andCompletion:</option>
 		
 	</optgroup>
 	
@@ -287,8 +285,8 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/createUserToken:withPaymentInstrument:useCase:andCompletion:" title="createUserToken:withPaymentInstrument:useCase:andCompletion:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/createUserToken:withPaymentInstrument:useCase:andCompletion:">&ndash;&nbsp;createUserToken:withPaymentInstrument:useCase:andCompletion:</a></code>
+	<a name="//api/name/createUserToken:withPaymentInstrument:andCompletion:" title="createUserToken:withPaymentInstrument:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/createUserToken:withPaymentInstrument:andCompletion:">&ndash;&nbsp;createUserToken:withPaymentInstrument:andCompletion:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -303,7 +301,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)createUserToken:(NSString *)<em>emailAddress</em> withPaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> useCase:(PLVInAppUseCase *)<em>useCase</em> andCompletion:(PLVInAppAPIClientCompletionHandler)<em>completionHandler</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (void)createUserToken:(NSString *)<em>emailAddress</em> withPaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> andCompletion:(PLVInAppClientCreateUserTokenCompletionHandler)<em>completionHandler</em></code></div>
 
 		    
 			
@@ -322,13 +320,13 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>useCase</code></th>
-						<td><p>useCase</p></td>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completionHandler</p></td>
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>completionHandler</code></th>
-						<td><p>completionHandler</p></td>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>useCase</p></td>
 					</tr>
 				
 				</table>
@@ -355,8 +353,8 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/addPaymentInstrument:forUserToken:withUseCase:andCompletion:" title="addPaymentInstrument:forUserToken:withUseCase:andCompletion:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/addPaymentInstrument:forUserToken:withUseCase:andCompletion:">&ndash;&nbsp;addPaymentInstrument:forUserToken:withUseCase:andCompletion:</a></code>
+	<a name="//api/name/addPaymentInstrument:forUserToken:andCompletion:" title="addPaymentInstrument:forUserToken:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/addPaymentInstrument:forUserToken:andCompletion:">&ndash;&nbsp;addPaymentInstrument:forUserToken:andCompletion:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -371,7 +369,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)addPaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> withUseCase:(PLVInAppUseCase *)<em>useCase</em> andCompletion:(PLVInAppAPIClientCompletionHandler)<em>completionHandler</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (void)addPaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> andCompletion:(PLVInAppClientAddPaymentInstrumentCompletionHandler)<em>completionHandler</em></code></div>
 
 		    
 			
@@ -390,13 +388,13 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>useCase</code></th>
-						<td><p>use case to add this payment instrument (optional, if empty a default usecase will be used)</p></td>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completion block</p></td>
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>completionHandler</code></th>
-						<td><p>completion block</p></td>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>use case to add this payment instrument (optional, if empty a default usecase will be used)</p></td>
 					</tr>
 				
 				</table>
@@ -428,8 +426,8 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/getPaymentInstrumentsList:withUseCase:andCompletion:" title="getPaymentInstrumentsList:withUseCase:andCompletion:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/getPaymentInstrumentsList:withUseCase:andCompletion:">&ndash;&nbsp;getPaymentInstrumentsList:withUseCase:andCompletion:</a></code>
+	<a name="//api/name/getPaymentInstrumentsList:andCompletion:" title="getPaymentInstrumentsList:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/getPaymentInstrumentsList:andCompletion:">&ndash;&nbsp;getPaymentInstrumentsList:andCompletion:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -444,7 +442,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)getPaymentInstrumentsList:(PLVInAppUserToken *)<em>userToken</em> withUseCase:(PLVInAppUseCase *)<em>useCase</em> andCompletion:(PLVInAppAPIClientCompletionHandler)<em>completionHandler</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (void)getPaymentInstrumentsList:(PLVInAppUserToken *)<em>userToken</em> andCompletion:(PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler)<em>completionHandler</em></code></div>
 
 		    
 			
@@ -458,13 +456,13 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>useCase</code></th>
-						<td><p>the useCase to list this payment instruments (optional, if empty a default usecase will be used)</p></td>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completion block</p></td>
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>completionHandler</code></th>
-						<td><p>completion block</p></td>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>the useCase to list this payment instruments (optional, if empty a default usecase will be used)</p></td>
 					</tr>
 				
 				</table>
@@ -496,8 +494,8 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:" title="setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:">&ndash;&nbsp;setPaymentInstrumentsOrder:forUserToken:withUseCase:andCompletion:</a></code>
+	<a name="//api/name/setPaymentInstrumentsOrder:forUserToken:andCompletion:" title="setPaymentInstrumentsOrder:forUserToken:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/setPaymentInstrumentsOrder:forUserToken:andCompletion:">&ndash;&nbsp;setPaymentInstrumentsOrder:forUserToken:andCompletion:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -512,7 +510,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)setPaymentInstrumentsOrder:(NSOrderedSet *)<em>piOrder</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> withUseCase:(PLVInAppUseCase *)<em>useCase</em> andCompletion:(PLVInAppAPIClientCompletionHandler)<em>completionHandler</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (void)setPaymentInstrumentsOrder:(NSOrderedSet *)<em>piOrder</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> andCompletion:(PLVInAppAPIClientSetPaymentInstrumentOrderCompletionHandler)<em>completionHandler</em></code></div>
 
 		    
 			
@@ -531,13 +529,13 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>useCase</code></th>
-						<td><p>the useCase to set the order for this payment instruments (optional, if empty a default usecase will be used)</p></td>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completion block</p></td>
 					</tr>
 				
 					<tr>
-						<th scope="row" class="argument-name"><code>completionHandler</code></th>
-						<td><p>completion block</p></td>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>the useCase to set the order for this payment instruments (optional, if empty a default usecase will be used)</p></td>
 					</tr>
 				
 				</table>
@@ -585,7 +583,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)disablePaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> andCompletion:(PLVInAppAPIClientCompletionHandler)<em>completionHandler</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (void)disablePaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> andCompletion:(PLVInAppAPIClientDisablePaymentInstrumentCompletionHandler)<em>completionHandler</em></code></div>
 
 		    
 			
@@ -636,79 +634,6 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 		</div>
 	</div>
-</div><div class="section-method">
-	<a name="//api/name/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:" title="removePaymentInstrument:fromUseCase:forUserToken:andCompletion:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:">&ndash;&nbsp;removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (void)removePaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> fromUseCase:(NSString *)<em>useCase</em> forUserToken:(NSString *)<em>userToken</em> andCompletion:(PLVInAppAPIClientCompletionHandler)<em>completionHandler</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>paymentInstrument</code></th>
-						<td><p>the paymentInstrument</p></td>
-					</tr>
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>useCase</code></th>
-						<td><p>useCase to remove from</p></td>
-					</tr>
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>userToken</code></th>
-						<td><p>userToken</p></td>
-					</tr>
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>completionHandler</code></th>
-						<td><p>completionHandler</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Removes a payment instrument associated to a user token from a use case.</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">PLVInAppClient.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
 </div>
 						</div>
 						
@@ -722,7 +647,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-06-11</p>
+						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-08-21</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>

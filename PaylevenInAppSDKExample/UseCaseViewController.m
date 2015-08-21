@@ -46,6 +46,7 @@
     
 }
 
+//Checks User Defaults if we have created custom Use Cases, again, this is something your Backend environment should provide.
 - (void) loadUseCases {
     
     self.useCases = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsAllUseCasesKey];

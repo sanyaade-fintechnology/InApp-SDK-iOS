@@ -9,9 +9,9 @@
 @import Foundation;
 
 #define     PLVPITypeCC         @"CC"
-#define     PLVPITypeDD         @"DD"
-#define     PLVPITypeSEPA       @"SEPA"
-#define     PLVPITypePAYPAL     @"PAYPAL"
+//#define     PLVPITypeDD         @"DD"
+//#define     PLVPITypeSEPA       @"SEPA"
+//#define     PLVPITypePAYPAL     @"PAYPAL"
 
 
 /**

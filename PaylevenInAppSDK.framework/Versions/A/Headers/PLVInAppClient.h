@@ -11,16 +11,57 @@
 @class PLVPaymentInstrument;
 
 typedef NSString PLVInAppUserToken;
-typedef NSString PLVInAppUseCase;
+//typedef NSString PLVInAppUseCase;
 
 /**
  *
- *  commonly used completion block to handle repsones of PLVInAppClient
+ *  completion block to handle create UserToken repsones of PLVInAppClient
  *
- *  @param response             incoming response from the api
+ *  @param userToken            created User Token, if nil check error
  *  @param error                error in case of failed api call
  */
-typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSError* error);
+typedef void (^PLVInAppClientCreateUserTokenCompletionHandler)(NSString* userToken, NSError* error);
+
+/**
+ *
+ *  completion block to handle Add Payment Instrument repsone of PLVInAppClient
+ *
+ *  @param error                nil when successful, error in case of failed api call
+ */
+typedef void (^PLVInAppClientAddPaymentInstrumentCompletionHandler)(NSError* error);
+
+/**
+ *
+ *  completion block to handle Get Payment Instrument  repsone of PLVInAppClient
+ *
+ *  @param paymentInstrumentsArray  Array containing objects of PLVPaymentInstrument, can also be count 0, if nil check error
+ *  @param error                    error in case of failed api call
+ */
+typedef void (^PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler)(NSArray * paymentInstrumentsArray, NSError* error);
+
+/**
+ *
+ *  completion block to handle Set Payment Instrument order repsone of PLVInAppClient
+ *
+ *  @param error                nil when successful, error in case of failed api call
+ */
+typedef void (^PLVInAppAPIClientSetPaymentInstrumentOrderCompletionHandler)(NSError* error);
+
+/**
+ *
+ *  completion block to handle Disable Payment Instrument repsone of PLVInAppClient
+ *
+ *  @param error                nil when successful, error in case of failed api call
+ */
+typedef void (^PLVInAppAPIClientDisablePaymentInstrumentCompletionHandler)(NSError* error);
+
+/**
+ *
+ *  completion block to handle Remove Payment Instrument repsone of PLVInAppClient
+ *
+ *  @param error                nil when successful, error in case of failed api call
+ */
+typedef void (^PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)(NSError* error);
 
 /** Main class to handle all actions against payleven InApp API
 
@@ -72,8 +113,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) createUserToken:(NSString*)emailAddress 
    withPaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
-                 useCase:(PLVInAppUseCase*)useCase 
-           andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+           andCompletion:(PLVInAppClientCreateUserTokenCompletionHandler)completionHandler;
 
 /**
  *  addPaymentInstrument:forUserToken:withUseCase:andCompletion:
@@ -88,8 +128,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) addPaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
                  forUserToken:(PLVInAppUserToken*)userToken 
-                  withUseCase:(PLVInAppUseCase*)useCase 
-                andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+                andCompletion:(PLVInAppClientAddPaymentInstrumentCompletionHandler)completionHandler;
 
 
 /**
@@ -103,8 +142,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  */
 
 - (void) getPaymentInstrumentsList:(PLVInAppUserToken*)userToken 
-                       withUseCase:(PLVInAppUseCase*)useCase 
-                     andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+                     andCompletion:(PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler)completionHandler;
 
 
 /**
@@ -120,8 +158,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) setPaymentInstrumentsOrder:(NSOrderedSet*)piOrder 
                        forUserToken:(PLVInAppUserToken*)userToken 
-                        withUseCase:(PLVInAppUseCase*)useCase 
-                      andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+                      andCompletion:(PLVInAppAPIClientSetPaymentInstrumentOrderCompletionHandler)completionHandler;
 
 /**
  *  disablePaymentInstrument:forUserToken:andCompletion:
@@ -135,7 +172,7 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
 
 - (void) disablePaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
                      forUserToken:(PLVInAppUserToken*)userToken 
-                    andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+                    andCompletion:(PLVInAppAPIClientDisablePaymentInstrumentCompletionHandler)completionHandler;
 
 /**
  *  removePaymentInstrument:fromUseCase:forUserToken:andCompletion:
@@ -148,10 +185,10 @@ typedef void (^PLVInAppAPIClientCompletionHandler)(NSDictionary* response, NSErr
  *  @param completionHandler    completionHandler
  */
 
-- (void) removePaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
-                     fromUseCase:(NSString*)useCase 
-                    forUserToken:(NSString*)userToken 
-                   andCompletion:(PLVInAppAPIClientCompletionHandler)completionHandler;
+//- (void) removePaymentInstrument:(PLVPaymentInstrument*)paymentInstrument 
+//                     fromUseCase:(NSString*)useCase 
+//                    forUserToken:(NSString*)userToken 
+//                   andCompletion:(PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)completionHandler;
 
 @end
 

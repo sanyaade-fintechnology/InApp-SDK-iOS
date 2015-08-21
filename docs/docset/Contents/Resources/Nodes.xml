@@ -27,6 +27,11 @@
                     <Path>index.html</Path>
                     <Subnodes>
                         <NodeRef refid="4"/>
+                        <NodeRef refid="5"/>
+                        <NodeRef refid="6"/>
+                        <NodeRef refid="7"/>
+                        <NodeRef refid="8"/>
+                        <NodeRef refid="9"/>
                         
                     </Subnodes>
                 </Node>
@@ -140,8 +145,33 @@
         
         
         <Node id="4" type="file" documentType="reference">
-            <Name>PLVInAppAPIClientCompletionHandler</Name>
-            <Path>Blocks/PLVInAppAPIClientCompletionHandler.html</Path>
+            <Name>PLVInAppAPIClientDisablePaymentInstrumentCompletionHandler</Name>
+            <Path>Blocks/PLVInAppAPIClientDisablePaymentInstrumentCompletionHandler.html</Path>
+            
+        </Node>
+        <Node id="5" type="file" documentType="reference">
+            <Name>PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler</Name>
+            <Path>Blocks/PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler.html</Path>
+            
+        </Node>
+        <Node id="6" type="file" documentType="reference">
+            <Name>PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler</Name>
+            <Path>Blocks/PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler.html</Path>
+            
+        </Node>
+        <Node id="7" type="file" documentType="reference">
+            <Name>PLVInAppAPIClientSetPaymentInstrumentOrderCompletionHandler</Name>
+            <Path>Blocks/PLVInAppAPIClientSetPaymentInstrumentOrderCompletionHandler.html</Path>
+            
+        </Node>
+        <Node id="8" type="file" documentType="reference">
+            <Name>PLVInAppClientAddPaymentInstrumentCompletionHandler</Name>
+            <Path>Blocks/PLVInAppClientAddPaymentInstrumentCompletionHandler.html</Path>
+            
+        </Node>
+        <Node id="9" type="file" documentType="reference">
+            <Name>PLVInAppClientCreateUserTokenCompletionHandler</Name>
+            <Path>Blocks/PLVInAppClientCreateUserTokenCompletionHandler.html</Path>
             
         </Node>
         

@@ -11,11 +11,11 @@
 
 @interface AddPIViewController : UIViewController
 
-@property (strong) NSString* piTypeToCreate;
 @property (strong) NSString* userToken;
 @property (strong) NSString* useCase;
 @property (strong) NSString* emailAddress;
 
+//to create a User Token you must create a payment instrument first
 @property BOOL paymentInstrumentIsMandatory;
 
 @end
