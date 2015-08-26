@@ -20,7 +20,6 @@
 
 @property (weak) IBOutlet UIButton* backButton;
 
-@property (weak) IBOutlet UIButton* useCaseButton;
 @property (weak) IBOutlet UIButton* addPIButton;
 @property (weak) IBOutlet UIButton* listPIButton;
 
@@ -38,21 +37,6 @@
     self.emailTextField.text = self.emailAddress;
 }
 
-- (void) viewDidAppear:(BOOL)animated  {
-    
-    [super viewDidAppear:animated];
-    
-    [self loadUseCases];
-    NSString * selectedUseCase = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectedUseCase"];
-    
-    if (selectedUseCase) {
-        self.useCase = selectedUseCase;
-    }else{
-        self.useCase = @"DEFAULT";
-    }
-    [self.useCaseButton setTitle:self.useCase forState:UIControlStateNormal];
-    
-}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -61,14 +45,12 @@
     if ([segueIdentifier isEqualToString:@"AddPISegue"]) {
         
         AddPIViewController* addPiVC = [segue destinationViewController];
-        addPiVC.useCase = self.useCaseButton.titleLabel.text;
         addPiVC.userToken = self.userTokenTextField.text;
         
     }else if ([segueIdentifier isEqualToString:@"ListPIsSegue"]){
         
         PayInstTableViewController* listVC = [segue destinationViewController];
         listVC.userToken = self.userTokenTextField.text;
-        listVC.useCase = self.useCase;
         
     }
 }
@@ -86,13 +68,6 @@
     return YES;
 }
 
-#pragma mark UIActionSheet Delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    [super actionSheet:actionSheet clickedButtonAtIndex:buttonIndex];
-    [self.useCaseButton setTitle:self.useCase forState:UIControlStateNormal];
-}
 
 
 @end

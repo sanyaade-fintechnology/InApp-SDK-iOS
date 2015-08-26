@@ -10,7 +10,6 @@
 
 @interface PayInstTableViewController : UIViewController
 
-@property (nonatomic, strong) NSString * useCase;
 @property (nonatomic, strong) NSString * userToken;
 
 @end

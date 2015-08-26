@@ -31,8 +31,8 @@
  *  Creates a Payment Instrument representing a Credit Card
  *
  *  @param pan         PAN of this credit card
- *  @param expiryMonth expiry month for this creditcard payment instrument
- *  @param expiryYear  expiry year for this creditcard payment instrument
+ *  @param expiryMonth expiry month for this creditcard payment instrument (M or MM)
+ *  @param expiryYear  expiry year for this creditcard payment instrument (YYYY)
  *  @param cvv         CVV for this creditcard payment instrument
  *  @param cardHolder  Name of the card holder of this credit card payment instrument as visible on the card
  *

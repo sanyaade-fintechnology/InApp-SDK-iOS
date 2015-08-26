@@ -9,14 +9,15 @@
 
 @import Foundation;
 
+//Integration-Task-1: Import Payleven SDK
+#import <PaylevenInAppSDK/PLVInAppSDK.h>
+
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 
 #import "RegisterViewController.h"
 #import "AddPIViewController.h"
 #import "UserTokenDetailViewController.h"
-
-#import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 #define kUserDefaultsUserTokenPKey @"userToken"
 #define kUserDefaultsMailAddressKey @"mailAddress"
@@ -36,7 +37,6 @@
 
 @property (strong) NSString *userToken;
 @property (strong) NSString *emailAddress;
-@property (strong) NSString *useCase;
 
 @property (strong) NSPredicate *emailTest;
 
@@ -81,7 +81,6 @@
             
         self.userToken = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsUserTokenPKey];
         self.emailAddress = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsMailAddressKey];
-        self.useCase = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsCurrentUseCaseKey];
             
         self.userTokenTextField.text = self.userToken;
         self.emailTextField.text = self.emailAddress;
@@ -109,6 +108,8 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    //Integration-Task-2: Insert API Key to setup communication between Payleven SDK and Payleven Backend
+    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"2c66f5fd510740ec83606bfe65bbdd26"];
     
     if ([[segue identifier] isEqualToString:@"showDetails"]){
         //We have a User Token already user should be able to add/delete/edit Payment Instruments associated to it
@@ -116,16 +117,13 @@
         
         detailVC.userToken = self.userToken;
         detailVC.emailAddress = self.emailAddress;
-        detailVC.useCase = self.useCase;
         
     }else if ([[segue identifier] isEqualToString:@"RegisterUserTokenSegue"]){
         //We do not have a User Token, user must create a Payment Instrument to create User Token
         AddPIViewController* addPiForUserTokenVC =  (AddPIViewController*) [segue destinationViewController];
         
-        addPiForUserTokenVC.useCase = @"DEFAULT";
         addPiForUserTokenVC.emailAddress = self.emailTextField.text;
         addPiForUserTokenVC.paymentInstrumentIsMandatory = true;
-        
     }
 }
 
@@ -150,8 +148,6 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsMailAddressKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsAllUseCasesKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsCurrentUseCaseKey];
-
-    self.useCase = @"DEFAULT";
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

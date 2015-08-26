@@ -69,6 +69,8 @@ typedef void (^PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)(NSErro
  Retrieve it using the singleton instance using the sharedInstance class method. 
  Next, set up the instance with your API Key using the registerWithAPIKey: method.
  [[PLVInAppClient sharedInstance] registerWithAPIKey:@”anAPIKey”];
+ 
+ Before offering your business services, call getPaymentInstrumentsList:andCompletion: to make sure that the user has at least one valid (not expired) payment instrument.
 */
 
 
@@ -103,11 +105,10 @@ typedef void (^PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)(NSErro
 - (void) registerWithAPIKey:(NSString*)apiKey ;
 
 /**
- *  Creates a user token based on the email address provided and adds the payment instrument to the user token previously created, for the use case specified.
+ *  Creates a user token based on the email address provided and adds the payment instrument to the user token previously created
  *
  *  @param emailAddress         email address for userToken
  *  @param paymentInstrument    Payment Instrument to add
- *  @param useCase              useCase
  *  @param completionHandler    completionHandler
  */
 
@@ -116,13 +117,12 @@ typedef void (^PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)(NSErro
            andCompletion:(PLVInAppClientCreateUserTokenCompletionHandler)completionHandler;
 
 /**
- *  addPaymentInstrument:forUserToken:withUseCase:andCompletion:
+ *  addPaymentInstrument:forUserToken:andCompletion:
  *
- *  Associates a payment instrument to a user token, for a use case.
+ *  Associates a payment instrument to a user token
  *
  *  @param paymentInstrument    payment instruments to add
  *  @param userToken            userToken
- *  @param useCase              use case to add this payment instrument (optional, if empty a default usecase will be used)
  *  @param completionHandler    completion block
  */
 
@@ -132,12 +132,11 @@ typedef void (^PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)(NSErro
 
 
 /**
- *  getPaymentInstrumentsList:withUseCase:andCompletion:
+ *  getPaymentInstrumentsList:andCompletion:
  *
- *  Retrieves the list of payment instruments associated to a user token, for a specific use case.
+ *  Retrieves the list of payment instruments associated to a user token. The payment instruments returned are sorted based on the order used when making a payment
  *
  *  @param userToken            userToken
- *  @param useCase              the useCase to list this payment instruments (optional, if empty a default usecase will be used)
  *  @param completionHandler    completion block
  */
 
@@ -146,13 +145,13 @@ typedef void (^PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)(NSErro
 
 
 /**
- *  setPaymentInstrumentsOrder:forUserToken:withUseCase:
+ *  setPaymentInstrumentsOrder:forUserToken:
  *
- *  Sets the order of payment instruments for a use case, for a user token.
+ *  Sets the order of payment instruments for a user token. 
+ *  The order of the payment instruments in the list will represent the order in which the payment instruments will be used when making a payment
  *
  *  @param piOrder              NSOrderedSet with PaymentInstruments token hashes
  *  @param userToken            userToken
- *  @param useCase              the useCase to set the order for this payment instruments (optional, if empty a default usecase will be used)
  *  @param completionHandler    completion block
  */
 
@@ -164,6 +163,7 @@ typedef void (^PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)(NSErro
  *  disablePaymentInstrument:forUserToken:andCompletion:
  *
  *  Disables a payment instrument of a specified user token.
+ *  The disabled payment instrument will not be used for making payments anymore.
  *
  *  @param paymentInstrument    the paymentInstruments to disable
  *  @param userToken            userToken

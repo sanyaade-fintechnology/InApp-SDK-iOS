@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UseCaseViewController.h"
 
-@interface UserTokenDetailViewController : UseCaseViewController
+@interface UserTokenDetailViewController : UIViewController
 
 @property (strong) NSString* userToken;
 @property (strong) NSString* emailAddress;

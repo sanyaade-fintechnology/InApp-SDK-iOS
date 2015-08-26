@@ -50,7 +50,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = [NSString stringWithFormat:@"Loading: %@", self.useCase];
+    hud.labelText = [NSString stringWithFormat:@"Loading"];
 
     
     //Integration-Task-4: List available Payment Instruments associated with User Token
@@ -69,7 +69,6 @@
         
     }];
     
-    self.useCaseLabel.text = [NSString stringWithFormat:@"useCase: %@",self.useCase];
 }
 
 #pragma mark UI Interaction Methods
@@ -112,11 +111,41 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         self.indexPathToDelete = [indexPath copy];
-        [self deletePaymentInstrument];
+        
+        //DISABLE Payment Instrument
+        PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = [NSString stringWithFormat:@"Disabling %@",pi.pan];
+        
+        [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi
+                                                     forUserToken:self.userToken
+                                                    andCompletion:^(NSError *error){
+                                                        
+                                                        if (error) {
+                                                            NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
+                                                            hud.labelText = errorMessage;
+                                                        } else {
+                                                            hud.labelText = @"Success";
+                                                            
+                                                            //Delete PI from Array
+                                                            NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
+                                                            [newArray removeObjectAtIndex:self.indexPathToDelete.row];
+                                                            self.payInstruments = newArray;
+                                                            
+                                                            // Animate deletion
+                                                            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
+                                                        }
+                                                        
+                                                        [hud hide:YES afterDelay:1.0];
+                                                        self.indexPathToDelete = Nil;
+                                                    }];
+
+        
     }
 }
 
-//Integration-Task-6: Allow user to reorder available Payment Instruments associated with User Token for a specific use case
+//Integration-Task-6: Allow user to reorder available Payment Instruments associated with User Token
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     
     if (fromIndexPath.row == toIndexPath.row) {
@@ -172,88 +201,6 @@
     if (selectedPiInfoMessage) {
         UIAlertView * piInfoAlertView = [[UIAlertView alloc] initWithTitle:@"Info" message:selectedPiInfoMessage delegate:nil cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
         [piInfoAlertView show];
-    }
-}
-
-#pragma mark AlertView Methods
-
-//Ask user if she/he wants to
-//DISABLE, meaning deleting Payment Instrument from all Use Cases or
-//REMOVE, meaning remove Payment Instrument from specific Use Case
-- (void) deletePaymentInstrument {
-    
-    NSString* message = [NSString stringWithFormat:@"Disable PI or\nremove from %@ Use Case?", self.useCase];
-    
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Disable or Remove"
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Disable",[NSString stringWithFormat:@"Remove from %@", self.useCase],nil];
-    
-    [alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
-    if (buttonIndex == 1) {
-        //DISABLE Payment Instrument
-        PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
-
-        hud.labelText = [NSString stringWithFormat:@"Disabling %@ from %@",pi.pan, self.useCase];
-        
-        [[PLVInAppClient sharedInstance] disablePaymentInstrument:pi
-                                                     forUserToken:self.userToken
-                                                    andCompletion:^(NSError *error){
-            
-            if (error) {
-                NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
-                hud.labelText = errorMessage;
-            } else {
-                hud.labelText = @"Success";
-                
-                //Delete PI from Array
-                NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
-                [newArray removeObjectAtIndex:self.indexPathToDelete.row];
-                self.payInstruments = newArray;
-                
-                // Animate deletion
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
-            }
-                                                        
-            [hud hide:YES afterDelay:1.0];
-            self.indexPathToDelete = Nil;
-        }];
-    } else if (buttonIndex == 2) {
-        // REMOVE Payment Instrument from Use Case
-        PLVCreditCardPaymentInstrument* pi = [self.payInstruments objectAtIndex:self.indexPathToDelete.row];
-        
-        hud.labelText = [NSString stringWithFormat:@"Removing %@",pi.pan];
-        
-//        [[PLVInAppClient sharedInstance] removePaymentInstrument:pi
-//                                                     fromUseCase:self.useCase
-//                                                    forUserToken:self.userToken
-//                                                   andCompletion:^(NSError *error){
-//            if (error) {
-//                NSString * errorMessage = [NSString stringWithFormat:@"%@ - %ld", error.localizedDescription, (long)error.code];
-//                hud.labelText = errorMessage;
-//            } else {
-//                hud.labelText = @"Success";
-//
-//                //Delete PI from Array
-//                NSMutableArray* newArray = [NSMutableArray arrayWithArray:self.payInstruments];
-//                [newArray removeObjectAtIndex:self.indexPathToDelete.row];
-//                self.payInstruments = newArray;
-//                
-//                // Animate deletion
-//                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationFade];
-//            }
-//            [hud hide:YES afterDelay:1.0];
-//            self.indexPathToDelete = Nil;
-//        }];
-    } else if (buttonIndex == 0){
-    // CANCEL Alert
     }
 }
 

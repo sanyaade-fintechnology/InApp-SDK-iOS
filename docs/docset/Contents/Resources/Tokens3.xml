@@ -60,10 +60,10 @@
 					<Abstract type="html">PAN of this credit card</Abstract>
 				</Parameter><Parameter>
 					<Name>expiryMonth</Name>
-					<Abstract type="html">expiry month for this creditcard payment instrument</Abstract>
+					<Abstract type="html">expiry month for this creditcard payment instrument (M or MM)</Abstract>
 				</Parameter><Parameter>
 					<Name>expiryYear</Name>
-					<Abstract type="html">expiry year for this creditcard payment instrument</Abstract>
+					<Abstract type="html">expiry year for this creditcard payment instrument (YYYY)</Abstract>
 				</Parameter><Parameter>
 					<Name>cvv</Name>
 					<Abstract type="html">CVV for this creditcard payment instrument</Abstract>

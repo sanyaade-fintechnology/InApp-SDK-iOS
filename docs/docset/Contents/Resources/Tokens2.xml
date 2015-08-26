@@ -55,7 +55,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/createUserToken:withPaymentInstrument:andCompletion:</TokenIdentifier>
-			<Abstract type="html">Creates a user token based on the email address provided and adds the payment instrument to the user token previously created, for the use case specified.</Abstract>
+			<Abstract type="html">Creates a user token based on the email address provided and adds the payment instrument to the user token previously created</Abstract>
 			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
 			<Declaration>- (void)createUserToken:(NSString *)emailAddress withPaymentInstrument:(PLVPaymentInstrument *)paymentInstrument andCompletion:(PLVInAppClientCreateUserTokenCompletionHandler)completionHandler</Declaration>
@@ -69,9 +69,6 @@
 				</Parameter><Parameter>
 					<Name>completionHandler</Name>
 					<Abstract type="html">completionHandler</Abstract>
-				</Parameter><Parameter>
-					<Name>useCase</Name>
-					<Abstract type="html">useCase</Abstract>
 				</Parameter>
 			</Parameters>
 			
@@ -81,7 +78,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/addPaymentInstrument:forUserToken:andCompletion:</TokenIdentifier>
-			<Abstract type="html">addPaymentInstrument:forUserToken:withUseCase:andCompletion:</Abstract>
+			<Abstract type="html">addPaymentInstrument:forUserToken:andCompletion:</Abstract>
 			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
 			<Declaration>- (void)addPaymentInstrument:(PLVPaymentInstrument *)paymentInstrument forUserToken:(PLVInAppUserToken *)userToken andCompletion:(PLVInAppClientAddPaymentInstrumentCompletionHandler)completionHandler</Declaration>
@@ -95,9 +92,6 @@
 				</Parameter><Parameter>
 					<Name>completionHandler</Name>
 					<Abstract type="html">completion block</Abstract>
-				</Parameter><Parameter>
-					<Name>useCase</Name>
-					<Abstract type="html">use case to add this payment instrument (optional, if empty a default usecase will be used)</Abstract>
 				</Parameter>
 			</Parameters>
 			
@@ -107,7 +101,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/getPaymentInstrumentsList:andCompletion:</TokenIdentifier>
-			<Abstract type="html">getPaymentInstrumentsList:withUseCase:andCompletion:</Abstract>
+			<Abstract type="html">getPaymentInstrumentsList:andCompletion:</Abstract>
 			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
 			<Declaration>- (void)getPaymentInstrumentsList:(PLVInAppUserToken *)userToken andCompletion:(PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler)completionHandler</Declaration>
@@ -118,9 +112,6 @@
 				</Parameter><Parameter>
 					<Name>completionHandler</Name>
 					<Abstract type="html">completion block</Abstract>
-				</Parameter><Parameter>
-					<Name>useCase</Name>
-					<Abstract type="html">the useCase to list this payment instruments (optional, if empty a default usecase will be used)</Abstract>
 				</Parameter>
 			</Parameters>
 			
@@ -130,7 +121,7 @@
 		
 		<Token>
 			<TokenIdentifier>//apple_ref/occ/instm/PLVInAppClient/setPaymentInstrumentsOrder:forUserToken:andCompletion:</TokenIdentifier>
-			<Abstract type="html">setPaymentInstrumentsOrder:forUserToken:withUseCase:</Abstract>
+			<Abstract type="html">setPaymentInstrumentsOrder:forUserToken:</Abstract>
 			<DeclaredIn>PLVInAppClient.h</DeclaredIn>
 			
 			<Declaration>- (void)setPaymentInstrumentsOrder:(NSOrderedSet *)piOrder forUserToken:(PLVInAppUserToken *)userToken andCompletion:(PLVInAppAPIClientSetPaymentInstrumentOrderCompletionHandler)completionHandler</Declaration>
@@ -144,9 +135,6 @@
 				</Parameter><Parameter>
 					<Name>completionHandler</Name>
 					<Abstract type="html">completion block</Abstract>
-				</Parameter><Parameter>
-					<Name>useCase</Name>
-					<Abstract type="html">the useCase to set the order for this payment instruments (optional, if empty a default usecase will be used)</Abstract>
 				</Parameter>
 			</Parameters>
 			

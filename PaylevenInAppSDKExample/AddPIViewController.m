@@ -12,8 +12,6 @@
 
 #define kUserDefaultsUserTokenPKey @"userToken"
 #define kUserDefaultsMailAddressKey @"mailAddress"
-#define kUserDefaultsCurrentUseCaseKey @"currentUseCase"
-#define kUserDefaultsAllUseCasesKey @"allUseCase"
 
 
 @interface AddPIViewController () <UITextFieldDelegate>
@@ -40,7 +38,6 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    self.useCaseLabel.text = [NSString stringWithFormat:@"add PI to useCase: %@",self.useCase];
     
     [self.panTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [self.cardholderTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -97,7 +94,7 @@
     }else{
         //Don't have a User Token yet, Create it with PI
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"Create Token & \nAdd PI";
+        hud.labelText = @"Create Token";
         
         //Integration-Task-5: Create a Payment Instrument
         [[PLVInAppClient sharedInstance] createUserToken:self.emailAddress
@@ -115,7 +112,6 @@
                     //Store User Token in NSUserDefaults, in a Production Environment you want to store this in your Backend
                     [[NSUserDefaults standardUserDefaults] setObject:userToken forKey:kUserDefaultsUserTokenPKey];
                     [[NSUserDefaults standardUserDefaults] setObject:self.emailAddress forKey:kUserDefaultsMailAddressKey];
-                    [[NSUserDefaults standardUserDefaults] setObject:self.useCase forKey:kUserDefaultsCurrentUseCaseKey];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     
                     //Pop View Controller

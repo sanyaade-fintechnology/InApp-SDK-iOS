@@ -10,27 +10,30 @@
 		9F27A7681A0B860600458181 /* UserTokenDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F27A7671A0B860600458181 /* UserTokenDetailViewController.m */; };
 		9F44485F1A10BB2600B949F5 /* AddPIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F44485D1A10BB2600B949F5 /* AddPIViewController.m */; };
 		9F6552B219F5AB0A003D07A5 /* PaylevenInAppSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */; };
-		9F71D6BD1A374D6E007AEBC4 /* EditUseCaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F71D6BB1A374D6E007AEBC4 /* EditUseCaseViewController.m */; };
 		9FA5CB8C19F5270700FCB314 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB8B19F5270700FCB314 /* main.m */; };
 		9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB8E19F5270700FCB314 /* AppDelegate.m */; };
 		9FA5CB9219F5270700FCB314 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9119F5270700FCB314 /* RegisterViewController.m */; };
 		9FA5CB9B19F5270700FCB314 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9919F5270700FCB314 /* Main.storyboard */; };
 		9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FA5CB9E19F5270700FCB314 /* LaunchScreen.xib */; };
-		9FA776D81A35F2DE00F7AFBE /* UseCaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FA776D71A35F2DE00F7AFBE /* UseCaseViewController.m */; };
 		9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */; };
+		F31D4FEF1B8CE89000D71FCC /* AddPi_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = F31D4FEE1B8CE89000D71FCC /* AddPi_Tests.m */; };
+		F31D4FF11B8CE8A800D71FCC /* CreateUserToken_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = F31D4FF01B8CE8A800D71FCC /* CreateUserToken_Tests.m */; };
+		F31D4FF31B8CE8E400D71FCC /* ListPis_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = F31D4FF21B8CE8E400D71FCC /* ListPis_Tests.m */; };
+		F31D4FF51B8CEBD800D71FCC /* PaymentInstrumentValidation_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = F31D4FF41B8CEBD800D71FCC /* PaymentInstrumentValidation_Tests.m */; };
 		F3742E4A1AFA6D96005D25D6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = F3742E491AFA6D96005D25D6 /* MBProgressHUD.m */; };
 		F383FF281AAA1A4E007EEF91 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F383FF271AAA1A4E007EEF91 /* Media.xcassets */; };
-		F3EA98CC1A92381E004CC50F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CB1A92381E004CC50F /* AssetsLibrary.framework */; };
-		F3EA98CE1A923828004CC50F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CD1A923828004CC50F /* CoreGraphics.framework */; };
-		F3EA98D01A92382E004CC50F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98CF1A92382E004CC50F /* CoreText.framework */; };
-		F3EA98D21A923836004CC50F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D11A923836004CC50F /* Foundation.framework */; };
-		F3EA98D41A923843004CC50F /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D31A923843004CC50F /* MobileCoreServices.framework */; };
-		F3EA98D61A92384B004CC50F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D51A92384B004CC50F /* QuartzCore.framework */; };
-		F3EA98D81A923854004CC50F /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D71A923854004CC50F /* QuickLook.framework */; };
-		F3EA98DA1A92388F004CC50F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98D91A92388F004CC50F /* Security.framework */; };
-		F3EA98DC1A923898004CC50F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98DB1A923898004CC50F /* SystemConfiguration.framework */; };
-		F3EA98DE1A9238A1004CC50F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EA98DD1A9238A1004CC50F /* UIKit.framework */; };
+		F3CFEB6B1B8B5E9100436E7B /* InAppSDKExample_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = F3CFEB6A1B8B5E9100436E7B /* InAppSDKExample_Tests.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F3CFEB6C1B8B5E9100436E7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9FA5CB7E19F5270700FCB314 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9FA5CB8519F5270700FCB314;
+			remoteInfo = InAppSDKExample;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		9F27A7661A0B860600458181 /* UserTokenDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserTokenDetailViewController.h; sourceTree = "<group>"; };
@@ -38,8 +41,6 @@
 		9F44485C1A10BB2600B949F5 /* AddPIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPIViewController.h; sourceTree = "<group>"; };
 		9F44485D1A10BB2600B949F5 /* AddPIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPIViewController.m; sourceTree = "<group>"; };
 		9F6552B119F5AB0A003D07A5 /* PaylevenInAppSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PaylevenInAppSDK.framework; sourceTree = SOURCE_ROOT; };
-		9F71D6BA1A374D6E007AEBC4 /* EditUseCaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUseCaseViewController.h; sourceTree = "<group>"; };
-		9F71D6BB1A374D6E007AEBC4 /* EditUseCaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUseCaseViewController.m; sourceTree = "<group>"; };
 		9FA5CB8619F5270700FCB314 /* InAppSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InAppSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FA5CB8A19F5270700FCB314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FA5CB8B19F5270700FCB314 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -49,10 +50,12 @@
 		9FA5CB9119F5270700FCB314 /* RegisterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		9FA5CB9A19F5270700FCB314 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9FA5CB9F19F5270700FCB314 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		9FA776D61A35F2DE00F7AFBE /* UseCaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UseCaseViewController.h; sourceTree = "<group>"; };
-		9FA776D71A35F2DE00F7AFBE /* UseCaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UseCaseViewController.m; sourceTree = "<group>"; };
 		9FBE52A31A0CFCF70030E165 /* PayInstTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayInstTableViewController.h; sourceTree = "<group>"; };
 		9FBE52A41A0CFCF70030E165 /* PayInstTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayInstTableViewController.m; sourceTree = "<group>"; };
+		F31D4FEE1B8CE89000D71FCC /* AddPi_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPi_Tests.m; sourceTree = "<group>"; };
+		F31D4FF01B8CE8A800D71FCC /* CreateUserToken_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateUserToken_Tests.m; sourceTree = "<group>"; };
+		F31D4FF21B8CE8E400D71FCC /* ListPis_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListPis_Tests.m; sourceTree = "<group>"; };
+		F31D4FF41B8CEBD800D71FCC /* PaymentInstrumentValidation_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentInstrumentValidation_Tests.m; sourceTree = "<group>"; };
 		F3742E481AFA6D96005D25D6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		F3742E491AFA6D96005D25D6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		F383FF271AAA1A4E007EEF91 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -60,6 +63,9 @@
 		F39137951AADB03F00E7DDC3 /* AppDelegate+DebugHockey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+DebugHockey.h"; sourceTree = "<group>"; };
 		F39137961AADB03F00E7DDC3 /* AppDelegate+DebugHockey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+DebugHockey.m"; sourceTree = "<group>"; };
 		F39137C21AADE00B00E7DDC3 /* InAppSDKExample copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "InAppSDKExample copy-Info.plist"; path = "/Users/johannesrupieper/Documents/Development/InApp/InApp-SDK-iOS-Dev/PaylevenInAppSDKExample/InAppSDKExample copy-Info.plist"; sourceTree = "<absolute>"; };
+		F3CFEB661B8B5E9100436E7B /* InAppSDKExample Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "InAppSDKExample Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3CFEB691B8B5E9100436E7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3CFEB6A1B8B5E9100436E7B /* InAppSDKExample_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InAppSDKExample_Tests.m; sourceTree = "<group>"; };
 		F3EA98CB1A92381E004CC50F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		F3EA98CD1A923828004CC50F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F3EA98CF1A92382E004CC50F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -77,34 +83,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3EA98DE1A9238A1004CC50F /* UIKit.framework in Frameworks */,
-				F3EA98DC1A923898004CC50F /* SystemConfiguration.framework in Frameworks */,
-				F3EA98DA1A92388F004CC50F /* Security.framework in Frameworks */,
-				F3EA98D81A923854004CC50F /* QuickLook.framework in Frameworks */,
-				F3EA98D61A92384B004CC50F /* QuartzCore.framework in Frameworks */,
-				F3EA98D41A923843004CC50F /* MobileCoreServices.framework in Frameworks */,
-				F3EA98D21A923836004CC50F /* Foundation.framework in Frameworks */,
-				F3EA98D01A92382E004CC50F /* CoreText.framework in Frameworks */,
-				F3EA98CE1A923828004CC50F /* CoreGraphics.framework in Frameworks */,
-				F3EA98CC1A92381E004CC50F /* AssetsLibrary.framework in Frameworks */,
 				9F6552B219F5AB0A003D07A5 /* PaylevenInAppSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3CFEB631B8B5E9100436E7B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9F1FDEE21A2E1E4D0003280D /* Edit/List Use Cases */ = {
-			isa = PBXGroup;
-			children = (
-				9FA776D61A35F2DE00F7AFBE /* UseCaseViewController.h */,
-				9FA776D71A35F2DE00F7AFBE /* UseCaseViewController.m */,
-				9F71D6BA1A374D6E007AEBC4 /* EditUseCaseViewController.h */,
-				9F71D6BB1A374D6E007AEBC4 /* EditUseCaseViewController.m */,
-			);
-			name = "Edit/List Use Cases";
-			sourceTree = "<group>";
-		};
 		9F44485B1A10BAFC00B949F5 /* Add Payment Instrument */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +131,7 @@
 			children = (
 				9FA5CB8819F5270700FCB314 /* PaylevenInAppSDKExample */,
 				9FA5CB8919F5270700FCB314 /* Supporting Files */,
+				F3CFEB671B8B5E9100436E7B /* InAppSDKExample Tests */,
 				9F4F807A19F536CC0008CBBE /* Frameworks */,
 				9FA5CB8719F5270700FCB314 /* Products */,
 				F39137C21AADE00B00E7DDC3 /* InAppSDKExample copy-Info.plist */,
@@ -149,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				9FA5CB8619F5270700FCB314 /* InAppSDKExample.app */,
+				F3CFEB661B8B5E9100436E7B /* InAppSDKExample Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,7 +160,6 @@
 				9FA5CB9119F5270700FCB314 /* RegisterViewController.m */,
 				9F27A7661A0B860600458181 /* UserTokenDetailViewController.h */,
 				9F27A7671A0B860600458181 /* UserTokenDetailViewController.m */,
-				9F1FDEE21A2E1E4D0003280D /* Edit/List Use Cases */,
 				9F44485B1A10BAFC00B949F5 /* Add Payment Instrument */,
 				9FBE52AA1A0D05C50030E165 /* List Payment Instruments */,
 			);
@@ -211,6 +204,27 @@
 			path = HockeySDKCrashOnly;
 			sourceTree = "<group>";
 		};
+		F3CFEB671B8B5E9100436E7B /* InAppSDKExample Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F31D4FF41B8CEBD800D71FCC /* PaymentInstrumentValidation_Tests.m */,
+				F31D4FF21B8CE8E400D71FCC /* ListPis_Tests.m */,
+				F31D4FF01B8CE8A800D71FCC /* CreateUserToken_Tests.m */,
+				F31D4FEE1B8CE89000D71FCC /* AddPi_Tests.m */,
+				F3CFEB6A1B8B5E9100436E7B /* InAppSDKExample_Tests.m */,
+				F3CFEB681B8B5E9100436E7B /* Supporting Files */,
+			);
+			path = "InAppSDKExample Tests";
+			sourceTree = "<group>";
+		};
+		F3CFEB681B8B5E9100436E7B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F3CFEB691B8B5E9100436E7B /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -232,6 +246,24 @@
 			productReference = 9FA5CB8619F5270700FCB314 /* InAppSDKExample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F3CFEB651B8B5E9100436E7B /* InAppSDKExample Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3CFEB701B8B5E9200436E7B /* Build configuration list for PBXNativeTarget "InAppSDKExample Tests" */;
+			buildPhases = (
+				F3CFEB621B8B5E9100436E7B /* Sources */,
+				F3CFEB631B8B5E9100436E7B /* Frameworks */,
+				F3CFEB641B8B5E9100436E7B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F3CFEB6D1B8B5E9100436E7B /* PBXTargetDependency */,
+			);
+			name = "InAppSDKExample Tests";
+			productName = "InAppSDKExample Tests";
+			productReference = F3CFEB661B8B5E9100436E7B /* InAppSDKExample Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -244,6 +276,10 @@
 					9FA5CB8519F5270700FCB314 = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = JPKY74ZN8Q;
+					};
+					F3CFEB651B8B5E9100436E7B = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 9FA5CB8519F5270700FCB314;
 					};
 				};
 			};
@@ -261,6 +297,7 @@
 			projectRoot = "";
 			targets = (
 				9FA5CB8519F5270700FCB314 /* InAppSDKExample */,
+				F3CFEB651B8B5E9100436E7B /* InAppSDKExample Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -273,6 +310,13 @@
 				9FA5CB9B19F5270700FCB314 /* Main.storyboard in Resources */,
 				9FA5CBA019F5270700FCB314 /* LaunchScreen.xib in Resources */,
 				F383FF281AAA1A4E007EEF91 /* Media.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3CFEB641B8B5E9100436E7B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,10 +345,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F71D6BD1A374D6E007AEBC4 /* EditUseCaseViewController.m in Sources */,
 				9FA5CB8F19F5270700FCB314 /* AppDelegate.m in Sources */,
 				9FBE52A61A0CFCF70030E165 /* PayInstTableViewController.m in Sources */,
-				9FA776D81A35F2DE00F7AFBE /* UseCaseViewController.m in Sources */,
 				9FA5CB8C19F5270700FCB314 /* main.m in Sources */,
 				9F44485F1A10BB2600B949F5 /* AddPIViewController.m in Sources */,
 				F3742E4A1AFA6D96005D25D6 /* MBProgressHUD.m in Sources */,
@@ -313,7 +355,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F3CFEB621B8B5E9100436E7B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F31D4FF31B8CE8E400D71FCC /* ListPis_Tests.m in Sources */,
+				F31D4FEF1B8CE89000D71FCC /* AddPi_Tests.m in Sources */,
+				F31D4FF11B8CE8A800D71FCC /* CreateUserToken_Tests.m in Sources */,
+				F31D4FF51B8CEBD800D71FCC /* PaymentInstrumentValidation_Tests.m in Sources */,
+				F3CFEB6B1B8B5E9100436E7B /* InAppSDKExample_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F3CFEB6D1B8B5E9100436E7B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9FA5CB8519F5270700FCB314 /* InAppSDKExample */;
+			targetProxy = F3CFEB6C1B8B5E9100436E7B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9FA5CB9919F5270700FCB314 /* Main.storyboard */ = {
@@ -418,7 +480,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -442,7 +504,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Jade 1360. GmbH";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jade 1360. GmbH";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -458,6 +520,47 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		F3CFEB6E1B8B5E9200436E7B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "InAppSDKExample Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InAppSDKExample.app/InAppSDKExample";
+			};
+			name = Debug;
+		};
+		F3CFEB6F1B8B5E9200436E7B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "InAppSDKExample Tests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InAppSDKExample.app/InAppSDKExample";
 			};
 			name = Release;
 		};
@@ -478,6 +581,15 @@
 			buildConfigurations = (
 				9FA5CBB019F5270800FCB314 /* Debug */,
 				9FA5CBB119F5270800FCB314 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F3CFEB701B8B5E9200436E7B /* Build configuration list for PBXNativeTarget "InAppSDKExample Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3CFEB6E1B8B5E9200436E7B /* Debug */,
+				F3CFEB6F1B8B5E9200436E7B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

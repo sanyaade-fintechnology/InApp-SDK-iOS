@@ -7,8 +7,6 @@
 //
 
 #import "AppDelegate.h"
-//Integration-Task-1: Import Payleven SDK
-#import <PaylevenInAppSDK/PLVInAppSDK.h>
 
 @interface AppDelegate ()
 
@@ -18,9 +16,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    //Integration-Task-2: Insert API Key to setup communication between Payleven SDK and Payleven Backend
-    [[PLVInAppClient sharedInstance] registerWithAPIKey:@"2c66f5fd510740ec83606bfe65bbdd26"];
     
     return YES;
 }
