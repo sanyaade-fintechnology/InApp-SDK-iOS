@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>TEST - InApp SDK</string>
+	<string>Int_Release-304</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIcons</key>
@@ -27,7 +27,7 @@
 	<key>CFBundleVersion</key>
 	<string></string>
 	<key>Hockey_Crash_AppId</key>
-	<string></string>
+	<string>9f728063e767a2ba1ac9eb5b866a05b8</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

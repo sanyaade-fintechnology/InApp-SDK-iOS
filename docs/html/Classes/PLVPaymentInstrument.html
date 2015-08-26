@@ -66,12 +66,6 @@
 		
 		<option value="//api/name/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:">+ createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</option>
 		
-		<option value="//api/name/createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:">+ createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</option>
-		
-		<option value="//api/name/createPAYPALPaymentInstrumentWithToken:">+ createPAYPALPaymentInstrumentWithToken:</option>
-		
-		<option value="//api/name/createSEPAPaymentInstrumentWithIBAN:andBIC:">+ createSEPAPaymentInstrumentWithIBAN:andBIC:</option>
-		
 	</optgroup>
 	
 
@@ -181,7 +175,7 @@
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>+ (id)createCreditCardPaymentInstrumentWithPan:(NSString *)<em>pan</em> expiryMonth:(NSInteger)<em>expiryMonth</em> expiryYear:(NSInteger)<em>expiryYear</em> cvv:(NSString *)<em>cvv</em> andCardHolder:(NSString *)<em>cardHolder</em></code></div>
+			<div class="method-subsection method-declaration"><code>+ (id)createCreditCardPaymentInstrumentWithPan:(NSString *)<em>pan</em> expiryMonth:(NSString *)<em>expiryMonth</em> expiryYear:(NSString *)<em>expiryYear</em> cvv:(NSString *)<em>cvv</em> andCardHolder:(NSString *)<em>cardHolder</em></code></div>
 
 		    
 			
@@ -196,12 +190,12 @@
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>expiryMonth</code></th>
-						<td><p>expiry month for this creditcard payment instrument</p></td>
+						<td><p>expiry month for this creditcard payment instrument (M or MM)</p></td>
 					</tr>
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>expiryYear</code></th>
-						<td><p>expiry year for this creditcard payment instrument</p></td>
+						<td><p>expiry year for this creditcard payment instrument (YYYY)</p></td>
 					</tr>
 				
 					<tr>
@@ -247,205 +241,6 @@
 			
 		</div>
 	</div>
-</div><div class="section-method">
-	<a name="//api/name/createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:" title="createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:">+&nbsp;createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>+ (id)createDebitCardPaymentInstrumentWithAccountNo:(NSString *)<em>accountNo</em> andRoutingNo:(NSString *)<em>routingNo</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>accountNo</code></th>
-						<td><p>Account number of this debit account</p></td>
-					</tr>
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>routingNo</code></th>
-						<td><p>Routing number of this debit account</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>a Payment Instrument of class PLVPayInstrumentDD presenting this Debit account</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Creates a Payment Instrument representing a Debit account</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">PLVInAppClientTypes.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/createSEPAPaymentInstrumentWithIBAN:andBIC:" title="createSEPAPaymentInstrumentWithIBAN:andBIC:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/createSEPAPaymentInstrumentWithIBAN:andBIC:">+&nbsp;createSEPAPaymentInstrumentWithIBAN:andBIC:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>createSEPAPaymentInstrumentWithIBAN:andBIC:</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>+ (id)createSEPAPaymentInstrumentWithIBAN:(NSString *)<em>iban</em> andBIC:(NSString *)<em>bic</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>iban</code></th>
-						<td><p>IBAN of this SEPA account</p></td>
-					</tr>
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>bic</code></th>
-						<td><p>BIC of this SEPA account (optional)</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>a Payment Instrument of class PLVPayInstrumentSEPA representing this SEPA account</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Creates a PaymentInstrument representing a SEPA account</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">PLVInAppClientTypes.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/createPAYPALPaymentInstrumentWithToken:" title="createPAYPALPaymentInstrumentWithToken:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/createPAYPALPaymentInstrumentWithToken:">+&nbsp;createPAYPALPaymentInstrumentWithToken:</a></code>
-</h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>createPAYPALPaymentInstrumentWithToken:</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>+ (id)createPAYPALPaymentInstrumentWithToken:(NSString *)<em>token</em></code></div>
-
-		    
-			
-			<div class="method-subsection arguments-section parameters">
-				<h4 class="method-subtitle parameter-title">Parameters</h4>
-				<table class="argument-def parameter-def">
-				
-					<tr>
-						<th scope="row" class="argument-name"><code>token</code></th>
-						<td><p>Token to get access to the PayPal account</p></td>
-					</tr>
-				
-				</table>
-			</div>
-			
-
-			
-			<div class="method-subsection return">
-				<h4 class="method-subtitle parameter-title">Return Value</h4>
-				<p>a Payment Instrument of class PLVPayInstrumentPAYPAL representing this PayPal account</p>
-			</div>
-			
-
-			
-
-			
-			<div class="method-subsection discussion-section">
-				<h4 class="method-subtitle">Discussion</h4>
-				<p>Creates a Payment Instrument representing a PayPal account</p>
-			</div>
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">PLVInAppClientTypes.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
 </div>
 						</div>
 						
@@ -459,7 +254,7 @@
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-04-13</p>
+						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-08-27</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>
