@@ -37,31 +37,36 @@ Use the unique API key to authenticate your app
 	 [[PLVInAppClient sharedInstance] registerWithAPIKey:@”anAPIKey”];
 	
 ##### Add a payment instrument
-Create an object of `PLVPaymentInstrument` class (a `PLVCreditCardPaymentInstrument`, `PLVDebitCardPaymentInstrument`, `PLVSEPAPaymentInstrument` or `PLVPAYPALPaymentInstrument`). 
+Create an object of `PLVCreditCardPaymentInstrument` class. 
 If it's the first time you are trying to add a payment instrument for your user, you need to create a user token, based on the user's email address.
 	
-	PLVPayInstrumentDD* tempDebitPi = [PLVPaymentInstrument createDebitPayInstrumentWithAccountNo:@"123123" 
-												                                      andRoutingNo:@"123123"];
+	    PLVCreditCardPaymentInstrument * tempCC = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"12345678901234"
+	                                                                                                           expiryMonth:@"11"
+	                                                                                                            expiryYear:@"2020"
+	                                                                                                                   cvv:@"111"
+	                                                                                                         andCardHolder:@"Payleven Cardholder"];
 	
-	//Create User Token							
-	[[PLVInAppClient sharedInstance] createUserToken:@"anEmailAdress@p11.de"
-                               withPaymentInstrument:pi
-                                             useCase:@"Business"
-	                                   andCompletion:^(NSDictionary * response, NSError * error) {
-	                                   	    if (response) {
-	                                               NSString * userTokenString = [response objectForKey:@"userToken"];
-	                                               //Success, this token should now be forwarded to your Backend...
-	                                           }
-	    
+	//Create User Token	
+	[[PLVInAppClient sharedInstance] createUserToken:@"anEmailAdress@payleven.de"
+	                                   withPaymentInstrument:tempCC
+	                                             useCase:@"Business"
+	                                           andCompletion:^(NSString *userToken, NSError *error){
+	            
+	            if (userToken) {
+	        		//Success, this token should now be forwarded to your Backend...
+	            } else {
+	                //Error handling
+	            }
 	}];
+					
 	
 	//Or simply add Payment Instrument to existing User Token
-	[[PLVInAppClient sharedInstance] addPaymentInstrument:tempDebitPi 
-											  forUserToken:@"A User Token" 
-											   withUseCase:@"A Use Case" 
-											 andCompletion:^(NSDictionary* result, NSError* error) {
+	[[PLVInAppClient sharedInstance] addPaymentInstrument:tempCC 
+											  forUserToken:<Pass User Token you received from createUserToken:> 
+											   withUseCase:@"Business" 
+											 andCompletion:^(NSError* error) {
 											    if (error) {
-											       //Error occured, see error.localizedDescription
+											       //Error handling
 											    } else {
 												   //Success
 												}
@@ -70,30 +75,30 @@ If it's the first time you are trying to add a payment instrument for your user,
 ##### Get the payment instruments for a user token
 Use the user token to retrieve the payment instruments associated to it and to a specific use case.
 The list of payment instruments is sorted based on the order in which the payment instruments will be selected when making a payment.
+Note: Before offering your business services, call `getPaymentInstrumentsList` to make sure that the user has at least one valid (not expired) payment instrument.
 
-	[[PLVInAppClient sharedInstance] getPaymentInstrumentsList:@"A User Token" withUseCase:@"A Use Case" andCompletion:^(NSDictionary* result, NSError* error){
-		if(error){
-			//Error occured, see error.localizedDescription
-	    } else {
-			if ([result objectForKey:@"paymentInstruments"]) {
-		       	NSArray* piListArray = [result objectForKey:@"paymentInstruments"];
-				self.piArray = piListArray;
-		    } else {
-				//No Payment Instruments found
-		    }
-	    }
+	[[PLVInAppClient sharedInstance] getPaymentInstrumentsList:@"A User Token" 
+					    withUseCase:@"A Use Case" andCompletion:^(NSArray *paymentInstrumentsArray, NSError *error){
+										if(paymentInstrumentsArray){
+											self.piArray = piListArray;
+	    								} else {
+											//Error handling
+		    						    }
 	}];
 
 ##### Set payment instruments order for a use case
 To update the order in which the payment instruments will be used when making a payment, call `setPaymentInstrumentsOrder` with the ordered list of payment instruments, the user token and the use case to which they belong.
+Check out PayInstTableViewController's tableView:moveRowAtIndexPath: in our sample app for a complete implementation.
 
 	NSOrderedSet* ordedSet = [[NSOrderedSet alloc] initWithArray:self.piArray];
 	    
-	[[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet forUserToken:@"A User Token" withUseCase:@"A Use Case" andCompletion:^(NSDictionary* result, NSError* error){
+	    [[PLVInAppClient sharedInstance] setPaymentInstrumentsOrder:ordedSet
+	                                                   forUserToken:self.userToken
+	                                                  andCompletion:^(NSError *error) {
       
 	        if (error) {
-	            //Error occured, see error.localizedDescription
-	        } else if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+				//Error handling
+	        } else {
 	            //Success
 	        }
 	}];
@@ -101,11 +106,13 @@ To update the order in which the payment instruments will be used when making a 
 ##### Remove payment instrument for a use case
 Remove a payment instrument, belonging to a specific user token, from a use case. After this, the payment instrument cannot be used to make payments for that use case.
 
-	[[PLVInAppClient sharedInstance] removePaymentInstrument:pi fromUseCase:@"A Use Case" forUserToken:@"A User Token" andCompletion:^(NSDictionary* result, NSError* error){
+	[[PLVInAppClient sharedInstance] removePaymentInstrument:pi 
+												  fromUseCase:@"A Use Case" 
+												 forUserToken:@"A User Token" andCompletion:^(NSError* error){
 	            
 	        if (error) {
-	            //Error occured, see error.localizedDescription
-	        } else if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+	            //Error handling
+	        } else {
 	            //Success
 	        }            
 	}];
@@ -113,11 +120,11 @@ Remove a payment instrument, belonging to a specific user token, from a use case
 ##### Disable payment instrument
 Disable a payment instrument, belonging to a specific user token. The payment instrument will be removed from all use cases. 
 
-	[[PLVInAppClient sharedInstance] disablePaymentInstrument:pi forUserToken:@"A User Token" andCompletion:^(NSDictionary* result, NSError* error){
+	[[PLVInAppClient sharedInstance] disablePaymentInstrument:pi forUserToken:@"A User Token" andCompletion:^(NSError* error){
 	            
 	        if (error) {
 	            //Error occured, see error.localizedDescription
-	        } else if ([[result objectForKey:@"status"] isEqualToString:@"OK"]) {
+	        } else {
 	            //Success
 	        } 
 	}];
