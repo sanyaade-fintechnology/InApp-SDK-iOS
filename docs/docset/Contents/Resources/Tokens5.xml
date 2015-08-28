@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/PLVPaymentInstrument.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVPaymentInstrument</TokenIdentifier>
+			<Abstract type="html">Base class of Payment Instruments</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+            
+			
+			<NodeRef refid="5"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/setIdentifier:</TokenIdentifier>
+			<Abstract type="html">Identifier of Payment Instrument (readonly)</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/identifier</TokenIdentifier>
+			<Abstract type="html">Identifier of Payment Instrument (readonly)</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/PLVPaymentInstrument/identifier</TokenIdentifier>
+			<Abstract type="html">Identifier of Payment Instrument (readonly)</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</TokenIdentifier>
+			<Abstract type="html">createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (id)createCreditCardPaymentInstrumentWithPan:(NSString *)pan expiryMonth:(NSInteger)expiryMonth expiryYear:(NSInteger)expiryYear cvv:(NSString *)cvv andCardHolder:(NSString *)cardHolder</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>pan</Name>
+					<Abstract type="html">PAN of this credit card</Abstract>
+				</Parameter><Parameter>
+					<Name>expiryMonth</Name>
+					<Abstract type="html">expiry month for this creditcard payment instrument</Abstract>
+				</Parameter><Parameter>
+					<Name>expiryYear</Name>
+					<Abstract type="html">expiry year for this creditcard payment instrument</Abstract>
+				</Parameter><Parameter>
+					<Name>cvv</Name>
+					<Abstract type="html">CVV for this creditcard payment instrument</Abstract>
+				</Parameter><Parameter>
+					<Name>cardHolder</Name>
+					<Abstract type="html">Name of the card holder of this credit card payment instrument as visible on the card</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">a Payment Instrument of class PLVPayInstrumentCC representing this Credit card</Abstract></ReturnValue>
+			<Anchor>//api/name/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</TokenIdentifier>
+			<Abstract type="html">createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (id)createDebitCardPaymentInstrumentWithAccountNo:(NSString *)accountNo andRoutingNo:(NSString *)routingNo</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>accountNo</Name>
+					<Abstract type="html">Account number of this debit account</Abstract>
+				</Parameter><Parameter>
+					<Name>routingNo</Name>
+					<Abstract type="html">Routing number of this debit account</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">a Payment Instrument of class PLVPayInstrumentDD presenting this Debit account</Abstract></ReturnValue>
+			<Anchor>//api/name/createDebitCardPaymentInstrumentWithAccountNo:andRoutingNo:</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createSEPAPaymentInstrumentWithIBAN:andBIC:</TokenIdentifier>
+			<Abstract type="html">createSEPAPaymentInstrumentWithIBAN:andBIC:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (id)createSEPAPaymentInstrumentWithIBAN:(NSString *)iban andBIC:(NSString *)bic</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>iban</Name>
+					<Abstract type="html">IBAN of this SEPA account</Abstract>
+				</Parameter><Parameter>
+					<Name>bic</Name>
+					<Abstract type="html">BIC of this SEPA account (optional)</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">a Payment Instrument of class PLVPayInstrumentSEPA representing this SEPA account</Abstract></ReturnValue>
+			<Anchor>//api/name/createSEPAPaymentInstrumentWithIBAN:andBIC:</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createPAYPALPaymentInstrumentWithToken:</TokenIdentifier>
+			<Abstract type="html">createPAYPALPaymentInstrumentWithToken:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (id)createPAYPALPaymentInstrumentWithToken:(NSString *)token</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>token</Name>
+					<Abstract type="html">Token to get access to the PayPal account</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">a Payment Instrument of class PLVPayInstrumentPAYPAL representing this PayPal account</Abstract></ReturnValue>
+			<Anchor>//api/name/createPAYPALPaymentInstrumentWithToken:</Anchor>
+            <NodeRef refid="5"/>
+		</Token>
+		
+        
+        
+	</File>
+</Tokens>
