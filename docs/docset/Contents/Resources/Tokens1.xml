@@ -89,7 +89,7 @@
 			<Abstract type="html">Expiry month of Credit card, Format M or MM (valid Range from 01, 2, ... 12)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>@property (readonly, nonatomic) NSString *expiryMonth</Declaration>
+			<Declaration>@property (readonly, nonatomic) NSInteger expiryMonth</Declaration>
 			
 			
 			<Anchor>//api/name/expiryMonth</Anchor>
@@ -101,7 +101,7 @@
 			<Abstract type="html">Expiry month of Credit card, Format M or MM (valid Range from 01, 2, ... 12)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>@property (readonly, nonatomic) NSString *expiryMonth</Declaration>
+			<Declaration>@property (readonly, nonatomic) NSInteger expiryMonth</Declaration>
 			
 			
 			<Anchor>//api/name/expiryMonth</Anchor>
@@ -113,7 +113,7 @@
 			<Abstract type="html">Expiry month of Credit card, Format M or MM (valid Range from 01, 2, ... 12)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>@property (readonly, nonatomic) NSString *expiryMonth</Declaration>
+			<Declaration>@property (readonly, nonatomic) NSInteger expiryMonth</Declaration>
 			
 			
 			<Anchor>//api/name/expiryMonth</Anchor>
@@ -125,7 +125,7 @@
 			<Abstract type="html">Expiry year of Credit card, Format YYYY (valid Range from 2010 ... 2050)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>@property (readonly, nonatomic) NSString *expiryYear</Declaration>
+			<Declaration>@property (readonly, nonatomic) NSInteger expiryYear</Declaration>
 			
 			
 			<Anchor>//api/name/expiryYear</Anchor>
@@ -137,7 +137,7 @@
 			<Abstract type="html">Expiry year of Credit card, Format YYYY (valid Range from 2010 ... 2050)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>@property (readonly, nonatomic) NSString *expiryYear</Declaration>
+			<Declaration>@property (readonly, nonatomic) NSInteger expiryYear</Declaration>
 			
 			
 			<Anchor>//api/name/expiryYear</Anchor>
@@ -149,7 +149,7 @@
 			<Abstract type="html">Expiry year of Credit card, Format YYYY (valid Range from 2010 ... 2050)</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>@property (readonly, nonatomic) NSString *expiryYear</Declaration>
+			<Declaration>@property (readonly, nonatomic) NSInteger expiryYear</Declaration>
 			
 			
 			<Anchor>//api/name/expiryYear</Anchor>
@@ -253,7 +253,7 @@
 			<Abstract type="html">validateExpiryMonth:withError:</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateExpiryMonth:(NSString *)month withError:(NSError **)error</Declaration>
+			<Declaration>+ (BOOL)validateExpiryMonth:(NSInteger)month withError:(NSError **)error</Declaration>
 			<Parameters>
 				<Parameter>
 					<Name>month</Name>
@@ -273,7 +273,7 @@
 			<Abstract type="html">validateExpiryYear:withError:</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateExpiryYear:(NSString *)year withError:(NSError **)error</Declaration>
+			<Declaration>+ (BOOL)validateExpiryYear:(NSInteger)year withError:(NSError **)error</Declaration>
 			<Parameters>
 				<Parameter>
 					<Name>year</Name>
@@ -293,7 +293,7 @@
 			<Abstract type="html">validateExpiryMonth:andYear:withError:</Abstract>
 			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
 			
-			<Declaration>+ (BOOL)validateExpiryMonth:(NSString *)month andYear:(NSString *)year withError:(NSError **)error</Declaration>
+			<Declaration>+ (BOOL)validateExpiryMonth:(NSInteger)month andYear:(NSInteger)year withError:(NSError **)error</Declaration>
 			<Parameters>
 				<Parameter>
 					<Name>month</Name>
