@@ -110,33 +110,27 @@ static int timeoutTolerance = 10;
     
     XCTestExpectation * addPiOneExpectation = [self expectationWithDescription:@"Check adding multiple PI. 1"];
     XCTestExpectation * addPiTwoExpectation = [self expectationWithDescription:@"Check adding multiple PI. 2"];
-    XCTestExpectation * addPiThreeExpectation = [self expectationWithDescription:@"Check adding multiple PI. 3"];
 
     
     // 1. Create multiple CC PI's
-    PLVCreditCardPaymentInstrument * tempCC_0 = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"42424242424242"
+    PLVCreditCardPaymentInstrument * tempCC_0 = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"5592760184670331"
                                                                                                              expiryMonth:@"12"
-                                                                                                              expiryYear:@"2020"
-                                                                                                                     cvv:@"123"
+                                                                                                              expiryYear:@"2019"
+                                                                                                                     cvv:@"159"
                                                                                                            andCardHolder:@"iOS Dev"];
     
-    PLVCreditCardPaymentInstrument * tempCC_1 = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"42424242424242"
-                                                                                                             expiryMonth:@"12"
-                                                                                                              expiryYear:@"2021"
-                                                                                                                     cvv:@"123"
+    PLVCreditCardPaymentInstrument * tempCC_1 = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"5573610038655058"
+                                                                                                             expiryMonth:@"06"
+                                                                                                              expiryYear:@"2016"
+                                                                                                                     cvv:@"354"
                                                                                                            andCardHolder:@"iOS Dev"];
     
-    PLVCreditCardPaymentInstrument * tempCC_2 = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"42424242424242"
-                                                                                                             expiryMonth:@"12"
-                                                                                                              expiryYear:@"2022"
-                                                                                                                     cvv:@"123"
-                                                                                                           andCardHolder:@"iOS Dev"];
     
 
     
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:tempCC_0
-                                             forUserToken:@"f738293f15350c26aadae05463d647eafbf7806ef4ab0abeac704b0cd0b6ee8e"
+                                             forUserToken:@"e718eba759249b1047b10f83e786f9dea45eb477c638a565d23ff24bd1cca04c"
                                             andCompletion:^(NSError *error) {
                                                 if (error) {
                                                     XCTAssertNil(error, @"Not working...");
@@ -147,7 +141,7 @@ static int timeoutTolerance = 10;
     
     
     [[PLVInAppClient sharedInstance] addPaymentInstrument:tempCC_1
-                                             forUserToken:@"f738293f15350c26aadae05463d647eafbf7806ef4ab0abeac704b0cd0b6ee8e"
+                                             forUserToken:@"e718eba759249b1047b10f83e786f9dea45eb477c638a565d23ff24bd1cca04c"
                                             andCompletion:^(NSError *error) {
                                                 if (error) {
                                                     XCTAssertNil(error, @"Not working...");
@@ -156,15 +150,6 @@ static int timeoutTolerance = 10;
                                                 }
                                             }];
     
-    [[PLVInAppClient sharedInstance] addPaymentInstrument:tempCC_2
-                                             forUserToken:@"f738293f15350c26aadae05463d647eafbf7806ef4ab0abeac704b0cd0b6ee8e"
-                                            andCompletion:^(NSError *error) {
-                                                if (error) {
-                                                    XCTAssertNil(error, @"Not working...");
-                                                } else {
-                                                     [addPiThreeExpectation fulfill];
-                                                }
-                                            }];
 
     [self waitForExpectationsWithTimeout:timeoutTolerance
                                  handler:^(NSError *error) {

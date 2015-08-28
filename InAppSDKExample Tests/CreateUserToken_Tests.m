@@ -35,10 +35,10 @@ static int timeoutTolerance = 10;
     
     XCTestExpectation *createUserTokenExpectation = [self expectationWithDescription:@"Create user token."];
     
-    PLVCreditCardPaymentInstrument * tempCC = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"42424242424242"
+    PLVCreditCardPaymentInstrument * tempCC = [PLVCreditCardPaymentInstrument createCreditCardPaymentInstrumentWithPan:@"5592760184670331"
                                                                                                            expiryMonth:@"12"
-                                                                                                            expiryYear:@"2020"
-                                                                                                                   cvv:@"123"
+                                                                                                            expiryYear:@"2019"
+                                                                                                                   cvv:@"159"
                                                                                                          andCardHolder:@"iOS Dev"];
     
     NSUUID * uuid = [NSUUID UUID];
