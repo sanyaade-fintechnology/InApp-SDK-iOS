@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/PLVPaymentInstrument.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/PLVPaymentInstrument</TokenIdentifier>
+			<Abstract type="html">Base class of Payment Instruments</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+            
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/setIdentifier:</TokenIdentifier>
+			<Abstract type="html">Identifier of Payment Instrument (readonly)</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/PLVPaymentInstrument/identifier</TokenIdentifier>
+			<Abstract type="html">Identifier of Payment Instrument (readonly)</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/PLVPaymentInstrument/identifier</TokenIdentifier>
+			<Abstract type="html">Identifier of Payment Instrument (readonly)</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>@property (readonly, strong) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/PLVPaymentInstrument/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</TokenIdentifier>
+			<Abstract type="html">createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</Abstract>
+			<DeclaredIn>PLVInAppClientTypes.h</DeclaredIn>
+			
+			<Declaration>+ (id)createCreditCardPaymentInstrumentWithPan:(NSString *)pan expiryMonth:(NSString *)expiryMonth expiryYear:(NSString *)expiryYear cvv:(NSString *)cvv andCardHolder:(NSString *)cardHolder</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>pan</Name>
+					<Abstract type="html">PAN of this credit card</Abstract>
+				</Parameter><Parameter>
+					<Name>expiryMonth</Name>
+					<Abstract type="html">expiry month for this creditcard payment instrument (M or MM)</Abstract>
+				</Parameter><Parameter>
+					<Name>expiryYear</Name>
+					<Abstract type="html">expiry year for this creditcard payment instrument (YYYY)</Abstract>
+				</Parameter><Parameter>
+					<Name>cvv</Name>
+					<Abstract type="html">CVV for this creditcard payment instrument</Abstract>
+				</Parameter><Parameter>
+					<Name>cardHolder</Name>
+					<Abstract type="html">Name of the card holder of this credit card payment instrument as visible on the card</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract type="html">a Payment Instrument of class PLVPayInstrumentCC representing this Credit card</Abstract></ReturnValue>
+			<Anchor>//api/name/createCreditCardPaymentInstrumentWithPan:expiryMonth:expiryYear:cvv:andCardHolder:</Anchor>
+            <NodeRef refid="3"/>
+		</Token>
+		
+        
+        
+	</File>
+</Tokens>
