@@ -70,15 +70,27 @@
 		
 		<option value="//api/name/addPaymentInstrument:forUserToken:andCompletion:">- addPaymentInstrument:forUserToken:andCompletion:</option>
 		
+		<option value="//api/name/addPaymentInstrument:forUserToken:andUseCase:andCompletion:">- addPaymentInstrument:forUserToken:andUseCase:andCompletion:</option>
+		
 		<option value="//api/name/createUserToken:withPaymentInstrument:andCompletion:">- createUserToken:withPaymentInstrument:andCompletion:</option>
+		
+		<option value="//api/name/createUserToken:withPaymentInstrument:andUseCase:andCompletion:">- createUserToken:withPaymentInstrument:andUseCase:andCompletion:</option>
 		
 		<option value="//api/name/disablePaymentInstrument:forUserToken:andCompletion:">- disablePaymentInstrument:forUserToken:andCompletion:</option>
 		
+		<option value="//api/name/editPaymentInstrument:forUserToken:withUseCase:withAction:withCVV:andCompletion:">- editPaymentInstrument:forUserToken:withUseCase:withAction:withCVV:andCompletion:</option>
+		
 		<option value="//api/name/getPaymentInstrumentsList:andCompletion:">- getPaymentInstrumentsList:andCompletion:</option>
+		
+		<option value="//api/name/getPaymentInstrumentsList:andUseCase:andCompletion:">- getPaymentInstrumentsList:andUseCase:andCompletion:</option>
 		
 		<option value="//api/name/registerWithAPIKey:">- registerWithAPIKey:</option>
 		
+		<option value="//api/name/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:">- removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</option>
+		
 		<option value="//api/name/setPaymentInstrumentsOrder:forUserToken:andCompletion:">- setPaymentInstrumentsOrder:forUserToken:andCompletion:</option>
+		
+		<option value="//api/name/setPaymentInstrumentsOrder:forUserToken:andUseCase:andCompletion:">- setPaymentInstrumentsOrder:forUserToken:andUseCase:andCompletion:</option>
 		
 	</optgroup>
 	
@@ -313,7 +325,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>emailAddress</code></th>
-						<td><p>email address for userToken</p></td>
+						<td><p>email address for user token</p></td>
 					</tr>
 				
 					<tr>
@@ -350,6 +362,59 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 		</div>
 	</div>
 </div><div class="section-method">
+	<a name="//api/name/createUserToken:withPaymentInstrument:andUseCase:andCompletion:" title="createUserToken:withPaymentInstrument:andUseCase:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/createUserToken:withPaymentInstrument:andUseCase:andCompletion:">&ndash;&nbsp;createUserToken:withPaymentInstrument:andUseCase:andCompletion:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<ul>
+<li>Creates a user token based on the email address provided and adds the payment instrument to the user token and use case previously created, associating it to a use case.</li>
+</ul>
+
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)createUserToken:(NSString *)<em>emailAddress</em> withPaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> andUseCase:(NSString *)<em>useCase</em> andCompletion:(PLVInAppClientCreateUserTokenCompletionHandler)<em>completionHandler</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>*
+*  @param emailAddress         email address for user token
+*  @param paymentInstrument    Payment Instrument to add
+*  @param useCase              useCase for the PI
+*  @param completionHandler    completionHandler</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">PLVInAppClient.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
 	<a name="//api/name/addPaymentInstrument:forUserToken:andCompletion:" title="addPaymentInstrument:forUserToken:andCompletion:"></a>
 	<h3 class="method-title"><code><a href="#//api/name/addPaymentInstrument:forUserToken:andCompletion:">&ndash;&nbsp;addPaymentInstrument:forUserToken:andCompletion:</a></code>
 </h3>
@@ -361,7 +426,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 			
 			<div class="method-subsection brief-description">
-				<p>addPaymentInstrument:forUserToken:andCompletion:</p>
+				<p>addPaymentInstrument:forUserToken:andCompletion: (<b class="deprecated">Deprecated:</b><span class="deprecated"> in 1.1</span>)</p>
 			</div>
 			
 		    
@@ -381,7 +446,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>userToken</code></th>
-						<td><p>userToken</p></td>
+						<td><p>user token</p></td>
 					</tr>
 				
 					<tr>
@@ -418,8 +483,8 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 		</div>
 	</div>
 </div><div class="section-method">
-	<a name="//api/name/getPaymentInstrumentsList:andCompletion:" title="getPaymentInstrumentsList:andCompletion:"></a>
-	<h3 class="method-title"><code><a href="#//api/name/getPaymentInstrumentsList:andCompletion:">&ndash;&nbsp;getPaymentInstrumentsList:andCompletion:</a></code>
+	<a name="//api/name/addPaymentInstrument:forUserToken:andUseCase:andCompletion:" title="addPaymentInstrument:forUserToken:andUseCase:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/addPaymentInstrument:forUserToken:andUseCase:andCompletion:">&ndash;&nbsp;addPaymentInstrument:forUserToken:andUseCase:andCompletion:</a></code>
 </h3>
 
 	<div class="method-info">
@@ -429,12 +494,12 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 			
 			<div class="method-subsection brief-description">
-				<p>getPaymentInstrumentsList:andCompletion:</p>
+				<p>addPaymentInstrument:forUserToken:useCase:andCompletion:</p>
 			</div>
 			
 		    
 
-			<div class="method-subsection method-declaration"><code>- (void)getPaymentInstrumentsList:(PLVInAppUserToken *)<em>userToken</em> andCompletion:(PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler)<em>completionHandler</em></code></div>
+			<div class="method-subsection method-declaration"><code>- (void)addPaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> andUseCase:(NSString *)<em>useCase</em> andCompletion:(PLVInAppClientAddPaymentInstrumentCompletionHandler)<em>completionHandler</em></code></div>
 
 		    
 			
@@ -443,8 +508,18 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 				<table class="argument-def parameter-def">
 				
 					<tr>
+						<th scope="row" class="argument-name"><code>paymentInstrument</code></th>
+						<td><p>payment instruments to add</p></td>
+					</tr>
+				
+					<tr>
 						<th scope="row" class="argument-name"><code>userToken</code></th>
-						<td><p>userToken</p></td>
+						<td><p>user token</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>useCase</p></td>
 					</tr>
 				
 					<tr>
@@ -463,7 +538,138 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
-				<p>Retrieves the list of payment instruments associated to a user token. The payment instruments returned are sorted based on the order used when making a payment</p>
+				<p>Associates a payment instrument to a user token for use case</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">PLVInAppClient.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/getPaymentInstrumentsList:andCompletion:" title="getPaymentInstrumentsList:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/getPaymentInstrumentsList:andCompletion:">&ndash;&nbsp;getPaymentInstrumentsList:andCompletion:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>getPaymentInstrumentsList:andCompletion: (<b class="deprecated">Deprecated:</b><span class="deprecated"> in 1.1</span>)</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)getPaymentInstrumentsList:(PLVInAppUserToken *)<em>userToken</em> andCompletion:(PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler)<em>completionHandler</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>userToken</code></th>
+						<td><p>user token</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completion block</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Retrieves the list of payment instruments associated to a user token. The payment instruments returned are sorted based on the order used when making a payment.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">PLVInAppClient.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/getPaymentInstrumentsList:andUseCase:andCompletion:" title="getPaymentInstrumentsList:andUseCase:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/getPaymentInstrumentsList:andUseCase:andCompletion:">&ndash;&nbsp;getPaymentInstrumentsList:andUseCase:andCompletion:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p><a href="#//api/name/getPaymentInstrumentsList:andCompletion:">getPaymentInstrumentsList:andCompletion:</a></p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)getPaymentInstrumentsList:(PLVInAppUserToken *)<em>userToken</em> andUseCase:(NSString *)<em>useCase</em> andCompletion:(PLVInAppAPIClientGetPaymentInstrumentListCompletionHandler)<em>completionHandler</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>userToken</code></th>
+						<td><p>user token</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completion block</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>usecase</code></th>
+						<td><p>useCases</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Retrieves the list of payment instruments associated to a user token belonging to a use case. The payment instruments returned are sorted based on the order used when making a payment.</p>
 			</div>
 			
 
@@ -492,7 +698,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			
 			
 			<div class="method-subsection brief-description">
-				<p>setPaymentInstrumentsOrder:forUserToken:</p>
+				<p>setPaymentInstrumentsOrder:forUserToken:andCompletion:</p>
 			</div>
 			
 		    
@@ -512,7 +718,7 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>userToken</code></th>
-						<td><p>userToken</p></td>
+						<td><p>user token</p></td>
 					</tr>
 				
 					<tr>
@@ -532,7 +738,81 @@ Next, set up the instance with your API Key using the registerWithAPIKey: method
 			<div class="method-subsection discussion-section">
 				<h4 class="method-subtitle">Discussion</h4>
 				<p>Sets the order of payment instruments for a user token.
-The order of the payment instruments in the list will represent the order in which the payment instruments will be used when making a payment</p>
+The order of payment instruments in the list will represent the order in which the payment instruments will be used when making a payment</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">PLVInAppClient.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/setPaymentInstrumentsOrder:forUserToken:andUseCase:andCompletion:" title="setPaymentInstrumentsOrder:forUserToken:andUseCase:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/setPaymentInstrumentsOrder:forUserToken:andUseCase:andCompletion:">&ndash;&nbsp;setPaymentInstrumentsOrder:forUserToken:andUseCase:andCompletion:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>setPaymentInstrumentsOrder:forUserToken:andUseCase:andCompletion</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)setPaymentInstrumentsOrder:(NSOrderedSet *)<em>piOrder</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> andUseCase:(NSString *)<em>useCase</em> andCompletion:(PLVInAppAPIClientSetPaymentInstrumentOrderCompletionHandler)<em>completionHandler</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>piOrder</code></th>
+						<td><p>NSOrderedSet with PaymentInstruments token hashes</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>userToken</code></th>
+						<td><p>user token</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>use case</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completion block</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Sets the order of payment instruments belonging to a use case, for a user token.
+The order of payment instruments in the list will represent the order in which the payment instruments will be used when making a payment</p>
 			</div>
 			
 
@@ -561,7 +841,7 @@ The order of the payment instruments in the list will represent the order in whi
 			
 			
 			<div class="method-subsection brief-description">
-				<p>disablePaymentInstrument:forUserToken:andCompletion:</p>
+				<p>disablePaymentInstrument:forUserToken:andCompletion: (<b class="deprecated">Deprecated:</b><span class="deprecated"> in 1.1</span>)</p>
 			</div>
 			
 		    
@@ -581,7 +861,7 @@ The order of the payment instruments in the list will represent the order in whi
 				
 					<tr>
 						<th scope="row" class="argument-name"><code>userToken</code></th>
-						<td><p>userToken</p></td>
+						<td><p>user token</p></td>
 					</tr>
 				
 					<tr>
@@ -618,6 +898,164 @@ The disabled payment instrument will not be used for making payments anymore.</p
 			
 		</div>
 	</div>
+</div><div class="section-method">
+	<a name="//api/name/editPaymentInstrument:forUserToken:withUseCase:withAction:withCVV:andCompletion:" title="editPaymentInstrument:forUserToken:withUseCase:withAction:withCVV:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/editPaymentInstrument:forUserToken:withUseCase:withAction:withCVV:andCompletion:">&ndash;&nbsp;editPaymentInstrument:forUserToken:withUseCase:withAction:withCVV:andCompletion:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>editPaymentInstrument:forUserToken:withUseCase:withAction:withCVV:andCompletion</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)editPaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> forUserToken:(PLVInAppUserToken *)<em>userToken</em> withUseCase:(NSString *)<em>useCase</em> withAction:(PLVPaymentInstrumentAction)<em>editAction</em> withCVV:(NSString *)<em>cvv</em> andCompletion:(PLVInAppAPIClientEditPaymentInstrumentCompletionHandler)<em>completionHandler</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>paymentInstrument</code></th>
+						<td><p>the paymentInstruments to disable</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>userToken</code></th>
+						<td><p>user token</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>useCase</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>editAction</code></th>
+						<td><p>editAction</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>cvv</code></th>
+						<td><p>cvv</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completionHandler</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Edits a payment instrument of a specified user token. Possible actions are: enable, disable
+and validate.
+When action is &lsquo;validate&rsquo; , the cvv is required</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">PLVInAppClient.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:" title="removePaymentInstrument:fromUseCase:forUserToken:andCompletion:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/removePaymentInstrument:fromUseCase:forUserToken:andCompletion:">&ndash;&nbsp;removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>removePaymentInstrument:fromUseCase:forUserToken:andCompletion:</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)removePaymentInstrument:(PLVPaymentInstrument *)<em>paymentInstrument</em> fromUseCase:(NSString *)<em>useCase</em> forUserToken:(NSString *)<em>userToken</em> andCompletion:(PLVInAppAPIClientRemovePaymentInstrumentCompletionHandler)<em>completionHandler</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>paymentInstrument</code></th>
+						<td><p>the paymentInstrument</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>useCase</code></th>
+						<td><p>useCase to remove from</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>userToken</code></th>
+						<td><p>user token</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>completionHandler</code></th>
+						<td><p>completionHandler</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Removes a payment instrument associated to a user token from a use case.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">PLVInAppClient.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
 </div>
 						</div>
 						
@@ -631,7 +1069,7 @@ The disabled payment instrument will not be used for making payments anymore.</p
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-09-01</p>
+						<p class="copyright">Copyright &copy; 2015 payleven. All rights reserved. Updated: 2015-10-05</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>
