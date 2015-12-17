@@ -6,20 +6,13 @@
 
 # payleven InApp SDK
 
-This project provides an iOS- and tvOS-SDK that allows creating user tokens and payment instruments, retrieving and sorting payment instruments, based on the user token. Learn more about the InApp API on the [payleven website](https://payleven.com/).
+This project provides an SDK for iOS and tvOS. It allows use case categorisation, prioritisation and tokenization of payment instruments, which are retrieved using the user token created. Learn more about the InApp API on the [payleven developer page](https://developer.payleven.com/docs/In-App/index.html#/overview).
 
 ### Prerequisites
 
-1. Register with [payleven](http://payleven.com) in order to get personal merchant credentials
-2. In order to receive an API key, please contact us by sending an email to developer@payleven.com
+In order to receive an API key, please contact us by sending an email to integration@payleven.com
 
 ### Installation
-
-##### CocoaPods
-
-	...available very soon.
-
-##### Manual Set-Up
 
 1. Drag *PaylevenInAppSDK.framework* into your iOS or tvOS Xcode project.
 
