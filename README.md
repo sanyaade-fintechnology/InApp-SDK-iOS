@@ -21,6 +21,21 @@ In order to receive an API key, please contact us by sending an email to integra
 3. Import PaylevenSDK into your files:
 
         #import <PaylevenInAppSDK/PLVInAppSDK.h>
+4. Open the *Info.plist* and add the following key related to App Transport Security:
+```	<key>NSAppTransportSecurity</key>
+	    <dict>
+	        <key>NSExceptionDomains</key>
+	        <dict>
+	            <key>payleven.de</key>
+	            <dict>
+	                <key>NSExceptionRequiresForwardSecrecy</key>
+	                <false/>
+	                <key>NSIncludesSubdomains</key>
+	                <true/>
+	            </dict>
+	        </dict>
+	    </dict>
+```
 
 #### Code    
 
