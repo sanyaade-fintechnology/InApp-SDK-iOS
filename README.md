@@ -10,7 +10,7 @@ This project provides an SDK for iOS and tvOS. It allows use case categorisation
 
 ### Prerequisites
 * You or your client is operating in one of the countries supported by payleven.
-* You have signed up and received your API key [here](https://service.payleven.com/uk/developer?product=apppay).
+* You have signed up [here](https://service.payleven.com/uk/developer?product=apppay) and received your API key.
 
 ### Installation
 
