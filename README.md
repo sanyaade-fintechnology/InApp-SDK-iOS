@@ -6,7 +6,7 @@
 
 # payleven App Pay SDK
 
-This project provides an SDK for iOS and tvOS. It allows use case categorisation, prioritisation and tokenization of payment instruments, which are retrieved using the user token created. Learn more about App Pay [here](https://current-developer.payleven.com/docs/In-App/index.html).
+This project provides an SDK for iOS. It allows use case categorisation, prioritisation and tokenization of payment instruments, which are retrieved using the user token created. Learn more about App Pay [here](https://current-developer.payleven.com/docs/In-App/index.html).
 
 ### Prerequisites
 * You or your client is operating in one of the countries supported by payleven.
