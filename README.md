@@ -8,6 +8,9 @@
 
 This project provides an SDK for iOS. It allows use case categorisation, prioritisation and tokenization of payment instruments, which are retrieved using the user token created. Learn more about App Pay [here](https://current-developer.payleven.com/docs/In-App/index.html).
 
+> Note: 
+> The product has been renamed to payleven App Pay SDK from InApp SDK. Any references within the documentation or classes are relevant to payleven App Pay SDK.
+
 ### Prerequisites
 * You or your client is operating in one of the countries supported by payleven.
 * You have signed up [here](https://service.payleven.com/uk/developer?product=apppay) and received your API key.
