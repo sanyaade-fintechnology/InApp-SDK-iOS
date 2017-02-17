@@ -1,3 +1,9 @@
+### NOTE: 
+### Payleven and SumUp are now one company. The payleven SDKs are no longer supported. Please see [SumUp's developer products](http://docs.sumup.com/).
+
+---
+---
+
 [![CocoaPods](https://img.shields.io/badge/Platform-iOS-yellow.svg?style=flat-square)]()
 [![CocoaPods](https://img.shields.io/badge/Requires-iOS%207+-blue.svg?style=flat-square)]()
 [![CocoaPods](https://img.shields.io/github/tag/Payleven/InApp-SDK-iOS.svg?style=flat-square)]()
